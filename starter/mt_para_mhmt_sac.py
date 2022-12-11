@@ -51,7 +51,6 @@ torch.set_num_threads(CPU_NUM)
 
 
 def experiment(args):
-
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
 
     env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
