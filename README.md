@@ -1,6 +1,10 @@
 # T3S-MTRL-Pytorch
 
-Implementation for "T3S: Improving Multi-Task Reinforcement Learning with Task-Specific Feature Selector and Scheduler".
+Implementation for "T3S: Improving Multi-Task Reinforcement Learning with Task-Specific Feature Selector and Scheduler". 
+
+![method](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/method.gif)
+
+To balance the task difficulty, the task scheduler first selects challenging tasks for the multi-task agent from the whole task set based on the performance metric. Then the \selector learns which features to be shared between tasks and which not, by filtering task-specific features from globally shared features in an end-to-end manner.
 
 ## Setup Environment
 
@@ -84,24 +88,44 @@ python torchrl/utils/plot_csv.py --id EXPERIMENTS --env_name mt10 --entry "mean_
 ```
 
 ## Demo
-We visualize the experimental results for the two settings of fixed and random target object positions:
+We have visualized the experimental results for the two settings of fixed and random target object positions:
+
+reach-fixed-goal:
 
 ![reach-fixed-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/0a.gif)
 
+reach-random-goal:
+
 ![reach-random-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/0b.gif)
+
+door-open-fixed-goal:
 
 ![door-open-fixed-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/1a.gif)
 
+door-open-random-goal:
+
 ![door-open-random-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/1b.gif)
+
+ped-insert-side-fixed-goal:
 
 ![ped-insert-side-fixed-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/2a.gif)
 
+ped-insert-side-random-goal:
+
 ![ped-insert-side-random-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/2b.gif)
+
+drawer-open-fixed-goal:
 
 ![drawer-open-fixed-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/3a.gif)
 
+drawer-open-random-goal:
+
 ![drawer-open-random-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/3b.gif)
 
+button-press-topdown-fixed-goal:
+
 ![button-press-topdown-fixed-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/4a.gif)
+
+button-press-topdown-random-goal:
 
 ![button-press-topdown-random-goal](https://github.com/yuyuanq/T3S-MTRL-Pytorch/blob/main/imgs/4b.gif)
