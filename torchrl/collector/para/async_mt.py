@@ -389,7 +389,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
 
         self.shared_dict = self.manager.dict()
-        self.shared_dict['task_sample_index'] = list(range(10))  #*
+        self.shared_dict['task_sample_index'] = list(range(50))  #*
 
         assert self.worker_nums == self.env.num_tasks
         # task_cls, task_args, env_params
