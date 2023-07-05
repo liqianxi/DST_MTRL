@@ -12,7 +12,7 @@ task_name_list_50 = ['reach-v1', 'push-v1', 'pick-place-v1', 'reach-wall-v1', 'p
 
 ###
 SCHEDULER_MODE = int(os.getenv('SCHEDULER_MODE', '0'))
-print(f'SCHEDULER_MODE: {SCHEDULER_MODE}')
+#print(f'SCHEDULER_MODE: {SCHEDULER_MODE}')
 ###
 
 class TaskScheduler():

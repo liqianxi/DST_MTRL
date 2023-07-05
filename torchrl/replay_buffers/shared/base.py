@@ -85,12 +85,12 @@ class SharedBaseReplayBuffer(BaseReplayBuffer):
         return_dict = {}
 
         random_list = []
-        for i in range(10):
+        for i in range(50):
             random_list.append(np.random.randint(0, self._size[i], batch_size))
 
         for key in sample_key:
             # return_dict[key] = self.__getattribute__("_"+key)[:, :, :][indices]
-            return_dict[key] = np.concatenate([np.expand_dims(self.__getattribute__("_"+key)[:, i, :][random_list[i]], 1) for i in range(10)], axis=1)
+            return_dict[key] = np.concatenate([np.expand_dims(self.__getattribute__("_"+key)[:, i, :][random_list[i]], 1) for i in range(50)], axis=1)
 
             if reshape:
                 return_dict[key] = return_dict[key].reshape(

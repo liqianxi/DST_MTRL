@@ -9,7 +9,7 @@
         "random_init": true
     },
     "replay_buffer":{
-        "size": 1e7
+        "size": 1e6
     },
     "net":{ 
         "hidden_shapes": [400,400],
