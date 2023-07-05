@@ -12,14 +12,14 @@ import gym
 
 import os
 import os.path as osp
-import wandb
+#import wandb
 
 from torchrl.task_scheduler import TaskScheduler
 import torchrl.plot_history as plot_history
 from tqdm import tqdm
 
 
-TASK_SAMPLE_NUM = int(os.getenv('TASK_SAMPLE_NUM', '10'))
+TASK_SAMPLE_NUM = int(os.getenv('TASK_SAMPLE_NUM', '50'))
 RESTORE = int(os.getenv('RESTORE', '0'))
 ID = os.getenv('ID', 'null')
 DIR = os.getenv('DIR', 'null')
@@ -125,23 +125,23 @@ class RLAlgo():
 
             EPOCH += 1
 
-            wandb.init(
-                name=os.environ['NAME'],
-                project='multitask-yyq',
-                group=os.environ['GROUP'],
-                reinit=True,
-                id=ID,
-                dir='./log',
-                resume="allow" if RESTORE else None,
-            )
-        else:
-            wandb.init(
-                name=os.environ['NAME'],
-                project='multitask-yyq',
-                group=os.environ['GROUP'],
-                reinit=True,
-                dir='./log',
-            )
+            # wandb.init(
+            #     name=os.environ['NAME'],
+            #     project='multitask-yyq',
+            #     group=os.environ['GROUP'],
+            #     reinit=True,
+            #     id=ID,
+            #     dir='./log',
+            #     resume="allow" if RESTORE else None,
+            # )
+        # else:
+        #     wandb.init(
+        #         name=os.environ['NAME'],
+        #         project='multitask-yyq',
+        #         group=os.environ['GROUP'],
+        #         reinit=True,
+        #         dir='./log',
+        #     )
 
         self.pretrain()
 
@@ -151,7 +151,7 @@ class RLAlgo():
 
         #*
         self.start_epoch()
-        task_scheduler = TaskScheduler(num_tasks=10, task_sample_num=TASK_SAMPLE_NUM)
+        task_scheduler = TaskScheduler(num_tasks=50, task_sample_num=TASK_SAMPLE_NUM)
 
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
             log_dict = {}
@@ -225,7 +225,7 @@ class RLAlgo():
                 # filename = plot_history.plot(root_dir=self.save_dir, num_tasks=task_scheduler.num_tasks, sample_gap=1, perfermance_gap=10, delta_gap=10)
                 # log_dict['history'] = wandb.Image(filename)
 
-            wandb.log(log_dict)
+            #wandb.log(log_dict)
 
         self.snapshot(self.save_dir, "finish")
         self.collector.terminate()

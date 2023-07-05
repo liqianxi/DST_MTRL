@@ -60,7 +60,7 @@ class OffRLAlgo(RLAlgo):
 
             self.start_epoch()
             
-            training_epoch_info =  self.collector.train_one_epoch(list(range(10)))  #*
+            training_epoch_info =  self.collector.train_one_epoch(list(range(50)))  #*
             for reward in training_epoch_info["train_rewards"]:
                 self.training_episode_rewards.append(reward)
 

@@ -9,7 +9,7 @@ import torchrl.policies as policies
 import torch.nn.functional as F
 
 
-class MTSAC(TwinSACQ):
+class MUST_SAC(TwinSACQ):
     """"
     Support Different Temperature for different tasks
     """

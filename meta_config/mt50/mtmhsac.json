@@ -8,7 +8,7 @@
         "obs_type": "with_goal_and_id"
     },
     "replay_buffer":{
-        "size": 1e7
+        "size": 1e6
     },
     "net":{ 
         "hidden_shapes": [400,400],
