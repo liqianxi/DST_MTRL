@@ -4,7 +4,7 @@ sys.path.append(".")
 import torch
 
 import os
-import time
+import time,copy
 import os.path as osp
 
 import numpy as np
@@ -39,6 +39,7 @@ from metaworld_utils.meta_env import get_meta_env
 import random
 import pickle
 
+PRUNTING_RATIO = 0.8
 
 RESTORE = int(os.getenv('RESTORE', '0'))
 
@@ -50,11 +51,61 @@ os.environ['VECLIB_MAXIMUM_THREADS'] = str(CPU_NUM)
 os.environ['NUMEXPR_NUM_THREADS'] = str(CPU_NUM)
 torch.set_num_threads(CPU_NUM)
 
+def convert_neuron_masks_to_weight_mask(weight, neuron_masks, is_row, is_col):
+    assert is_row or is_col, "Must specify an operation"
+    full_mask = weight
+
+    if is_row:
+        full_mask = torch.mul(full_mask.T, neuron_masks).T
+
+    if is_col: 
+        full_mask = torch.mul(full_mask, neuron_masks)
+
+    return full_mask
+
+
+
+
+
+def random_initialize_masks(network):
+  
+    neuron_mask_list = []
+    all_layer_weight_shape = []
+    for each_layer in network.base:
+        neurons = each_layer.weight.shape[0]
+        all_layer_weight_shape.append(each_layer.weight.shape)
+        neuron_mask = torch.zeros(neurons)
+        ones = int(neurons*(1-PRUNTING_RATIO))
+        idx = torch.randperm(neurons)[:ones]
+        neuron_mask[idx] = 1
+        neuron_mask_list.append(neuron_mask)
+
+    all_layer_weight_shape.append(network.last.weight.shape)
+
+    weight_array = [torch.ones(i) for i in all_layer_weight_shape]
+
+    for idx in len(neuron_mask_list):
+        pre_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx], neuron_mask_list[idx], is_row=1, is_col=0)
+        weight_array[idx] = pre_layer_weight
+        post_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx+1], neuron_mask_list[idx], is_row=0, is_col=1)
+        weight_array[idx+1] = post_layer_weight
+
+    
+    return weight_array
+
+
+
+        
+
 
 def experiment(args):
 
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
-
+    """
+    {'reach-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, 
+    'push-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, }'
+    
+    """
     env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
 
     env.seed(args.seed)
@@ -84,23 +135,31 @@ def experiment(args):
     example_ob = env.reset()
     example_embedding = env.active_task_one_hot
 
+    embedding_shape = np.prod(example_embedding.shape)
     # Initialize policy net.
-    pf = policies.GuassianContPolicy(
-        input_shape = env.observation_space.shape[0], 
+    # The policy network 
+    # Input: S,onehot(task)
+
+    # TODO: allow random goal.
+    pf = policies.EmbedGuassianContPolicy(
+        input_shape = env.observation_space.shape[0]+embedding_shape, 
         output_shape = 2 * env.action_space.shape[0],
         **params['net'] )
+
+    assert 1==2
 
     if args.pf_snap is not None:
         pf.load_state_dict(torch.load(args.pf_snap, map_location='cpu'))
 
     # Initialize Q1 and Q2 net, the initialization of Q1_target and Q2_target will
     # be in TwinSACQ.
+    # Input: S,A,onehot(task)
     qf1 = networks.FlattenNet( 
-        input_shape = env.observation_space.shape[0] + env.action_space.shape[0],
+        input_shape = env.observation_space.shape[0] + env.action_space.shape[0] + embedding_shape,
         output_shape = 1,
         **params['net'] )
     qf2 = networks.FlattenNet( 
-        input_shape = env.observation_space.shape[0] + env.action_space.shape[0],
+        input_shape = env.observation_space.shape[0] + env.action_space.shape[0] + embedding_shape,
         output_shape = 1,
         **params['net'] )
     
@@ -145,11 +204,37 @@ def experiment(args):
     )
     replay_buffer.build_by_example(example_dict)
 
+    # This is used to train the encoder and compare traj similarity.
+    state_trajectory = {}
+    for each_task_name in cls_dicts.keys():
+        state_trajectory[each_task_name] = []
+
+    # Mask buffer, stores the current masks for each layer, for each task and for each network type(Q1,Q2,policy).
+    mask_buffer = {"Q1":{}, "Q2":{}, "Policy":{}}
+    for net_type in mask_buffer.keys():
+        mask_buffer[net_type] = copy.deepcopy(state_trajectory)
+        for each_task in mask_buffer[net_type].keys():
+            if net_type == "Q1":
+                net = qf1
+            elif net_type == "Q2":
+                net = qf2 
+            elif net_type == "Policy":
+                net = pf
+            mask_array = random_initialize_masks(net)
+            mask_buffer[net_type][each_task] = mask_array
+
+
+    # Now we have a mask buffer like this:
+    # {"Q1":{"task1":[[layer1_Weights],[layer2_weights]..],..."task50":[]},"Q2":{...},"Policy":{...}}
+
+
     if RESTORE:
         with open(osp.join(osp.join(logger.work_dir,"model"), "replay_buffer.pkl"), 'rb') as f:
             replay_buffer = pickle.load(f)
 
     params['general_setting']['replay_buffer'] = replay_buffer
+    params['general_setting']['state_trajectory'] = state_trajectory
+    params['general_setting']['mask_buffer'] = mask_buffer
 
     epochs = params['general_setting']['pretrain_epochs'] + \
         params['general_setting']['num_epochs']
@@ -157,7 +242,8 @@ def experiment(args):
     print(env.action_space)
     print(env.observation_space)
     params['general_setting']['collector'] = AsyncMultiTaskParallelCollectorUniform(
-        env=env, pf=pf, replay_buffer=replay_buffer,
+        env=env, pf=pf, replay_buffer=replay_buffer,state_trajectory=state_trajectory,
+        mask_buffer=mask_buffer,
         env_cls = cls_dicts, env_args = [params["env"], cls_args, params["meta_env"]],
         device=device,
         reset_idx=True,
