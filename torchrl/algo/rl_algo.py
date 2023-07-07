@@ -151,7 +151,7 @@ class RLAlgo():
 
         #*
         self.start_epoch()
-        task_scheduler = TaskScheduler(num_tasks=50, task_sample_num=TASK_SAMPLE_NUM)
+        task_scheduler = TaskScheduler(num_tasks=10, task_sample_num=TASK_SAMPLE_NUM)
 
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
             log_dict = {}

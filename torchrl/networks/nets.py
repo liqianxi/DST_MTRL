@@ -100,7 +100,8 @@ class ModularGatedCascadeCondNet(nn.Module):
 
         self.num_layers = num_layers
         self.num_modules = num_modules
-
+        print("self.num_layers",self.num_layers)
+        assert 1==2
         for i in range(num_layers):
             layer_module = []
             for j in range( num_modules ):
@@ -142,7 +143,7 @@ class ModularGatedCascadeCondNet(nn.Module):
                     num_modules * num_modules )
         last_init_func( self.gating_weight_fc_0)
         # self.gating_weight_fcs.append(self.gating_weight_fc_0)
-
+        
         for layer_idx in range(num_layers-2):
             gating_weight_cond_fc = nn.Linear((layer_idx+1) * \
                                                num_modules * num_modules,
@@ -159,6 +160,7 @@ class ModularGatedCascadeCondNet(nn.Module):
                              gating_weight_fc)
             self.gating_weight_fcs.append(gating_weight_fc)
 
+        
         self.gating_weight_cond_last = nn.Linear((num_layers-1) * \
                                                  num_modules * num_modules,
                                                  gating_input_shape)
@@ -179,7 +181,9 @@ class ModularGatedCascadeCondNet(nn.Module):
             embedding = embedding * out
 
         out = self.activation_func(out)
-
+        #self.gating_fcs [Linear(in_features=400, out_features=256, bias=True), Linear(in_features=256, out_features=256, bias=True)]
+        #print("self.gating_fcs",self.gating_fcs) 
+        print("self.gating_fcs",self.gating_fcs)
         if len(self.gating_fcs) > 0:
             embedding = self.activation_func(embedding)
             for fc in self.gating_fcs[:-1]:
@@ -188,7 +192,7 @@ class ModularGatedCascadeCondNet(nn.Module):
             embedding = self.gating_fcs[-1](embedding)
 
         base_shape = embedding.shape[:-1]
-
+        print("base_shape",base_shape)
         weights = []
         flatten_weights = []
 
@@ -207,16 +211,19 @@ class ModularGatedCascadeCondNet(nn.Module):
             flatten_weights.append(raw_weight.view(flatten_shape))
         else:
             flatten_weights.append(softmax_weight.view(flatten_shape))
-
+        # if case 4 layers:
+        #[Linear(in_features=256, out_features=16, bias=True), Linear(in_features=256, out_features=16, bias=True)] 
+        #[Linear(in_features=16, out_features=256, bias=True), Linear(in_features=32, out_features=256, bias=True)]
+        # print(self.gating_weight_fcs, self.gating_weight_cond_fcs)
         for gating_weight_fc, gating_weight_cond_fc in zip(self.gating_weight_fcs, self.gating_weight_cond_fcs):
             cond = torch.cat(flatten_weights, dim=-1)
             if self.pre_softmax:
                 cond = self.activation_func(cond)
-            cond = gating_weight_cond_fc(cond)
+            cond = gating_weight_cond_fc(cond)# W_up (4*4 x D)
             cond = cond * embedding
             cond = self.activation_func(cond)
 
-            raw_weight = gating_weight_fc(cond)
+            raw_weight = gating_weight_fc(cond) # W_down
             raw_weight = raw_weight.view(weight_shape)
             softmax_weight = F.softmax(raw_weight, dim=-1)
             weights.append(softmax_weight)
@@ -224,7 +231,7 @@ class ModularGatedCascadeCondNet(nn.Module):
                 flatten_weights.append(raw_weight.view(flatten_shape))
             else:
                 flatten_weights.append(softmax_weight.view(flatten_shape))
-
+        
         cond = torch.cat(flatten_weights, dim=-1)
         if self.pre_softmax:
             cond = self.activation_func(cond)
@@ -299,3 +306,133 @@ class FlattenBootstrappedNet(BootstrappedNet):
     def forward(self, input, idx ):
         out = torch.cat( input, dim = -1 )
         return super().forward(out, idx)
+
+class MaskGeneratorNet(nn.Module):
+    def __init__(self, output_shape,
+            base_type, em_input_shape, input_shape,
+            em_hidden_shapes,
+            hidden_shapes,
+            num_layers,
+            module_hidden,
+            module_hidden_init_func = init.basic_init,
+            last_init_func = init.uniform_init,
+            activation_func = F.relu,
+             **kwargs ):
+
+        super().__init__()
+
+        #Note: Embedding base is the network part that converts a full trajectory into
+        # a D-dim vector.
+        #TODO: Shall be replaced by an encoder.
+        self.base = base_type( 
+                        last_activation_func = null_activation,
+                        input_shape = input_shape,
+                        activation_func = activation_func,
+                        hidden_shapes = hidden_shapes,
+                        **kwargs )
+        
+        #Note: Embedding base is the network part that converts task onehot into
+        # a D-dim vector.
+        self.em_base = base_type(
+                        last_activation_func = null_activation,
+                        input_shape = em_input_shape,
+                        activation_func = activation_func,
+                        hidden_shapes = em_hidden_shapes,
+                        **kwargs )
+
+        self.activation_func = activation_func
+
+        self.num_layers = num_layers
+        self.layer_neurons = hidden_shapes
+
+        assert self.em_base.output_shape == self.base.output_shape, \
+            "embedding should has the same dimension with base output for gated" 
+        gating_input_shape = self.em_base.output_shape # gating_input_shape: D in paper
+
+        self.gating_weight_fcs = []
+        self.gating_weight_cond_fcs = []
+
+        self.gating_weight_fc_0 = nn.Linear(gating_input_shape, layer_neurons) # D X neurons
+        last_init_func( self.gating_weight_fc_0)
+        
+        for layer_idx in range(num_layers-2):
+            # W_up (layer_neurons x D)
+            gating_weight_cond_fc = nn.Linear(layer_neurons,
+                                              gating_input_shape)
+
+            module_hidden_init_func(gating_weight_cond_fc)
+            self.__setattr__("gating_weight_cond_fc_{}".format(layer_idx+1),
+                             gating_weight_cond_fc)
+
+            self.gating_weight_cond_fcs.append(gating_weight_cond_fc)
+            
+            #W_down (D X layer_neurons)
+            gating_weight_fc = nn.Linear(gating_input_shape, layer_neurons)
+            last_init_func(gating_weight_fc)
+
+            self.__setattr__("gating_weight_fc_{}".format(layer_idx+1),
+                             gating_weight_fc)
+            
+            self.gating_weight_fcs.append(gating_weight_fc)
+
+        # W_up (layer_neurons x D)
+        self.gating_weight_cond_last = nn.Linear(layer_neurons,
+                                                 gating_input_shape) 
+        module_hidden_init_func(self.gating_weight_cond_last)
+
+        #W_down (D X layer_neurons)
+        self.gating_weight_last = nn.Linear(gating_input_shape, layer_neurons)
+        last_init_func( self.gating_weight_last )
+
+    def forward(self, x, embedding_input, return_weights = False):
+        # Return weights for visualization
+
+        # Trajectory encoder embedding
+        out = self.base(x)
+
+        # Task one hot embedding
+        embedding = self.em_base(embedding_input)
+
+        # Element wise multi
+        embedding = embedding * out
+
+        weight_shape = embedding.shape[:-1] + torch.Size([layer_neurons])
+        neuron_masks = []
+
+        # Next 3 lines output p^{l=1}
+        raw_weight = self.gating_weight_fc_0(self.activation_func(embedding))  
+        raw_weight = raw_weight.view(weight_shape)
+        softmax_weight = F.softmax(raw_weight, dim=-1)
+        neuron_masks.append(softmax_weight)
+
+        for gating_weight_fc, gating_weight_cond_fc in zip(self.gating_weight_fcs, self.gating_weight_cond_fcs):
+
+            # Next 6 lines will recover the dimension of the features to D X 1
+            cond = torch.cat(softmax_weight, dim=-1)
+            cond = gating_weight_cond_fc(cond)# W_up (neurons x D) * p^l
+            cond = cond * embedding # (W_up * p^l) * embedding
+            cond = self.activation_func(cond) #RELU (cond)
+
+            # Next, p^{l+1} = W_d^l(cond), generate raw weights.
+            raw_weight = gating_weight_fc(cond) # W_down
+            raw_weight = raw_weight.view(weight_shape)
+
+            # Here, shape the neuron_masks to [0,1]
+            softmax_weight = F.softmax(raw_weight, dim=-1)
+            neuron_masks.append(softmax_weight)
+        
+        cond = torch.cat(softmax_weight, dim=-1)
+        cond = self.gating_weight_cond_last(cond)  # W_up (neurons x D) * p^l
+        cond = cond * embedding # (W_up * p^l) * embedding
+        cond = self.activation_func(cond)  #RELU (cond)
+
+        # W_down, generate the neuron mask for the last layer.
+        raw_last_weight = self.gating_weight_last(cond) 
+
+        # Change the prob to [0,1].
+        last_weight = F.softmax(raw_last_weight, dim = -1)
+        neuron_masks.append(last_weight)
+
+        single_neuron_mask_matrix = torch.cat(neuron_masks,0)
+
+        return single_neuron_mask_matrix
