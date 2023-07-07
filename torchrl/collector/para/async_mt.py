@@ -93,7 +93,7 @@ class AsyncSingleTaskParallelCollector(AsyncParallelCollector):
             p = mp.Process(
                 target=self.__class__.train_worker_process,
                 args=( self.__class__, self.shared_funcs,
-                    self.env_info, self.replay_buffer, 
+                    self.env_info, self.replay_buffer, self.state_trajectory,
                     self.shared_que, self.start_barrier,
                     self.train_epochs))
             p.start()
@@ -136,42 +136,27 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         self.progress_alpha = progress_alpha
 
     @classmethod
-    def take_actions(cls, funcs, env_info, ob_info, replay_buffer):
+    def take_actions(cls, funcs, env_info, ob_info, replay_buffer, neuron_masks_this_task):
         pf = funcs["pf"]
         ob = ob_info["ob"]
         task_idx = env_info.env_rank
-        idx_flag = isinstance(pf, policies.MultiHeadGuassianContPolicy)
 
-        embedding_flag = isinstance(pf, policies.EmbeddingGuassianContPolicyBase)
+        embedding_flag = isinstance(pf, policies.EmbedGuassianContPolicy)
 
         pf.eval()
 
         with torch.no_grad():
-            if idx_flag:
-                idx_input = torch.Tensor([[task_idx]]).to(env_info.device).long()
-                if embedding_flag:
-                    embedding_input = torch.zeros(env_info.num_tasks)
-                    embedding_input[env_info.env_rank] = 1
-                    # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
-                    embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
-                    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0), embedding_input,
-                        [task_idx])
-                else:
-                    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
-                        idx_input)
-                act = out["action"]
-                # act = act[0]
-            else:
-                if embedding_flag:
-                    # embedding_input = np.zeros(env_info.num_tasks)
-                    embedding_input = torch.zeros(env_info.num_tasks)
-                    embedding_input[env_info.env_rank] = 1
-                    # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
-                    embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
-                    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0), embedding_input)
-                else:    
-                    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0))
-                act = out["action"]
+
+            if embedding_flag:
+                # embedding_input = np.zeros(env_info.num_tasks)
+                embedding_input = torch.zeros(env_info.num_tasks)
+                embedding_input[env_info.env_rank] = 1
+                # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
+                embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
+                out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0), embedding_input, neuron_masks_this_task)
+            else:    
+                out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0), neuron_masks_this_task)
+            act = out["action"]
 
 
         act = act.detach().cpu().numpy()
@@ -210,7 +195,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
     @staticmethod
     def train_worker_process(cls, shared_funcs, env_info,
-        replay_buffer, shared_que,
+        replay_buffer, state_trajectory, mask_buffer, shared_que,
         start_barrier, epochs, start_epoch, task_name, shared_dict):
 
         if not RESTORE:
@@ -225,6 +210,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         env_info.env = env_info.env_cls(**env_info.env_args)
 
         norm_obs_flag = env_info.env_args["env_params"]["obs_norm"]
+        neuron_masks_this_task = mask_buffer['policy'][task_name]
 
         if norm_obs_flag:
             shared_dict[task_name] = {
@@ -260,11 +246,12 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             task_sample_index = shared_dict['task_sample_index']
 
             # print(f'env_rank: {env_info.env_rank}, task_sample_index: {task_sample_index}')
-
+            episode_state_traj = [c_ob]
             if env_info.env_rank in task_sample_index:
                 for _ in range(env_info.epoch_frames):
-                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer )
+                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, neuron_masks_this_task)
                     c_ob["ob"] = next_ob
+                    episode_state_traj.append(next_ob)
                     train_rew += reward
                     train_epoch_reward += reward
                     if done:
@@ -272,7 +259,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                         train_rew = 0
 
                 # print(f'num_steps_can_sample: {replay_buffer.num_steps_can_sample()}')
-
+            state_trajectory[task_name].append(episode_state_traj)
             if norm_obs_flag:
                 shared_dict[task_name] = {
                     "obs_mean": env_info.env._obs_mean,
@@ -427,7 +414,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             p = mp.Process(
                 target=self.__class__.train_worker_process,
                 args=( self.__class__, self.shared_funcs,
-                    self.env_info, self.replay_buffer, 
+                    self.env_info, self.replay_buffer, self.state_trajectory, self.mask_buffer,
                     self.shared_que, self.start_barrier,
                     self.train_epochs * 10000, start_epoch, task, self.shared_dict))  #*
             p.start()
