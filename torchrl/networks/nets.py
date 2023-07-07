@@ -23,22 +23,72 @@ class Net(nn.Module):
         super().__init__()
 
         self.base = base_type(activation_func=activation_func, **kwargs)
+        
         self.activation_func = activation_func
         append_input_shape = self.base.output_shape
-        self.append_fcs = []
-        for i, next_shape in enumerate(append_hidden_shapes):
-            fc = nn.Linear(append_input_shape, next_shape)
-            append_hidden_init_func(fc)
-            self.append_fcs.append(fc)
-            # set attr for pytorch to track parameters( device )
-            self.__setattr__("append_fc{}".format(i), fc)
-            append_input_shape = next_shape
+        # self.append_fcs = []
+        # for i, next_shape in enumerate(append_hidden_shapes):
+        #     fc = nn.Linear(append_input_shape, next_shape)
+        #     append_hidden_init_func(fc)
+        #     self.append_fcs.append(fc)
+        #     # set attr for pytorch to track parameters( device )
+        #     self.__setattr__("append_fc{}".format(i), fc)
+        #     append_input_shape = next_shape
 
         self.last = nn.Linear(append_input_shape, output_shape)
         net_last_init_func(self.last)
 
-    def forward(self, x):
+
+    def forward(self, x, neuron_masks):
         out = self.base(x)
+
+        # for append_fc in self.append_fcs:
+        #     out = append_fc(out)
+        #     out = self.activation_func(out)
+
+        out = self.last(out)
+        return out
+
+class MaskedNet(nn.Module):
+    def __init__(
+            self, output_shape,
+            base_type,
+            append_hidden_shapes=[],
+            append_hidden_init_func=init.basic_init,
+            net_last_init_func=init.uniform_init,
+            activation_func=F.relu,
+            **kwargs):
+
+        super().__init__()
+
+        self.base = base_type(activation_func=activation_func, **kwargs)
+        
+        """
+        print("self.base",self.base)
+        self.base MLPBase(
+            (fc0): Linear(in_features=29, out_features=400, bias=True)
+            (fc1): Linear(in_features=400, out_features=400, bias=True)
+            )
+        
+        """
+        self.activation_func = activation_func
+        append_input_shape = self.base.output_shape
+        #self.append_fcs = []
+        # for i, next_shape in enumerate(append_hidden_shapes):
+        #     fc = nn.Linear(append_input_shape, next_shape)
+        #     append_hidden_init_func(fc)
+        #     self.append_fcs.append(fc)
+        #     # set attr for pytorch to track parameters( device )
+        #     self.__setattr__("append_fc{}".format(i), fc)
+        #     append_input_shape = next_shape
+
+        self.last = nn.Linear(append_input_shape, output_shape)
+        net_last_init_func(self.last)
+
+    def forward(self, x, neuron_masks):
+        out = self.base(x)
+        print(self.base)
+        assert 1==2
 
         for append_fc in self.append_fcs:
             out = append_fc(out)
@@ -46,6 +96,9 @@ class Net(nn.Module):
 
         out = self.last(out)
         return out
+
+    def apply_neuron_masks(self, network, neuron_masks):
+        pass
 
 
 class FlattenNet(Net):

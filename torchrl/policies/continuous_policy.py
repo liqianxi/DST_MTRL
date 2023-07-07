@@ -64,6 +64,69 @@ class FixGuassianContPolicy(networks.Net):
         }
 
 
+class EmbedGuassianContPolicy(networks.MaskedNet):
+    def forward(self, x, embedding, neuron_masks):
+        x = super().forward(torch.concat(x,embedding),neuron_masks)
+
+        mean, log_std = x.chunk(2, dim=-1)
+
+        log_std = torch.clamp(log_std, LOG_SIG_MIN, LOG_SIG_MAX)
+        std = torch.exp(log_std)
+
+        return mean, std, log_std
+
+    def eval_act(self, x,embedding):
+        with torch.no_grad():
+            mean, _, _ = self.forward(x,embedding)
+        return torch.tanh(mean.squeeze(0)).detach().cpu().numpy()
+
+    def explore( self, x, embedding, neuron_masks, return_log_probs = False, return_pre_tanh = False ):
+
+        mean, std, log_std = self.forward(x, embedding, neuron_masks)
+
+        dis = TanhNormal(mean, std)
+
+        ent = dis.entropy().sum(-1, keepdim=True) 
+
+        dic = {
+            "mean": mean,
+            "log_std": log_std,
+            "ent":ent
+        }
+
+        if return_log_probs:
+            action, z = dis.rsample(return_pretanh_value=True)
+            log_prob = dis.log_prob(
+                action,
+                pre_tanh_value=z
+            )
+            log_prob = log_prob.sum(dim=-1, keepdim=True)
+            dic["pre_tanh"] = z.squeeze(0)
+            dic["log_prob"] = log_prob
+        else:
+            if return_pre_tanh:
+                action, z = dis.rsample(return_pretanh_value=True)
+                dic["pre_tanh"] = z.squeeze(0)
+            action = dis.rsample(return_pretanh_value=False)
+
+        dic["action"] = action.squeeze(0)
+        return dic
+
+    def update(self, obs, actions):
+        mean, std, log_std = self.forward(obs)
+        dis = TanhNormal(mean, std)
+
+        log_prob = dis.log_prob(actions).sum(-1, keepdim=True)
+        ent = dis.entropy().sum(-1, keepdim=True) 
+        
+        out = {
+            "mean": mean,
+            "log_std": log_std,
+            "log_prob": log_prob,
+            "ent": ent
+        }
+        return out
+
 class GuassianContPolicy(networks.Net):
     def forward(self, x):
         x = super().forward(x)
