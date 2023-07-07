@@ -52,7 +52,7 @@ class Net(nn.Module):
 class FlattenNet(Net):
     def __init__(self, output_shape, base_type, **kwargs):
         super().__init__(output_shape, base_type, **kwargs)
-        self.task_num = 50
+        self.task_num =10
 
         self.model = modules.HyperMTANPro(hyper_input_dim=self.task_num, mlp_input_dim=9 + 4, mlp_output_dim=1)
         # self.model = modules.MMoE(hyper_input_dim=self.task_num, mlp_input_dim=9 + 4, mlp_output_dim=1)
