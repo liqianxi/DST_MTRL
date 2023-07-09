@@ -39,7 +39,7 @@ from metaworld_utils.meta_env import get_meta_env
 import random
 import pickle
 
-PRUNTING_RATIO = 0.8
+
 
 RESTORE = int(os.getenv('RESTORE', '0'))
 
@@ -63,7 +63,7 @@ def convert_neuron_masks_to_weight_mask(weight, neuron_masks, mode):
 
     return full_mask
 
-def random_initialize_masks(network):
+def random_initialize_masks(network,pruning_ratio):
     neuron_mask_list = []
     all_layer_weight_shape = []
     # print(network.base.fcs) [Linear(in_features=33, out_features=400, bias=True), 
@@ -72,7 +72,7 @@ def random_initialize_masks(network):
         neurons = each_layer.bias.shape[0]
         all_layer_weight_shape.append(each_layer.weight.shape)
         neuron_mask = torch.zeros(neurons)
-        ones = int(neurons*(1-PRUNTING_RATIO))
+        ones = int(neurons*(1-pruning_ratio))
         idx = torch.randperm(neurons)[:ones]
         neuron_mask[idx] = 1
         neuron_mask_list.append(neuron_mask)
@@ -115,6 +115,7 @@ def experiment(args):
     
     """
     env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
+    pruning_ratio = params["sparse_training"]["pruning_ratio"]
 
     env.seed(args.seed)
     torch.manual_seed(args.seed)
@@ -134,6 +135,7 @@ def experiment(args):
     params['general_setting']['device'] = device
 
     params['net']['base_type']=networks.MLPBase
+
 
     import torch.multiprocessing as mp
     mp.set_start_method('spawn', force=True)
@@ -196,17 +198,18 @@ def experiment(args):
         em_input_shape=np.prod(example_embedding.shape),
         num_layers=2, ##:
         hidden_shapes=params['net']['hidden_shapes'],
-        trajectory_encoder=encoder
+        trajectory_encoder=encoder,
+        pruning_ratio=pruning_ratio
         )
 
-    obs = torch.from_numpy(env.observation_space.sample()).float()
-    obs = torch.cat([obs]*params['general_setting']["epoch_frames"]).float()
-    emb = torch.from_numpy(example_embedding).float()
+    # obs = torch.from_numpy(env.observation_space.sample()).float()
+    # obs = torch.cat([obs]*params['general_setting']["epoch_frames"]).float()
+    # emb = torch.from_numpy(example_embedding).float()
 
-    print([module for module in policy_mask_generator.modules()])
+    #print([module for module in policy_mask_generator.modules()])
     #print(obs.shape, emb.shape) # (19,) (10,)
-    mask_list = policy_mask_generator(obs,emb)
-    print("mask_list",mask_list)
+    #mask_list = policy_mask_generator(obs,emb)
+    #print("mask_list",mask_list)
     """
     [MaskGeneratorNet(
     (base): MLPBase(
@@ -232,17 +235,27 @@ def experiment(args):
     
     """
 
-    assert 1==2
-    # qf1_mask_generator = networks.MaskGeneratorNet(
-    #     input_shape=env.observation_space.shape[0] + env.action_space.shape[0],
-    #     em_input_shape=np.prod(example_embedding.shape),
-    #     output_shape=1,
-    #     **params['net'])
-    # qf2_mask_generator = networks.MaskGeneratorNet( 
-    #     input_shape=env.observation_space.shape[0] + env.action_space.shape[0],
-    #     em_input_shape=np.prod(example_embedding.shape),
-    #     output_shape=1,
-    #     **params['net'])
+
+    qf1_mask_generator = networks.MaskGeneratorNet(
+        base_type=networks.MLPBase,
+        traj_encoder_hidden_shape = params['traj_encoder']['hidden_shapes'],
+        input_shape=env.observation_space.shape[0] * params['general_setting']["epoch_frames"],
+        em_hidden_shapes=params['task_embedding']['em_hidden_shapes'],
+        em_input_shape=np.prod(example_embedding.shape),
+        num_layers=2, ##:
+        hidden_shapes=params['net']['hidden_shapes'],
+        trajectory_encoder=encoder,
+        pruning_ratio=pruning_ratio)
+    qf2_mask_generator = networks.MaskGeneratorNet(
+        base_type=networks.MLPBase,
+        traj_encoder_hidden_shape = params['traj_encoder']['hidden_shapes'],
+        input_shape=env.observation_space.shape[0] * params['general_setting']["epoch_frames"],
+        em_hidden_shapes=params['task_embedding']['em_hidden_shapes'],
+        em_input_shape=np.prod(example_embedding.shape),
+        num_layers=2, ##:
+        hidden_shapes=params['net']['hidden_shapes'],
+        trajectory_encoder=encoder,
+        pruning_ratio=pruning_ratio)
     
     print("mask generator finish initialization")
     if args.qf1_snap is not None:
@@ -285,7 +298,7 @@ def experiment(args):
             elif net_type == "Policy":
                 net = pf
 
-            weight_mask, bias_mask = random_initialize_masks(net)
+            weight_mask, bias_mask = random_initialize_masks(net,pruning_ratio)
             mask_buffer[net_type][each_task] = [weight_mask, bias_mask]
 
 
@@ -311,8 +324,7 @@ def experiment(args):
     epochs = params['general_setting']['pretrain_epochs'] + \
         params['general_setting']['num_epochs']
 
-    print(env.action_space)
-    print(env.observation_space)
+
     params['general_setting']['collector'] = AsyncMultiTaskParallelCollectorUniform(
         env=env, pf=pf, replay_buffer=replay_buffer,state_trajectory=state_trajectory,
         mask_buffer=mask_buffer["Policy"],
@@ -337,9 +349,9 @@ def experiment(args):
         pf = pf,
         qf1 = qf1,
         qf2 = qf2,
-        mask_generators = {"policy_mask_generator": [],
-                           "qf1_mask_generator": [],
-                           "qf2_mask_generator": []},
+        mask_generators = {"policy_mask_generator": policy_mask_generator,
+                           "qf1_mask_generator": qf1_mask_generator,
+                           "qf2_mask_generator": qf2_mask_generator},
         task_nums=env.num_tasks,
         **params['sac'],
         **params['general_setting']
