@@ -52,7 +52,7 @@ class OffRLAlgo(RLAlgo):
             infos = self.update( batch )
             self.logger.add_update_info( infos )
 
-    def pretrain(self):
+    def pretrain(self, task_amount):
         total_frames = 0
 
         for pretrain_epoch in range(self.pretrain_epochs):
@@ -60,7 +60,7 @@ class OffRLAlgo(RLAlgo):
 
             self.start_epoch()
             
-            training_epoch_info =  self.collector.train_one_epoch(list(range(10)))  #*
+            training_epoch_info =  self.collector.train_one_epoch(list(range(task_amount)))  #*
             for reward in training_epoch_info["train_rewards"]:
                 self.training_episode_rewards.append(reward)
 

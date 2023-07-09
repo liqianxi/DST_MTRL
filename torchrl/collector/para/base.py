@@ -28,6 +28,8 @@ class ParallelCollector(BaseCollector):
             env, pf, replay_buffer,
             **kwargs)
 
+        self.task_amount = env.num_tasks
+        assert self.task_amount in [10,50],"wrong task amount"
         self.env_cls  = env_cls
         self.env_args = env_args
         self.state_trajectory = state_trajectory

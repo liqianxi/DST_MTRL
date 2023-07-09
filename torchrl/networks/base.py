@@ -32,6 +32,7 @@ class MLPBase(nn.Module):
         out = x
         for fc in self.fcs[:-1]:
             out = fc(out)
+
             out = self.activation_func(out)
         out = self.fcs[-1](out)
         out = self.last_activation_func(out)

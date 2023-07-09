@@ -51,28 +51,25 @@ os.environ['VECLIB_MAXIMUM_THREADS'] = str(CPU_NUM)
 os.environ['NUMEXPR_NUM_THREADS'] = str(CPU_NUM)
 torch.set_num_threads(CPU_NUM)
 
-def convert_neuron_masks_to_weight_mask(weight, neuron_masks, is_row, is_col):
-    assert is_row or is_col, "Must specify an operation"
+def convert_neuron_masks_to_weight_mask(weight, neuron_masks, mode):
+    assert mode in ["row","col"], "Must specify an operation"
     full_mask = weight
 
-    if is_row:
+    if mode == "row":
         full_mask = torch.mul(full_mask.T, neuron_masks).T
 
-    if is_col: 
+    else: 
         full_mask = torch.mul(full_mask, neuron_masks)
 
     return full_mask
 
-
-
-
-
 def random_initialize_masks(network):
-  
     neuron_mask_list = []
     all_layer_weight_shape = []
-    for each_layer in network.base:
-        neurons = each_layer.weight.shape[0]
+    # print(network.base.fcs) [Linear(in_features=33, out_features=400, bias=True), 
+    # Linear(in_features=400, out_features=400, bias=True)]
+    for each_layer in network.base.fcs:
+        neurons = each_layer.bias.shape[0]
         all_layer_weight_shape.append(each_layer.weight.shape)
         neuron_mask = torch.zeros(neurons)
         ones = int(neurons*(1-PRUNTING_RATIO))
@@ -84,14 +81,25 @@ def random_initialize_masks(network):
 
     weight_array = [torch.ones(i) for i in all_layer_weight_shape]
 
-    for idx in len(neuron_mask_list):
-        pre_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx], neuron_mask_list[idx], is_row=1, is_col=0)
+
+    for idx in range(len(neuron_mask_list)):
+        pre_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx], 
+                                                               neuron_mask_list[idx], 
+                                                               mode="row")
         weight_array[idx] = pre_layer_weight
-        post_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx+1], neuron_mask_list[idx], is_row=0, is_col=1)
+
+        post_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx+1], 
+                                                                neuron_mask_list[idx], 
+                                                                mode="col")
         weight_array[idx+1] = post_layer_weight
 
-    
-    return weight_array
+    bias_mask_array = neuron_mask_list
+
+    # So, for this task, mask out some neurons from the weight and bias tensors.
+    # The mask of tensor is equivalent to the mask of neurons.
+    # The mask of weight is applying neuron mask along rows or columns of the weight matrix, depends
+    # on which matrix this neuron is affecting.
+    return weight_array, bias_mask_array
 
 
 
@@ -140,13 +148,19 @@ def experiment(args):
     # The policy network 
     # Input: S,onehot(task)
 
+    # print(env.observation_space.shape)
+    # print(env.action_space.shape)
+    # (19,)
+    # (4,)
+
     # TODO: allow random goal.
     pf = policies.EmbedGuassianContPolicy(
         input_shape = env.observation_space.shape[0]+embedding_shape, 
         output_shape = 2 * env.action_space.shape[0],
-        **params['net'] )
+        **params['net'] 
+        )
 
-    assert 1==2
+    print("finish policy net init")
 
     if args.pf_snap is not None:
         pf.load_state_dict(torch.load(args.pf_snap, map_location='cpu'))
@@ -163,27 +177,74 @@ def experiment(args):
         output_shape = 1,
         **params['net'] )
     
+
+    # Initialize VAE model.
+    encoder = networks.TrajectoryEncoder(env.observation_space.shape[0], params['traj_encoder']["latent_size"])
+
     # Initialize Mask generators.
     # For Policy net, Q1, Q2, we need 3 mask generators.
     # We don't need separate mask generator for target networks, since the
     # target nets should follow the gradients of Q nets, but with discount factor.
     # We use the same mask with their corresponding Q networks.
+
+    #print(params['net']["hidden_shapes"])
     policy_mask_generator = networks.MaskGeneratorNet(
-        input_shape=env.observation_space.shape[0] + env.action_space.shape[0],
+        base_type=networks.MLPBase,
+        traj_encoder_hidden_shape = params['traj_encoder']['hidden_shapes'],
+        input_shape=env.observation_space.shape[0] * params['general_setting']["epoch_frames"],
+        em_hidden_shapes=params['task_embedding']['em_hidden_shapes'],
         em_input_shape=np.prod(example_embedding.shape),
-        output_shape=1,
-        **params['net'])
-    qf1_mask_generator = networks.MaskGeneratorNet(
-        input_shape=env.observation_space.shape[0] + env.action_space.shape[0],
-        em_input_shape=np.prod(example_embedding.shape),
-        output_shape=1,
-        **params['net'])
-    qf2_mask_generator = networks.MaskGeneratorNet( 
-        input_shape=env.observation_space.shape[0] + env.action_space.shape[0],
-        em_input_shape=np.prod(example_embedding.shape),
-        output_shape=1,
-        **params['net'])
+        num_layers=2, ##:
+        hidden_shapes=params['net']['hidden_shapes'],
+        trajectory_encoder=encoder
+        )
+
+    obs = torch.from_numpy(env.observation_space.sample()).float()
+    obs = torch.cat([obs]*params['general_setting']["epoch_frames"]).float()
+    emb = torch.from_numpy(example_embedding).float()
+
+    print([module for module in policy_mask_generator.modules()])
+    #print(obs.shape, emb.shape) # (19,) (10,)
+    mask_list = policy_mask_generator(obs,emb)
+    print("mask_list",mask_list)
+    """
+    [MaskGeneratorNet(
+    (base): MLPBase(
+        (fc0): Linear(in_features=3800, out_features=400, bias=True)
+        (fc1): Linear(in_features=400, out_features=400, bias=True)
+    )
+    (em_base): MLPBase(
+        (fc0): Linear(in_features=10, out_features=400, bias=True)
+        (fc1): Linear(in_features=400, out_features=400, bias=True)
+    )
+    (gating_weight_fc_0): Linear(in_features=400, out_features=400, bias=True)
+    (gating_weight_cond_last): Linear(in_features=400, out_features=400, bias=True)
+    (gating_weight_last): Linear(in_features=400, out_features=400, bias=True)
+    ), MLPBase(
+    (fc0): Linear(in_features=3800, out_features=400, bias=True)
+    (fc1): Linear(in_features=400, out_features=400, bias=True)
+    ), Linear(in_features=3800, out_features=400, bias=True), Linear(in_features=400, out_features=400, bias=True), MLPBase(
+    (fc0): Linear(in_features=10, out_features=400, bias=True)
+    (fc1): Linear(in_features=400, out_features=400, bias=True)
+    ), Linear(in_features=10, out_features=400, bias=True), Linear(in_features=400, out_features=400, bias=True), Linear(in_features=400, out_features=400, bias=True), Linear(in_features=400, out_features=400, bias=True), Linear(in_features=400, out_features=400, bias=True)]
     
+    
+    
+    """
+
+    assert 1==2
+    # qf1_mask_generator = networks.MaskGeneratorNet(
+    #     input_shape=env.observation_space.shape[0] + env.action_space.shape[0],
+    #     em_input_shape=np.prod(example_embedding.shape),
+    #     output_shape=1,
+    #     **params['net'])
+    # qf2_mask_generator = networks.MaskGeneratorNet( 
+    #     input_shape=env.observation_space.shape[0] + env.action_space.shape[0],
+    #     em_input_shape=np.prod(example_embedding.shape),
+    #     output_shape=1,
+    #     **params['net'])
+    
+    print("mask generator finish initialization")
     if args.qf1_snap is not None:
         qf1.load_state_dict(torch.load(args.qf2_snap, map_location='cpu'))
     if args.qf2_snap is not None:
@@ -209,7 +270,10 @@ def experiment(args):
     for each_task_name in cls_dicts.keys():
         state_trajectory[each_task_name] = []
 
-    # Mask buffer, stores the current masks for each layer, for each task and for each network type(Q1,Q2,policy).
+    # Mask buffer, stores the current masks for each layer, 
+    # for each task and for each network type(Q1, Q2, policy).
+    # Initialize the binary mask for all the weights and bias, make sure
+    # follow the pruning ratio requirement.
     mask_buffer = {"Q1":{}, "Q2":{}, "Policy":{}}
     for net_type in mask_buffer.keys():
         mask_buffer[net_type] = copy.deepcopy(state_trajectory)
@@ -220,12 +284,20 @@ def experiment(args):
                 net = qf2 
             elif net_type == "Policy":
                 net = pf
-            mask_array = random_initialize_masks(net)
-            mask_buffer[net_type][each_task] = mask_array
+
+            weight_mask, bias_mask = random_initialize_masks(net)
+            mask_buffer[net_type][each_task] = [weight_mask, bias_mask]
 
 
     # Now we have a mask buffer like this:
-    # {"Q1":{"task1":[[layer1_Weights],[layer2_weights]..],..."task50":[]},"Q2":{...},"Policy":{...}}
+    # {"Q1":{"task1":[
+    #                  [[layer1_Weights],[layer2_weights]..],
+    #                  [[layer1_bias],[layer2_bias]..],  
+    #
+    #                ],
+    #
+    # 
+    # ,..."task50":[]},"Q2":{...},"Policy":{...}}
 
 
     if RESTORE:
@@ -243,7 +315,7 @@ def experiment(args):
     print(env.observation_space)
     params['general_setting']['collector'] = AsyncMultiTaskParallelCollectorUniform(
         env=env, pf=pf, replay_buffer=replay_buffer,state_trajectory=state_trajectory,
-        mask_buffer=mask_buffer,
+        mask_buffer=mask_buffer["Policy"],
         env_cls = cls_dicts, env_args = [params["env"], cls_args, params["meta_env"]],
         device=device,
         reset_idx=True,
@@ -255,18 +327,24 @@ def experiment(args):
     )
     params['general_setting']['batch_size'] = int(params['general_setting']['batch_size'])
     params['general_setting']['save_dir'] = osp.join(logger.work_dir,"model")
+    """
+            mask_generators = {"policy_mask_generator": policy_mask_generator,
+                           "qf1_mask_generator": qf1_mask_generator,
+                           "qf2_mask_generator": qf2_mask_generator},
+    """
+    assert 1==2
     agent = MUST_SAC(
         pf = pf,
         qf1 = qf1,
         qf2 = qf2,
-        mask_generators = {"policy_mask_generator": policy_mask_generator,
-                           "qf1_mask_generator": qf1_mask_generator,
-                           "qf2_mask_generator": qf2_mask_generator},
+        mask_generators = {"policy_mask_generator": [],
+                           "qf1_mask_generator": [],
+                           "qf2_mask_generator": []},
         task_nums=env.num_tasks,
         **params['sac'],
         **params['general_setting']
     )
-    agent.train()
+    agent.train(env.num_tasks)
 
 
 if __name__ == "__main__":
