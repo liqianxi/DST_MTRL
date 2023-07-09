@@ -75,7 +75,8 @@ class SharedBaseReplayBuffer(BaseReplayBuffer):
             self._size[worker_rank] = self._size[worker_rank] + 1
 
     #*
-    def random_batch(self, batch_size, sample_key, task_sample_index, reshape=True):
+    def random_batch(self, batch_size, sample_key, task_nums, task_sample_index, reshape=True):
+        assert task_nums in [10,50]
         assert batch_size % self.worker_nums == 0, \
             "batch size should be dividable by worker_nums"
         # batch_size //= self.worker_nums
@@ -85,12 +86,12 @@ class SharedBaseReplayBuffer(BaseReplayBuffer):
         return_dict = {}
 
         random_list = []
-        for i in range(10):
+        for i in range(task_nums):
             random_list.append(np.random.randint(0, self._size[i], batch_size))
 
         for key in sample_key:
             # return_dict[key] = self.__getattribute__("_"+key)[:, :, :][indices]
-            return_dict[key] = np.concatenate([np.expand_dims(self.__getattribute__("_"+key)[:, i, :][random_list[i]], 1) for i in range(10)], axis=1)
+            return_dict[key] = np.concatenate([np.expand_dims(self.__getattribute__("_"+key)[:, i, :][random_list[i]], 1) for i in range(task_nums)], axis=1)
 
             if reshape:
                 return_dict[key] = return_dict[key].reshape(

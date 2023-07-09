@@ -65,8 +65,8 @@ class FixGuassianContPolicy(networks.Net):
 
 
 class EmbedGuassianContPolicy(networks.MaskedNet):
-    def forward(self, x, embedding, neuron_masks):
-        x = super().forward(torch.concat(x,embedding),neuron_masks)
+    def forward(self, x, embedding):
+        x = super().forward(torch.concat(x,embedding))
 
         mean, log_std = x.chunk(2, dim=-1)
 
@@ -80,9 +80,9 @@ class EmbedGuassianContPolicy(networks.MaskedNet):
             mean, _, _ = self.forward(x,embedding)
         return torch.tanh(mean.squeeze(0)).detach().cpu().numpy()
 
-    def explore( self, x, embedding, neuron_masks, return_log_probs = False, return_pre_tanh = False ):
+    def explore( self, x, embedding, return_log_probs = False, return_pre_tanh = False ):
 
-        mean, std, log_std = self.forward(x, embedding, neuron_masks)
+        mean, std, log_std = self.forward(x, embedding)
 
         dis = TanhNormal(mean, std)
 
