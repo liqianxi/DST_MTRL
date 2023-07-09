@@ -380,6 +380,7 @@ class MaskGeneratorNet(nn.Module):
             traj_encoder_hidden_shape,
             num_layers,
             trajectory_encoder,
+            pruning_ratio,
             module_hidden_init_func = init.basic_init,
             last_init_func = init.uniform_init,
             activation_func = F.relu):
@@ -397,6 +398,7 @@ class MaskGeneratorNet(nn.Module):
         #                 ).float()
 
         self.base = trajectory_encoder
+        self.pruning_ratio = pruning_ratio
         
         #Note: Embedding base is the network part that converts task onehot into
         # a D-dim vector.
@@ -450,6 +452,16 @@ class MaskGeneratorNet(nn.Module):
         self.gating_weight_last = nn.Linear(gating_input_shape, self.layer_neurons[-1])
         last_init_func( self.gating_weight_last )
 
+    def keep_topk(self, tensor, pruning_ratio,neurons):
+        # Keep how many neurons at each layer.
+        k = int(neurons * (1 - pruning_ratio))
+
+        # Pick the highest k values. Set the rest to zero.
+        values, indices = torch.topk(tensor, k)
+        output = torch.zeros_like(tensor)
+        output.scatter_(dim=1, index=indices, src=values)
+        return output
+
     def forward(self, x, embedding_input):
         # Here x is a trajectory of shape [traj_length, dim_of_each_state]
         # Return weights for visualization
@@ -464,13 +476,20 @@ class MaskGeneratorNet(nn.Module):
         embedding = embedding * out
 
         #weight_shape = torch.Size([self.layer_neurons])
-        task_masks = []
+        task_probs_masks = []
 
         # Next 3 lines output p^{l=1}
+        # Attention:
+        # Once we have the output feature, we first pick top k based on the pruning ratio
+        # the for the rest non-zero values, use softmax to convert them between 0 and 1.
         raw_weight = self.gating_weight_fc_0(self.activation_func(embedding))  
-        raw_weight = raw_weight.view(self.layer_neurons[0])
+        layer_neurons = self.layer_neurons[0]
+        raw_weight = raw_weight.view(layer_neurons)
+
+        pruned_mask = self.keep_topk(raw_weight, self.pruning_ratio, layer_neurons)
         softmax_weight = F.softmax(raw_weight, dim=-1)
-        task_masks.append(softmax_weight)
+        
+        task_probs_masks.append(softmax_weight)
 
         idx = 1
         for gating_weight_fc, gating_weight_cond_fc in zip(self.gating_weight_fcs, self.gating_weight_cond_fcs):
@@ -482,12 +501,15 @@ class MaskGeneratorNet(nn.Module):
 
             # Next, p^{l+1} = W_d^l(cond), generate raw weights.
             raw_weight = gating_weight_fc(cond) # W_down
-            raw_weight = raw_weight.view(self.layer_neurons[idx])
+            layer_neurons = self.layer_neurons[idx]
+            raw_weight = raw_weight.view(layer_neurons)
             idx +=1
 
-            # Here, shape the task_masks to [0,1]
-            softmax_weight = F.softmax(raw_weight, dim=-1)
-            task_masks.append(softmax_weight)
+            pruned_mask = self.keep_topk(raw_weight, self.pruning_ratio, layer_neurons)
+            # Here, shape the task_probs_masks to [0,1]
+            softmax_weight = F.softmax(pruned_mask, dim=-1)
+            
+            task_probs_masks.append(softmax_weight)
         
         #print(softmax_weight)
 
@@ -499,9 +521,15 @@ class MaskGeneratorNet(nn.Module):
         raw_last_weight = self.gating_weight_last(cond) 
 
         # Change the prob to [0,1].
-        last_weight = F.softmax(raw_last_weight, dim = -1)
-        task_masks.append(last_weight)
+        # TODO: need to verify the correstness of this line.
+        pruned_mask = self.keep_topk(raw_last_weight, self.pruning_ratio,  self.layer_neurons[idx])
+        last_weight = F.softmax(pruned_mask, dim = -1)
+        task_probs_masks.append(last_weight)
 
-        #single_neuron_mask_matrix = torch.cat(task_masks,0)
+        task_binary_masks = []
+        #single_neuron_mask_matrix = torch.cat(task_probs_masks,0)
+        for each_task_probs_mask in task_probs_masks:
+            task_binary_masks.append(torch.where(each_task_probs_mask==0,each_task_probs_mask,torch.ones(each_task_probs_mask.shape)))
 
-        return task_masks
+        
+        return task_probs_masks, task_binary_masks
