@@ -38,9 +38,25 @@ class Net(nn.Module):
         self.last = nn.Linear(append_input_shape, output_shape)
         net_last_init_func(self.last)
 
+    def apply_mask(self, task_masks):
+        weight_mask = task_masks[0]
+        bias_mask = task_masks[1]
+        assert len(weight_mask) == len(self.base) + len(self.last),"incorrect weight mask number"
+        assert len(bias_mask) == len(self.base),"incorrect bias mask number"
 
-    def forward(self, x, neuron_masks):
+        # Apply element-wise product to each weight and bias of the base neural net.
+        for layer_idx in len(self.base):
+            self.base[layer_idx].weight = torch.mul(self.base[layer_idx].weight, weight_mask[layer_idx])
+            self.base[layer_idx].bias = torch.mul(self.base[layer_idx].bias, bias_mask[layer_idx])
+            
+        self.last.weight = torch.mul(self.last.weight,weight_mask[-1])
+        
+
+
+    def forward(self, x, task_masks):
+
         out = self.base(x)
+
 
         # for append_fc in self.append_fcs:
         #     out = append_fc(out)
@@ -53,8 +69,6 @@ class MaskedNet(nn.Module):
     def __init__(
             self, output_shape,
             base_type,
-            append_hidden_shapes=[],
-            append_hidden_init_func=init.basic_init,
             net_last_init_func=init.uniform_init,
             activation_func=F.relu,
             **kwargs):
@@ -85,7 +99,7 @@ class MaskedNet(nn.Module):
         self.last = nn.Linear(append_input_shape, output_shape)
         net_last_init_func(self.last)
 
-    def forward(self, x, neuron_masks):
+    def forward(self, x):
         out = self.base(x)
         print(self.base)
         assert 1==2
@@ -97,8 +111,6 @@ class MaskedNet(nn.Module):
         out = self.last(out)
         return out
 
-    def apply_neuron_masks(self, network, neuron_masks):
-        pass
 
 
 class FlattenNet(Net):
@@ -361,28 +373,30 @@ class FlattenBootstrappedNet(BootstrappedNet):
         return super().forward(out, idx)
 
 class MaskGeneratorNet(nn.Module):
-    def __init__(self, output_shape,
+    def __init__(self,
             base_type, em_input_shape, input_shape,
             em_hidden_shapes,
             hidden_shapes,
+            traj_encoder_hidden_shape,
             num_layers,
-            module_hidden,
+            trajectory_encoder,
             module_hidden_init_func = init.basic_init,
             last_init_func = init.uniform_init,
-            activation_func = F.relu,
-             **kwargs ):
+            activation_func = F.relu):
 
         super().__init__()
 
         #Note: Embedding base is the network part that converts a full trajectory into
         # a D-dim vector.
         #TODO: Shall be replaced by an encoder.
-        self.base = base_type( 
-                        last_activation_func = null_activation,
-                        input_shape = input_shape,
-                        activation_func = activation_func,
-                        hidden_shapes = hidden_shapes,
-                        **kwargs )
+        # self.base = base_type( 
+        #                 last_activation_func = null_activation,
+        #                 input_shape = input_shape,
+        #                 activation_func = activation_func,
+        #                 hidden_shapes = traj_encoder_hidden_shape
+        #                 ).float()
+
+        self.base = trajectory_encoder
         
         #Note: Embedding base is the network part that converts task onehot into
         # a D-dim vector.
@@ -390,8 +404,7 @@ class MaskGeneratorNet(nn.Module):
                         last_activation_func = null_activation,
                         input_shape = em_input_shape,
                         activation_func = activation_func,
-                        hidden_shapes = em_hidden_shapes,
-                        **kwargs )
+                        hidden_shapes = em_hidden_shapes).float()
 
         self.activation_func = activation_func
 
@@ -405,12 +418,12 @@ class MaskGeneratorNet(nn.Module):
         self.gating_weight_fcs = []
         self.gating_weight_cond_fcs = []
 
-        self.gating_weight_fc_0 = nn.Linear(gating_input_shape, layer_neurons) # D X neurons
+        self.gating_weight_fc_0 = nn.Linear(gating_input_shape, self.layer_neurons[0]) # D X neurons
         last_init_func( self.gating_weight_fc_0)
         
         for layer_idx in range(num_layers-2):
             # W_up (layer_neurons x D)
-            gating_weight_cond_fc = nn.Linear(layer_neurons,
+            gating_weight_cond_fc = nn.Linear(self.layer_neurons[layer_idx+1],
                                               gating_input_shape)
 
             module_hidden_init_func(gating_weight_cond_fc)
@@ -420,7 +433,7 @@ class MaskGeneratorNet(nn.Module):
             self.gating_weight_cond_fcs.append(gating_weight_cond_fc)
             
             #W_down (D X layer_neurons)
-            gating_weight_fc = nn.Linear(gating_input_shape, layer_neurons)
+            gating_weight_fc = nn.Linear(gating_input_shape, self.layer_neurons[layer_idx+1])
             last_init_func(gating_weight_fc)
 
             self.__setattr__("gating_weight_fc_{}".format(layer_idx+1),
@@ -429,15 +442,16 @@ class MaskGeneratorNet(nn.Module):
             self.gating_weight_fcs.append(gating_weight_fc)
 
         # W_up (layer_neurons x D)
-        self.gating_weight_cond_last = nn.Linear(layer_neurons,
+        self.gating_weight_cond_last = nn.Linear(self.layer_neurons[-1],
                                                  gating_input_shape) 
         module_hidden_init_func(self.gating_weight_cond_last)
 
         #W_down (D X layer_neurons)
-        self.gating_weight_last = nn.Linear(gating_input_shape, layer_neurons)
+        self.gating_weight_last = nn.Linear(gating_input_shape, self.layer_neurons[-1])
         last_init_func( self.gating_weight_last )
 
-    def forward(self, x, embedding_input, return_weights = False):
+    def forward(self, x, embedding_input):
+        # Here x is a trajectory of shape [traj_length, dim_of_each_state]
         # Return weights for visualization
 
         # Trajectory encoder embedding
@@ -449,33 +463,35 @@ class MaskGeneratorNet(nn.Module):
         # Element wise multi
         embedding = embedding * out
 
-        weight_shape = embedding.shape[:-1] + torch.Size([layer_neurons])
-        neuron_masks = []
+        #weight_shape = torch.Size([self.layer_neurons])
+        task_masks = []
 
         # Next 3 lines output p^{l=1}
         raw_weight = self.gating_weight_fc_0(self.activation_func(embedding))  
-        raw_weight = raw_weight.view(weight_shape)
+        raw_weight = raw_weight.view(self.layer_neurons[0])
         softmax_weight = F.softmax(raw_weight, dim=-1)
-        neuron_masks.append(softmax_weight)
+        task_masks.append(softmax_weight)
 
+        idx = 1
         for gating_weight_fc, gating_weight_cond_fc in zip(self.gating_weight_fcs, self.gating_weight_cond_fcs):
 
             # Next 6 lines will recover the dimension of the features to D X 1
-            cond = torch.cat(softmax_weight, dim=-1)
-            cond = gating_weight_cond_fc(cond)# W_up (neurons x D) * p^l
+            cond = gating_weight_cond_fc(softmax_weight)# W_up (neurons x D) * p^l
             cond = cond * embedding # (W_up * p^l) * embedding
             cond = self.activation_func(cond) #RELU (cond)
 
             # Next, p^{l+1} = W_d^l(cond), generate raw weights.
             raw_weight = gating_weight_fc(cond) # W_down
-            raw_weight = raw_weight.view(weight_shape)
+            raw_weight = raw_weight.view(self.layer_neurons[idx])
+            idx +=1
 
-            # Here, shape the neuron_masks to [0,1]
+            # Here, shape the task_masks to [0,1]
             softmax_weight = F.softmax(raw_weight, dim=-1)
-            neuron_masks.append(softmax_weight)
+            task_masks.append(softmax_weight)
         
-        cond = torch.cat(softmax_weight, dim=-1)
-        cond = self.gating_weight_cond_last(cond)  # W_up (neurons x D) * p^l
+        #print(softmax_weight)
+
+        cond = self.gating_weight_cond_last(softmax_weight)  # W_up (neurons x D) * p^l
         cond = cond * embedding # (W_up * p^l) * embedding
         cond = self.activation_func(cond)  #RELU (cond)
 
@@ -484,8 +500,8 @@ class MaskGeneratorNet(nn.Module):
 
         # Change the prob to [0,1].
         last_weight = F.softmax(raw_last_weight, dim = -1)
-        neuron_masks.append(last_weight)
+        task_masks.append(last_weight)
 
-        single_neuron_mask_matrix = torch.cat(neuron_masks,0)
+        #single_neuron_mask_matrix = torch.cat(task_masks,0)
 
-        return single_neuron_mask_matrix
+        return task_masks

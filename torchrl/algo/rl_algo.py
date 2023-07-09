@@ -112,7 +112,7 @@ class RLAlgo():
         with open(osp.join(prefix, "replay_buffer.pkl"), 'wb') as f:
             pickle.dump(self.replay_buffer, f)
 
-    def train(self):
+    def train(self, task_amount):
         global EPOCH
 
         if RESTORE:
@@ -143,7 +143,7 @@ class RLAlgo():
         #         dir='./log',
         #     )
 
-        self.pretrain()
+        self.pretrain(task_amount)
 
         total_frames = 0
         if hasattr(self, "pretrain_frames"):
@@ -151,7 +151,7 @@ class RLAlgo():
 
         #*
         self.start_epoch()
-        task_scheduler = TaskScheduler(num_tasks=10, task_sample_num=TASK_SAMPLE_NUM)
+        task_scheduler = TaskScheduler(num_tasks=task_amount, task_sample_num=TASK_SAMPLE_NUM)
 
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
             log_dict = {}

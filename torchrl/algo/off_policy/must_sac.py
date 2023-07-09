@@ -298,6 +298,7 @@ class MUST_SAC(TwinSACQ):
         for _ in range(self.opt_times):
             batch = self.replay_buffer.random_batch(self.batch_size,
                                                     self.sample_key,
+                                                    self.task_nums,
                                                     task_sample_index=task_sample_index,
                                                     reshape=False)
             infos = self.update(batch, task_sample_index, task_scheduler)
