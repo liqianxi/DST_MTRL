@@ -21,6 +21,11 @@
         "hidden_shapes": [256,128],
         "latent_size": 128
     },
+    "sparse_training":{
+        "pruning_ratio":0.8
+
+    }
+    ,
     "general_setting": {
         "discount" : 0.99,
         "pretrain_epochs" : 20,
