@@ -76,7 +76,8 @@ class MaskedNet(nn.Module):
         super().__init__()
 
         self.base = base_type(activation_func=activation_func, **kwargs)
-        
+        # print("self.base",self.base)
+        # print("self.base fcs",self.base.fcs)
         """
         print("self.base",self.base)
         self.base MLPBase(
@@ -99,16 +100,16 @@ class MaskedNet(nn.Module):
         self.last = nn.Linear(append_input_shape, output_shape)
         net_last_init_func(self.last)
 
-    def forward(self, x):
-        out = self.base(x)
-        print(self.base)
-        assert 1==2
+    def forward(self, x, neuron_masks):
+        out = None
+        mask_out = x
 
-        for append_fc in self.append_fcs:
-            out = append_fc(out)
-            out = self.activation_func(out)
+        for idx, layer in enumerate(self.base.fcs):
+            out = layer(mask_out)
+            mask_out = out * neuron_masks[idx]
+            mask_out = self.activation_func(mask_out)
 
-        out = self.last(out)
+        out = self.last(mask_out)
         return out
 
 
@@ -397,7 +398,7 @@ class MaskGeneratorNet(nn.Module):
         #                 hidden_shapes = traj_encoder_hidden_shape
         #                 ).float()
 
-        self.base = trajectory_encoder
+        self.base = trajectory_encoder.encoder_lstm
         self.pruning_ratio = pruning_ratio
         
         #Note: Embedding base is the network part that converts task onehot into
@@ -413,8 +414,8 @@ class MaskGeneratorNet(nn.Module):
         self.num_layers = num_layers
         self.layer_neurons = hidden_shapes
 
-        assert self.em_base.output_shape == self.base.output_shape, \
-            "embedding should has the same dimension with base output for gated" 
+        # assert self.em_base.output_shape == self.base.output_shape, \
+        #     "embedding should has the same dimension with base output for gated" 
         gating_input_shape = self.em_base.output_shape # gating_input_shape: D in paper
 
         self.gating_weight_fcs = []

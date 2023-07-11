@@ -17,6 +17,7 @@ class MUST_SAC(TwinSACQ):
                  temp_reweight=False,
                  grad_clip=True,
                  **kwargs):
+
         super().__init__(**kwargs)
 
         self.task_nums = task_nums
@@ -36,11 +37,11 @@ class MUST_SAC(TwinSACQ):
         self.idx_flag = isinstance(self.pf, policies.MultiHeadGuassianContPolicy)
 
         self.temp_reweight = temp_reweight
-        if self.pf_flag:
-            self.sample_key.append("embedding_inputs")
+
+        self.sample_key.append("embedding_inputs")
         self.grad_clip = grad_clip
 
-    def update(self, batch, task_sample_index, task_scheduler):
+    def update(self, batch, task_sample_index, task_scheduler, mask_buffer):
         self.training_update_num += 1
 
         obs = batch['obs']
@@ -73,16 +74,16 @@ class MUST_SAC(TwinSACQ):
         rewards = torch.cat([rewards[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         terminals = torch.cat([terminals[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
 
-        if self.pf_flag:
-            embedding_inputs = batch["embedding_inputs"]
-            embedding_inputs = torch.Tensor(embedding_inputs).to(self.device)
-            embedding_inputs = torch.cat([embedding_inputs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
+        embedding_inputs = batch["embedding_inputs"]
+        embedding_inputs = torch.Tensor(embedding_inputs).to(self.device)
+        embedding_inputs = torch.cat([embedding_inputs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
 
-        if self.idx_flag:
-            task_idx    = batch['task_idxs']
-            task_idx    = torch.Tensor(task_idx).to( self.device ).long()
-            task_idx = torch.cat([task_idx[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
 
+        task_idx = batch['task_idxs']
+        task_idx = torch.Tensor(task_idx).to( self.device ).long()
+        task_idx = torch.cat([task_idx[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
+        print("task_idx",task_idx.shape) #task_idx torch.Size([1280, 1])
+        # Here task idx: 0000000... 111111.. ...999999
         # if self.idx_flag:
         #     task_idx    = torch.Tensor(task_idx).to( self.device ).long()
 
@@ -93,15 +94,10 @@ class MUST_SAC(TwinSACQ):
         """
         Policy operations.
         """
-        if self.idx_flag:
-            sample_info = self.pf.explore(obs, task_idx,
-                                        return_log_probs=True)
-        else:
-            if self.pf_flag:
-                sample_info = self.pf.explore(obs, embedding_inputs,
-                                            return_log_probs=True)
-            else:
-                sample_info = self.pf.explore(obs, return_log_probs=True)
+        assert 1==2
+        sample_info = self.pf.explore(obs, embedding_inputs, neuron_masks=None,
+                                    return_log_probs=True)
+
 
         mean = sample_info["mean"]
         log_std = sample_info["log_std"]
@@ -152,36 +148,18 @@ class MUST_SAC(TwinSACQ):
             alpha_loss = 0
 
         with torch.no_grad():
-            if self.idx_flag:
-                target_sample_info = self.pf.explore(next_obs,
-                                                    task_idx,
+            target_sample_info = self.pf.explore(next_obs,
+                                                    embedding_inputs,
                                                     return_log_probs=True)
-            else:
-                if self.pf_flag:
-                    target_sample_info = self.pf.explore(next_obs,
-                                                         embedding_inputs,
-                                                         return_log_probs=True)
-                else:
-                    target_sample_info = self.pf.explore(next_obs,
-                                                        return_log_probs=True)
 
             target_actions = target_sample_info["action"]
             target_log_probs = target_sample_info["log_prob"]
 
-            if self.idx_flag:
-                target_q1_pred = self.target_qf1([next_obs, target_actions],
-                                                 task_idx)
-                target_q2_pred = self.target_qf2([next_obs, target_actions],
-                                                 task_idx)
-            else:
-                if self.pf_flag:
-                    target_q1_pred = self.target_qf1([next_obs, target_actions],
-                                                    embedding_inputs)
-                    target_q2_pred = self.target_qf2([next_obs, target_actions],
-                                                    embedding_inputs)
-                else:
-                    target_q1_pred = self.target_qf1([next_obs, target_actions])
-                    target_q2_pred = self.target_qf2([next_obs, target_actions])
+            target_q1_pred = self.target_qf1([next_obs, target_actions],
+                                            embedding_inputs)
+            target_q2_pred = self.target_qf2([next_obs, target_actions],
+                                            embedding_inputs)
+
 
             min_target_q = torch.min(target_q1_pred, target_q2_pred)
             target_v_values = min_target_q - alphas[:, :] * target_log_probs
@@ -200,19 +178,11 @@ class MUST_SAC(TwinSACQ):
         assert q1_pred.shape == q_target.shape, print(q1_pred.shape, q_target.shape)
         assert q2_pred.shape == q_target.shape, print(q1_pred.shape, q_target.shape)
 
-        if self.idx_flag:
-            q_new_actions = torch.min(
-                self.qf1([obs, new_actions], task_idx),
-                self.qf2([obs, new_actions], task_idx))
-        else:
-            if self.pf_flag:
-                q_new_actions = torch.min(
-                    self.qf1([obs, new_actions], embedding_inputs),
-                    self.qf2([obs, new_actions], embedding_inputs))
-            else:
-                q_new_actions = torch.min(
-                    self.qf1([obs, new_actions]),
-                    self.qf2([obs, new_actions]))
+
+        q_new_actions = torch.min(
+            self.qf1([obs, new_actions], embedding_inputs),
+            self.qf2([obs, new_actions], embedding_inputs))
+
         """
         Policy Loss
         """
@@ -294,14 +264,15 @@ class MUST_SAC(TwinSACQ):
 
         return info
 
-    def update_per_epoch(self, task_sample_index, task_scheduler):
+    def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer):
         for _ in range(self.opt_times):
             batch = self.replay_buffer.random_batch(self.batch_size,
                                                     self.sample_key,
                                                     self.task_nums,
                                                     task_sample_index=task_sample_index,
                                                     reshape=False)
-            infos = self.update(batch, task_sample_index, task_scheduler)
+            # Here, mask_buffer is all network types and all tasks.
+            infos = self.update(batch, task_sample_index, task_scheduler, mask_buffer)
             self.logger.add_update_info(infos)
         
         # print(f'num_steps_can_sample: {self.replay_buffer.num_steps_can_sample()}')
