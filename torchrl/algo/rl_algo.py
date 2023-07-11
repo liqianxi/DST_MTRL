@@ -47,7 +47,11 @@ class RLAlgo():
                  eval_episodes=1,
                  eval_render=False,
                  save_interval=100,
-                 save_dir=None
+                 save_dir=None,
+                 mask_buffer=None,
+                 mask_generators=None,
+                 mask_update_interval=None,
+                 state_trajectory=None
                  ):
 
         self.env = env
@@ -58,6 +62,8 @@ class RLAlgo():
         self.collector = collector
         # device specification
         self.device = device
+
+        self.mask_buffer = mask_buffer
 
         # environment relevant information
         self.discount = discount
@@ -153,12 +159,13 @@ class RLAlgo():
         self.start_epoch()
         task_scheduler = TaskScheduler(num_tasks=task_amount, task_sample_num=TASK_SAMPLE_NUM)
 
+        # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
             log_dict = {}
 
             self.current_epoch = epoch
             start = time.time()
-
+            # If only a subset of task is sampled:
             for _ in range(task_scheduler.num_tasks // TASK_SAMPLE_NUM):
                 task_sample_index = task_scheduler.sample()
 
@@ -174,7 +181,7 @@ class RLAlgo():
                 explore_time = time.time() - explore_start_time
 
                 train_start_time = time.time()
-            self.update_per_epoch(task_sample_index, task_scheduler)
+            self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer)
 
             train_time = time.time() - train_start_time
 
