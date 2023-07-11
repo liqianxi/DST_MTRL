@@ -145,7 +145,7 @@ def compare_all_identical(all_weight1,all_weight2 ):
     return identical
 
 def apply_mask(mask_this_task, base_net):
-    weights_mask, bias_mask = mask_this_task[0],mask_this_task[1]
+    weights_mask, bias_mask = mask_this_task, mask_this_task
 
     # First, for all the base layers, use element wise product
     for layer_idx in range(len(base_net.base.fcs)):
@@ -163,15 +163,12 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
     def __init__(self, progress_alpha=0.1, **kwargs):
         super().__init__(**kwargs)
-        self.tasks = list(self.env_cls.keys())
-        self.tasks_mapping = {}
-        for idx, task_name in enumerate(self.tasks):
-            self.tasks_mapping[task_name] = idx
-        self.tasks_progress = [0 for _ in range(len(self.tasks))]
+
+        
         self.progress_alpha = progress_alpha
 
     @classmethod
-    def take_actions(cls, funcs, env_info, ob_info, replay_buffer):
+    def take_actions(cls, funcs, env_info, ob_info, replay_buffer, idx_mapping, neuron_masks):
         pf = funcs["pf"]
         ob = ob_info["ob"]
         task_idx = env_info.env_rank
@@ -183,14 +180,16 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         with torch.no_grad():
 
             if embedding_flag:
-                # embedding_input = np.zeros(env_info.num_tasks)
+                # Here compose onehot encoding of the task id.
                 embedding_input = torch.zeros(env_info.num_tasks)
                 embedding_input[env_info.env_rank] = 1
                 # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
                 embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
-                out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0), embedding_input)
+                out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+                                 embedding_input, neuron_masks=neuron_masks)
             else:    
-                out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0))
+                out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+                                 neuron_masks=neuron_masks)
             act = out["action"]
 
 
@@ -216,8 +215,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             "rewards": [reward],
             "terminals": [done]
         }
-        if embedding_flag:
-            sample_dict["embedding_inputs"] = embedding_input.cpu().numpy()
+        sample_dict["embedding_inputs"] = embedding_input.cpu().numpy()
 
         if done or env_info.current_step >= env_info.max_episode_frames:
             next_ob = env_info.env.reset()
@@ -231,10 +229,10 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
     @staticmethod
     def train_worker_process(cls, shared_funcs, env_info,
         replay_buffer, shared_que,
-        start_barrier, epochs, start_epoch, task_name, shared_dict, shared_mask_buffer, shared_state_trajectory_buffer):
+        start_barrier, epochs, start_epoch, task_name, shared_dict, shared_mask_buffer, shared_state_trajectory_buffer, index_mapping):
 
         # Attention: Here shared_mask_buffer is the policy net weight masks for each task.
-        # i.e. shared_mask_buffer[task_id] = [[all layer weights],[all layer biases]]
+        # i.e. shared_mask_buffer[task_id] = [all layer neuron masks]
         if not RESTORE:
             replay_buffer.rebuild_from_tag()
         # print('worker shared_funcs id: {}'.format(id(shared_funcs['pf'])))
@@ -249,8 +247,6 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
         # ALright, after deepcopy, the network has multiple local copies.
         local_funcs = copy.deepcopy(shared_funcs)
-        print(local_funcs["pf"].base.fcs)
-
 
         for key in local_funcs:
             local_funcs[key].to(env_info.device)
@@ -281,7 +277,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             ##:
             if current_epoch %20 ==0:
                 # time to update local mask.
-                mask_this_task = shared_mask_buffer[task_name]
+                mask_this_task = shared_mask_buffer[env_info.env_rank]
 
             current_epoch += 1
 
@@ -302,7 +298,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 # Here, apply the binary mask to the weight matrix.
                 # Since weights are changing every episode, we need to do this 
                 # every episode.
-                apply_mask(mask_this_task, local_funcs[key])
+                #apply_mask(mask_this_task, local_funcs[key])
 
             train_rews = []
             train_epoch_reward = 0    
@@ -313,7 +309,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             episode_state_traj = [c_ob]
             if env_info.env_rank in task_sample_index:
                 for _ in range(env_info.epoch_frames):
-                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer)
+                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, shared_mask_buffer[env_info.env_rank])
                     c_ob["ob"] = next_ob
                     episode_state_traj.append(next_ob)
                     train_rew += reward
@@ -324,7 +320,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
                 # print(f'num_steps_can_sample: {replay_buffer.num_steps_can_sample()}')
             # Append the task state trajectory for this episode to the shared buffer.
-            shared_state_trajectory_buffer[task_name].append(episode_state_traj)
+            shared_state_trajectory_buffer[env_info.env_rank].append(episode_state_traj)
             if norm_obs_flag:
                 shared_dict[task_name] = {
                     "obs_mean": env_info.env._obs_mean,
@@ -373,7 +369,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             start_barrier.wait()
             if current_epoch %20 ==0:
                 # time to update local mask.
-                mask_this_task = shared_mask_buffer[task_name]
+                mask_this_task = shared_mask_buffer[env_info.env_rank]
             current_epoch += 1
 
             if current_epoch < start_epoch:
@@ -393,7 +389,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             # Here, apply the binary mask to the weight matrix.
             # Since weights are changing every episode, we need to do this 
             # every episode.
-            apply_mask(mask_this_task, pf)
+            #apply_mask(mask_this_task, pf)
 
             # switch mode to evaluation.
             pf.eval()
@@ -426,7 +422,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     embedding_input[env_info.env_rank] = 1
                     # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
                     embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
-                    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), embedding_input)
+                    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), embedding_input, mask_this_task)
 
 
                     eval_ob, r, done, info = env_info.env.step( act )
@@ -437,7 +433,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     current_success = max(current_success, info["success"])
 
                 # Append the task state trajectory for this episode to the shared buffer.
-                shared_state_trajectory_buffer[task_name].append(episode_state_traj)
+                shared_state_trajectory_buffer[env_info.env_rank].append(episode_state_traj)
 
                 eval_rews.append(rew)
                 done = False
@@ -510,12 +506,12 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     self.train_epochs * 10000, start_epoch, task, 
                     self.shared_dict, 
                     self.shared_mask_buffer["mask"], 
-                    self.shared_trajectory_buffer["all"]))  #*
+                    self.shared_trajectory_buffer["all"], 
+                    self.index_mapping))  #*
             p.start()
             self.workers.append(p)
             
-            ##:
-            break
+
 
         assert self.eval_worker_nums == self.env.num_tasks
         
@@ -642,180 +638,3 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         }
 
 
-# class AsyncMultiTaskParallelCollectorUniformImitation(AsyncSingleTaskParallelCollector):
-
-#     def __init__(self, progress_alpha=0.1, **kwargs):
-#         super().__init__(**kwargs)
-#         self.tasks = list(self.env_cls.keys())
-#         self.tasks_mapping = {}
-#         for idx, task_name in enumerate(self.tasks):
-#             self.tasks_mapping[task_name] = idx
-#         self.tasks_progress = [0 for _ in range(len(self.tasks))]
-#         self.progress_alpha = progress_alpha
-
-#     @staticmethod
-#     def eval_worker_process(shared_pf, 
-#         env_info, shared_que, start_barrier, epochs, start_epoch, task_name):
-
-#         pf = copy.deepcopy(shared_pf).to(env_info.device)
-#         idx_flag = isinstance(pf, policies.MultiHeadGuassianContPolicy)
-#         embedding_flag = isinstance(pf, policies.EmbeddingGuassianContPolicyBase) or isinstance(pf,
-#             policies.EmbeddingDetContPolicyBase)
-
-#         # Rebuild Env
-#         env_info.env = env_info.env_cls(**env_info.env_args)
-
-#         env_info.env.eval()
-#         env_info.env._reward_scale = 1
-#         current_epoch = 0
-#         while True:
-#             start_barrier.wait()
-#             current_epoch += 1
-#             if current_epoch < start_epoch:
-#                 shared_que.put({
-#                     'eval_rewards': None,
-#                     'success_rate': None,
-#                     'task_name': task_name
-#                 })
-#                 continue
-#             if current_epoch > epochs:
-#                 break
-#             pf.load_state_dict(shared_pf.state_dict())
-#             pf.eval()
-
-#             eval_rews = []  
-
-#             done = False
-#             success = 0
-#             for idx in range(env_info.eval_episodes):
-
-#                 eval_ob = env_info.env.reset()
-#                 rew = 0
-
-#                 task_idx = env_info.env_rank
-#                 current_success = 0
-#                 while not done:
-
-#                     if idx_flag:
-#                         idx_input = torch.Tensor([[task_idx]]).to(env_info.device).long()
-#                         if embedding_flag:
-#                             embedding_input = torch.zeros(env_info.num_tasks)
-#                             embedding_input[env_info.env_rank] = 1
-#                             # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
-#                             embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
-#                             act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0),
-#                                 embedding_input, [task_idx] )
-#                         else:
-#                             act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), idx_input )
-#                     else:
-#                         if embedding_flag:
-#                             embedding_input = torch.zeros(env_info.num_tasks)
-#                             embedding_input[env_info.env_rank] = 1
-#                             # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
-#                             embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
-#                             act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), embedding_input)
-#                         else:
-#                             act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0))
-
-#                     eval_ob, r, done, info = env_info.env.step( act )
-#                     rew += r
-#                     if env_info.eval_render:
-#                         env_info.env.render()
-#                     current_success = max(current_success, info["success"])
-
-#                 eval_rews.append(rew)
-#                 done = False
-#                 success += current_success
-
-#             shared_que.put({
-#                 'eval_rewards': eval_rews,
-#                 'success_rate': success / env_info.eval_episodes,
-#                 'task_name': task_name
-#             })
-
-
-#     def start_worker(self):                
-#         self.eval_workers = []
-#         self.eval_shared_que = self.manager.Queue(self.eval_worker_nums)
-#         self.eval_start_barrier = mp.Barrier(self.eval_worker_nums)
-
-#         # task_cls, task_args, env_params
-#         tasks = list(self.env_cls.keys())
-        
-#         assert self.worker_nums == 0
-#         assert self.eval_worker_nums == self.env.num_tasks
-        
-#         self.env_info.env = None
-#         self.env_info.num_tasks = self.env.num_tasks
-#         self.env_info.env_cls = generate_single_mt_env
-#         single_mt_env_args = {
-#             "task_cls": None,
-#             "task_args": None,
-#             "env_rank": 0,
-#             "num_tasks": self.env.num_tasks,
-#             "max_obs_dim": np.prod(self.env.observation_space.shape),
-#             "env_params": self.env_args[0],
-#             "meta_env_params": self.env_args[2]
-#         }
-
-#         for i, task in enumerate(tasks):
-#             env_cls = self.env_cls[task]
-
-#             self.env_info.env_rank = i
-
-#             self.env_info.env_args = single_mt_env_args
-#             self.env_info.env_args["task_cls"] = env_cls
-#             self.env_info.env_args["task_args"] = copy.deepcopy(self.env_args[1][task])
-
-#             start_epoch = 0
-#             if "start_epoch" in self.env_info.env_args["task_args"]:
-#                 # start_epoch = self.env_info.env_args["task_args"]["start_epoch"]
-#                 del self.env_info.env_args["task_args"]["start_epoch"]
-#             # else:
-#                 # start_epoch = 0
-
-#             self.env_info.env_args["env_rank"] = i
-#             eval_p = mp.Process(
-#                 target=self.__class__.eval_worker_process,
-#                 args=(self.shared_funcs["pf"],
-#                     self.env_info, self.eval_shared_que, self.eval_start_barrier,
-#                     self.eval_epochs, start_epoch, task))
-#             eval_p.start()
-#             self.eval_workers.append(eval_p)
-
-
-#     def eval_one_epoch(self):
-        
-#         eval_rews = []
-#         mean_success_rate = 0
-#         self.shared_funcs["pf"].load_state_dict(self.funcs["pf"].state_dict())
-
-#         tasks_result = []
-
-#         active_task_counts = 0
-#         for _ in range(self.eval_worker_nums):
-#             worker_rst = self.eval_shared_que.get()
-#             if worker_rst["eval_rewards"] is not None:
-#                 active_task_counts += 1
-#                 eval_rews += worker_rst["eval_rewards"]
-#                 mean_success_rate += worker_rst["success_rate"]
-#                 tasks_result.append((worker_rst["task_name"], worker_rst["success_rate"], np.mean(worker_rst["eval_rewards"])))
-
-#         tasks_result.sort()
-
-#         dic = OrderedDict()
-#         for task_name, success_rate, eval_rewards in tasks_result:
-#             dic[task_name+"_success_rate"] = success_rate
-#             dic[task_name+"_eval_rewards"] = eval_rewards
-#             # if self.tasks_progress[self.tasks_mapping[task_name]] is None:
-#             #     self.tasks_progress[self.tasks_mapping[task_name]] = success_rate
-#             # else:
-#             self.tasks_progress[self.tasks_mapping[task_name]] *= \
-#                 (1 - self.progress_alpha)
-#             self.tasks_progress[self.tasks_mapping[task_name]] += \
-#                 self.progress_alpha * success_rate
-
-#         dic['eval_rewards']      = eval_rews
-#         dic['mean_success_rate'] = mean_success_rate / active_task_counts
-
-#         return dic

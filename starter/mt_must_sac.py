@@ -51,19 +51,19 @@ os.environ['VECLIB_MAXIMUM_THREADS'] = str(CPU_NUM)
 os.environ['NUMEXPR_NUM_THREADS'] = str(CPU_NUM)
 torch.set_num_threads(CPU_NUM)
 
-def convert_neuron_masks_to_weight_mask(weight, neuron_masks, mode):
-    assert mode in ["row","col"], "Must specify an operation"
-    full_mask = weight
+# def convert_neuron_masks_to_weight_mask(weight, neuron_masks, mode):
+#     assert mode in ["row","col"], "Must specify an operation"
+#     full_mask = weight
 
-    if mode == "row":
-        full_mask = torch.mul(full_mask.T, neuron_masks).T
+#     if mode == "row":
+#         full_mask = torch.mul(full_mask.T, neuron_masks).T
 
-    else: 
-        full_mask = torch.mul(full_mask, neuron_masks)
+#     else: 
+#         full_mask = torch.mul(full_mask, neuron_masks)
 
-    return full_mask
+#     return full_mask
 
-def random_initialize_masks(network,pruning_ratio):
+def random_initialize_masks(network, pruning_ratio):
     neuron_mask_list = []
     all_layer_weight_shape = []
     # print(network.base.fcs) [Linear(in_features=33, out_features=400, bias=True), 
@@ -72,34 +72,35 @@ def random_initialize_masks(network,pruning_ratio):
         neurons = each_layer.bias.shape[0]
         all_layer_weight_shape.append(each_layer.weight.shape)
         neuron_mask = torch.zeros(neurons)
-        ones = int(neurons*(1-pruning_ratio))
+        ones = int(neurons * (1 - pruning_ratio))
         idx = torch.randperm(neurons)[:ones]
         neuron_mask[idx] = 1
         neuron_mask_list.append(neuron_mask)
 
     all_layer_weight_shape.append(network.last.weight.shape)
 
-    weight_array = [torch.ones(i) for i in all_layer_weight_shape]
+    #weight_
+    # weight_array = [torch.ones(i) for i in all_layer_weight_shape]
 
 
-    for idx in range(len(neuron_mask_list)):
-        pre_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx], 
-                                                               neuron_mask_list[idx], 
-                                                               mode="row")
-        weight_array[idx] = pre_layer_weight
+    # for idx in range(len(neuron_mask_list)):
+    #     pre_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx], 
+    #                                                            neuron_mask_list[idx], 
+    #                                                            mode="row")
+    #     weight_array[idx] = pre_layer_weight
 
-        post_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx+1], 
-                                                                neuron_mask_list[idx], 
-                                                                mode="col")
-        weight_array[idx+1] = post_layer_weight
+    #     post_layer_weight = convert_neuron_masks_to_weight_mask(weight_array[idx+1], 
+    #                                                             neuron_mask_list[idx], 
+    #                                                             mode="col")
+    #     weight_array[idx+1] = post_layer_weight
 
-    bias_mask_array = neuron_mask_list
+    #bias_mask_array = neuron_mask_list
 
     # So, for this task, mask out some neurons from the weight and bias tensors.
     # The mask of tensor is equivalent to the mask of neurons.
     # The mask of weight is applying neuron mask along rows or columns of the weight matrix, depends
     # on which matrix this neuron is affecting.
-    return weight_array, bias_mask_array
+    return neuron_mask_list
 
 
 
@@ -157,31 +158,35 @@ def experiment(args):
 
     # TODO: allow random goal.
     pf = policies.EmbedGuassianContPolicy(
-        input_shape = env.observation_space.shape[0]+embedding_shape, 
+        input_shape = env.observation_space.shape[0] + embedding_shape, 
         output_shape = 2 * env.action_space.shape[0],
-        **params['net'] 
-        )
+        **params['net'])
 
     print("finish policy net init")
 
     if args.pf_snap is not None:
         pf.load_state_dict(torch.load(args.pf_snap, map_location='cpu'))
 
-    # Initialize Q1 and Q2 net, the initialization of Q1_target and Q2_target will
-    # be in TwinSACQ.
+    # Initialize Q1 and Q2 net, the initialization of Q1_target and Q2_target 
+    # will be in TwinSACQ.
     # Input: S,A,onehot(task)
     qf1 = networks.FlattenNet( 
-        input_shape = env.observation_space.shape[0] + env.action_space.shape[0] + embedding_shape,
+        input_shape = env.observation_space.shape[0] 
+                    + env.action_space.shape[0] 
+                    + embedding_shape,
         output_shape = 1,
         **params['net'] )
     qf2 = networks.FlattenNet( 
-        input_shape = env.observation_space.shape[0] + env.action_space.shape[0] + embedding_shape,
+        input_shape = env.observation_space.shape[0]
+                    + env.action_space.shape[0] 
+                    + embedding_shape,
         output_shape = 1,
         **params['net'] )
     
 
     # Initialize VAE model.
-    encoder = networks.TrajectoryEncoder(env.observation_space.shape[0], params['traj_encoder']["latent_size"])
+    encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
+                                         params['traj_encoder']["latent_size"])
 
     # Initialize Mask generators.
     # For Policy net, Q1, Q2, we need 3 mask generators.
@@ -272,6 +277,7 @@ def experiment(args):
         "task_idxs": [0],
         "embedding_inputs": example_embedding
     }
+    print("example_dict",example_dict)
 
     replay_buffer = AsyncSharedReplayBuffer(int(buffer_param['size']),
             args.worker_nums
@@ -280,8 +286,8 @@ def experiment(args):
 
     # This is used to train the encoder and compare traj similarity.
     state_trajectory = {}
-    for each_task_name in cls_dicts.keys():
-        state_trajectory[each_task_name] = []
+    for task_idx in range( env.num_tasks):
+        state_trajectory[task_idx] = []
 
     # Mask buffer, stores the current masks for each layer, 
     # for each task and for each network type(Q1, Q2, policy).
@@ -298,19 +304,17 @@ def experiment(args):
             elif net_type == "Policy":
                 net = pf
 
-            weight_mask, bias_mask = random_initialize_masks(net,pruning_ratio)
-            mask_buffer[net_type][each_task] = [weight_mask, bias_mask]
+            neuron_masks = random_initialize_masks(net, pruning_ratio)
+            mask_buffer[net_type][each_task] = neuron_masks
 
 
     # Now we have a mask buffer like this:
-    # {"Q1":{"task1":[
-    #                  [[layer1_Weights],[layer2_weights]..],
-    #                  [[layer1_bias],[layer2_bias]..],  
-    #
+    # {"Q1":{"0":[
+    #                  [[layer1_Weights],[layer2_weights]..], 
     #                ],
     #
     # 
-    # ,..."task50":[]},"Q2":{...},"Policy":{...}}
+    # ,..."49":[]},"Q2":{...},"Policy":{...}}
 
 
     if RESTORE:
@@ -319,7 +323,7 @@ def experiment(args):
 
     params['general_setting']['replay_buffer'] = replay_buffer
     params['general_setting']['state_trajectory'] = state_trajectory
-    params['general_setting']['mask_buffer'] = mask_buffer
+    #params['general_setting']['mask_buffer'] = mask_buffer
 
     epochs = params['general_setting']['pretrain_epochs'] + \
         params['general_setting']['num_epochs']
@@ -344,7 +348,7 @@ def experiment(args):
                            "qf1_mask_generator": qf1_mask_generator,
                            "qf2_mask_generator": qf2_mask_generator},
     """
-    assert 1==2
+
     agent = MUST_SAC(
         pf = pf,
         qf1 = qf1,
@@ -353,6 +357,7 @@ def experiment(args):
                            "qf1_mask_generator": qf1_mask_generator,
                            "qf2_mask_generator": qf2_mask_generator},
         task_nums=env.num_tasks,
+        mask_buffer=mask_buffer,
         **params['sac'],
         **params['general_setting']
     )

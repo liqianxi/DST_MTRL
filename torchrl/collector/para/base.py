@@ -32,6 +32,13 @@ class ParallelCollector(BaseCollector):
         assert self.task_amount in [10,50],"wrong task amount"
         self.env_cls  = env_cls
         self.env_args = env_args
+        self.tasks = list(self.env_cls.keys())
+        self.tasks_mapping = {}
+        self.index_mapping = {}
+        for idx, task_name in enumerate(self.tasks):
+            self.tasks_mapping[task_name] = idx
+            self.index_mapping[idx] = task_name
+        self.tasks_progress = [0 for _ in range(len(self.tasks))]
         self.state_trajectory = state_trajectory
         self.mask_buffer = mask_buffer
 
