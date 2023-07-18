@@ -26,14 +26,14 @@ class Net(nn.Module):
         
         self.activation_func = activation_func
         append_input_shape = self.base.output_shape
-        # self.append_fcs = []
-        # for i, next_shape in enumerate(append_hidden_shapes):
-        #     fc = nn.Linear(append_input_shape, next_shape)
-        #     append_hidden_init_func(fc)
-        #     self.append_fcs.append(fc)
-        #     # set attr for pytorch to track parameters( device )
-        #     self.__setattr__("append_fc{}".format(i), fc)
-        #     append_input_shape = next_shape
+        self.append_fcs = []
+        for i, next_shape in enumerate(append_hidden_shapes):
+            fc = nn.Linear(append_input_shape, next_shape)
+            append_hidden_init_func(fc)
+            self.append_fcs.append(fc)
+            # set attr for pytorch to track parameters( device )
+            self.__setattr__("append_fc{}".format(i), fc)
+            append_input_shape = next_shape
 
         self.last = nn.Linear(append_input_shape, output_shape)
         net_last_init_func(self.last)
@@ -58,9 +58,9 @@ class Net(nn.Module):
         out = self.base(x)
 
 
-        # for append_fc in self.append_fcs:
-        #     out = append_fc(out)
-        #     out = self.activation_func(out)
+        for append_fc in self.append_fcs:
+            out = append_fc(out)
+            out = self.activation_func(out)
 
         out = self.last(out)
         return out
@@ -101,12 +101,18 @@ class MaskedNet(nn.Module):
         net_last_init_func(self.last)
 
     def forward(self, x, neuron_masks):
+
         out = None
         mask_out = x
 
         for idx, layer in enumerate(self.base.fcs):
+
             out = layer(mask_out)
-            mask_out = out * neuron_masks[idx]
+
+
+            tmp = neuron_masks[idx]
+
+            mask_out = out * tmp 
             mask_out = self.activation_func(mask_out)
 
         out = self.last(mask_out)
@@ -114,7 +120,7 @@ class MaskedNet(nn.Module):
 
 
 
-class FlattenNet(Net):
+class FlattenNet(MaskedNet):
     def forward(self, input):
         out = torch.cat(input, dim = -1)
         return super().forward(out)
@@ -382,6 +388,7 @@ class MaskGeneratorNet(nn.Module):
             num_layers,
             trajectory_encoder,
             pruning_ratio,
+            device,
             module_hidden_init_func = init.basic_init,
             last_init_func = init.uniform_init,
             activation_func = F.relu):
@@ -398,16 +405,16 @@ class MaskGeneratorNet(nn.Module):
         #                 hidden_shapes = traj_encoder_hidden_shape
         #                 ).float()
 
-        self.base = trajectory_encoder.encoder_lstm
+        self.base = trajectory_encoder
         self.pruning_ratio = pruning_ratio
-        
+        self.device = device
         #Note: Embedding base is the network part that converts task onehot into
         # a D-dim vector.
         self.em_base = base_type(
                         last_activation_func = null_activation,
                         input_shape = em_input_shape,
                         activation_func = activation_func,
-                        hidden_shapes = em_hidden_shapes).float()
+                        hidden_shapes = em_hidden_shapes).float().to(device)
 
         self.activation_func = activation_func
 
@@ -421,13 +428,13 @@ class MaskGeneratorNet(nn.Module):
         self.gating_weight_fcs = []
         self.gating_weight_cond_fcs = []
 
-        self.gating_weight_fc_0 = nn.Linear(gating_input_shape, self.layer_neurons[0]) # D X neurons
+        self.gating_weight_fc_0 = nn.Linear(gating_input_shape, self.layer_neurons[0]).to(self.device) # D X neurons
         last_init_func( self.gating_weight_fc_0)
         
         for layer_idx in range(num_layers-2):
             # W_up (layer_neurons x D)
             gating_weight_cond_fc = nn.Linear(self.layer_neurons[layer_idx+1],
-                                              gating_input_shape)
+                                              gating_input_shape).to(self.device)
 
             module_hidden_init_func(gating_weight_cond_fc)
             self.__setattr__("gating_weight_cond_fc_{}".format(layer_idx+1),
@@ -436,7 +443,7 @@ class MaskGeneratorNet(nn.Module):
             self.gating_weight_cond_fcs.append(gating_weight_cond_fc)
             
             #W_down (D X layer_neurons)
-            gating_weight_fc = nn.Linear(gating_input_shape, self.layer_neurons[layer_idx+1])
+            gating_weight_fc = nn.Linear(gating_input_shape, self.layer_neurons[layer_idx+1]).to(self.device)
             last_init_func(gating_weight_fc)
 
             self.__setattr__("gating_weight_fc_{}".format(layer_idx+1),
@@ -446,11 +453,11 @@ class MaskGeneratorNet(nn.Module):
 
         # W_up (layer_neurons x D)
         self.gating_weight_cond_last = nn.Linear(self.layer_neurons[-1],
-                                                 gating_input_shape) 
+                                                 gating_input_shape).to(self.device) 
         module_hidden_init_func(self.gating_weight_cond_last)
 
         #W_down (D X layer_neurons)
-        self.gating_weight_last = nn.Linear(gating_input_shape, self.layer_neurons[-1])
+        self.gating_weight_last = nn.Linear(gating_input_shape, self.layer_neurons[-1]).to(self.device)
         last_init_func( self.gating_weight_last )
 
     def keep_topk(self, tensor, pruning_ratio,neurons):
@@ -460,16 +467,21 @@ class MaskGeneratorNet(nn.Module):
         # Pick the highest k values. Set the rest to zero.
         values, indices = torch.topk(tensor, k)
         output = torch.zeros_like(tensor)
-        output.scatter_(dim=1, index=indices, src=values)
+        output.scatter_(dim=0, index=indices, src=values)
         return output
 
     def forward(self, x, embedding_input):
         # Here x is a trajectory of shape [traj_length, dim_of_each_state]
         # Return weights for visualization
-
+        #print("x",x)
+        #print(x.shape) # torch.Size([201, 19])
         # Trajectory encoder embedding
-        out = self.base(x)
+        #print("self.base",self.base)
 
+        out = self.base.encode_lstm(x)
+        #print("genout.shape",out.shape)genout.shape torch.Size([128])
+
+        #
         # Task one hot embedding
         embedding = self.em_base(embedding_input)
 
@@ -479,11 +491,13 @@ class MaskGeneratorNet(nn.Module):
         #weight_shape = torch.Size([self.layer_neurons])
         task_probs_masks = []
 
+        activated = self.activation_func(embedding).to(self.device)
+        #print("activated device",activated.device)
         # Next 3 lines output p^{l=1}
         # Attention:
         # Once we have the output feature, we first pick top k based on the pruning ratio
         # the for the rest non-zero values, use softmax to convert them between 0 and 1.
-        raw_weight = self.gating_weight_fc_0(self.activation_func(embedding))  
+        raw_weight = self.gating_weight_fc_0(activated)  
         layer_neurons = self.layer_neurons[0]
         raw_weight = raw_weight.view(layer_neurons)
 
@@ -523,14 +537,25 @@ class MaskGeneratorNet(nn.Module):
 
         # Change the prob to [0,1].
         # TODO: need to verify the correstness of this line.
-        pruned_mask = self.keep_topk(raw_last_weight, self.pruning_ratio,  self.layer_neurons[idx])
-        last_weight = F.softmax(pruned_mask, dim = -1)
-        task_probs_masks.append(last_weight)
+        print(raw_last_weight.shape)
+        print(self.pruning_ratio)
+        print(self.layer_neurons[idx])
+        pruned_mask = self.keep_topk(raw_last_weight, 
+                                     self.pruning_ratio, 
+                                     self.layer_neurons[idx])
+        print(pruned_mask)
+        sum_up = pruned_mask.sum()
+        print("sum_up",sum_up)
+        pruned_mask /= sum_up
+        task_probs_masks.append(pruned_mask)   
 
         task_binary_masks = []
         #single_neuron_mask_matrix = torch.cat(task_probs_masks,0)
         for each_task_probs_mask in task_probs_masks:
-            task_binary_masks.append(torch.where(each_task_probs_mask==0,each_task_probs_mask,torch.ones(each_task_probs_mask.shape)))
+            #print("task_probs_masks",task_probs_masks.device)
+            task_binary_masks.append(torch.where(each_task_probs_mask==0,
+                                                 each_task_probs_mask,
+                                                 torch.ones(each_task_probs_mask.shape).to(self.device)))
 
         
         return task_probs_masks, task_binary_masks

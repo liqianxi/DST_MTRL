@@ -66,8 +66,7 @@ class FixGuassianContPolicy(networks.Net):
 
 class EmbedGuassianContPolicy(networks.MaskedNet):
     def forward(self, x, embedding, neuron_masks):
-        # print(x.shape)
-        # print(embedding.shape)
+
         x = super().forward(torch.cat([x, embedding],dim=1), neuron_masks)
 
         mean, log_std = x.chunk(2, dim=-1)

@@ -30,12 +30,14 @@ class MLPBase(nn.Module):
     def forward(self, x):
 
         out = x
+        #print("out.device",out.device) # shoule be cuda but here's cpu
         for fc in self.fcs[:-1]:
             out = fc(out)
 
             out = self.activation_func(out)
         out = self.fcs[-1](out)
         out = self.last_activation_func(out)
+        #print("out2.device",out.device)# shoule be cuda but here's cpu
         return out
 
 def calc_next_shape(input_shape, conv_info):
