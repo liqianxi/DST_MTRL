@@ -20,6 +20,7 @@ class ParallelCollector(BaseCollector):
             env_cls, env_args,
             train_epochs,
             eval_epochs,
+            manager,
             worker_nums = 4,
             eval_worker_nums = 1,
             **kwargs):
@@ -57,7 +58,7 @@ class ParallelCollector(BaseCollector):
         self.active_worker_nums = worker_nums
         self.eval_worker_nums = eval_worker_nums
 
-        self.manager = mp.Manager()
+        self.manager = manager
         self.train_epochs = train_epochs
         self.eval_epochs = eval_epochs
         self.start_worker()
