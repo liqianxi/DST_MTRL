@@ -3,7 +3,7 @@ sys.path.append(".")
 
 import torch
 
-import os
+import os,json
 import time,copy
 import os.path as osp
 
@@ -110,6 +110,8 @@ def random_initialize_masks(network, pruning_ratio):
 def experiment(args):
 
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
+
+
     """
     {'reach-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, 
     'push-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, }'
@@ -170,13 +172,13 @@ def experiment(args):
     # Initialize Q1 and Q2 net, the initialization of Q1_target and Q2_target 
     # will be in TwinSACQ.
     # Input: S,A,onehot(task)
-    qf1 = networks.FlattenNet( 
+    qf1 = networks.MaskedNet( 
         input_shape = env.observation_space.shape[0] 
                     + env.action_space.shape[0] 
                     + embedding_shape,
         output_shape = 1,
         **params['net'] )
-    qf2 = networks.FlattenNet( 
+    qf2 = networks.MaskedNet( 
         input_shape = env.observation_space.shape[0]
                     + env.action_space.shape[0] 
                     + embedding_shape,
@@ -186,7 +188,7 @@ def experiment(args):
 
     # Initialize VAE model.
     encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
-                                         params['traj_encoder']["latent_size"])
+                                         params['traj_encoder']["latent_size"], device=device).to("cpu")
 
     # Initialize Mask generators.
     # For Policy net, Q1, Q2, we need 3 mask generators.
@@ -204,7 +206,8 @@ def experiment(args):
         num_layers=2, ##:
         hidden_shapes=params['net']['hidden_shapes'],
         trajectory_encoder=encoder,
-        pruning_ratio=pruning_ratio
+        pruning_ratio=pruning_ratio,
+        device="cpu"
         )
 
     # obs = torch.from_numpy(env.observation_space.sample()).float()
@@ -250,7 +253,8 @@ def experiment(args):
         num_layers=2, ##:
         hidden_shapes=params['net']['hidden_shapes'],
         trajectory_encoder=encoder,
-        pruning_ratio=pruning_ratio)
+        pruning_ratio=pruning_ratio,
+        device="cpu")
     qf2_mask_generator = networks.MaskGeneratorNet(
         base_type=networks.MLPBase,
         traj_encoder_hidden_shape = params['traj_encoder']['hidden_shapes'],
@@ -260,7 +264,8 @@ def experiment(args):
         num_layers=2, ##:
         hidden_shapes=params['net']['hidden_shapes'],
         trajectory_encoder=encoder,
-        pruning_ratio=pruning_ratio)
+        pruning_ratio=pruning_ratio,
+        device="cpu")
     
     print("mask generator finish initialization")
     if args.qf1_snap is not None:
@@ -277,26 +282,36 @@ def experiment(args):
         "task_idxs": [0],
         "embedding_inputs": example_embedding
     }
-    print("example_dict",example_dict)
 
     replay_buffer = AsyncSharedReplayBuffer(int(buffer_param['size']),
             args.worker_nums
     )
     replay_buffer.build_by_example(example_dict)
 
+    manager = mp.Manager()
     # This is used to train the encoder and compare traj similarity.
-    state_trajectory = {}
+    state_trajectory = manager.dict()
     for task_idx in range( env.num_tasks):
         state_trajectory[task_idx] = []
+
 
     # Mask buffer, stores the current masks for each layer, 
     # for each task and for each network type(Q1, Q2, policy).
     # Initialize the binary mask for all the weights and bias, make sure
     # follow the pruning ratio requirement.
-    mask_buffer = {"Q1":{}, "Q2":{}, "Policy":{}}
-    for net_type in mask_buffer.keys():
-        mask_buffer[net_type] = copy.deepcopy(state_trajectory)
-        for each_task in mask_buffer[net_type].keys():
+
+    
+
+    all_mask_buffer = {}
+
+    # mask_buffer = {"Q1":{}, "Q2":{}, "Policy":{}}
+    for net_type in ["Q1","Q2","Policy"]:
+        mask_buffer = manager.dict()
+
+        for task_idx in range( env.num_tasks):
+            mask_buffer[task_idx] = []
+
+        
             if net_type == "Q1":
                 net = qf1
             elif net_type == "Q2":
@@ -305,9 +320,13 @@ def experiment(args):
                 net = pf
 
             neuron_masks = random_initialize_masks(net, pruning_ratio)
-            mask_buffer[net_type][each_task] = neuron_masks
 
+            mask_buffer[task_idx] = neuron_masks
+            #print("mask_buffer[net_type][each_task]",mask_buffer[net_type][each_task])
 
+        all_mask_buffer[net_type] = mask_buffer       
+        #print(id(all_mask_buffer[net_type]))
+    #mask_buffer = mask_buffer.to(device)
     # Now we have a mask buffer like this:
     # {"Q1":{"0":[
     #                  [[layer1_Weights],[layer2_weights]..], 
@@ -324,17 +343,20 @@ def experiment(args):
     params['general_setting']['replay_buffer'] = replay_buffer
     params['general_setting']['state_trajectory'] = state_trajectory
     #params['general_setting']['mask_buffer'] = mask_buffer
-
+    #print("state_trajectory id",id(state_trajectory))
     epochs = params['general_setting']['pretrain_epochs'] + \
         params['general_setting']['num_epochs']
+
+    
 
 
     params['general_setting']['collector'] = AsyncMultiTaskParallelCollectorUniform(
         env=env, pf=pf, replay_buffer=replay_buffer,state_trajectory=state_trajectory,
-        mask_buffer=mask_buffer["Policy"],
+        mask_buffer=all_mask_buffer["Policy"],
         env_cls = cls_dicts, env_args = [params["env"], cls_args, params["meta_env"]],
         device=device,
         reset_idx=True,
+        manager=manager,
         epoch_frames=params['general_setting']['epoch_frames'],
         max_episode_frames=params['general_setting']['max_episode_frames'],
         eval_episodes = params['general_setting']['eval_episodes'],
@@ -357,7 +379,8 @@ def experiment(args):
                            "qf1_mask_generator": qf1_mask_generator,
                            "qf2_mask_generator": qf2_mask_generator},
         task_nums=env.num_tasks,
-        mask_buffer=mask_buffer,
+        mask_buffer=all_mask_buffer,
+        traj_encoder=encoder,
         **params['sac'],
         **params['general_setting']
     )
