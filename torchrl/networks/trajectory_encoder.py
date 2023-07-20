@@ -71,9 +71,12 @@ class TrajectoryEncoder(th.nn.Module):
         Returns (D,) Torch tensor, representing the latents
         of compressing the trajectory.
         """
+        # print("len(trajectory)",len(trajectory))
+        # print(trajectory[0].shape)
         encodings, _ = self.encoder_lstm(
             # Add batch dimension
-            trajectory[:, None, :]
+            #th.tensor([trajectory]).unsqueeze(1)
+            th.as_tensor(trajectory).float()[:, None, :]
         )
         # Get the "backward" output of the bidirectional LSTM.
         # See https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html#lstm

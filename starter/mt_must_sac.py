@@ -188,7 +188,7 @@ def experiment(args):
 
     # Initialize VAE model.
     encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
-                                         params['traj_encoder']["latent_size"], device=device).to("cpu")
+                                         params['traj_encoder']["latent_size"], device='cpu').to("cpu")
 
     # Initialize Mask generators.
     # For Policy net, Q1, Q2, we need 3 mask generators.
