@@ -172,7 +172,7 @@ class ModularGatedCascadeCondNet(nn.Module):
 
         self.num_layers = num_layers
         self.num_modules = num_modules
-        print("self.num_layers",self.num_layers)
+        #print("self.num_layers",self.num_layers)
         assert 1==2
         for i in range(num_layers):
             layer_module = []
@@ -255,7 +255,7 @@ class ModularGatedCascadeCondNet(nn.Module):
         out = self.activation_func(out)
         #self.gating_fcs [Linear(in_features=400, out_features=256, bias=True), Linear(in_features=256, out_features=256, bias=True)]
         #print("self.gating_fcs",self.gating_fcs) 
-        print("self.gating_fcs",self.gating_fcs)
+        #print("self.gating_fcs",self.gating_fcs)
         if len(self.gating_fcs) > 0:
             embedding = self.activation_func(embedding)
             for fc in self.gating_fcs[:-1]:
@@ -264,7 +264,7 @@ class ModularGatedCascadeCondNet(nn.Module):
             embedding = self.gating_fcs[-1](embedding)
 
         base_shape = embedding.shape[:-1]
-        print("base_shape",base_shape)
+        #print("base_shape",base_shape)
         weights = []
         flatten_weights = []
 
@@ -470,6 +470,21 @@ class MaskGeneratorNet(nn.Module):
         output.scatter_(dim=0, index=indices, src=values)
         return output
 
+    def get_learnable_params(self):
+        dict = self.__dict__["_modules"]
+        param_list = []
+        #print(dict)
+        for key, value in dict.items():
+            #print(key)
+            if key != "base":
+                param = [i for i in value.parameters()]
+                #print(param)
+                param_list += param
+            
+        return param_list
+
+
+
     def forward(self, x, embedding_input):
         # Here x is a trajectory of shape [traj_length, dim_of_each_state]
         # Return weights for visualization
@@ -537,17 +552,18 @@ class MaskGeneratorNet(nn.Module):
 
         # Change the prob to [0,1].
         # TODO: need to verify the correstness of this line.
-        print(raw_last_weight.shape)
-        print(self.pruning_ratio)
-        print(self.layer_neurons[idx])
-        pruned_mask = self.keep_topk(raw_last_weight, 
+        # print(raw_last_weight.shape)
+        # print(self.pruning_ratio)
+        # print(self.layer_neurons[idx])
+        pruned_mask = self.keep_topk(raw_last_weight.flatten(), 
                                      self.pruning_ratio, 
                                      self.layer_neurons[idx])
-        print(pruned_mask)
-        sum_up = pruned_mask.sum()
-        print("sum_up",sum_up)
-        pruned_mask /= sum_up
-        task_probs_masks.append(pruned_mask)   
+        #print(pruned_mask)
+        softmax_weight = F.softmax(pruned_mask, dim=-1)
+        # sum_up = pruned_mask.sum()
+        # print("sum_up",sum_up)
+        # pruned_mask /= sum_up
+        task_probs_masks.append(softmax_weight)   
 
         task_binary_masks = []
         #single_neuron_mask_matrix = torch.cat(task_probs_masks,0)

@@ -40,7 +40,7 @@
         "use_soft_update" : true,
         "tau" : 0.005,
         "opt_times" : 200,
-        "mask_update_interval": 30, 
+        "mask_update_interval": 2, 
         "eval_episodes" : 3
     },
     "sac":{

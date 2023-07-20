@@ -68,12 +68,15 @@ class RLAlgo():
         self.collector = collector
         # device specification
         self.device = device
+     
+
         self.mask_generator_optimizer = torch.optim.Adam([
-            {'params':self.traj_encoder.parameters()},
-            {'params':self.policy_mask_generator.parameters()},
-            {'params':self.qf1_mask_generator.parameters()},
-            {'params':self.qf2_mask_generator.parameters()}
+            {'params':self.policy_mask_generator.get_learnable_params()},
+            {'params':self.qf1_mask_generator.get_learnable_params()},
+            {'params':self.qf2_mask_generator.get_learnable_params()}
         ])
+        #assert 1==2
+        self.traj_encoder_optimizer = torch.optim.Adam(self.traj_encoder.parameters())
 
         self.mask_buffer = mask_buffer
 
@@ -90,6 +93,8 @@ class RLAlgo():
         self.batch_size = batch_size
         self.training_update_num = 0
         self.sample_key = None
+
+        self.tmp_device = 'cpu'
 
         # Logger & relevant setting
         self.logger = logger
@@ -111,7 +116,7 @@ class RLAlgo():
             embedding_input = torch.zeros(total_tasks)
             embedding_input[i] = 1
             # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
-            embedding_input = embedding_input.unsqueeze(0).to(self.device)
+            embedding_input = embedding_input.unsqueeze(0).to(self.tmp_device)
             one_hot_map[i] = embedding_input
 
         return one_hot_map
@@ -157,11 +162,9 @@ class RLAlgo():
         BATCH_SIZE = 8
         EPOCHS = 5
 
-        
         num_trajectories = len(trajectories)
 
         num_batches_per_epoch = num_trajectories // BATCH_SIZE
-        print("num_trajectories",num_trajectories)
 
         # Copy trajectories as we are about to shuffle them in-place
         trajectories = [x for x in trajectories]
@@ -207,6 +210,8 @@ class RLAlgo():
             policy_encodings = []
             for task in list(recent_few_trajs.keys()):
                 recent_trajs = recent_few_trajs[task]
+                #print("recent_trajs.shape",recent_trajs[0].shape)
+                #print("recent_trajs",recent_trajs[0].shape)
                 encoding = self.encode_policy_into_gaussian(self.traj_encoder, 
                                                             recent_trajs)
                 policy_encodings.append(encoding)
@@ -223,7 +228,7 @@ class RLAlgo():
                         with torch.no_grad():
                             distance = torch.distributions.kl_divergence(policy_i, policy_j) + torch.distributions.kl_divergence(policy_j, policy_i)
 
-                        distance_matrix[i, j] = torch.exp(-distance.item())
+                        distance_matrix[i, j] = torch.exp(-distance)
                         #distance_matrix[j, i] = torch.exp(-distance.item())
 
 
@@ -266,14 +271,14 @@ class RLAlgo():
             recent_traj[each_task] = self.state_trajectory[each_task][-recent_window:]
 
             for each_traj in self.state_trajectory[each_task]:
-                trajectories += [torch.as_tensor(each_traj).float().to(self.device)]
-                    
+                trajectories += [torch.as_tensor(each_traj).float().to(self.tmp_device)]
+                #print(trajectories[-1].device)
 
             # clear state_buffer.
             # TODO: should we add a capacity instead?
             self.state_trajectory[each_task] = []
 
-        self.train_trajectory_encoder(trajectories, self.mask_generator_optimizer)
+        self.train_trajectory_encoder(trajectories, self.traj_encoder_optimizer)
         
         # Now we have updated our traj encoder,
         # we can then leverage the encoder to update each net mask generator.
@@ -283,7 +288,7 @@ class RLAlgo():
 
             prob_mask_buffer = {}
             for each_task in range(sampled_task_amount):
-                task_recent_traj = torch.as_tensor(recent_traj[each_task][-1]).float().to(self.device)
+                task_recent_traj = torch.as_tensor(recent_traj[each_task][-1]).float().to(self.tmp_device)
                 #print(task_recent_traj)
                 #task_recent_traj = torch.stack([ torch.from_numpy(i) for i in recent_traj[each_task]])
                 generator = self.policy_mask_generator
@@ -300,7 +305,7 @@ class RLAlgo():
                 # for i in task_binary_masks:
                 #     print(i.shape)
                 # assert 1==2
-                self.mask_buffer[each_net][each_task] = task_binary_masks
+                self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in task_binary_masks]
 
             mask_sim_mtx = self.compute_mask_similarity_matrix(prob_mask_buffer, all_task_amount)
             traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, recent_traj)
@@ -363,8 +368,9 @@ class RLAlgo():
         # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
             
-            if epoch %  2 == 0 and epoch !=0:
+            if epoch %  self.mask_update_interval == 0 and epoch !=0:
                 # update mask
+                print("start to update mask")
                 self.update_masks(TASK_SAMPLE_NUM, task_amount)
 
             log_dict = {}
