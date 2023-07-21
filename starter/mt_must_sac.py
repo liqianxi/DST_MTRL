@@ -2,7 +2,7 @@ import sys
 sys.path.append(".")
 
 import torch
-
+import wandb
 import os,json
 import time,copy
 import os.path as osp
@@ -108,6 +108,7 @@ def random_initialize_masks(network, pruning_ratio):
 
 
 def experiment(args):
+
 
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
 
@@ -371,6 +372,8 @@ def experiment(args):
                            "qf2_mask_generator": qf2_mask_generator},
     """
 
+
+    
     agent = MUST_SAC(
         pf = pf,
         qf1 = qf1,
@@ -384,7 +387,8 @@ def experiment(args):
         **params['sac'],
         **params['general_setting']
     )
-    agent.train(env.num_tasks)
+
+    agent.train(env.num_tasks,params)
 
 
 if __name__ == "__main__":

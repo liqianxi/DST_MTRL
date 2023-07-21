@@ -1,5 +1,5 @@
 import copy
-import pickle
+import pickle, wandb
 import time
 from collections import deque
 import numpy as np
@@ -168,7 +168,7 @@ class RLAlgo():
 
         # Copy trajectories as we are about to shuffle them in-place
         trajectories = [x for x in trajectories]
-    
+        avg_loss=0
         for epoch in range(EPOCHS):
             random.shuffle(trajectories)
             total_loss = 0
@@ -181,7 +181,10 @@ class RLAlgo():
                 loss.backward()
                 optimizer.step()
                 total_loss += loss.item()
-            print("Epoch {}, Avrg loss {}".format(epoch, total_loss / num_batches_per_epoch))
+            avg_loss= total_loss / num_batches_per_epoch
+            #print("Epoch {}, Avrg loss {}".format(epoch, avg_loss))
+        return avg_loss
+        
 
     def encode_policy_into_gaussian(self, network, trajectories):
         """
@@ -278,8 +281,8 @@ class RLAlgo():
             # TODO: should we add a capacity instead?
             self.state_trajectory[each_task] = []
 
-        self.train_trajectory_encoder(trajectories, self.traj_encoder_optimizer)
-        
+        loss = self.train_trajectory_encoder(trajectories, self.traj_encoder_optimizer)
+        wandb.log({"trajectory_train_loss":loss})
         # Now we have updated our traj encoder,
         # we can then leverage the encoder to update each net mask generator.
         # (Since encoder is used to encoder traj at the beginning of the generators)
@@ -305,7 +308,12 @@ class RLAlgo():
                 # for i in task_binary_masks:
                 #     print(i.shape)
                 # assert 1==2
+                #print("task_binary_masks",task_binary_masks)
+                #assert 1==2
                 self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in task_binary_masks]
+                # print("right_after mask update, current policy masks:")
+                # for each_task in self.mask_buffer["Policy"].keys():
+                #     print((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze())
 
             mask_sim_mtx = self.compute_mask_similarity_matrix(prob_mask_buffer, all_task_amount)
             traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, recent_traj)
@@ -320,12 +328,17 @@ class RLAlgo():
 
         # Next, update the rest nets.
 
-    def train(self, task_amount):
+    def train(self, task_amount,params):
         global EPOCH
         self.all_task_amount = task_amount
         assert task_amount in [10,50]
         self.one_hot_map = self.construct_one_hot_map(task_amount)
         
+        wandb.init(
+            project="dst_mtrl",
+            settings=wandb.Settings(start_method="fork"),
+            config=params
+            )
 
         if RESTORE:
             for name, network in self.snapshot_networks:
@@ -367,7 +380,16 @@ class RLAlgo():
         #print("EPOCH",EPOCH)
         # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
-            
+            # print("current_masks:")
+            # for each_task in self.mask_buffer["Policy"].keys():
+            #     print((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze())
+            #wandb.log(copy.deepcopy(self.mask_buffer["Policy"]))
+            for each_task in self.mask_buffer["Policy"].keys():
+                value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
+                #print("value",value)
+                name = str(each_task)
+                wandb.log({name:value},step=epoch)
+
             if epoch %  self.mask_update_interval == 0 and epoch !=0:
                 # update mask
                 print("start to update mask")
