@@ -516,16 +516,19 @@ class MaskGeneratorNet(nn.Module):
         layer_neurons = self.layer_neurons[0]
         raw_weight = raw_weight.view(layer_neurons)
 
-        pruned_mask = self.keep_topk(raw_weight, self.pruning_ratio, layer_neurons)
-        softmax_weight = F.softmax(raw_weight, dim=-1)
-        
-        task_probs_masks.append(softmax_weight)
+        # Logic:
+        # 1. First, convert to probability list
+        # 2. prob list is used to calculate loss later, due to differentiablility.
+        # 3. at the end, keep top k and convert to binary mask.
+        raw_weight = F.softmax(raw_weight, dim=-1)
+        task_probs_masks.append(raw_weight)
+
 
         idx = 1
         for gating_weight_fc, gating_weight_cond_fc in zip(self.gating_weight_fcs, self.gating_weight_cond_fcs):
 
             # Next 6 lines will recover the dimension of the features to D X 1
-            cond = gating_weight_cond_fc(softmax_weight)# W_up (neurons x D) * p^l
+            cond = gating_weight_cond_fc(raw_weight)# W_up (neurons x D) * p^l
             cond = cond * embedding # (W_up * p^l) * embedding
             cond = self.activation_func(cond) #RELU (cond)
 
@@ -535,15 +538,20 @@ class MaskGeneratorNet(nn.Module):
             raw_weight = raw_weight.view(layer_neurons)
             idx +=1
 
-            pruned_mask = self.keep_topk(raw_weight, self.pruning_ratio, layer_neurons)
-            # Here, shape the task_probs_masks to [0,1]
-            softmax_weight = F.softmax(pruned_mask, dim=-1)
+            raw_weight = F.softmax(raw_weight, dim=-1)
+            task_probs_masks.append(raw_weight)
+
+            # pruned_mask = self.keep_topk(raw_weight, self.pruning_ratio, layer_neurons)
+            # # Here, shape the task_probs_masks to [0,1]
+            # non_zero_indices = pruned_mask.nonzero(as_tuple=False).squeeze()
+
+            # softmax_weight[non_zero_indices] = F.softmax(pruned_mask[non_zero_indices], dim=-1)
             
-            task_probs_masks.append(softmax_weight)
+            #task_probs_masks.append(softmax_weight)
         
         #print(softmax_weight)
 
-        cond = self.gating_weight_cond_last(softmax_weight)  # W_up (neurons x D) * p^l
+        cond = self.gating_weight_cond_last(raw_weight)  # W_up (neurons x D) * p^l
         cond = cond * embedding # (W_up * p^l) * embedding
         cond = self.activation_func(cond)  #RELU (cond)
 
@@ -555,23 +563,27 @@ class MaskGeneratorNet(nn.Module):
         # print(raw_last_weight.shape)
         # print(self.pruning_ratio)
         # print(self.layer_neurons[idx])
-        pruned_mask = self.keep_topk(raw_last_weight.flatten(), 
-                                     self.pruning_ratio, 
-                                     self.layer_neurons[idx])
-        #print(pruned_mask)
-        softmax_weight = F.softmax(pruned_mask, dim=-1)
+        # pruned_mask = self.keep_topk(raw_last_weight.flatten(), 
+        #                              self.pruning_ratio, 
+        #                              self.layer_neurons[idx])
+        # #print(pruned_mask)
+        raw_last_weight = F.softmax(raw_last_weight, dim=-1)
         # sum_up = pruned_mask.sum()
         # print("sum_up",sum_up)
         # pruned_mask /= sum_up
-        task_probs_masks.append(softmax_weight)   
+        task_probs_masks.append(raw_last_weight)   
 
         task_binary_masks = []
-        #single_neuron_mask_matrix = torch.cat(task_probs_masks,0)
-        for each_task_probs_mask in task_probs_masks:
-            #print("task_probs_masks",task_probs_masks.device)
-            task_binary_masks.append(torch.where(each_task_probs_mask==0,
-                                                 each_task_probs_mask,
-                                                 torch.ones(each_task_probs_mask.shape).to(self.device)))
 
-        
+        for each_task_probs_mask in task_probs_masks:
+            pruned_mask = self.keep_topk(each_task_probs_mask, 
+                                         self.pruning_ratio,
+                                         len(each_task_probs_mask))
+
+            task_binary_masks.append(torch.where(pruned_mask>0,
+                                                 torch.ones(pruned_mask.shape),
+                                                 torch.zeros(pruned_mask.shape)))
+
+        # print("in gen:task_probs_masks",task_probs_masks)
+        # print("in gen: task_binary_masks",task_binary_masks)
         return task_probs_masks, task_binary_masks
