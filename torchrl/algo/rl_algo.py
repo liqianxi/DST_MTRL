@@ -261,7 +261,7 @@ class RLAlgo():
 
 
 
-    def update_masks(self, sampled_task_amount,all_task_amount):
+    def update_masks(self, sampled_task_amount,all_task_amount, current_epoch):
         # First, update encoder
 
         recent_window = 5
@@ -282,14 +282,13 @@ class RLAlgo():
             self.state_trajectory[each_task] = []
 
         loss = self.train_trajectory_encoder(trajectories, self.traj_encoder_optimizer)
-        wandb.log({"trajectory_train_loss":loss})
+        wandb.log({"trajectory_train_loss":loss},step=current_epoch)
         # Now we have updated our traj encoder,
         # we can then leverage the encoder to update each net mask generator.
         # (Since encoder is used to encoder traj at the beginning of the generators)
         for each_net in ["Policy","Q1","Q2"]:
-            #self.mask_buffer[each_net]
-
             prob_mask_buffer = {}
+
             for each_task in range(sampled_task_amount):
                 task_recent_traj = torch.as_tensor(recent_traj[each_task][-1]).float().to(self.tmp_device)
                 #print(task_recent_traj)
@@ -305,23 +304,22 @@ class RLAlgo():
                                                                 self.one_hot_map[each_task])
 
                 prob_mask_buffer[each_task] = task_probs_masks
-                # for i in task_binary_masks:
-                #     print(i.shape)
-                # assert 1==2
-                #print("task_binary_masks",task_binary_masks)
-                #assert 1==2
                 self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in task_binary_masks]
-                # print("right_after mask update, current policy masks:")
-                # for each_task in self.mask_buffer["Policy"].keys():
-                #     print((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze())
 
+            # Calculate two losses.
             mask_sim_mtx = self.compute_mask_similarity_matrix(prob_mask_buffer, all_task_amount)
             traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, recent_traj)
 
+            # wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
+            # wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
+            
             loss = self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
+            
+            wandb.log({f"{each_net}_sim_loss":loss},step=current_epoch)
+
             self.mask_generator_optimizer.zero_grad()
 
-            # In theory, the mask generator network will be updated.
+            # the mask generator network will be updated.
             loss.backward()
             self.mask_generator_optimizer.step()
 
@@ -350,24 +348,6 @@ class RLAlgo():
 
             EPOCH += 1
 
-            # wandb.init(
-            #     name=os.environ['NAME'],
-            #     project='multitask-yyq',
-            #     group=os.environ['GROUP'],
-            #     reinit=True,
-            #     id=ID,
-            #     dir='./log',
-            #     resume="allow" if RESTORE else None,
-            # )
-        # else:
-        #     wandb.init(
-        #         name=os.environ['NAME'],
-        #         project='multitask-yyq',
-        #         group=os.environ['GROUP'],
-        #         reinit=True,
-        #         dir='./log',
-        #     )
-
         self.pretrain(task_amount)
 
         total_frames = 0
@@ -377,23 +357,20 @@ class RLAlgo():
         #*
         self.start_epoch()
         task_scheduler = TaskScheduler(num_tasks=task_amount, task_sample_num=TASK_SAMPLE_NUM)
-        #print("EPOCH",EPOCH)
+
         # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
-            # print("current_masks:")
-            # for each_task in self.mask_buffer["Policy"].keys():
-            #     print((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze())
-            #wandb.log(copy.deepcopy(self.mask_buffer["Policy"]))
+
             for each_task in self.mask_buffer["Policy"].keys():
                 value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
-                #print("value",value)
+
                 name = str(each_task)
                 wandb.log({name:value},step=epoch)
 
             if epoch %  self.mask_update_interval == 0 and epoch !=0:
                 # update mask
                 print("start to update mask")
-                self.update_masks(TASK_SAMPLE_NUM, task_amount)
+                self.update_masks(TASK_SAMPLE_NUM, task_amount, epoch)
 
             log_dict = {}
 
@@ -463,10 +440,10 @@ class RLAlgo():
                 self.snapshot(self.save_dir, epoch)
 
                 task_scheduler.save(self.save_dir)
-                # filename = plot_history.plot(root_dir=self.save_dir, num_tasks=task_scheduler.num_tasks, sample_gap=1, perfermance_gap=10, delta_gap=10)
-                # log_dict['history'] = wandb.Image(filename)
+                filename = plot_history.plot(root_dir=self.save_dir, num_tasks=task_scheduler.num_tasks, sample_gap=1, perfermance_gap=10, delta_gap=10)
+                log_dict['history'] = wandb.Image(filename)
 
-            #wandb.log(log_dict)
+            wandb.log(log_dict)
 
         self.snapshot(self.save_dir, "finish")
         self.collector.terminate()

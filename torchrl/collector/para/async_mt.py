@@ -282,9 +282,9 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             start_barrier.wait()
             
             ##:
-            if current_epoch %20 ==0:
-                # time to update local mask.
-                mask_this_task = mask_buffer[env_info.env_rank]
+            # if current_epoch %20 ==0:
+            #     # time to update local mask.
+            mask_this_task = mask_buffer[env_info.env_rank]
 
             current_epoch += 1
 
@@ -317,7 +317,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             episode_state_traj = [ob]
             if env_info.env_rank in task_sample_index:
                 for _ in range(env_info.epoch_frames):
-                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_buffer[env_info.env_rank])
+                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task)
                     c_ob["ob"] = next_ob
                     episode_state_traj.append(c_ob["ob"])
                     train_rew += reward
@@ -333,7 +333,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
 
             state_trajectory[env_info.env_rank] += [episode_state_traj]
-            #print("state_trajectory in async",id(state_trajectory))
+
             if norm_obs_flag:
                 shared_dict[task_name] = {
                     "obs_mean": env_info.env._obs_mean,
