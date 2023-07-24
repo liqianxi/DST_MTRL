@@ -144,7 +144,6 @@ class MUST_SAC(TwinSACQ):
             policy_device_masks = [i.to(self.device) for i in policy_mask_layers]
             
             sample_info = self.pf.explore(obs[each_task_batch_idx], 
-                                          embedding_inputs[each_task_batch_idx], 
                                           neuron_masks=policy_device_masks,
                                           return_log_probs=True)
 
@@ -155,8 +154,7 @@ class MUST_SAC(TwinSACQ):
 
             # Here, only take the 
             cat_input = torch.cat([obs[each_task_batch_idx], 
-                                   actions[each_task_batch_idx], 
-                                   embedding_inputs[each_task_batch_idx]],
+                                   actions[each_task_batch_idx]],
                                    dim=1)
 
             q1_device_masks = [i.to(self.device) for i in mask_buffer["Q1"][one_task_idx.item()]]
@@ -204,15 +202,8 @@ class MUST_SAC(TwinSACQ):
                 alpha_loss = 0
 
             with torch.no_grad():
-                """
-                            sample_info = self.pf.explore(obs[each_task_batch_idx], 
-                                          embedding_inputs[each_task_batch_idx], 
-                                          neuron_masks=policy_device_masks,
-                                          return_log_probs=True)
-                
-                """
+
                 target_sample_info = self.pf.explore(next_obs[each_task_batch_idx],
-                                                        embedding_inputs[each_task_batch_idx],
                                                         neuron_masks=policy_device_masks,
                                                         return_log_probs=True)
 
@@ -220,9 +211,7 @@ class MUST_SAC(TwinSACQ):
                 target_log_probs = target_sample_info["log_prob"]
 
                 cat_input = torch.cat([next_obs[each_task_batch_idx], 
-                                                target_actions, 
-                                                embedding_inputs[each_task_batch_idx]],
-                                      dim=1)
+                                                target_actions], dim=1)
 
                 target_q1_pred = self.target_qf1(cat_input,
                                                   q1_device_masks
@@ -256,8 +245,7 @@ class MUST_SAC(TwinSACQ):
 
 
             cat_input = torch.cat([obs[each_task_batch_idx], 
-                                   new_actions, 
-                                   embedding_inputs[each_task_batch_idx]],
+                                   new_actions],
                                    dim=1)
             q_new_actions = torch.min(
                 self.qf1(cat_input,q1_device_masks),

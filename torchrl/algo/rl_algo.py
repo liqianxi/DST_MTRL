@@ -205,7 +205,11 @@ class RLAlgo():
         return distribution
 
     def compute_mask_loss(self,traj_sim_mtx, mask_sim_mtx):
-        return torch.cdist(traj_sim_mtx, mask_sim_mtx)
+        epsilon = 1e-8
+        tensor1 = mask_sim_mtx / mask_sim_mtx.sum() + epsilon
+        tensor2 = traj_sim_mtx / traj_sim_mtx.sum() + epsilon
+
+        return torch.reshape(torch.sum(tensor1 * torch.log(tensor1 / tensor2)), (1, 1)), torch.cdist(traj_sim_mtx, mask_sim_mtx)
 
     def compute_policy_similarity_matrix(self, task_amount, recent_few_trajs):
         #recent_trajs: task_amount*traj_size*
@@ -232,7 +236,7 @@ class RLAlgo():
                             distance = torch.distributions.kl_divergence(policy_i, policy_j) + torch.distributions.kl_divergence(policy_j, policy_i)
 
                         distance_matrix[i, j] = torch.exp(-distance)
-                        #distance_matrix[j, i] = torch.exp(-distance.item())
+                        distance_matrix[j, i] = torch.exp(-distance)
 
 
             #TODO: need verify values in this part.
@@ -241,7 +245,6 @@ class RLAlgo():
             min_value = torch.min(similarity_matrix)
             similarity_matrix = (similarity_matrix - min_value) / (max_value - min_value)
             return similarity_matrix.reshape(1,task_amount*task_amount)
-
 
     def compute_mask_similarity_matrix(self, mask_buffer, task_amount):
         masks_for_this_net_type = mask_buffer
@@ -253,13 +256,11 @@ class RLAlgo():
             task_mask_list.append(task1_masks)
         
         combined_mask_tensors = torch.stack(task_mask_list)
-        similarities = F.cosine_similarity(combined_mask_tensors.unsqueeze(1), 
-                                   combined_mask_tensors.unsqueeze(0), dim=-1)
+        #print("combined_mask_tensors",combined_mask_tensors)
+        similarities = torch.norm(combined_mask_tensors[:, None] - combined_mask_tensors, dim=-1)
 
+        #print("similarities",similarities)
         return similarities.reshape(1,task_amount*task_amount)
-
-
-
 
     def update_masks(self, sampled_task_amount,all_task_amount, current_epoch):
         # First, update encoder
@@ -306,21 +307,24 @@ class RLAlgo():
                 prob_mask_buffer[each_task] = task_probs_masks
                 self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in task_binary_masks]
 
+            #print("prob_mask_buffer",prob_mask_buffer)
             # Calculate two losses.
             mask_sim_mtx = self.compute_mask_similarity_matrix(prob_mask_buffer, all_task_amount)
             traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, recent_traj)
-
+            print("mask_sim_mtx",mask_sim_mtx)
+            print("traj_sim_mtx",traj_sim_mtx)
             # wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
             # wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
             
-            loss = self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
-            
-            wandb.log({f"{each_net}_sim_loss":loss},step=current_epoch)
+            loss1, loss2 = self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
+            print("loss1",loss1)
+            print("loss2",loss2)
+            wandb.log({f"{each_net}_sim_loss":loss1},step=current_epoch)
 
             self.mask_generator_optimizer.zero_grad()
 
             # the mask generator network will be updated.
-            loss.backward()
+            loss1.backward()
             self.mask_generator_optimizer.step()
 
 

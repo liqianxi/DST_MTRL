@@ -244,6 +244,13 @@ class MaskGeneratorNet(nn.Module):
             
         return param_list
 
+    def bound_tensor(self, array):
+        max_value = torch.max(array)
+        min_value = torch.min(array)
+        res_array = (array - min_value) / (max_value - min_value)
+
+        return res_array
+
 
 
     def forward(self, x, embedding_input):
@@ -252,7 +259,6 @@ class MaskGeneratorNet(nn.Module):
 
         # Trajectory encoder embedding
         out = self.base.encode_lstm(x)
-        #print("genout.shape",out.shape)genout.shape torch.Size([128])
 
         # Task one hot embedding
         embedding = self.em_base(embedding_input)
@@ -263,20 +269,28 @@ class MaskGeneratorNet(nn.Module):
         task_probs_masks = []
 
         activated = self.activation_func(embedding).to(self.device)
+
+
         #print("activated device",activated.device)
         # Next 3 lines output p^{l=1}
         # Attention:
         # Once we have the output feature, we first pick top k based on the pruning ratio
-        # the for the rest non-zero values, use softmax to convert them between 0 and 1.
+        # the for the rest non-zero values, convert them between 0 and 1.
         raw_weight = self.gating_weight_fc_0(activated)  
         layer_neurons = self.layer_neurons[0]
         raw_weight = raw_weight.view(layer_neurons)
+
+       # print("raw_weight 1",raw_weight)
 
         # Logic:
         # 1. First, convert to probability list
         # 2. prob list is used to calculate loss later, due to differentiablility.
         # 3. at the end, keep top k and convert to binary mask.
-        raw_weight = F.softmax(raw_weight, dim=-1)
+        raw_weight = self.bound_tensor(raw_weight)
+
+
+
+        #print("raw_weight 1 after softmax",raw_weight)
         task_probs_masks.append(raw_weight)
 
         idx = 1
@@ -284,6 +298,7 @@ class MaskGeneratorNet(nn.Module):
 
             # Next 6 lines will recover the dimension of the features to D X 1
             cond = gating_weight_cond_fc(raw_weight)# W_up (neurons x D) * p^l
+
             cond = cond * embedding # (W_up * p^l) * embedding
             cond = self.activation_func(cond) #RELU (cond)
 
@@ -292,20 +307,26 @@ class MaskGeneratorNet(nn.Module):
             layer_neurons = self.layer_neurons[idx]
             raw_weight = raw_weight.view(layer_neurons)
             idx +=1
-
-            raw_weight = F.softmax(raw_weight, dim=-1)
+            #print("raw_weight",raw_weight)
+            raw_weight = self.bound_tensor(raw_weight)
+            #print("raw_weight after softmax",raw_weight)
             task_probs_masks.append(raw_weight)
 
         cond = self.gating_weight_cond_last(raw_weight)  # W_up (neurons x D) * p^l
+
+        # print("cond",cond)
+        # print("embedding 2",embedding)
         cond = cond * embedding # (W_up * p^l) * embedding
+
+        #print("mul",cond)
         cond = self.activation_func(cond)  #RELU (cond)
 
         # W_down, generate the neuron mask for the last layer.
         raw_last_weight = self.gating_weight_last(cond) 
-
+        #print("raw_last_weight",raw_last_weight)
         # Change the prob to [0,1].
-        raw_last_weight = F.softmax(raw_last_weight, dim=-1)
-
+        raw_last_weight = self.bound_tensor(raw_last_weight)
+        #print("raw_last_weight after softmax",raw_last_weight)
         task_probs_masks.append(raw_last_weight)   
 
         task_binary_masks = []
