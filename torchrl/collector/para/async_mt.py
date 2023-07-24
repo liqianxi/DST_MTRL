@@ -37,6 +37,7 @@ class AsyncSingleTaskParallelCollector(AsyncParallelCollector):
         # Rebuild Env
         env_info.env = env_info.env_cls(**env_info.env_args)
 
+
         env_info.env.eval()
         env_info.env._reward_scale = 1
         current_epoch = 0
@@ -171,30 +172,17 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
     def take_actions(cls, funcs, env_info, ob_info, replay_buffer, idx_mapping, neuron_masks):
         pf = funcs["pf"]
         ob = ob_info["ob"]
-        #print("ob device",ob.device)
-        #print("env_info.device",env_info.device)
-        task_idx = env_info.env_rank
-
-        embedding_flag = isinstance(pf, policies.EmbedGuassianContPolicy)
 
         pf.eval()
 
         with torch.no_grad():
+            embedding_input = torch.zeros(env_info.num_tasks)
+            embedding_input[env_info.env_rank] = 1
+            # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
+            embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
 
-            if embedding_flag:
-                # Here compose onehot encoding of the task id.
-                embedding_input = torch.zeros(env_info.num_tasks)
-                embedding_input[env_info.env_rank] = 1
-                # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
-                embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
-                obs = torch.Tensor( ob ).to(env_info.device).unsqueeze(0)
-                # print("obs",obs.device)
-                # print("embedding_input",embedding_input.device)
-                out = pf.explore(obs,
-                                 embedding_input, neuron_masks=neuron_masks)
-            else:    
-                out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
-                                 neuron_masks=neuron_masks)
+            out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+                                neuron_masks=neuron_masks)
             act = out["action"]
 
 
@@ -236,20 +224,10 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         replay_buffer, shared_que,
         start_barrier, epochs, start_epoch, task_name, shared_dict, mask_buffer, state_trajectory, index_mapping, lock):
 
-        #print("state_trajectory id in train",id(state_trajectory))
         # Attention: Here mask_buffer is the policy net weight masks for each task.
         # i.e. mask_buffer[task_id] = [all layer neuron masks]
         if not RESTORE:
             replay_buffer.rebuild_from_tag()
-        # print('worker shared_funcs id: {}'.format(id(shared_funcs['pf'])))
-        # print(f"task_name {task_name} ,shared_funcs {shared_funcs}")
-        # task_name push-v1 ,shared_funcs {'pf': EmbedGuassianContPolicy(
-        #     (base): MLPBase(
-        #         (fc0): Linear(in_features=29, out_features=400, bias=True)
-        #         (fc1): Linear(in_features=400, out_features=400, bias=True)
-        #     )
-        #     (last): Linear(in_features=400, out_features=8, bias=True)
-        #     )}
 
         # ALright, after deepcopy, the network has multiple local copies.
         local_funcs = copy.deepcopy(shared_funcs)
@@ -280,10 +258,8 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         while True:
             # For each episode:
             start_barrier.wait()
-            
-            ##:
-            # if current_epoch %20 ==0:
-            #     # time to update local mask.
+
+            # time to update local mask.
             mask_this_task = mask_buffer[env_info.env_rank]
 
             current_epoch += 1
@@ -329,9 +305,6 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 # print(f'num_steps_can_sample: {replay_buffer.num_steps_can_sample()}')
             # Append the task state trajectory for this episode to the shared buffer.
 
-            #print(state_trajectory[env_info.env_rank])
-
-
             state_trajectory[env_info.env_rank] += [episode_state_traj]
 
             if norm_obs_flag:
@@ -339,7 +312,6 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     "obs_mean": env_info.env._obs_mean,
                     "obs_var": env_info.env._obs_var
                 }
-                # print("Put", task_name)
 
             shared_que.put({
                 'train_rewards':train_rews,
@@ -359,7 +331,6 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                             state_trajectory,
                             lock
                             ):
-        print("state_trajectory id in eval",id(state_trajectory))
         #TODO:
         # Attention, now your training and evaluation both collect trajectories,
         # this may cause write error for your buffer.
@@ -381,9 +352,8 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         current_epoch = 0
         while True:
             start_barrier.wait()
-            if current_epoch %20 ==0:
-                # time to update local mask.
-                mask_this_task = mask_buffer[env_info.env_rank]
+
+            mask_this_task = mask_buffer[env_info.env_rank]
             current_epoch += 1
 
             if current_epoch < start_epoch:
@@ -426,7 +396,6 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 eval_ob = env_info.env.reset()
                 rew = 0
 
-                task_idx = env_info.env_rank
                 current_success = 0
                 episode_state_traj = [eval_ob]
                 while not done:
@@ -434,10 +403,8 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
                     embedding_input = torch.zeros(env_info.num_tasks)
                     embedding_input[env_info.env_rank] = 1
-                    # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
                     embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
-                    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), embedding_input, mask_this_task)
-
+                    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
 
                     eval_ob, r, done, info = env_info.env.step( act )
                     episode_state_traj.append(eval_ob)

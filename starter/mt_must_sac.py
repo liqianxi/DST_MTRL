@@ -106,6 +106,7 @@ def experiment(args):
     mp.set_start_method('spawn', force=True)
 
     example_ob = env.reset()
+
     example_embedding = env.active_task_one_hot
 
     embedding_shape = np.prod(example_embedding.shape)
@@ -113,12 +114,11 @@ def experiment(args):
     # The policy network 
     # Input: S,onehot(task)
 
-    # (19,)
+    # (19,) -> obs + goal obs + one-hot
     # (4,)
 
-    # TODO: allow random goal.
     pf = policies.EmbedGuassianContPolicy(
-        input_shape = env.observation_space.shape[0] + embedding_shape, 
+        input_shape = env.observation_space.shape[0], 
         output_shape = 2 * env.action_space.shape[0],
         **params['net'])
 
@@ -132,14 +132,12 @@ def experiment(args):
     # Input: S,A,onehot(task)
     qf1 = networks.MaskedNet( 
         input_shape = env.observation_space.shape[0] 
-                    + env.action_space.shape[0] 
-                    + embedding_shape,
+                    + env.action_space.shape[0],
         output_shape = 1,
         **params['net'] )
     qf2 = networks.MaskedNet( 
         input_shape = env.observation_space.shape[0]
-                    + env.action_space.shape[0] 
-                    + embedding_shape,
+                    + env.action_space.shape[0],
         output_shape = 1,
         **params['net'] )
     
