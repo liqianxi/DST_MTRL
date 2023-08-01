@@ -29,9 +29,9 @@
     "general_setting": {
         "discount" : 0.99,
         "pretrain_epochs" : 0,
-        "num_epochs" : 7500,
-        "epoch_frames" : 200,
-        "max_episode_frames" : 200,
+        "num_epochs" : 10000,
+        "epoch_frames" : 150,
+        "max_episode_frames" : 150,
 
         "batch_size" : 1280,
         "min_pool" : 10000,
@@ -40,7 +40,8 @@
         "use_soft_update" : true,
         "tau" : 0.005,
         "opt_times" : 100,
-        "mask_update_interval": 2, 
+        "update_end_epoch":7000,
+        "mask_update_interval": 30, 
         "eval_episodes" : 3
     },
     "sac":{

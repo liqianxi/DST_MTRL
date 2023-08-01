@@ -259,7 +259,7 @@ class MaskGeneratorNet(nn.Module):
 
         # Trajectory encoder embedding
         out = self.base.encode_lstm(x)
-
+        #print("encoder out",out)
         # Task one hot embedding
         embedding = self.em_base(embedding_input)
 
@@ -327,15 +327,16 @@ class MaskGeneratorNet(nn.Module):
         # Change the prob to [0,1].
         raw_last_weight = self.bound_tensor(raw_last_weight)
         #print("raw_last_weight after softmax",raw_last_weight)
-        task_probs_masks.append(raw_last_weight)   
+        task_probs_masks.append(raw_last_weight.squeeze(0))   
 
         task_binary_masks = []
-
+        print("inside gen task_probs_masks",task_probs_masks)
         for each_task_probs_mask in task_probs_masks:
+            #print("before topk",each_task_probs_mask)
             pruned_mask = self.keep_topk(each_task_probs_mask, 
                                          self.pruning_ratio,
                                          len(each_task_probs_mask))
-
+            #print("pruned_mask",pruned_mask)
             task_binary_masks.append(torch.where(pruned_mask>0,
                                                  torch.ones(pruned_mask.shape),
                                                  torch.zeros(pruned_mask.shape)))
