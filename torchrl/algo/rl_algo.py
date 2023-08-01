@@ -126,7 +126,7 @@ class RLAlgo():
         return one_hot_map
     
     def euclidean_distance_matrix(self,tensors):
-        print("euclidean_distance_matrix",tensors)
+        #print("euclidean_distance_matrix",tensors)
         # Stack the 1D tensors to create a 2D tensor
         stacked_tensors = torch.stack(tensors)
 
@@ -343,18 +343,18 @@ class RLAlgo():
 
 
 
-            print("prob_mask_buffer",prob_mask_buffer)
+            #print("prob_mask_buffer",prob_mask_buffer)
             # Calculate two losses.
             mask_sim_mtx = self.compute_mask_similarity_matrix(prob_mask_buffer, all_task_amount)
             traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, recent_traj)
-            print("mask_sim_mtx",mask_sim_mtx)
-            print("traj_sim_mtx",traj_sim_mtx)
+            #print("mask_sim_mtx",mask_sim_mtx)
+            #print("traj_sim_mtx",traj_sim_mtx)
             wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
             wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
             
             loss1, loss2 = self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
-            print("loss1",loss1)
-            print("loss2",loss2)
+            #print("loss1",loss1)
+            #print("loss2",loss2)
             wandb.log({f"{each_net}_sim_loss":loss1},step=current_epoch)
             wandb.log({f"{each_net}_sim_loss2":loss2},step=current_epoch)
 

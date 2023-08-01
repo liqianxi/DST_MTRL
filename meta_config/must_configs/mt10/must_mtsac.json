@@ -41,7 +41,7 @@
         "tau" : 0.005,
         "opt_times" : 100,
         "update_end_epoch":7000,
-        "mask_update_interval": 30, 
+        "mask_update_interval": 50, 
         "eval_episodes" : 3
     },
     "sac":{
