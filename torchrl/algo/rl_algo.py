@@ -26,6 +26,8 @@ DIR = os.getenv('DIR', 'null')
 EPOCH = int(os.getenv('EPOCH', '0'))
 
 
+
+
 class RLAlgo():
     """
     Base RL Algorithm Framework
@@ -52,7 +54,8 @@ class RLAlgo():
                  mask_generators=None,
                  mask_update_interval=None,
                  state_trajectory=None,
-                 traj_encoder=None
+                 traj_encoder=None,
+                 update_end_epoch=5000
                  ):
 
         self.env = env
@@ -85,6 +88,7 @@ class RLAlgo():
         self.num_epochs = num_epochs
         self.epoch_frames = epoch_frames
         self.max_episode_frames = max_episode_frames
+        self.update_end_epoch = update_end_epoch
 
         self.train_render = train_render
         self.eval_render = eval_render
@@ -120,6 +124,16 @@ class RLAlgo():
             one_hot_map[i] = embedding_input
 
         return one_hot_map
+    
+    def euclidean_distance_matrix(self,tensors):
+        print("euclidean_distance_matrix",tensors)
+        # Stack the 1D tensors to create a 2D tensor
+        stacked_tensors = torch.stack(tensors)
+
+        # Calculate the pairwise squared Euclidean distances
+        squared_distances = torch.cdist(stacked_tensors,stacked_tensors)
+
+        return squared_distances
 
     def start_epoch(self):
         pass
@@ -160,7 +174,7 @@ class RLAlgo():
             encoder (TrajectoryEncoder).
         """
         BATCH_SIZE = 8
-        EPOCHS = 5
+        EPOCHS = 2
 
         num_trajectories = len(trajectories)
 
@@ -233,32 +247,50 @@ class RLAlgo():
                         policy_j = policy_encodings[j]
                         distance = None
                         with torch.no_grad():
+                            #print("policy_i,policy_j",policy_i.loc,policy_j.loc)
+                            #print("covariance_matrix policy_i,policy_j",policy_i.covariance_matrix,policy_j.covariance_matrix)
                             distance = torch.distributions.kl_divergence(policy_i, policy_j) + torch.distributions.kl_divergence(policy_j, policy_i)
+                            distance /= 100
+                        #print(torch.isnan(distance))
+                            #print("distance",distance)
 
-                        distance_matrix[i, j] = torch.exp(-distance)
-                        distance_matrix[j, i] = torch.exp(-distance)
+                        distance_matrix[i, j] = distance.item()
+                        #print(distance_matrix[i, j])
+                        distance_matrix[j, i] = distance
 
 
             #TODO: need verify values in this part.
-            similarity_matrix = distance_matrix
+            similarity_matrix = torch.exp(-distance_matrix)
+            #print("before similarity_matrix",similarity_matrix)
             max_value = torch.max(similarity_matrix)
             min_value = torch.min(similarity_matrix)
             similarity_matrix = (similarity_matrix - min_value) / (max_value - min_value)
+            #print("similarity_matrix",similarity_matrix)
+            #assert torch.all(0<=similarity_matrix<=1), "invalid normalization"
             return similarity_matrix.reshape(1,task_amount*task_amount)
+
+
 
     def compute_mask_similarity_matrix(self, mask_buffer, task_amount):
         masks_for_this_net_type = mask_buffer
-
+        #print("masks_for_this_net_type",masks_for_this_net_type)
         #similarity_matrix = torch.zeros((task_amount, task_amount))
         task_mask_list = []
         for i in range(task_amount):
             task1_masks = torch.cat([tensor.view(-1) for tensor in masks_for_this_net_type[i]])
             task_mask_list.append(task1_masks)
         
-        combined_mask_tensors = torch.stack(task_mask_list)
-        #print("combined_mask_tensors",combined_mask_tensors)
-        similarities = torch.norm(combined_mask_tensors[:, None] - combined_mask_tensors, dim=-1)
 
+        distances = self.euclidean_distance_matrix(task_mask_list)
+        #print("distances",distances)
+
+        similarities = torch.exp(-distances)
+        max_value = torch.max(similarities)
+        min_value = torch.min(similarities)
+        similarities = (similarities - min_value) / (max_value - min_value)
+        #print(similarities)
+        #similarities = torch.norm(combined_mask_tensors[:, None] - combined_mask_tensors, dim=-1)
+        # assert torch.all(0<=similarities<=1), "invalid normalization"
         #print("similarities",similarities)
         return similarities.reshape(1,task_amount*task_amount)
 
@@ -301,34 +333,46 @@ class RLAlgo():
                     generator = self.qf2_mask_generator
 
                 # go through the mask_generator, get new masks.
+
                 task_probs_masks, task_binary_masks = generator(task_recent_traj, 
                                                                 self.one_hot_map[each_task])
+
 
                 prob_mask_buffer[each_task] = task_probs_masks
                 self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in task_binary_masks]
 
-            #print("prob_mask_buffer",prob_mask_buffer)
+
+
+            print("prob_mask_buffer",prob_mask_buffer)
             # Calculate two losses.
             mask_sim_mtx = self.compute_mask_similarity_matrix(prob_mask_buffer, all_task_amount)
             traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, recent_traj)
             print("mask_sim_mtx",mask_sim_mtx)
             print("traj_sim_mtx",traj_sim_mtx)
-            # wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
-            # wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
+            wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
+            wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
             
             loss1, loss2 = self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
             print("loss1",loss1)
             print("loss2",loss2)
             wandb.log({f"{each_net}_sim_loss":loss1},step=current_epoch)
+            wandb.log({f"{each_net}_sim_loss2":loss2},step=current_epoch)
 
             self.mask_generator_optimizer.zero_grad()
 
             # the mask generator network will be updated.
-            loss1.backward()
+            loss2.backward()
             self.mask_generator_optimizer.step()
 
 
-        # Next, update the rest nets.
+    def mask_update_scheduler(self, method, epoch, update_end_epoch,freq=None):
+        assert update_end_epoch != None
+        if method == "fix_interval":
+            if epoch < update_end_epoch and epoch !=0:
+                assert freq != None
+                return epoch % freq == 0
+            else: 
+                return False
 
     def train(self, task_amount,params):
         global EPOCH
@@ -341,6 +385,8 @@ class RLAlgo():
             settings=wandb.Settings(start_method="fork"),
             config=params
             )
+
+        #wandb.watch((self.policy_mask_generator,self.qf1_mask_generator,self.qf2_mask_generator),log='all',log_freq=5,log_graph=True)
 
         if RESTORE:
             for name, network in self.snapshot_networks:
@@ -370,8 +416,8 @@ class RLAlgo():
 
                 name = str(each_task)
                 wandb.log({name:value},step=epoch)
-
-            if epoch %  self.mask_update_interval == 0 and epoch !=0:
+            print("self.update_end_epoch",self.update_end_epoch)
+            if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval):
                 # update mask
                 print("start to update mask")
                 self.update_masks(TASK_SAMPLE_NUM, task_amount, epoch)
@@ -444,8 +490,8 @@ class RLAlgo():
                 self.snapshot(self.save_dir, epoch)
 
                 task_scheduler.save(self.save_dir)
-                filename = plot_history.plot(root_dir=self.save_dir, num_tasks=task_scheduler.num_tasks, sample_gap=1, perfermance_gap=10, delta_gap=10)
-                log_dict['history'] = wandb.Image(filename)
+                # filename = plot_history.plot(root_dir=self.save_dir, num_tasks=task_scheduler.num_tasks, sample_gap=1, perfermance_gap=10, delta_gap=10)
+                # log_dict['history'] = wandb.Image(filename)
 
             wandb.log(log_dict)
 

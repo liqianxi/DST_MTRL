@@ -1,9 +1,12 @@
+
 import sys
 sys.path.append(".")
 
 import torch
 import wandb
 import os,json
+#os.system("module load python/3.8")
+
 import time,copy
 import os.path as osp
 
@@ -41,6 +44,7 @@ import pickle
 
 
 
+#torch.autograd.set_detect_anomaly(True)
 RESTORE = int(os.getenv('RESTORE', '0'))
 
 CPU_NUM = 1
@@ -68,17 +72,14 @@ def random_initialize_masks(network, pruning_ratio):
 
     return neuron_mask_list
 
+
+
+
 def experiment(args):
 
 
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
 
-
-    """
-    {'reach-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, 
-    'push-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, }'
-    
-    """
     env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
     pruning_ratio = params["sparse_training"]["pruning_ratio"]
 
@@ -183,6 +184,9 @@ def experiment(args):
         device="cpu")
     
     print("mask generator finish initialization")
+
+    
+
     if args.qf1_snap is not None:
         qf1.load_state_dict(torch.load(args.qf2_snap, map_location='cpu'))
     if args.qf2_snap is not None:
@@ -264,6 +268,8 @@ def experiment(args):
                            "qf1_mask_generator": qf1_mask_generator,
                            "qf2_mask_generator": qf2_mask_generator},
     """
+    #print("all_mask_buffer",all_mask_buffer)
+    
     
     agent = MUST_SAC(
         pf = pf,
