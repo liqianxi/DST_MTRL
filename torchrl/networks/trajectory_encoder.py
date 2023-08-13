@@ -11,11 +11,7 @@ import random
 import numpy as np
 import torch as th
 
-# Structure of the trajectory data:
-#   np.ndarray of (N, D), where
-#     N = number of states collected and
-#     D = dimensionality of single observation
-#
+
 
 
 
@@ -40,8 +36,8 @@ class TrajectoryEncoder(th.nn.Module):
         self.state_dim = state_dim
         # Only using Normal distribution here so prior for latents is known
         self.latent_prior = th.distributions.normal.Normal(
-            th.zeros(latent_dim),##:
-            th.ones(latent_dim),
+            th.zeros(latent_dim).to(device),
+            th.ones(latent_dim).to(device),
         )
 
         self.device = device
@@ -50,16 +46,17 @@ class TrajectoryEncoder(th.nn.Module):
             self.state_dim,
             latent_dim,
             bidirectional=True
-        )
-        self.encoder_mu = th.nn.Linear(latent_dim, latent_dim)
-        self.encoder_std = th.nn.Linear(latent_dim, latent_dim)
+        ).to(device)
+
+        self.encoder_mu = th.nn.Linear(latent_dim, latent_dim).to(device)
+        self.encoder_std = th.nn.Linear(latent_dim, latent_dim).to(device)
 
         # Decoder maps latents + previous states ->
         #  means + diagonal covariances
         self.decoder = th.nn.Linear(
             latent_dim + self.state_dim,
             self.state_dim * 2
-        )
+        ).to(device)
 
     def encode_lstm(self, trajectory):
         """
@@ -73,36 +70,26 @@ class TrajectoryEncoder(th.nn.Module):
         """
         # print("len(trajectory)",len(trajectory))
         # print(trajectory[0].shape)
+        tmp = th.as_tensor(trajectory).float()
+
         encodings, _ = self.encoder_lstm(
             # Add batch dimension
             #th.tensor([trajectory]).unsqueeze(1)
-            th.as_tensor(trajectory).float()[:, None, :]
+            tmp[:, :, :].to(self.device)
         )
         # Get the "backward" output of the bidirectional LSTM.
         # See https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html#lstm
-        lstm_output = encodings.view(encodings.shape[0], 1, 2, self.latent_dim )[:, 0, 1, :]
-        latent = th.mean(lstm_output, dim=0)
-        return latent
+        lstm_output = encodings.view(encodings.shape[0],encodings.shape[1] ,1, 2, self.latent_dim )[:,:, 0, 1, :]
+
+        latents = th.mean(lstm_output, dim=1)
+
+        return latents
 
     def encode(self, trajectories):
-        """
-        Encode and sample trajectories into VAE latents (the ones sampled
-        from construced distribution).
 
-        Input is _List_ of trajectories, each a numpy array of (N, D).
-        Returns (#Trajectories, latent_dim) Torch tensor.
-        """
-        lstm_latents = th.zeros((len(trajectories), self.latent_dim )).to(self.device)
-        for trajectory_i, trajectory in enumerate(trajectories):
-            lstm_latents[trajectory_i] = self.encode_lstm(trajectory)
-        means = self.encoder_mu(lstm_latents)
-        # Make sure these are positive
-        stds = th.nn.functional.softplus(self.encoder_std(lstm_latents))
+        latents  = self.encode_lstm(trajectories)
 
-        # Sampling from a diagonal multivariate normal
-        distributions = th.distributions.normal.Normal(means, stds)
-        sampled_latents = distributions.rsample()
-        return sampled_latents, distributions
+        return latents
 
     def decode_single(self, previous_states, sampled_latent):
         """
@@ -143,7 +130,7 @@ class TrajectoryEncoder(th.nn.Module):
         final_loss = 0.0
         for i in range(len(trajectories)):
             sampled_latent = sampled_latents[i]
-            trajectory = th.as_tensor(trajectories[i]).float()
+            trajectory = th.as_tensor(trajectories[i]).float().to(self.device)
             previous_states = trajectory[:-1]
             successive_states = trajectory[1:]
 
@@ -223,94 +210,3 @@ def encode_policy_into_gaussian(network, trajectories):
 
     return distribution
 
-
-# if __name__ == '__main__':
-#     # Test on random data
-#     test_dim = 10
-#     num_trajectories = 5
-#     trajectories_length = [np.random.randint(15, 50) for i in range(num_trajectories)]
-#     trajectories = [np.random.random((length, test_dim)) for length in trajectories_length]
-
-#     vae = TrajectoryEncoder(test_dim)
-#     print(vae.encoder_lstm)
-#     assert 1==2
-#     optim = th.optim.Adam(vae.parameters())
-#     for i in range(100):
-#         loss = vae.vae_reconstruct_loss(trajectories)
-#         optim.zero_grad()
-#         loss.backward()
-#         optim.step()
-
-
-def compute_encoder_distance_worker(num_traj_index, num_traj, env):
-    # Import a library we need here
-    from trajectory_latent_tools import train_trajectory_encoder, encode_policy_into_gaussian
-    th.set_num_threads(2)
-
-    # First get list of different policy names we have so we can iterate over them
-    # (We are not actually using UBMs  here)
-    trained_ubms = glob(UBM_TEMPLATE.format(num_traj=num_traj, num_components=NUM_COMPONENTS, env=env, policy_name="*", repetition_num="*"))
-    trained_ubm_dirs = [os.path.basename(os.path.dirname(x)) for x in trained_ubms]
-    policy_names = ["_".join(x.split("_")[-4:-2]) for x in trained_ubm_dirs]
-    policy_names = sorted(list(set(policy_names)))
-    assert len(policy_names) == NUM_POLICIES_ANALYZED
-
-    for policy_name in policy_names:
-        for repetition in range(1, NUM_REPETITIONS + 1):
-            encoder_distance_path = ENCODER_DISTANCE_MATRIX_TEMPLATE.format(num_traj=num_traj, env=env, policy_name=policy_name, repetition_num=repetition)
-            # If already exists, skip extracting pivectors for this
-            if os.path.isfile(encoder_distance_path):
-                continue
-
-            # Hacky thing to load up which trajectories were sampled.
-            ubm_path = UBM_TEMPLATE.format(num_traj=num_traj, num_components=NUM_COMPONENTS, env=env, policy_name=policy_name, repetition_num=repetition)
-            ubm_data = np.load(ubm_path)
-            trajectory_indeces = ubm_data["trajectory_indeces"]
-            ubm_data.close()
-
-            # Load trajectory data
-            trajectories_path = glob(os.path.join(TRAJECTORY_TEMPLATE.format(env=env, policy_name=policy_name), "*"))
-            trajectories_path = sorted(trajectories_path)
-            # Unlike previously, this will not be concatenated
-            policy_datas = []
-            all_average_episodic_returns = []
-            for trajectory_i, trajectory_path in enumerate(trajectories_path):
-                data = np.load(trajectory_path)
-                keys = sorted(list(data.keys()))
-                all_average_episodic_returns.append(data["episodic_rewards"].mean())
-                # Take trajectories at same indeces as in used in training UBM.
-                # First make sure it is in same order as with ubm training
-                datas = [data[key] for key in keys if "traj" in key]
-                datas = [datas[i] for i in trajectory_indeces[trajectory_i]]
-                policy_datas.append(datas)
-
-            num_pivectors = len(policy_datas)
-
-            # Ravel all policy data for training
-            all_data = []
-            for policy_data in policy_datas:
-                all_data.extend(policy_data)
-            # Fun part: Train the encoder for trajectories
-            encoder_network = train_trajectory_encoder(all_data)
-
-            # Encode policies into distributions
-            policy_encodings = [encode_policy_into_gaussian(encoder_network, policy_data) for policy_data in policy_datas]
-
-            distance_matrix = np.ones((num_pivectors, num_pivectors))
-            for i in range(num_pivectors):
-                # Halve computation required
-                for j in range(i, num_pivectors):
-                    # Symmetric KL-divergence between the two policies, as in gaussian case
-                    policy_i = policy_encodings[i]
-                    policy_j = policy_encodings[j]
-                    distance = None
-                    with th.no_grad():
-                        distance = th.distributions.kl_divergence(policy_i, policy_j) + th.distributions.kl_divergence(policy_j, policy_i)
-
-                    distance_matrix[i, j] = distance.item()
-                    distance_matrix[j, i] = distance.item()
-            np.savez(
-                encoder_distance_path,
-                distance_matrix=distance_matrix,
-                average_episodic_rewards=all_average_episodic_returns
-            )

@@ -17,7 +17,7 @@ import os.path as osp
 from torchrl.task_scheduler import TaskScheduler
 import torchrl.plot_history as plot_history
 from tqdm import tqdm
-
+#from torch.profiler import profile, record_function, ProfilerActivity
 
 TASK_SAMPLE_NUM = int(os.getenv('TASK_SAMPLE_NUM', '50'))
 RESTORE = int(os.getenv('RESTORE', '0'))
@@ -54,8 +54,9 @@ class RLAlgo():
                  mask_generators=None,
                  mask_update_interval=None,
                  state_trajectory=None,
-                 traj_encoder=None,
-                 update_end_epoch=5000
+                 update_end_epoch=5000,
+                 trajectory_encoder=None,
+                 generator_lr=1e-5
                  ):
 
         self.env = env
@@ -66,7 +67,7 @@ class RLAlgo():
         self.qf2_mask_generator = mask_generators["qf2_mask_generator"]
 
         self.continuous = isinstance(self.env.action_space, gym.spaces.Box)
-        self.traj_encoder = traj_encoder
+        self.traj_encoder = trajectory_encoder
         self.replay_buffer = replay_buffer
         self.collector = collector
         # device specification
@@ -74,12 +75,11 @@ class RLAlgo():
      
 
         self.mask_generator_optimizer = torch.optim.Adam([
-            {'params':self.policy_mask_generator.get_learnable_params()},
-            {'params':self.qf1_mask_generator.get_learnable_params()},
-            {'params':self.qf2_mask_generator.get_learnable_params()}
-        ])
-        #assert 1==2
-        self.traj_encoder_optimizer = torch.optim.Adam(self.traj_encoder.parameters())
+            {'params':self.policy_mask_generator.parameters()},
+            {'params':self.qf1_mask_generator.parameters()},
+            {'params':self.qf2_mask_generator.parameters()}
+        ], lr=generator_lr)
+
 
         self.mask_buffer = mask_buffer
 
@@ -98,7 +98,6 @@ class RLAlgo():
         self.training_update_num = 0
         self.sample_key = None
 
-        self.tmp_device = 'cpu'
 
         # Logger & relevant setting
         self.logger = logger
@@ -120,13 +119,13 @@ class RLAlgo():
             embedding_input = torch.zeros(total_tasks)
             embedding_input[i] = 1
             # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
-            embedding_input = embedding_input.unsqueeze(0).to(self.tmp_device)
+            embedding_input = embedding_input.unsqueeze(0).to(self.device)
             one_hot_map[i] = embedding_input
 
         return one_hot_map
     
     def euclidean_distance_matrix(self,tensors):
-        #print("euclidean_distance_matrix",tensors)
+
         # Stack the 1D tensors to create a 2D tensor
         stacked_tensors = torch.stack(tensors)
 
@@ -159,209 +158,125 @@ class RLAlgo():
 
         with open(osp.join(prefix, "replay_buffer.pkl"), 'wb') as f:
             pickle.dump(self.replay_buffer, f)
-
-    def train_trajectory_encoder(self, trajectories, optimizer):
-        """
-        Train a fixed neural-network encoder that maps variable-length
-        trajectories (of states) into fixed length vectors, trained to reconstruct
-        said trajectories.
-        Returns TrajectoryEncoder.
-
-        Parameters:
-            trajectories (List of np.ndarray): A list of trajectories, each of shape
-                (?, D), where D is dimension of a state.
-        Returns:
-            encoder (TrajectoryEncoder).
-        """
-        BATCH_SIZE = 8
-        EPOCHS = 2
-
-        num_trajectories = len(trajectories)
-
-        num_batches_per_epoch = num_trajectories // BATCH_SIZE
-
-        # Copy trajectories as we are about to shuffle them in-place
-        trajectories = [x for x in trajectories]
-        avg_loss=0
-        for epoch in range(EPOCHS):
-            random.shuffle(trajectories)
-            total_loss = 0
-            for batch_i in range(num_batches_per_epoch):
-                batch_trajectories = trajectories[batch_i * BATCH_SIZE:(batch_i + 1) * BATCH_SIZE]
-
-                loss = self.traj_encoder.vae_reconstruct_loss(batch_trajectories)
-
-                optimizer.zero_grad()
-                loss.backward()
-                optimizer.step()
-                total_loss += loss.item()
-            avg_loss= total_loss / num_batches_per_epoch
-            #print("Epoch {}, Avrg loss {}".format(epoch, avg_loss))
-        return avg_loss
         
 
-    def encode_policy_into_gaussian(self, network, trajectories):
+    def encode_policy_into_vectors(self, network, trajectories):
         """
         Encode a policy, represented by sampled trajectories, into a single diagonal Gaussian
         by embedding trajectories and fitting a Gaussian distribution on the latents.
 
         Returns th.distributions.MultivariateNormal
         """
-        latents, _ = network.encode(trajectories)
-        mu = torch.mean(latents, dim=0).detach()
-        std = torch.std(latents, dim=0).detach()
+        #print("trajectories",trajectories.shape)
+        latents = network.encode(trajectories)
 
-        distribution = None
-        # Make sure (doubly so) that we do not store gradient stuff.
-        with torch.no_grad():
-            distribution = torch.distributions.MultivariateNormal(mu, torch.diag(std ** 2))
-
-        return distribution
+        return latents
 
     def compute_mask_loss(self,traj_sim_mtx, mask_sim_mtx):
-        epsilon = 1e-8
-        tensor1 = mask_sim_mtx / mask_sim_mtx.sum() + epsilon
-        tensor2 = traj_sim_mtx / traj_sim_mtx.sum() + epsilon
+        # epsilon = 1e-8
+        # tensor1 = mask_sim_mtx / mask_sim_mtx.sum() + epsilon
+        # tensor2 = traj_sim_mtx / traj_sim_mtx.sum() + epsilon
 
-        return torch.reshape(torch.sum(tensor1 * torch.log(tensor1 / tensor2)), (1, 1)), torch.cdist(traj_sim_mtx, mask_sim_mtx)
+        #torch.reshape(torch.sum(tensor1 * torch.log(tensor1 / tensor2)), (1, 1)), 
+        return torch.cdist(traj_sim_mtx, mask_sim_mtx)
 
-    def compute_policy_similarity_matrix(self, task_amount, recent_few_trajs):
+    def compute_policy_similarity_matrix(self, task_amount, task_traj_batch):
         #recent_trajs: task_amount*traj_size*
         with torch.no_grad():
-            policy_encodings = []
-            for task in list(recent_few_trajs.keys()):
-                recent_trajs = recent_few_trajs[task]
-                #print("recent_trajs.shape",recent_trajs[0].shape)
-                #print("recent_trajs",recent_trajs[0].shape)
-                encoding = self.encode_policy_into_gaussian(self.traj_encoder, 
-                                                            recent_trajs)
-                policy_encodings.append(encoding)
-            
-            distance_matrix = torch.zeros((task_amount, task_amount))
-            for i in range(task_amount):
-                # Halve computation required
-                for j in range(task_amount):
-                    # Symmetric KL-divergence between the two policies, as in gaussian case
-                    if i>j:
-                        policy_i = policy_encodings[i]
-                        policy_j = policy_encodings[j]
-                        distance = None
-                        with torch.no_grad():
-                            #print("policy_i,policy_j",policy_i.loc,policy_j.loc)
-                            #print("covariance_matrix policy_i,policy_j",policy_i.covariance_matrix,policy_j.covariance_matrix)
-                            distance = torch.distributions.kl_divergence(policy_i, policy_j) + torch.distributions.kl_divergence(policy_j, policy_i)
-                            distance /= 100
-                        #print(torch.isnan(distance))
-                            #print("distance",distance)
+            encoding = self.encode_policy_into_vectors(self.traj_encoder, 
+                                            task_traj_batch)
 
-                        distance_matrix[i, j] = distance.item()
-                        #print(distance_matrix[i, j])
-                        distance_matrix[j, i] = distance
+            list_encoding = [i for i in encoding]
 
+            distance_matrix = self.euclidean_distance_matrix(list_encoding)
 
-            #TODO: need verify values in this part.
             similarity_matrix = torch.exp(-distance_matrix)
-            #print("before similarity_matrix",similarity_matrix)
+
             max_value = torch.max(similarity_matrix)
             min_value = torch.min(similarity_matrix)
             similarity_matrix = (similarity_matrix - min_value) / (max_value - min_value)
-            #print("similarity_matrix",similarity_matrix)
-            #assert torch.all(0<=similarity_matrix<=1), "invalid normalization"
+
             return similarity_matrix.reshape(1,task_amount*task_amount)
 
-
-
     def compute_mask_similarity_matrix(self, mask_buffer, task_amount):
-        masks_for_this_net_type = mask_buffer
-        #print("masks_for_this_net_type",masks_for_this_net_type)
-        #similarity_matrix = torch.zeros((task_amount, task_amount))
-        task_mask_list = []
-        for i in range(task_amount):
-            task1_masks = torch.cat([tensor.view(-1) for tensor in masks_for_this_net_type[i]])
-            task_mask_list.append(task1_masks)
-        
+        task_mask_list = mask_buffer
 
         distances = self.euclidean_distance_matrix(task_mask_list)
-        #print("distances",distances)
 
         similarities = torch.exp(-distances)
         max_value = torch.max(similarities)
         min_value = torch.min(similarities)
         similarities = (similarities - min_value) / (max_value - min_value)
-        #print(similarities)
-        #similarities = torch.norm(combined_mask_tensors[:, None] - combined_mask_tensors, dim=-1)
-        # assert torch.all(0<=similarities<=1), "invalid normalization"
-        #print("similarities",similarities)
+
         return similarities.reshape(1,task_amount*task_amount)
 
     def update_masks(self, sampled_task_amount,all_task_amount, current_epoch):
         # First, update encoder
 
-        recent_window = 5
+        recent_window = 10
         #self.traj_encoder
 
-        trajectories = []
         recent_traj = {}
         for each_task in range(sampled_task_amount):
 
             recent_traj[each_task] = self.state_trajectory[each_task][-recent_window:]
 
-            for each_traj in self.state_trajectory[each_task]:
-                trajectories += [torch.as_tensor(each_traj).float().to(self.tmp_device)]
+            # for each_traj in self.state_trajectory[each_task]:
+            #     trajectories += [torch.as_tensor(each_traj).float().to(self.device)]
                 #print(trajectories[-1].device)
 
             # clear state_buffer.
             # TODO: should we add a capacity instead?
             self.state_trajectory[each_task] = []
 
-        loss = self.train_trajectory_encoder(trajectories, self.traj_encoder_optimizer)
-        wandb.log({"trajectory_train_loss":loss},step=current_epoch)
+        #loss = self.train_trajectory_encoder(trajectories, self.traj_encoder_optimizer)
+        #wandb.log({"trajectory_train_loss":loss},step=current_epoch)
         # Now we have updated our traj encoder,
         # we can then leverage the encoder to update each net mask generator.
         # (Since encoder is used to encoder traj at the beginning of the generators)
+
+        """
+        test_traj = torch.randn((4,20,19)).to(device)
+        onehot = torch.zeros((4,1,10)).to(device)
+        
+        """
         for each_net in ["Policy","Q1","Q2"]:
-            prob_mask_buffer = {}
 
+            task_traj_batch = torch.as_tensor([recent_traj[i][-1] for i in range(sampled_task_amount)]).float().to(self.device)
+
+            task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(sampled_task_amount)]).to(self.device)
+
+
+            generator = self.policy_mask_generator
+            if each_net == "Q1":
+                generator = self.qf1_mask_generator
+            elif each_net == "Q2":
+                generator = self.qf2_mask_generator
+
+            batch_task_probs_masks, batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
+            
             for each_task in range(sampled_task_amount):
-                task_recent_traj = torch.as_tensor(recent_traj[each_task][-1]).float().to(self.tmp_device)
-                #print(task_recent_traj)
-                #task_recent_traj = torch.stack([ torch.from_numpy(i) for i in recent_traj[each_task]])
-                generator = self.policy_mask_generator
-                if each_net == "Q1":
-                    generator = self.qf1_mask_generator
-                elif each_net == "Q2":
-                    generator = self.qf2_mask_generator
+                self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
 
-                # go through the mask_generator, get new masks.
-
-                task_probs_masks, task_binary_masks = generator(task_recent_traj, 
-                                                                self.one_hot_map[each_task])
-
-
-                prob_mask_buffer[each_task] = task_probs_masks
-                self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in task_binary_masks]
-
-
-
-            #print("prob_mask_buffer",prob_mask_buffer)
             # Calculate two losses.
-            mask_sim_mtx = self.compute_mask_similarity_matrix(prob_mask_buffer, all_task_amount)
-            traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, recent_traj)
+            mask_sim_mtx = self.compute_mask_similarity_matrix(batch_task_probs_masks, all_task_amount)
+            traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, task_traj_batch)
             #print("mask_sim_mtx",mask_sim_mtx)
             #print("traj_sim_mtx",traj_sim_mtx)
             wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
             wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
             
-            loss1, loss2 = self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
+            loss= self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
             #print("loss1",loss1)
             #print("loss2",loss2)
-            wandb.log({f"{each_net}_sim_loss":loss1},step=current_epoch)
-            wandb.log({f"{each_net}_sim_loss2":loss2},step=current_epoch)
+            wandb.log({f"{each_net}_sim_loss":loss},step=current_epoch)
+            #wandb.log({f"{each_net}_sim_loss2":loss2},step=current_epoch)
 
             self.mask_generator_optimizer.zero_grad()
-
+            
+            norm = torch.nn.utils.clip_grad_norm_(generator.parameters(), 1)
             # the mask generator network will be updated.
-            loss2.backward()
+            loss.backward()
             self.mask_generator_optimizer.step()
 
 
@@ -416,7 +331,7 @@ class RLAlgo():
 
                 name = str(each_task)
                 wandb.log({name:value},step=epoch)
-            print("self.update_end_epoch",self.update_end_epoch)
+            #print("self.update_end_epoch",self.update_end_epoch)
             if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval):
                 # update mask
                 print("start to update mask")
@@ -433,9 +348,12 @@ class RLAlgo():
                 self.start_epoch()
 
                 explore_start_time = time.time()
-
+                # with profile(activities=[ProfilerActivity.CPU], record_shapes=True) as prof:
+                #     with record_function("model_inference"):
                 training_epoch_info = self.collector.train_one_epoch(
                     task_sample_index)
+
+                #print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=10))
 
                 for reward in training_epoch_info["train_rewards"]:
                     self.training_episode_rewards.append(reward)
@@ -451,9 +369,9 @@ class RLAlgo():
             eval_start_time = time.time()
             eval_infos = self.collector.eval_one_epoch()
 
-            task_scheduler.update_success_rate_array(eval_infos)
-            task_scheduler.update_return_array(eval_infos)
-            task_scheduler.update_p()
+            # task_scheduler.update_success_rate_array(eval_infos)
+            # task_scheduler.update_return_array(eval_infos)
+            # task_scheduler.update_p()
 
             eval_time = time.time() - eval_start_time
 

@@ -89,6 +89,7 @@ class MUST_SAC(TwinSACQ):
         terminals = torch.cat([terminals[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
 
         embedding_inputs = batch["embedding_inputs"]
+
         embedding_inputs = torch.Tensor(embedding_inputs).to(self.device)
         embedding_inputs = torch.cat([embedding_inputs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
 
