@@ -44,7 +44,7 @@ class BaseCollector:
 
     def __init__(
         self,
-        env, pf, replay_buffer,
+        env, pf, replay_buffer, pretraining_epoch,
         train_render=False,
         eval_episodes=1,
         eval_render=False,
@@ -53,7 +53,7 @@ class BaseCollector:
         max_episode_frames = 999):
 
         self.pf = pf
-        
+        self.pretraining_epoch = pretraining_epoch
         self.replay_buffer = replay_buffer
 
         self.env = env

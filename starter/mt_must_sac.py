@@ -125,8 +125,8 @@ def experiment(args):
 
     print("finish policy net init")
 
-    if args.pf_snap is not None:
-        pf.load_state_dict(torch.load(args.pf_snap, map_location='cpu'))
+    # if args.pf_snap is not None:
+    #     pf.load_state_dict(torch.load(args.pf_snap, map_location='cpu'))
 
     # Initialize Q1 and Q2 net, the initialization of Q1_target and Q2_target 
     # will be in TwinSACQ.
@@ -141,11 +141,16 @@ def experiment(args):
                     + env.action_space.shape[0],
         output_shape = 1,
         **params['net'] )
-    
 
     # Initialize VAE model.
     encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
-                                         params['traj_encoder']["latent_size"], device='cpu').to("cpu")
+                                         params['traj_encoder']["latent_size"], device=device).to(device)
+
+    q1_encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
+                                         params['traj_encoder']["latent_size"], device=device).to(device)
+
+    q2_encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
+                                         params['traj_encoder']["latent_size"], device=device).to(device)
 
     # Initialize Mask generators.
     # For Policy net, Q1, Q2, we need 3 mask generators.
@@ -154,43 +159,54 @@ def experiment(args):
     # We use the same mask with their corresponding Q networks.
 
     policy_mask_generator = networks.MaskGeneratorNet(
-        base_type=networks.MLPBase,
-        em_hidden_shapes=params['task_embedding']['em_hidden_shapes'],
         em_input_shape=np.prod(example_embedding.shape),
         num_layers=2, ##:
         hidden_shapes=params['net']['hidden_shapes'],
-        trajectory_encoder=encoder,
         pruning_ratio=pruning_ratio,
-        device="cpu"
+        device=device,
+        info_dim=params['traj_encoder']["latent_size"],
+        trajectory_encoder=encoder
         )
 
+    # test_traj = torch.randn((4,20,19)).to(device)
+    # onehot = torch.zeros((4,1,10)).to(device)
+    # onehot[0][0][0] = 1
+    # onehot[1][0][1] = 1
+    # onehot[2][0][2] = 1
+    # onehot[3][0][3] = 1
+
+
+
+
+    # policy_mask_generator(test_traj,onehot)
+    #assert 1==2
+
     qf1_mask_generator = networks.MaskGeneratorNet(
-        base_type=networks.MLPBase,
-        em_hidden_shapes=params['task_embedding']['em_hidden_shapes'],
         em_input_shape=np.prod(example_embedding.shape),
         num_layers=2, ##:
         hidden_shapes=params['net']['hidden_shapes'],
-        trajectory_encoder=encoder,
         pruning_ratio=pruning_ratio,
-        device="cpu")
+        device=device,
+        info_dim=params['traj_encoder']["latent_size"],
+        trajectory_encoder=q1_encoder
+        )
     qf2_mask_generator = networks.MaskGeneratorNet(
-        base_type=networks.MLPBase,
-        em_hidden_shapes=params['task_embedding']['em_hidden_shapes'],
         em_input_shape=np.prod(example_embedding.shape),
         num_layers=2, ##:
         hidden_shapes=params['net']['hidden_shapes'],
-        trajectory_encoder=encoder,
         pruning_ratio=pruning_ratio,
-        device="cpu")
+        device=device,
+        info_dim=params['traj_encoder']["latent_size"],
+        trajectory_encoder=q2_encoder)
     
     print("mask generator finish initialization")
 
     
 
-    if args.qf1_snap is not None:
-        qf1.load_state_dict(torch.load(args.qf2_snap, map_location='cpu'))
-    if args.qf2_snap is not None:
-        qf2.load_state_dict(torch.load(args.qf2_snap, map_location='cpu'))
+    # if args.qf1_snap is not None:
+    #     qf1.load_state_dict(torch.load(args.qf2_snap, map_location='cpu'))
+    # if args.qf2_snap is not None:
+    #     qf2.load_state_dict(torch.load(args.qf2_snap, map_location='cpu'))
     
     example_dict = { 
         "obs": example_ob,
@@ -255,6 +271,7 @@ def experiment(args):
         device=device,
         reset_idx=True,
         manager=manager,
+        pretraining_epoch = params['general_setting']["pretrain_epochs"],
         epoch_frames=params['general_setting']['epoch_frames'],
         max_episode_frames=params['general_setting']['max_episode_frames'],
         eval_episodes = params['general_setting']['eval_episodes'],
@@ -263,13 +280,6 @@ def experiment(args):
     )
     params['general_setting']['batch_size'] = int(params['general_setting']['batch_size'])
     params['general_setting']['save_dir'] = osp.join(logger.work_dir,"model")
-    """
-            mask_generators = {"policy_mask_generator": policy_mask_generator,
-                           "qf1_mask_generator": qf1_mask_generator,
-                           "qf2_mask_generator": qf2_mask_generator},
-    """
-    #print("all_mask_buffer",all_mask_buffer)
-    
     
     agent = MUST_SAC(
         pf = pf,
@@ -279,8 +289,8 @@ def experiment(args):
                            "qf1_mask_generator": qf1_mask_generator,
                            "qf2_mask_generator": qf2_mask_generator},
         task_nums=env.num_tasks,
+        trajectory_encoder=encoder,
         mask_buffer=all_mask_buffer,
-        traj_encoder=encoder,
         **params['sac'],
         **params['general_setting']
     )
@@ -289,4 +299,7 @@ def experiment(args):
 
 
 if __name__ == "__main__":
+    #with torch.autograd.profiler.profile(use_cuda=True) as prof:
     experiment(args)
+    
+    #print(prof)
