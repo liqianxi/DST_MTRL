@@ -124,52 +124,17 @@ class AsyncSingleTaskParallelCollector(AsyncParallelCollector):
             'mean_success_rate': mean_success_rate / self.eval_worker_nums
         }
 
-def compare_list_identical(list1, list2):
-    # Compare if the lists are identical
-    identical = True
-
-    if len(list1) == len(list2):
-        for tensor1, tensor2 in zip(list1, list2):
-            if not torch.all(tensor1.eq(tensor2)):
-                identical = False
-                break
-    else:
-        identical = False
-    return identical
-
-def compare_all_identical(all_weight1,all_weight2 ):
-    identical = True
-    for list1, list2 in zip(all_weight1,all_weight2 ):
-        identical = compare_list_identical(list1, list2)
-        if not identical:
-            break
-    return identical
-
-def apply_mask(mask_this_task, base_net):
-    weights_mask, bias_mask = mask_this_task, mask_this_task
-
-    # First, for all the base layers, use element wise product
-    for layer_idx in range(len(base_net.base.fcs)):
-        base_net.base.fcs.weight[layer_idx] = torch.mul(base_net.base.fcs.weight[layer_idx],weights_mask[layer_idx])
-        base_net.base.fcs.bias[layer_idx] = torch.mul(base_net.base.fcs.bias[layer_idx],bias_mask[layer_idx])
-    
-    # Last, for the last output layer, use element wise product
-    base_net.last.weight = torch.mul(base_net.last.weight,weights_mask[-1])
-    base_net.last.bias = torch.mul(base_net.last.bias,bias_mask[-1])
-
-
 
 
 class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
-    def __init__(self, progress_alpha=0.1, **kwargs):
+    def __init__(self, progress_alpha=0.1,**kwargs):
         super().__init__(**kwargs)
 
-        
         self.progress_alpha = progress_alpha
 
     @classmethod
-    def take_actions(cls, funcs, env_info, ob_info, replay_buffer, idx_mapping, neuron_masks):
+    def take_actions(cls, funcs, env_info, ob_info, replay_buffer, idx_mapping, neuron_masks, enable_mask):
         pf = funcs["pf"]
         ob = ob_info["ob"]
 
@@ -182,7 +147,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
 
             out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
-                                neuron_masks=neuron_masks)
+                                neuron_masks=neuron_masks,enable_mask=enable_mask)
             act = out["action"]
 
 
@@ -222,7 +187,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
     @staticmethod
     def train_worker_process(cls, shared_funcs, env_info,
         replay_buffer, shared_que,
-        start_barrier, epochs, start_epoch, task_name, shared_dict, mask_buffer, state_trajectory, index_mapping, lock):
+        start_barrier, epochs, start_epoch, task_name, shared_dict, mask_buffer, state_trajectory, index_mapping, lock, pretraining_epoch):
 
         # Attention: Here mask_buffer is the policy net weight masks for each task.
         # i.e. mask_buffer[task_id] = [all layer neuron masks]
@@ -273,6 +238,10 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             if current_epoch > epochs:
                 break
 
+            enable_mask = True
+            if pretraining_epoch >= current_epoch:
+                enable_mask = False
+
             for key in shared_funcs:
                 # Load the base network's weights into this network copy.
                 # Need to apply mask.
@@ -287,13 +256,11 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             train_epoch_reward = 0    
 
             task_sample_index = shared_dict['task_sample_index']
-
-            # print(f'env_rank: {env_info.env_rank}, task_sample_index: {task_sample_index}')
  
             episode_state_traj = [ob]
             if env_info.env_rank in task_sample_index:
                 for _ in range(env_info.epoch_frames):
-                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task)
+                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
                     c_ob["ob"] = next_ob
                     episode_state_traj.append(c_ob["ob"])
                     train_rew += reward
@@ -397,7 +364,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 rew = 0
 
                 current_success = 0
-                episode_state_traj = [eval_ob]
+                #episode_state_traj = [eval_ob]
                 while not done:
 
 
@@ -407,14 +374,14 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
 
                     eval_ob, r, done, info = env_info.env.step( act )
-                    episode_state_traj.append(eval_ob)
+                    #episode_state_traj.append(eval_ob)
                     rew += r
                     if env_info.eval_render:
                         env_info.env.render()
                     current_success = max(current_success, info["success"])
 
                 # Append the task state trajectory for this episode to the shared buffer.
-                state_trajectory[env_info.env_rank] += [episode_state_traj]
+                #state_trajectory[env_info.env_rank] += [episode_state_traj]
 
                 eval_rews.append(rew)
                 done = False
@@ -484,7 +451,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     self.shared_dict, 
                     self.mask_buffer, 
                     self.state_trajectory, 
-                    self.index_mapping,lock))  #*
+                    self.index_mapping,lock,self.pretraining_epoch))  #*
             p.start()
             self.workers.append(p)
             
