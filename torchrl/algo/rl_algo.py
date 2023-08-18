@@ -289,7 +289,7 @@ class RLAlgo():
             else: 
                 return False
 
-    def train(self, task_amount,params):
+    def train(self, task_amount,params, group_name):
         global EPOCH
         self.all_task_amount = task_amount
         assert task_amount in [10,50]
@@ -297,6 +297,7 @@ class RLAlgo():
         
         wandb.init(
             project="dst_mtrl",
+            group=group_name,
             settings=wandb.Settings(start_method="fork"),
             config=params
             )
@@ -360,7 +361,7 @@ class RLAlgo():
                 explore_time = time.time() - explore_start_time
 
                 train_start_time = time.time()
-            self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer)
+            self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch)
 
             train_time = time.time() - train_start_time
 
@@ -398,6 +399,7 @@ class RLAlgo():
             infos["Eval____Time"] = eval_time
             infos.update(eval_infos)
             infos.update(finish_epoch_info)
+            wandb.log(infos,step=epoch)
 
             log_dict['mean_success_rate'] = infos['mean_success_rate']
 
