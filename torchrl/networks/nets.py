@@ -88,7 +88,7 @@ class MaskedNet(nn.Module):
         mask_out = x
         if enable_mask:
             for idx, layer in enumerate(self.base.fcs):
-                mask_out = self.activation_func(layer(mask_out) * neuron_masks[idx])
+                mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
 
             out = self.last(mask_out)
 
@@ -157,6 +157,7 @@ class MaskGeneratorNet(nn.Module):
         self.pruning_ratio = pruning_ratio
         self.device = device
         self.encode_dimension = info_dim
+        self.one_hot_result_dim = 64
         
 
         one_hot_mlp_hidden = 256
@@ -164,7 +165,7 @@ class MaskGeneratorNet(nn.Module):
         self.mlp_layers = nn.Sequential(
             nn.Linear(em_input_shape, one_hot_mlp_hidden),  # First MLP layer: input_size -> hidden_size
             nn.ReLU(),                           # Activation function
-            nn.Linear(one_hot_mlp_hidden, self.encode_dimension )  # Second MLP layer: hidden_size -> output_size
+            nn.Linear(one_hot_mlp_hidden, self.one_hot_result_dim )  # Second MLP layer: hidden_size -> output_size
         ).to(device)
 
         self.num_layers = num_layers
@@ -179,7 +180,7 @@ class MaskGeneratorNet(nn.Module):
         self.sigmoid = torch.nn.Sigmoid()
        
         self.generator_body = nn.Sequential(
-            nn.Linear(self.encode_dimension *2, 256),  
+            nn.Linear(self.encode_dimension+self.one_hot_result_dim, 256),  
             nn.ReLU(),  
             nn.Linear(256, 512),
             nn.ReLU(),                           
@@ -190,7 +191,7 @@ class MaskGeneratorNet(nn.Module):
 
     def keep_topk(self, tensor, pruning_ratio,neurons):
         # Keep how many neurons at each layer.
-        k = int(neurons * (1 - pruning_ratio))
+        k = int(neurons - neurons * pruning_ratio)
 
         # Pick the highest k values. Set the rest to zero.
         values, indices = torch.topk(tensor, k)

@@ -42,7 +42,7 @@ from metaworld_utils.meta_env import get_meta_env
 import random
 import pickle
 
-
+torch.set_printoptions(profile="full")
 
 #torch.autograd.set_detect_anomaly(True)
 RESTORE = int(os.getenv('RESTORE', '0'))
@@ -57,18 +57,21 @@ torch.set_num_threads(CPU_NUM)
 
 def random_initialize_masks(network, pruning_ratio):
     neuron_mask_list = []
-    all_layer_weight_shape = []
 
+    #print("network",network)
     for each_layer in network.base.fcs:
         neurons = each_layer.bias.shape[0]
-        all_layer_weight_shape.append(each_layer.weight.shape)
+        #print("neurons",neurons)
+        #print("ratio",pruning_ratio)
         neuron_mask = torch.zeros(neurons)
-        ones = int(neurons * (1 - pruning_ratio))
+
+        tmp = neurons - neurons * pruning_ratio
+        #print("tmp",tmp)
+        ones = int(tmp)
+        #print("ones",ones)
         idx = torch.randperm(neurons)[:ones]
         neuron_mask[idx] = 1
         neuron_mask_list.append(neuron_mask)
-
-    all_layer_weight_shape.append(network.last.weight.shape)
 
     return neuron_mask_list
 
@@ -81,7 +84,14 @@ def experiment(args):
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
 
     env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
-    pruning_ratio = params["sparse_training"]["pruning_ratio"]
+    pruning_ratio = args.pruning_ratio
+    params['sparse_training']["pruning_ratio"] = args.pruning_ratio
+    params['general_setting']["mask_update_interval"] = args.mask_update_interval
+    params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
+    group_name = args.id
+
+    print("pruning_ratio",pruning_ratio)
+
 
     env.seed(args.seed)
     torch.manual_seed(args.seed)
@@ -251,10 +261,14 @@ def experiment(args):
                 net = pf
 
             neuron_masks = random_initialize_masks(net, pruning_ratio)
+            #print("neuron_masks",neuron_masks)
             mask_buffer[task_idx] = neuron_masks
 
         all_mask_buffer[net_type] = mask_buffer       
 
+    #print(all_mask_buffer["Policy"])
+
+    #assert 1==2
     if RESTORE:
         with open(osp.join(osp.join(logger.work_dir,"model"), "replay_buffer.pkl"), 'rb') as f:
             replay_buffer = pickle.load(f)
@@ -295,7 +309,7 @@ def experiment(args):
         **params['general_setting']
     )
 
-    agent.train(env.num_tasks,params)
+    agent.train(env.num_tasks,params,group_name)
 
 
 if __name__ == "__main__":
