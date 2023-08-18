@@ -18,10 +18,10 @@
         "em_hidden_shapes":[256, 128]
     },
     "traj_encoder":{
-        "latent_size": 64
+        "latent_size": 256
     },
     "sparse_training":{
-        "pruning_ratio":0.9
+        "pruning_ratio":0.8
 
     }
     ,
@@ -39,7 +39,7 @@
         "use_soft_update" : true,
         "tau" : 0.005,
         "opt_times" : 100,
-        "update_end_epoch":7000,
+        "update_end_epoch":5000,
         "mask_update_interval": 50, 
         "eval_episodes" : 3
     },

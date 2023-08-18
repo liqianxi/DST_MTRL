@@ -4,7 +4,7 @@ from .twin_sac_q import TwinSACQ
 import copy
 import torch
 import numpy as np
-
+import wandb
 import torchrl.policies as policies
 import torch.nn.functional as F
 
@@ -110,16 +110,11 @@ class MUST_SAC(TwinSACQ):
 
         
         # (1280,xx)
-        all_info = []
-        mean = []
-        log_std = []
-        new_actions = []
-        log_probs = []
         # 1*128
 
         policy_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
                                                       mask_buffer["Policy"], 
-                                                      each_task_batch_size, self.device)
+                                                      each_task_batch_size, self.device)                                     
 
         q1_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
                                                       mask_buffer["Q1"], 
@@ -292,11 +287,12 @@ class MUST_SAC(TwinSACQ):
         info['mean/max'] = mean.max().item()
         info['mean/min'] = mean.min().item()
 
-        all_info.append(info)
+        #all_info.append(info)
 
-        return all_info
+        return info
 
-    def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer):
+    def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer, epoch):
+        info = None
         for _ in range(self.opt_times):
             batch = self.replay_buffer.random_batch(self.batch_size,
                                                     self.sample_key,
@@ -304,8 +300,9 @@ class MUST_SAC(TwinSACQ):
                                                     task_sample_index=task_sample_index,
                                                     reshape=False)
             # Here, mask_buffer is all network types and all tasks.
-            all_info = self.update(batch, task_sample_index, task_scheduler, mask_buffer)
-            for each in all_info:
-                self.logger.add_update_info(each)
+            info = self.update(batch, task_sample_index, task_scheduler, mask_buffer)
+            
+            self.logger.add_update_info(info)
         
+        wandb.log(info,step=epoch)
         # print(f'num_steps_can_sample: {self.replay_buffer.num_steps_can_sample()}')
