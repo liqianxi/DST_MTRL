@@ -12,13 +12,6 @@ import numpy as np
 import torch as th
 
 
-
-
-
-
-
-
-
 class TrajectoryEncoder(th.nn.Module):
     """
     A VAE model similar to [1], using a bi-directional

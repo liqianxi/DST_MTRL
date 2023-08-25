@@ -41,7 +41,8 @@
         "opt_times" : 100,
         "update_end_epoch":5000,
         "mask_update_interval": 50, 
-        "eval_episodes" : 3
+        "eval_episodes" : 3,
+        "recent_traj_window": 20
     },
     "sac":{
         

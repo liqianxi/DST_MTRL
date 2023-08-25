@@ -56,7 +56,8 @@ class RLAlgo():
                  state_trajectory=None,
                  update_end_epoch=5000,
                  trajectory_encoder=None,
-                 generator_lr=1e-5
+                 generator_lr=1e-5,
+                 recent_traj_window=20
                  ):
 
         self.env = env
@@ -65,6 +66,7 @@ class RLAlgo():
         self.policy_mask_generator = mask_generators["policy_mask_generator"]
         self.qf1_mask_generator = mask_generators["qf1_mask_generator"]
         self.qf2_mask_generator = mask_generators["qf2_mask_generator"]
+        self.recent_traj_window = recent_traj_window
 
         self.continuous = isinstance(self.env.action_space, gym.spaces.Box)
         self.traj_encoder = trajectory_encoder
@@ -213,7 +215,7 @@ class RLAlgo():
     def update_masks(self, sampled_task_amount,all_task_amount, current_epoch):
         # First, update encoder
 
-        recent_window = 10
+        recent_window = self.recent_traj_window
         #self.traj_encoder
 
         recent_traj = {}
@@ -241,48 +243,55 @@ class RLAlgo():
         
         """
         for each_net in ["Policy","Q1","Q2"]:
+            mask_sim_mtx, traj_sim_mtx = None, None
+            batch_task_probs_masks, batch_task_binary_masks = None, None
+            loss = None
+            for each_traj_idx in range(recent_window):
+                task_traj_batch = torch.as_tensor([recent_traj[i][each_traj_idx] for i in range(sampled_task_amount)]).float().to(self.device)
 
-            task_traj_batch = torch.as_tensor([recent_traj[i][-1] for i in range(sampled_task_amount)]).float().to(self.device)
-
-            task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(sampled_task_amount)]).to(self.device)
+                task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(sampled_task_amount)]).to(self.device)
 
 
-            generator = self.policy_mask_generator
-            if each_net == "Q1":
-                generator = self.qf1_mask_generator
-            elif each_net == "Q2":
-                generator = self.qf2_mask_generator
+                generator = self.policy_mask_generator
+                if each_net == "Q1":
+                    generator = self.qf1_mask_generator
+                elif each_net == "Q2":
+                    generator = self.qf2_mask_generator
 
-            batch_task_probs_masks, batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
+                batch_task_probs_masks, batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
+                
+
+
+                # Calculate two losses.
+                mask_sim_mtx = self.compute_mask_similarity_matrix(batch_task_probs_masks, all_task_amount)
+                traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, task_traj_batch)
+                loss= self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
+                self.mask_generator_optimizer.zero_grad()
             
-            for each_task in range(sampled_task_amount):
-                self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
-
-            # Calculate two losses.
-            mask_sim_mtx = self.compute_mask_similarity_matrix(batch_task_probs_masks, all_task_amount)
-            traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, task_traj_batch)
+                norm = torch.nn.utils.clip_grad_norm_(generator.parameters(), 1)
+                # the mask generator network will be updated.
+                loss.backward()
+                self.mask_generator_optimizer.step()
             #print("mask_sim_mtx",mask_sim_mtx)
             #print("traj_sim_mtx",traj_sim_mtx)
             wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
             wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
+            for each_task in range(sampled_task_amount):
+                self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
             
-            loss= self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
             #print("loss1",loss1)
             #print("loss2",loss2)
             wandb.log({f"{each_net}_sim_loss":loss},step=current_epoch)
             #wandb.log({f"{each_net}_sim_loss2":loss2},step=current_epoch)
 
-            self.mask_generator_optimizer.zero_grad()
             
-            norm = torch.nn.utils.clip_grad_norm_(generator.parameters(), 1)
-            # the mask generator network will be updated.
-            loss.backward()
-            self.mask_generator_optimizer.step()
 
 
     def mask_update_scheduler(self, method, epoch, update_end_epoch,freq=None):
         assert update_end_epoch != None
         if method == "fix_interval":
+            print("epoch, update_end_epoch",epoch, update_end_epoch)
+            print("freq",freq)
             if epoch < update_end_epoch and epoch !=0:
                 assert freq != None
                 return epoch % freq == 0
@@ -326,7 +335,8 @@ class RLAlgo():
 
         # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
-
+            
+            torch.cuda.empty_cache()
             for each_task in self.mask_buffer["Policy"].keys():
                 value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
 
@@ -364,7 +374,7 @@ class RLAlgo():
             self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch)
 
             train_time = time.time() - train_start_time
-
+            print("train_time",train_time)
             finish_epoch_info = self.finish_epoch()
 
             eval_start_time = time.time()
@@ -375,7 +385,7 @@ class RLAlgo():
             # task_scheduler.update_p()
 
             eval_time = time.time() - eval_start_time
-
+            print("eval time",eval_time)
             total_frames += self.collector.active_worker_nums * self.epoch_frames
 
             infos = {}
