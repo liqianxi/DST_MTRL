@@ -1,0 +1,2145 @@
+2023-07-29 16:36:52,517 MainThread INFO: Experiment Name:testing_must_mtsac
+2023-07-29 16:36:52,518 MainThread INFO: {
+  "env_name": "mt10",
+  "env": {
+    "reward_scale": 1,
+    "obs_norm": false
+  },
+  "meta_env": {
+    "obs_type": "with_goal_and_id"
+  },
+  "replay_buffer": {
+    "size": 1000000.0
+  },
+  "net": {
+    "hidden_shapes": [
+      10,
+      10
+    ]
+  },
+  "task_embedding": {
+    "em_hidden_shapes": [
+      10,
+      10
+    ]
+  },
+  "traj_encoder": {
+    "hidden_shapes": [
+      10,
+      10
+    ],
+    "latent_size": 10
+  },
+  "sparse_training": {
+    "pruning_ratio": 0.5
+  },
+  "general_setting": {
+    "discount": 0.99,
+    "pretrain_epochs": 0,
+    "num_epochs": 80,
+    "epoch_frames": 150,
+    "max_episode_frames": 150,
+    "batch_size": 1280,
+    "min_pool": 10000,
+    "target_hard_update_period": 1000,
+    "use_soft_update": true,
+    "tau": 0.005,
+    "opt_times": 5,
+    "mask_update_interval": 2,
+    "update_end_epoch": 3750,
+    "eval_episodes": 3
+  },
+  "sac": {
+    "plr": 0.0003,
+    "qlr": 0.0003,
+    "reparameterization": true,
+    "automatic_entropy_tuning": true,
+    "policy_std_reg_weight": 0,
+    "policy_mean_reg_weight": 0
+  }
+}
+finish policy net init
+mask generator finish initialization
+/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Could not seed environment <MTEnv instance>[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+wandb: Currently logged in as: liqianxi. Use `wandb login --relogin` to force relogin
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: | Waiting for wandb.init()...wandb: WARNING Serializing object of type str that is 925419 bytes
+wandb: wandb version 0.15.7 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.15.5
+wandb: Run data is saved locally in /scratch/qianxi/t3s/t3s_code/wandb/run-20230729_163752-zihesnn6
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run lucky-glitter-75
+wandb: ⭐️ View project at https://wandb.ai/liqianxi/dst_mtrl
+wandb: 🚀 View run at https://wandb.ai/liqianxi/dst_mtrl/runs/zihesnn6
+2023-07-29 16:37:57,044 MainThread INFO: Finished Pretrain
+  0%|          | 0/80 [00:00<?, ?it/s]sample: [6, 1, 9, 2, 8, 0, 7, 4, 5, 3]
+replay_buffer._size: [300 300 300 300 300 300 300 300 300 300]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [11853.06, -20.83, -20.77, -42.73, -23.78, -17.63, -44.52, -20.04, -26.69, -26.91]
+return_array_smooth: [11853.06, -20.83, -20.77, -42.73, -23.78, -17.63, -44.52, -20.04, -26.69, -26.91][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+snapshot at best
+2023-07-29 16:38:00,813 MainThread INFO: EPOCH:0
+2023-07-29 16:38:00,815 MainThread INFO: Time Consumed:3.7115702629089355s
+2023-07-29 16:38:00,815 MainThread INFO: Total Frames:1500s
+/scratch/qianxi/t3s/t3s_code/./torchrl/algo/rl_algo.py:417: UserWarning: This overload of nonzero is deprecated:
+	nonzero()
+Consider using one of the following signatures instead:
+	nonzero(*, bool as_tuple) (Triggered internally at  /pytorch/torch/csrc/utils/python_arg_parser.cpp:882.)
+  value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
+  1%|▏         | 1/80 [00:05<07:06,  5.40s/it]------------------------------------  -----------  ----------  ----------  --------
+Name                                  Value
+Running_Average_Rewards               1160.91539
+Train_Epoch_Reward                    5740.33569
+Running_Training_Average_Rewards      574.03357
+Explore_Time                          0.00632
+Train___Time                          2.60046
+Eval____Time                          0.02159
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -44.52080
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -42.73305
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.63062
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.78295
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.03906
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -20.77313
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -20.82609
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 11853.06214
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.91342
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.68911
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std         Max         Min
+Reward_Mean                           6.55850      0.67030     7.44077     5.48172
+alpha_0                               0.99729      0.00131     0.99970     0.99516
+alpha_1                               0.99751      0.00132     1.00000     0.99532
+alpha_2                               0.99765      0.00133     1.00000     0.99542
+alpha_3                               0.99777      0.00134     1.00000     0.99549
+alpha_4                               0.99787      0.00135     1.00000     0.99555
+alpha_5                               0.99796      0.00134     1.00000     0.99563
+alpha_6                               0.99804      0.00134     1.00000     0.99569
+alpha_7                               0.99812      0.00134     1.00000     0.99576
+alpha_8                               0.99819      0.00133     1.00000     0.99585
+alpha_9                               0.99826      0.00133     1.00000     0.99594
+Alpha_loss                            -0.01302     0.00908     -0.00000    -0.02643
+Training/policy_loss                  -2.69145     0.03963     -2.59775    -2.77922
+Training/qf1_loss                     624.63093    1870.86915  7210.50293  5.22168
+Training/qf2_loss                     624.66956    1870.98474  7211.24756  5.22177
+Training/pf_norm                      0.51342      0.10701     0.82825     0.30373
+Training/qf1_norm                     19.40898     42.94381    167.58641   4.59534
+Training/qf2_norm                     18.77815     40.50181    158.00914   4.59258
+log_std/mean                          -0.00988     0.00544     -0.00090    -0.01951
+log_std/std                           0.00155      0.00020     0.00210     0.00118
+log_std/max                           -0.00783     0.00535     0.00109     -0.01682
+log_std/min                           -0.01221     0.00571     -0.00296    -0.02197
+log_probs/mean                        -2.68560     0.03911     -2.59353    -2.76821
+log_probs/std                         0.41742      0.02704     0.49591     0.35871
+log_probs/max                         -1.58033     0.14562     -1.22298    -1.82391
+log_probs/min                         -3.68490     0.42652     -3.38793    -5.91800
+mean/mean                             -0.00136     0.00033     -0.00052    -0.00186
+mean/std                              0.00238      0.00096     0.00381     0.00026
+mean/max                              0.00099      0.00107     0.00273     -0.00103
+mean/min                              -0.00521     0.00154     -0.00167    -0.00713
+------------------------------------  -----------  ----------  ----------  --------
+snapshot at 0
+history save at ./log/testing_must_mtsac/mt10/11/model
+sample: [9, 1, 5, 3, 4, 6, 7, 2, 0, 8]
+replay_buffer._size: [450 450 450 450 450 450 450 450 450 450]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [11853.06, -20.83, -20.77, -42.73, -23.78, -17.63, -48.74, -20.04, -26.69, -26.91]
+return_array_smooth: [11853.06, -20.83, -20.77, -42.73, -23.78, -17.63, -46.63, -20.04, -26.69, -26.91][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-07-29 16:38:04,115 MainThread INFO: EPOCH:1
+2023-07-29 16:38:04,115 MainThread INFO: Time Consumed:1.6391119956970215s
+2023-07-29 16:38:04,116 MainThread INFO: Total Frames:3000s
+  2%|▎         | 2/80 [00:07<04:13,  3.25s/it]------------------------------------  -----------  ----------  -----------  --------
+Name                                  Value
+Running_Average_Rewards               1160.49318
+Train_Epoch_Reward                    12741.44400
+Running_Training_Average_Rewards      924.08898
+Explore_Time                          0.00554
+Train___Time                          1.62493
+Eval____Time                          0.00718
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -48.74291
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -42.73305
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.63062
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.78295
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.03906
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -20.77313
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -20.82609
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 11853.06214
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.91342
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.68911
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std         Max          Min
+Reward_Mean                           8.39110      0.92053     9.49096      6.77088
+alpha_0                               0.99277      0.00132     0.99502      0.99060
+alpha_1                               0.99294      0.00133     0.99526      0.99073
+alpha_2                               0.99306      0.00134     0.99536      0.99080
+alpha_3                               0.99314      0.00135     0.99542      0.99085
+alpha_4                               0.99320      0.00135     0.99547      0.99088
+alpha_5                               0.99327      0.00136     0.99554      0.99093
+alpha_6                               0.99331      0.00137     0.99560      0.99095
+alpha_7                               0.99335      0.00137     0.99565      0.99099
+alpha_8                               0.99340      0.00138     0.99573      0.99105
+alpha_9                               0.99345      0.00139     0.99581      0.99112
+Alpha_loss                            -0.04468     0.00900     -0.03162     -0.05935
+Training/policy_loss                  -2.70927     0.03072     -2.64156     -2.77772
+Training/qf1_loss                     1042.02985   3189.36820  12971.35059  5.20437
+Training/qf2_loss                     1042.17310   3189.81884  12973.17578  5.19714
+Training/pf_norm                      0.45024      0.10500     0.68705      0.30250
+Training/qf1_norm                     23.66186     55.67640    214.04631    4.71435
+Training/qf2_norm                     22.69082     52.06378    200.66660    4.71903
+log_std/mean                          -0.02879     0.00583     -0.01882     -0.04003
+log_std/std                           0.00247      0.00025     0.00305      0.00194
+log_std/max                           -0.02500     0.00544     -0.01606     -0.03551
+log_std/min                           -0.03217     0.00621     -0.02147     -0.04400
+log_probs/mean                        -2.69480     0.02983     -2.62780     -2.76213
+log_probs/std                         0.37870      0.03060     0.45816      0.32524
+log_probs/max                         -1.72437     0.13163     -1.42380     -1.99762
+log_probs/min                         -3.66433     0.47182     -3.33503     -5.53660
+mean/mean                             -0.00196     0.00048     -0.00084     -0.00271
+mean/std                              0.00304      0.00049     0.00421      0.00201
+mean/max                              0.00084      0.00108     0.00319      -0.00078
+mean/min                              -0.00706     0.00090     -0.00522     -0.00889
+------------------------------------  -----------  ----------  -----------  --------
+start to update mask
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1398, 0.7696, 0.9026, 0.4573, 0.4880, 0.3969, 0.5261, 0.9909,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2780, 1.0000, 0.6932, 0.1786, 0.7869, 0.3578, 0.0000, 0.7847, 0.7438,
+        0.4577], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1398, 0.7696, 0.9026, 0.4573, 0.4880, 0.3969, 0.5261, 0.9909,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2780, 1.0000, 0.6932, 0.1786, 0.7869, 0.3578, 0.0000, 0.7847, 0.7438,
+        0.4577], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1437, 0.7735, 0.9001, 0.4506, 0.4966, 0.4127, 0.5273, 1.0000,
+        0.9959], grad_fn=<DivBackward0>), tensor([0.2784, 1.0000, 0.6927, 0.1734, 0.7880, 0.3536, 0.0000, 0.7849, 0.7448,
+        0.4590], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1437, 0.7735, 0.9001, 0.4506, 0.4966, 0.4127, 0.5273, 1.0000,
+        0.9959], grad_fn=<DivBackward0>), tensor([0.2784, 1.0000, 0.6927, 0.1734, 0.7880, 0.3536, 0.0000, 0.7849, 0.7448,
+        0.4590], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1497, 0.7727, 0.9118, 0.4463, 0.4864, 0.4022, 0.5235, 0.9715,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2696, 1.0000, 0.6908, 0.1794, 0.7898, 0.3520, 0.0000, 0.7825, 0.7441,
+        0.4601], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1497, 0.7727, 0.9118, 0.4463, 0.4864, 0.4022, 0.5235, 0.9715,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2696, 1.0000, 0.6908, 0.1794, 0.7898, 0.3520, 0.0000, 0.7825, 0.7441,
+        0.4601], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1547, 0.7639, 0.8881, 0.4577, 0.4765, 0.4072, 0.5212, 0.9701,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2677, 1.0000, 0.6943, 0.1767, 0.7908, 0.3529, 0.0000, 0.7792, 0.7399,
+        0.4625], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1547, 0.7639, 0.8881, 0.4577, 0.4765, 0.4072, 0.5212, 0.9701,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2677, 1.0000, 0.6943, 0.1767, 0.7908, 0.3529, 0.0000, 0.7792, 0.7399,
+        0.4625], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1504, 0.7765, 0.9013, 0.4625, 0.4913, 0.4072, 0.5218, 1.0000,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2764, 1.0000, 0.6954, 0.1750, 0.7867, 0.3544, 0.0000, 0.7842, 0.7426,
+        0.4593], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1504, 0.7765, 0.9013, 0.4625, 0.4913, 0.4072, 0.5218, 1.0000,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2764, 1.0000, 0.6954, 0.1750, 0.7867, 0.3544, 0.0000, 0.7842, 0.7426,
+        0.4593], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1674, 0.7736, 0.9136, 0.4670, 0.4942, 0.3965, 0.5238, 0.9747,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2732, 1.0000, 0.6905, 0.1732, 0.7906, 0.3493, 0.0000, 0.7857, 0.7450,
+        0.4625], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1674, 0.7736, 0.9136, 0.4670, 0.4942, 0.3965, 0.5238, 0.9747,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2732, 1.0000, 0.6905, 0.1732, 0.7906, 0.3493, 0.0000, 0.7857, 0.7450,
+        0.4625], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1689, 0.7584, 0.8821, 0.4800, 0.5041, 0.4059, 0.5365, 1.0000,
+        0.9967], grad_fn=<DivBackward0>), tensor([0.2755, 1.0000, 0.6933, 0.1702, 0.7917, 0.3537, 0.0000, 0.7808, 0.7410,
+        0.4599], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1689, 0.7584, 0.8821, 0.4800, 0.5041, 0.4059, 0.5365, 1.0000,
+        0.9967], grad_fn=<DivBackward0>), tensor([0.2755, 1.0000, 0.6933, 0.1702, 0.7917, 0.3537, 0.0000, 0.7808, 0.7410,
+        0.4599], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1872, 0.7707, 0.8915, 0.4862, 0.5181, 0.3996, 0.5411, 1.0000,
+        0.9821], grad_fn=<DivBackward0>), tensor([0.2688, 1.0000, 0.6947, 0.1758, 0.7901, 0.3529, 0.0000, 0.7795, 0.7395,
+        0.4615], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1872, 0.7707, 0.8915, 0.4862, 0.5181, 0.3996, 0.5411, 1.0000,
+        0.9821], grad_fn=<DivBackward0>), tensor([0.2688, 1.0000, 0.6947, 0.1758, 0.7901, 0.3529, 0.0000, 0.7795, 0.7395,
+        0.4615], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1552, 0.7617, 0.8834, 0.4666, 0.4878, 0.4087, 0.5322, 0.9914,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2768, 1.0000, 0.6938, 0.1709, 0.7911, 0.3545, 0.0000, 0.7825, 0.7422,
+        0.4614], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1552, 0.7617, 0.8834, 0.4666, 0.4878, 0.4087, 0.5322, 0.9914,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2768, 1.0000, 0.6938, 0.1709, 0.7911, 0.3545, 0.0000, 0.7825, 0.7422,
+        0.4614], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.1729, 0.7571, 0.8813, 0.4808, 0.5042, 0.4079, 0.5455, 1.0000,
+        0.9994], grad_fn=<DivBackward0>), tensor([0.2729, 1.0000, 0.6902, 0.1699, 0.7959, 0.3498, 0.0000, 0.7886, 0.7448,
+        0.4717], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.1729, 0.7571, 0.8813, 0.4808, 0.5042, 0.4079, 0.5455, 1.0000,
+        0.9994], grad_fn=<DivBackward0>), tensor([0.2729, 1.0000, 0.6902, 0.1699, 0.7959, 0.3498, 0.0000, 0.7886, 0.7448,
+        0.4717], grad_fn=<SqueezeBackward1>)]
+prob_mask_buffer {0: [tensor([0.0000, 0.1398, 0.7696, 0.9026, 0.4573, 0.4880, 0.3969, 0.5261, 0.9909,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2780, 1.0000, 0.6932, 0.1786, 0.7869, 0.3578, 0.0000, 0.7847, 0.7438,
+        0.4577], grad_fn=<SqueezeBackward1>)], 1: [tensor([0.0000, 0.1437, 0.7735, 0.9001, 0.4506, 0.4966, 0.4127, 0.5273, 1.0000,
+        0.9959], grad_fn=<DivBackward0>), tensor([0.2784, 1.0000, 0.6927, 0.1734, 0.7880, 0.3536, 0.0000, 0.7849, 0.7448,
+        0.4590], grad_fn=<SqueezeBackward1>)], 2: [tensor([0.0000, 0.1497, 0.7727, 0.9118, 0.4463, 0.4864, 0.4022, 0.5235, 0.9715,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2696, 1.0000, 0.6908, 0.1794, 0.7898, 0.3520, 0.0000, 0.7825, 0.7441,
+        0.4601], grad_fn=<SqueezeBackward1>)], 3: [tensor([0.0000, 0.1547, 0.7639, 0.8881, 0.4577, 0.4765, 0.4072, 0.5212, 0.9701,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2677, 1.0000, 0.6943, 0.1767, 0.7908, 0.3529, 0.0000, 0.7792, 0.7399,
+        0.4625], grad_fn=<SqueezeBackward1>)], 4: [tensor([0.0000, 0.1504, 0.7765, 0.9013, 0.4625, 0.4913, 0.4072, 0.5218, 1.0000,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2764, 1.0000, 0.6954, 0.1750, 0.7867, 0.3544, 0.0000, 0.7842, 0.7426,
+        0.4593], grad_fn=<SqueezeBackward1>)], 5: [tensor([0.0000, 0.1674, 0.7736, 0.9136, 0.4670, 0.4942, 0.3965, 0.5238, 0.9747,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2732, 1.0000, 0.6905, 0.1732, 0.7906, 0.3493, 0.0000, 0.7857, 0.7450,
+        0.4625], grad_fn=<SqueezeBackward1>)], 6: [tensor([0.0000, 0.1689, 0.7584, 0.8821, 0.4800, 0.5041, 0.4059, 0.5365, 1.0000,
+        0.9967], grad_fn=<DivBackward0>), tensor([0.2755, 1.0000, 0.6933, 0.1702, 0.7917, 0.3537, 0.0000, 0.7808, 0.7410,
+        0.4599], grad_fn=<SqueezeBackward1>)], 7: [tensor([0.0000, 0.1872, 0.7707, 0.8915, 0.4862, 0.5181, 0.3996, 0.5411, 1.0000,
+        0.9821], grad_fn=<DivBackward0>), tensor([0.2688, 1.0000, 0.6947, 0.1758, 0.7901, 0.3529, 0.0000, 0.7795, 0.7395,
+        0.4615], grad_fn=<SqueezeBackward1>)], 8: [tensor([0.0000, 0.1552, 0.7617, 0.8834, 0.4666, 0.4878, 0.4087, 0.5322, 0.9914,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2768, 1.0000, 0.6938, 0.1709, 0.7911, 0.3545, 0.0000, 0.7825, 0.7422,
+        0.4614], grad_fn=<SqueezeBackward1>)], 9: [tensor([0.0000, 0.1729, 0.7571, 0.8813, 0.4808, 0.5042, 0.4079, 0.5455, 1.0000,
+        0.9994], grad_fn=<DivBackward0>), tensor([0.2729, 1.0000, 0.6902, 0.1699, 0.7959, 0.3498, 0.0000, 0.7886, 0.7448,
+        0.4717], grad_fn=<SqueezeBackward1>)]}
+masks_for_this_net_type {0: [tensor([0.0000, 0.1398, 0.7696, 0.9026, 0.4573, 0.4880, 0.3969, 0.5261, 0.9909,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2780, 1.0000, 0.6932, 0.1786, 0.7869, 0.3578, 0.0000, 0.7847, 0.7438,
+        0.4577], grad_fn=<SqueezeBackward1>)], 1: [tensor([0.0000, 0.1437, 0.7735, 0.9001, 0.4506, 0.4966, 0.4127, 0.5273, 1.0000,
+        0.9959], grad_fn=<DivBackward0>), tensor([0.2784, 1.0000, 0.6927, 0.1734, 0.7880, 0.3536, 0.0000, 0.7849, 0.7448,
+        0.4590], grad_fn=<SqueezeBackward1>)], 2: [tensor([0.0000, 0.1497, 0.7727, 0.9118, 0.4463, 0.4864, 0.4022, 0.5235, 0.9715,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2696, 1.0000, 0.6908, 0.1794, 0.7898, 0.3520, 0.0000, 0.7825, 0.7441,
+        0.4601], grad_fn=<SqueezeBackward1>)], 3: [tensor([0.0000, 0.1547, 0.7639, 0.8881, 0.4577, 0.4765, 0.4072, 0.5212, 0.9701,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2677, 1.0000, 0.6943, 0.1767, 0.7908, 0.3529, 0.0000, 0.7792, 0.7399,
+        0.4625], grad_fn=<SqueezeBackward1>)], 4: [tensor([0.0000, 0.1504, 0.7765, 0.9013, 0.4625, 0.4913, 0.4072, 0.5218, 1.0000,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2764, 1.0000, 0.6954, 0.1750, 0.7867, 0.3544, 0.0000, 0.7842, 0.7426,
+        0.4593], grad_fn=<SqueezeBackward1>)], 5: [tensor([0.0000, 0.1674, 0.7736, 0.9136, 0.4670, 0.4942, 0.3965, 0.5238, 0.9747,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2732, 1.0000, 0.6905, 0.1732, 0.7906, 0.3493, 0.0000, 0.7857, 0.7450,
+        0.4625], grad_fn=<SqueezeBackward1>)], 6: [tensor([0.0000, 0.1689, 0.7584, 0.8821, 0.4800, 0.5041, 0.4059, 0.5365, 1.0000,
+        0.9967], grad_fn=<DivBackward0>), tensor([0.2755, 1.0000, 0.6933, 0.1702, 0.7917, 0.3537, 0.0000, 0.7808, 0.7410,
+        0.4599], grad_fn=<SqueezeBackward1>)], 7: [tensor([0.0000, 0.1872, 0.7707, 0.8915, 0.4862, 0.5181, 0.3996, 0.5411, 1.0000,
+        0.9821], grad_fn=<DivBackward0>), tensor([0.2688, 1.0000, 0.6947, 0.1758, 0.7901, 0.3529, 0.0000, 0.7795, 0.7395,
+        0.4615], grad_fn=<SqueezeBackward1>)], 8: [tensor([0.0000, 0.1552, 0.7617, 0.8834, 0.4666, 0.4878, 0.4087, 0.5322, 0.9914,
+        1.0000], grad_fn=<DivBackward0>), tensor([0.2768, 1.0000, 0.6938, 0.1709, 0.7911, 0.3545, 0.0000, 0.7825, 0.7422,
+        0.4614], grad_fn=<SqueezeBackward1>)], 9: [tensor([0.0000, 0.1729, 0.7571, 0.8813, 0.4808, 0.5042, 0.4079, 0.5455, 1.0000,
+        0.9994], grad_fn=<DivBackward0>), tensor([0.2729, 1.0000, 0.6902, 0.1699, 0.7959, 0.3498, 0.0000, 0.7886, 0.7448,
+        0.4717], grad_fn=<SqueezeBackward1>)]}
+euclidean_distance_matrix [tensor([0.0000, 0.1398, 0.7696, 0.9026, 0.4573, 0.4880, 0.3969, 0.5261, 0.9909,
+        1.0000, 0.2780, 1.0000, 0.6932, 0.1786, 0.7869, 0.3578, 0.0000, 0.7847,
+        0.7438, 0.4577], grad_fn=<CatBackward>), tensor([0.0000, 0.1437, 0.7735, 0.9001, 0.4506, 0.4966, 0.4127, 0.5273, 1.0000,
+        0.9959, 0.2784, 1.0000, 0.6927, 0.1734, 0.7880, 0.3536, 0.0000, 0.7849,
+        0.7448, 0.4590], grad_fn=<CatBackward>), tensor([0.0000, 0.1497, 0.7727, 0.9118, 0.4463, 0.4864, 0.4022, 0.5235, 0.9715,
+        1.0000, 0.2696, 1.0000, 0.6908, 0.1794, 0.7898, 0.3520, 0.0000, 0.7825,
+        0.7441, 0.4601], grad_fn=<CatBackward>), tensor([0.0000, 0.1547, 0.7639, 0.8881, 0.4577, 0.4765, 0.4072, 0.5212, 0.9701,
+        1.0000, 0.2677, 1.0000, 0.6943, 0.1767, 0.7908, 0.3529, 0.0000, 0.7792,
+        0.7399, 0.4625], grad_fn=<CatBackward>), tensor([0.0000, 0.1504, 0.7765, 0.9013, 0.4625, 0.4913, 0.4072, 0.5218, 1.0000,
+        1.0000, 0.2764, 1.0000, 0.6954, 0.1750, 0.7867, 0.3544, 0.0000, 0.7842,
+        0.7426, 0.4593], grad_fn=<CatBackward>), tensor([0.0000, 0.1674, 0.7736, 0.9136, 0.4670, 0.4942, 0.3965, 0.5238, 0.9747,
+        1.0000, 0.2732, 1.0000, 0.6905, 0.1732, 0.7906, 0.3493, 0.0000, 0.7857,
+        0.7450, 0.4625], grad_fn=<CatBackward>), tensor([0.0000, 0.1689, 0.7584, 0.8821, 0.4800, 0.5041, 0.4059, 0.5365, 1.0000,
+        0.9967, 0.2755, 1.0000, 0.6933, 0.1702, 0.7917, 0.3537, 0.0000, 0.7808,
+        0.7410, 0.4599], grad_fn=<CatBackward>), tensor([0.0000, 0.1872, 0.7707, 0.8915, 0.4862, 0.5181, 0.3996, 0.5411, 1.0000,
+        0.9821, 0.2688, 1.0000, 0.6947, 0.1758, 0.7901, 0.3529, 0.0000, 0.7795,
+        0.7395, 0.4615], grad_fn=<CatBackward>), tensor([0.0000, 0.1552, 0.7617, 0.8834, 0.4666, 0.4878, 0.4087, 0.5322, 0.9914,
+        1.0000, 0.2768, 1.0000, 0.6938, 0.1709, 0.7911, 0.3545, 0.0000, 0.7825,
+        0.7422, 0.4614], grad_fn=<CatBackward>), tensor([0.0000, 0.1729, 0.7571, 0.8813, 0.4808, 0.5042, 0.4079, 0.5455, 1.0000,
+        0.9994, 0.2729, 1.0000, 0.6902, 0.1699, 0.7959, 0.3498, 0.0000, 0.7886,
+        0.7448, 0.4717], grad_fn=<CatBackward>)]
+distances tensor([[0.0000, 0.0235, 0.0292, 0.0371, 0.0210, 0.0383, 0.0510, 0.0703, 0.0323,
+         0.0598],
+        [0.0235, 0.0000, 0.0371, 0.0447, 0.0180, 0.0450, 0.0480, 0.0666, 0.0325,
+         0.0559],
+        [0.0292, 0.0371, 0.0000, 0.0313, 0.0368, 0.0304, 0.0637, 0.0771, 0.0451,
+         0.0697],
+        [0.0371, 0.0447, 0.0313, 0.0000, 0.0403, 0.0398, 0.0528, 0.0731, 0.0308,
+         0.0595],
+        [0.0210, 0.0180, 0.0368, 0.0403, 0.0000, 0.0365, 0.0425, 0.0603, 0.0287,
+         0.0519],
+        [0.0383, 0.0450, 0.0304, 0.0398, 0.0365, 0.0000, 0.0499, 0.0568, 0.0427,
+         0.0549],
+        [0.0510, 0.0480, 0.0637, 0.0528, 0.0425, 0.0499, 0.0000, 0.0343, 0.0277,
+         0.0194],
+        [0.0703, 0.0666, 0.0771, 0.0731, 0.0603, 0.0568, 0.0343, 0.0000, 0.0561,
+         0.0379],
+        [0.0323, 0.0325, 0.0451, 0.0308, 0.0287, 0.0427, 0.0277, 0.0561, 0.0000,
+         0.0359],
+        [0.0598, 0.0559, 0.0697, 0.0595, 0.0519, 0.0549, 0.0194, 0.0379, 0.0359,
+         0.0000]], grad_fn=<SqrtBackward>)
+tensor([[1.0000, 0.6863, 0.6115, 0.5090, 0.7192, 0.4930, 0.3300, 0.0841, 0.5716,
+         0.2176],
+        [0.6863, 1.0000, 0.5083, 0.4102, 0.7592, 0.4068, 0.3675, 0.1305, 0.5684,
+         0.2674],
+        [0.6115, 0.5083, 1.0000, 0.5845, 0.5122, 0.5956, 0.1683, 0.0000, 0.4058,
+         0.0915],
+        [0.5090, 0.4102, 0.5845, 1.0000, 0.4669, 0.4733, 0.3063, 0.0496, 0.5905,
+         0.2205],
+        [0.7192, 0.7592, 0.5122, 0.4669, 1.0000, 0.5169, 0.4392, 0.2113, 0.6188,
+         0.3176],
+        [0.4930, 0.4068, 0.5956, 0.4733, 0.5169, 1.0000, 0.3440, 0.2548, 0.4364,
+         0.2794],
+        [0.3300, 0.3675, 0.1683, 0.3063, 0.4392, 0.3440, 1.0000, 0.5453, 0.6317,
+         0.7408],
+        [0.0841, 0.1305, 0.0000, 0.0496, 0.2113, 0.2548, 0.5453, 1.0000, 0.2642,
+         0.4983],
+        [0.5716, 0.5684, 0.4058, 0.5905, 0.6188, 0.4364, 0.6317, 0.2642, 1.0000,
+         0.5245],
+        [0.2176, 0.2674, 0.0915, 0.2205, 0.3176, 0.2794, 0.7408, 0.4983, 0.5245,
+         1.0000]], grad_fn=<DivBackward0>)
+mask_sim_mtx tensor([[1.0000, 0.6863, 0.6115, 0.5090, 0.7192, 0.4930, 0.3300, 0.0841, 0.5716,
+         0.2176, 0.6863, 1.0000, 0.5083, 0.4102, 0.7592, 0.4068, 0.3675, 0.1305,
+         0.5684, 0.2674, 0.6115, 0.5083, 1.0000, 0.5845, 0.5122, 0.5956, 0.1683,
+         0.0000, 0.4058, 0.0915, 0.5090, 0.4102, 0.5845, 1.0000, 0.4669, 0.4733,
+         0.3063, 0.0496, 0.5905, 0.2205, 0.7192, 0.7592, 0.5122, 0.4669, 1.0000,
+         0.5169, 0.4392, 0.2113, 0.6188, 0.3176, 0.4930, 0.4068, 0.5956, 0.4733,
+         0.5169, 1.0000, 0.3440, 0.2548, 0.4364, 0.2794, 0.3300, 0.3675, 0.1683,
+         0.3063, 0.4392, 0.3440, 1.0000, 0.5453, 0.6317, 0.7408, 0.0841, 0.1305,
+         0.0000, 0.0496, 0.2113, 0.2548, 0.5453, 1.0000, 0.2642, 0.4983, 0.5716,
+         0.5684, 0.4058, 0.5905, 0.6188, 0.4364, 0.6317, 0.2642, 1.0000, 0.5245,
+         0.2176, 0.2674, 0.0915, 0.2205, 0.3176, 0.2794, 0.7408, 0.4983, 0.5245,
+         1.0000]], grad_fn=<ViewBackward>)
+traj_sim_mtx tensor([[1.0000, 0.4175, 0.5844, 0.4638, 0.0000, 0.7578, 0.5231, 0.6178, 0.3102,
+         0.5754, 0.4175, 1.0000, 0.4801, 0.5528, 0.0650, 0.5688, 0.6930, 0.5779,
+         0.2199, 0.6499, 0.5844, 0.4801, 1.0000, 0.5664, 0.5375, 0.6741, 0.7664,
+         0.5432, 0.6042, 0.6347, 0.4638, 0.5528, 0.5664, 1.0000, 0.3958, 0.5751,
+         0.6322, 0.5606, 0.4905, 0.4100, 0.0000, 0.0650, 0.5375, 0.3958, 1.0000,
+         0.4402, 0.1928, 0.1129, 0.1348, 0.4070, 0.7578, 0.5688, 0.6741, 0.5751,
+         0.4402, 1.0000, 0.6933, 0.6689, 0.6081, 0.7341, 0.5231, 0.6930, 0.7664,
+         0.6322, 0.1928, 0.6933, 1.0000, 0.6029, 0.6770, 0.7309, 0.6178, 0.5779,
+         0.5432, 0.5606, 0.1129, 0.6689, 0.6029, 1.0000, 0.4765, 0.3925, 0.3102,
+         0.2199, 0.6042, 0.4905, 0.1348, 0.6081, 0.6770, 0.4765, 1.0000, 0.5157,
+         0.5754, 0.6499, 0.6347, 0.4100, 0.4070, 0.7341, 0.7309, 0.3925, 0.5157,
+         1.0000]])
+loss1 tensor([[0.6240]], grad_fn=<ViewBackward>)
+loss2 tensor([[3.0387]], grad_fn=<CdistBackward>)
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.0270, 0.1173, 0.0803, 0.1228, 0.6037, 1.0000, 0.9942, 0.4241,
+        0.9026], grad_fn=<DivBackward0>), tensor([0.4204, 0.1621, 0.6333, 0.1737, 0.5606, 0.0000, 1.0000, 0.3466, 0.9221,
+        0.5335], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.0270, 0.1173, 0.0803, 0.1228, 0.6037, 1.0000, 0.9942, 0.4241,
+        0.9026], grad_fn=<DivBackward0>), tensor([0.4204, 0.1621, 0.6333, 0.1737, 0.5606, 0.0000, 1.0000, 0.3466, 0.9221,
+        0.5335], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0046, 0.0000, 0.1156, 0.0733, 0.1027, 0.5867, 0.9847, 1.0000, 0.4383,
+        0.8857], grad_fn=<DivBackward0>), tensor([0.4172, 0.1620, 0.6377, 0.1747, 0.5647, 0.0000, 1.0000, 0.3503, 0.9198,
+        0.5321], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0046, 0.0000, 0.1156, 0.0733, 0.1027, 0.5867, 0.9847, 1.0000, 0.4383,
+        0.8857], grad_fn=<DivBackward0>), tensor([0.4172, 0.1620, 0.6377, 0.1747, 0.5647, 0.0000, 1.0000, 0.3503, 0.9198,
+        0.5321], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0309, 0.0000, 0.1293, 0.0712, 0.1034, 0.5656, 0.9602, 1.0000, 0.4318,
+        0.8867], grad_fn=<DivBackward0>), tensor([0.4202, 0.1640, 0.6402, 0.1717, 0.5618, 0.0000, 1.0000, 0.3476, 0.9213,
+        0.5298], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0309, 0.0000, 0.1293, 0.0712, 0.1034, 0.5656, 0.9602, 1.0000, 0.4318,
+        0.8867], grad_fn=<DivBackward0>), tensor([0.4202, 0.1640, 0.6402, 0.1717, 0.5618, 0.0000, 1.0000, 0.3476, 0.9213,
+        0.5298], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0177, 0.0000, 0.1337, 0.0785, 0.0943, 0.5691, 0.9635, 1.0000, 0.4476,
+        0.8778], grad_fn=<DivBackward0>), tensor([0.4190, 0.1612, 0.6334, 0.1733, 0.5612, 0.0000, 1.0000, 0.3465, 0.9209,
+        0.5326], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0177, 0.0000, 0.1337, 0.0785, 0.0943, 0.5691, 0.9635, 1.0000, 0.4476,
+        0.8778], grad_fn=<DivBackward0>), tensor([0.4190, 0.1612, 0.6334, 0.1733, 0.5612, 0.0000, 1.0000, 0.3465, 0.9209,
+        0.5326], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0057, 0.0000, 0.1216, 0.0789, 0.1008, 0.5825, 0.9738, 1.0000, 0.4359,
+        0.8883], grad_fn=<DivBackward0>), tensor([0.4210, 0.1625, 0.6377, 0.1744, 0.5632, 0.0000, 1.0000, 0.3495, 0.9208,
+        0.5323], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0057, 0.0000, 0.1216, 0.0789, 0.1008, 0.5825, 0.9738, 1.0000, 0.4359,
+        0.8883], grad_fn=<DivBackward0>), tensor([0.4210, 0.1625, 0.6377, 0.1744, 0.5632, 0.0000, 1.0000, 0.3495, 0.9208,
+        0.5323], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0017, 0.0000, 0.1224, 0.1014, 0.1096, 0.5860, 0.9603, 1.0000, 0.4527,
+        0.8565], grad_fn=<DivBackward0>), tensor([0.4178, 0.1626, 0.6400, 0.1734, 0.5648, 0.0000, 1.0000, 0.3498, 0.9206,
+        0.5307], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0017, 0.0000, 0.1224, 0.1014, 0.1096, 0.5860, 0.9603, 1.0000, 0.4527,
+        0.8565], grad_fn=<DivBackward0>), tensor([0.4178, 0.1626, 0.6400, 0.1734, 0.5648, 0.0000, 1.0000, 0.3498, 0.9206,
+        0.5307], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0027, 0.0000, 0.1287, 0.0797, 0.0992, 0.5826, 0.9795, 1.0000, 0.4438,
+        0.8903], grad_fn=<DivBackward0>), tensor([0.4195, 0.1607, 0.6364, 0.1766, 0.5645, 0.0000, 1.0000, 0.3514, 0.9196,
+        0.5340], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0027, 0.0000, 0.1287, 0.0797, 0.0992, 0.5826, 0.9795, 1.0000, 0.4438,
+        0.8903], grad_fn=<DivBackward0>), tensor([0.4195, 0.1607, 0.6364, 0.1766, 0.5645, 0.0000, 1.0000, 0.3514, 0.9196,
+        0.5340], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0166, 0.0000, 0.1329, 0.0930, 0.0953, 0.5769, 0.9547, 1.0000, 0.4564,
+        0.8644], grad_fn=<DivBackward0>), tensor([0.4181, 0.1610, 0.6358, 0.1736, 0.5632, 0.0000, 1.0000, 0.3481, 0.9201,
+        0.5318], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0166, 0.0000, 0.1329, 0.0930, 0.0953, 0.5769, 0.9547, 1.0000, 0.4564,
+        0.8644], grad_fn=<DivBackward0>), tensor([0.4181, 0.1610, 0.6358, 0.1736, 0.5632, 0.0000, 1.0000, 0.3481, 0.9201,
+        0.5318], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0129, 0.0000, 0.1251, 0.0707, 0.1077, 0.5741, 0.9532, 1.0000, 0.4112,
+        0.8898], grad_fn=<DivBackward0>), tensor([0.4243, 0.1661, 0.6421, 0.1687, 0.5578, 0.0000, 1.0000, 0.3450, 0.9192,
+        0.5263], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0129, 0.0000, 0.1251, 0.0707, 0.1077, 0.5741, 0.9532, 1.0000, 0.4112,
+        0.8898], grad_fn=<DivBackward0>), tensor([0.4243, 0.1661, 0.6421, 0.1687, 0.5578, 0.0000, 1.0000, 0.3450, 0.9192,
+        0.5263], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.0000, 0.0112, 0.1203, 0.0715, 0.1064, 0.5729, 0.9764, 1.0000, 0.4199,
+        0.8941], grad_fn=<DivBackward0>), tensor([0.4169, 0.1612, 0.6388, 0.1733, 0.5652, 0.0000, 1.0000, 0.3491, 0.9212,
+        0.5311], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.0000, 0.0112, 0.1203, 0.0715, 0.1064, 0.5729, 0.9764, 1.0000, 0.4199,
+        0.8941], grad_fn=<DivBackward0>), tensor([0.4169, 0.1612, 0.6388, 0.1733, 0.5652, 0.0000, 1.0000, 0.3491, 0.9212,
+        0.5311], grad_fn=<SqueezeBackward1>)]
+prob_mask_buffer {0: [tensor([0.0000, 0.0270, 0.1173, 0.0803, 0.1228, 0.6037, 1.0000, 0.9942, 0.4241,
+        0.9026], grad_fn=<DivBackward0>), tensor([0.4204, 0.1621, 0.6333, 0.1737, 0.5606, 0.0000, 1.0000, 0.3466, 0.9221,
+        0.5335], grad_fn=<SqueezeBackward1>)], 1: [tensor([0.0046, 0.0000, 0.1156, 0.0733, 0.1027, 0.5867, 0.9847, 1.0000, 0.4383,
+        0.8857], grad_fn=<DivBackward0>), tensor([0.4172, 0.1620, 0.6377, 0.1747, 0.5647, 0.0000, 1.0000, 0.3503, 0.9198,
+        0.5321], grad_fn=<SqueezeBackward1>)], 2: [tensor([0.0309, 0.0000, 0.1293, 0.0712, 0.1034, 0.5656, 0.9602, 1.0000, 0.4318,
+        0.8867], grad_fn=<DivBackward0>), tensor([0.4202, 0.1640, 0.6402, 0.1717, 0.5618, 0.0000, 1.0000, 0.3476, 0.9213,
+        0.5298], grad_fn=<SqueezeBackward1>)], 3: [tensor([0.0177, 0.0000, 0.1337, 0.0785, 0.0943, 0.5691, 0.9635, 1.0000, 0.4476,
+        0.8778], grad_fn=<DivBackward0>), tensor([0.4190, 0.1612, 0.6334, 0.1733, 0.5612, 0.0000, 1.0000, 0.3465, 0.9209,
+        0.5326], grad_fn=<SqueezeBackward1>)], 4: [tensor([0.0057, 0.0000, 0.1216, 0.0789, 0.1008, 0.5825, 0.9738, 1.0000, 0.4359,
+        0.8883], grad_fn=<DivBackward0>), tensor([0.4210, 0.1625, 0.6377, 0.1744, 0.5632, 0.0000, 1.0000, 0.3495, 0.9208,
+        0.5323], grad_fn=<SqueezeBackward1>)], 5: [tensor([0.0017, 0.0000, 0.1224, 0.1014, 0.1096, 0.5860, 0.9603, 1.0000, 0.4527,
+        0.8565], grad_fn=<DivBackward0>), tensor([0.4178, 0.1626, 0.6400, 0.1734, 0.5648, 0.0000, 1.0000, 0.3498, 0.9206,
+        0.5307], grad_fn=<SqueezeBackward1>)], 6: [tensor([0.0027, 0.0000, 0.1287, 0.0797, 0.0992, 0.5826, 0.9795, 1.0000, 0.4438,
+        0.8903], grad_fn=<DivBackward0>), tensor([0.4195, 0.1607, 0.6364, 0.1766, 0.5645, 0.0000, 1.0000, 0.3514, 0.9196,
+        0.5340], grad_fn=<SqueezeBackward1>)], 7: [tensor([0.0166, 0.0000, 0.1329, 0.0930, 0.0953, 0.5769, 0.9547, 1.0000, 0.4564,
+        0.8644], grad_fn=<DivBackward0>), tensor([0.4181, 0.1610, 0.6358, 0.1736, 0.5632, 0.0000, 1.0000, 0.3481, 0.9201,
+        0.5318], grad_fn=<SqueezeBackward1>)], 8: [tensor([0.0129, 0.0000, 0.1251, 0.0707, 0.1077, 0.5741, 0.9532, 1.0000, 0.4112,
+        0.8898], grad_fn=<DivBackward0>), tensor([0.4243, 0.1661, 0.6421, 0.1687, 0.5578, 0.0000, 1.0000, 0.3450, 0.9192,
+        0.5263], grad_fn=<SqueezeBackward1>)], 9: [tensor([0.0000, 0.0112, 0.1203, 0.0715, 0.1064, 0.5729, 0.9764, 1.0000, 0.4199,
+        0.8941], grad_fn=<DivBackward0>), tensor([0.4169, 0.1612, 0.6388, 0.1733, 0.5652, 0.0000, 1.0000, 0.3491, 0.9212,
+        0.5311], grad_fn=<SqueezeBackward1>)]}
+masks_for_this_net_type {0: [tensor([0.0000, 0.0270, 0.1173, 0.0803, 0.1228, 0.6037, 1.0000, 0.9942, 0.4241,
+        0.9026], grad_fn=<DivBackward0>), tensor([0.4204, 0.1621, 0.6333, 0.1737, 0.5606, 0.0000, 1.0000, 0.3466, 0.9221,
+        0.5335], grad_fn=<SqueezeBackward1>)], 1: [tensor([0.0046, 0.0000, 0.1156, 0.0733, 0.1027, 0.5867, 0.9847, 1.0000, 0.4383,
+        0.8857], grad_fn=<DivBackward0>), tensor([0.4172, 0.1620, 0.6377, 0.1747, 0.5647, 0.0000, 1.0000, 0.3503, 0.9198,
+        0.5321], grad_fn=<SqueezeBackward1>)], 2: [tensor([0.0309, 0.0000, 0.1293, 0.0712, 0.1034, 0.5656, 0.9602, 1.0000, 0.4318,
+        0.8867], grad_fn=<DivBackward0>), tensor([0.4202, 0.1640, 0.6402, 0.1717, 0.5618, 0.0000, 1.0000, 0.3476, 0.9213,
+        0.5298], grad_fn=<SqueezeBackward1>)], 3: [tensor([0.0177, 0.0000, 0.1337, 0.0785, 0.0943, 0.5691, 0.9635, 1.0000, 0.4476,
+        0.8778], grad_fn=<DivBackward0>), tensor([0.4190, 0.1612, 0.6334, 0.1733, 0.5612, 0.0000, 1.0000, 0.3465, 0.9209,
+        0.5326], grad_fn=<SqueezeBackward1>)], 4: [tensor([0.0057, 0.0000, 0.1216, 0.0789, 0.1008, 0.5825, 0.9738, 1.0000, 0.4359,
+        0.8883], grad_fn=<DivBackward0>), tensor([0.4210, 0.1625, 0.6377, 0.1744, 0.5632, 0.0000, 1.0000, 0.3495, 0.9208,
+        0.5323], grad_fn=<SqueezeBackward1>)], 5: [tensor([0.0017, 0.0000, 0.1224, 0.1014, 0.1096, 0.5860, 0.9603, 1.0000, 0.4527,
+        0.8565], grad_fn=<DivBackward0>), tensor([0.4178, 0.1626, 0.6400, 0.1734, 0.5648, 0.0000, 1.0000, 0.3498, 0.9206,
+        0.5307], grad_fn=<SqueezeBackward1>)], 6: [tensor([0.0027, 0.0000, 0.1287, 0.0797, 0.0992, 0.5826, 0.9795, 1.0000, 0.4438,
+        0.8903], grad_fn=<DivBackward0>), tensor([0.4195, 0.1607, 0.6364, 0.1766, 0.5645, 0.0000, 1.0000, 0.3514, 0.9196,
+        0.5340], grad_fn=<SqueezeBackward1>)], 7: [tensor([0.0166, 0.0000, 0.1329, 0.0930, 0.0953, 0.5769, 0.9547, 1.0000, 0.4564,
+        0.8644], grad_fn=<DivBackward0>), tensor([0.4181, 0.1610, 0.6358, 0.1736, 0.5632, 0.0000, 1.0000, 0.3481, 0.9201,
+        0.5318], grad_fn=<SqueezeBackward1>)], 8: [tensor([0.0129, 0.0000, 0.1251, 0.0707, 0.1077, 0.5741, 0.9532, 1.0000, 0.4112,
+        0.8898], grad_fn=<DivBackward0>), tensor([0.4243, 0.1661, 0.6421, 0.1687, 0.5578, 0.0000, 1.0000, 0.3450, 0.9192,
+        0.5263], grad_fn=<SqueezeBackward1>)], 9: [tensor([0.0000, 0.0112, 0.1203, 0.0715, 0.1064, 0.5729, 0.9764, 1.0000, 0.4199,
+        0.8941], grad_fn=<DivBackward0>), tensor([0.4169, 0.1612, 0.6388, 0.1733, 0.5652, 0.0000, 1.0000, 0.3491, 0.9212,
+        0.5311], grad_fn=<SqueezeBackward1>)]}
+euclidean_distance_matrix [tensor([0.0000, 0.0270, 0.1173, 0.0803, 0.1228, 0.6037, 1.0000, 0.9942, 0.4241,
+        0.9026, 0.4204, 0.1621, 0.6333, 0.1737, 0.5606, 0.0000, 1.0000, 0.3466,
+        0.9221, 0.5335], grad_fn=<CatBackward>), tensor([0.0046, 0.0000, 0.1156, 0.0733, 0.1027, 0.5867, 0.9847, 1.0000, 0.4383,
+        0.8857, 0.4172, 0.1620, 0.6377, 0.1747, 0.5647, 0.0000, 1.0000, 0.3503,
+        0.9198, 0.5321], grad_fn=<CatBackward>), tensor([0.0309, 0.0000, 0.1293, 0.0712, 0.1034, 0.5656, 0.9602, 1.0000, 0.4318,
+        0.8867, 0.4202, 0.1640, 0.6402, 0.1717, 0.5618, 0.0000, 1.0000, 0.3476,
+        0.9213, 0.5298], grad_fn=<CatBackward>), tensor([0.0177, 0.0000, 0.1337, 0.0785, 0.0943, 0.5691, 0.9635, 1.0000, 0.4476,
+        0.8778, 0.4190, 0.1612, 0.6334, 0.1733, 0.5612, 0.0000, 1.0000, 0.3465,
+        0.9209, 0.5326], grad_fn=<CatBackward>), tensor([0.0057, 0.0000, 0.1216, 0.0789, 0.1008, 0.5825, 0.9738, 1.0000, 0.4359,
+        0.8883, 0.4210, 0.1625, 0.6377, 0.1744, 0.5632, 0.0000, 1.0000, 0.3495,
+        0.9208, 0.5323], grad_fn=<CatBackward>), tensor([0.0017, 0.0000, 0.1224, 0.1014, 0.1096, 0.5860, 0.9603, 1.0000, 0.4527,
+        0.8565, 0.4178, 0.1626, 0.6400, 0.1734, 0.5648, 0.0000, 1.0000, 0.3498,
+        0.9206, 0.5307], grad_fn=<CatBackward>), tensor([0.0027, 0.0000, 0.1287, 0.0797, 0.0992, 0.5826, 0.9795, 1.0000, 0.4438,
+        0.8903, 0.4195, 0.1607, 0.6364, 0.1766, 0.5645, 0.0000, 1.0000, 0.3514,
+        0.9196, 0.5340], grad_fn=<CatBackward>), tensor([0.0166, 0.0000, 0.1329, 0.0930, 0.0953, 0.5769, 0.9547, 1.0000, 0.4564,
+        0.8644, 0.4181, 0.1610, 0.6358, 0.1736, 0.5632, 0.0000, 1.0000, 0.3481,
+        0.9201, 0.5318], grad_fn=<CatBackward>), tensor([0.0129, 0.0000, 0.1251, 0.0707, 0.1077, 0.5741, 0.9532, 1.0000, 0.4112,
+        0.8898, 0.4243, 0.1661, 0.6421, 0.1687, 0.5578, 0.0000, 1.0000, 0.3450,
+        0.9192, 0.5263], grad_fn=<CatBackward>), tensor([0.0000, 0.0112, 0.1203, 0.0715, 0.1064, 0.5729, 0.9764, 1.0000, 0.4199,
+        0.8941, 0.4169, 0.1612, 0.6388, 0.1733, 0.5652, 0.0000, 1.0000, 0.3491,
+        0.9212, 0.5311], grad_fn=<CatBackward>)]
+distances tensor([[0.0000, 0.0482, 0.0758, 0.0766, 0.0531, 0.0796, 0.0542, 0.0866, 0.0701,
+         0.0481],
+        [0.0482, 0.0000, 0.0450, 0.0394, 0.0155, 0.0506, 0.0184, 0.0517, 0.0482,
+         0.0294],
+        [0.0758, 0.0450, 0.0000, 0.0274, 0.0358, 0.0604, 0.0424, 0.0454, 0.0315,
+         0.0415],
+        [0.0766, 0.0394, 0.0274, 0.0000, 0.0300, 0.0447, 0.0307, 0.0250, 0.0463,
+         0.0456],
+        [0.0531, 0.0155, 0.0358, 0.0300, 0.0000, 0.0460, 0.0135, 0.0434, 0.0381,
+         0.0257],
+        [0.0796, 0.0506, 0.0604, 0.0447, 0.0460, 0.0000, 0.0476, 0.0288, 0.0654,
+         0.0629],
+        [0.0542, 0.0184, 0.0424, 0.0307, 0.0135, 0.0476, 0.0000, 0.0437, 0.0489,
+         0.0324],
+        [0.0866, 0.0517, 0.0454, 0.0250, 0.0434, 0.0288, 0.0437, 0.0000, 0.0602,
+         0.0621],
+        [0.0701, 0.0482, 0.0315, 0.0463, 0.0381, 0.0654, 0.0489, 0.0602, 0.0000,
+         0.0341],
+        [0.0481, 0.0294, 0.0415, 0.0456, 0.0257, 0.0629, 0.0324, 0.0621, 0.0341,
+         0.0000]], grad_fn=<SqrtBackward>)
+tensor([[1.0000, 0.4334, 0.1207, 0.1121, 0.3767, 0.0781, 0.3649, 0.0000, 0.1848,
+         0.4345],
+        [0.4334, 1.0000, 0.4697, 0.5344, 0.8146, 0.4059, 0.7800, 0.3926, 0.4325,
+         0.6509],
+        [0.1207, 0.4697, 1.0000, 0.6749, 0.5763, 0.2942, 0.4996, 0.4649, 0.6264,
+         0.5103],
+        [0.1121, 0.5344, 0.6749, 1.0000, 0.6438, 0.4737, 0.6360, 0.7026, 0.4551,
+         0.4629],
+        [0.3767, 0.8146, 0.5763, 0.6438, 1.0000, 0.4588, 0.8382, 0.4886, 0.5495,
+         0.6942],
+        [0.0781, 0.4059, 0.2942, 0.4737, 0.4588, 1.0000, 0.4398, 0.6582, 0.2373,
+         0.2654],
+        [0.3649, 0.7800, 0.4996, 0.6360, 0.8382, 0.4398, 1.0000, 0.4847, 0.4249,
+         0.6155],
+        [0.0000, 0.3926, 0.4649, 0.7026, 0.4886, 0.6582, 0.4847, 1.0000, 0.2962,
+         0.2741],
+        [0.1848, 0.4325, 0.6264, 0.4551, 0.5495, 0.2373, 0.4249, 0.2962, 1.0000,
+         0.5965],
+        [0.4345, 0.6509, 0.5103, 0.4629, 0.6942, 0.2654, 0.6155, 0.2741, 0.5965,
+         1.0000]], grad_fn=<DivBackward0>)
+mask_sim_mtx tensor([[1.0000, 0.4334, 0.1207, 0.1121, 0.3767, 0.0781, 0.3649, 0.0000, 0.1848,
+         0.4345, 0.4334, 1.0000, 0.4697, 0.5344, 0.8146, 0.4059, 0.7800, 0.3926,
+         0.4325, 0.6509, 0.1207, 0.4697, 1.0000, 0.6749, 0.5763, 0.2942, 0.4996,
+         0.4649, 0.6264, 0.5103, 0.1121, 0.5344, 0.6749, 1.0000, 0.6438, 0.4737,
+         0.6360, 0.7026, 0.4551, 0.4629, 0.3767, 0.8146, 0.5763, 0.6438, 1.0000,
+         0.4588, 0.8382, 0.4886, 0.5495, 0.6942, 0.0781, 0.4059, 0.2942, 0.4737,
+         0.4588, 1.0000, 0.4398, 0.6582, 0.2373, 0.2654, 0.3649, 0.7800, 0.4996,
+         0.6360, 0.8382, 0.4398, 1.0000, 0.4847, 0.4249, 0.6155, 0.0000, 0.3926,
+         0.4649, 0.7026, 0.4886, 0.6582, 0.4847, 1.0000, 0.2962, 0.2741, 0.1848,
+         0.4325, 0.6264, 0.4551, 0.5495, 0.2373, 0.4249, 0.2962, 1.0000, 0.5965,
+         0.4345, 0.6509, 0.5103, 0.4629, 0.6942, 0.2654, 0.6155, 0.2741, 0.5965,
+         1.0000]], grad_fn=<ViewBackward>)
+traj_sim_mtx tensor([[1.0000, 0.6285, 0.6726, 0.4506, 0.6157, 0.2275, 0.6593, 0.3358, 0.3550,
+         0.5889, 0.6285, 1.0000, 0.8072, 0.5843, 0.7902, 0.0000, 0.4555, 0.4969,
+         0.6208, 0.5328, 0.6726, 0.8072, 1.0000, 0.6547, 0.8890, 0.6098, 0.5955,
+         0.1920, 0.7304, 0.5655, 0.4506, 0.5843, 0.6547, 1.0000, 0.5898, 0.5666,
+         0.2482, 0.2219, 0.7651, 0.6392, 0.6157, 0.7902, 0.8890, 0.5898, 1.0000,
+         0.6035, 0.5623, 0.5803, 0.6525, 0.6659, 0.2275, 0.0000, 0.6098, 0.5666,
+         0.6035, 1.0000, 0.0904, 0.4031, 0.0713, 0.4156, 0.6593, 0.4555, 0.5955,
+         0.2482, 0.5623, 0.0904, 1.0000, 0.0986, 0.0915, 0.3378, 0.3358, 0.4969,
+         0.1920, 0.2219, 0.5803, 0.4031, 0.0986, 1.0000, 0.2718, 0.4654, 0.3550,
+         0.6208, 0.7304, 0.7651, 0.6525, 0.0713, 0.0915, 0.2718, 1.0000, 0.6072,
+         0.5889, 0.5328, 0.5655, 0.6392, 0.6659, 0.4156, 0.3378, 0.4654, 0.6072,
+         1.0000]])
+loss1 tensor([[0.3449]], grad_fn=<ViewBackward>)
+loss2 tensor([[2.3583]], grad_fn=<CdistBackward>)
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3446, 0.7235, 0.1297, 0.0000, 0.7811, 1.0000, 0.5840, 0.9514, 0.3428,
+        0.4191], grad_fn=<DivBackward0>), tensor([0.3322, 0.0443, 0.1033, 0.5248, 0.6228, 0.5352, 1.0000, 0.6280, 0.0101,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3446, 0.7235, 0.1297, 0.0000, 0.7811, 1.0000, 0.5840, 0.9514, 0.3428,
+        0.4191], grad_fn=<DivBackward0>), tensor([0.3322, 0.0443, 0.1033, 0.5248, 0.6228, 0.5352, 1.0000, 0.6280, 0.0101,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3458, 0.7180, 0.1137, 0.0000, 0.7827, 1.0000, 0.5825, 0.9548, 0.3205,
+        0.4143], grad_fn=<DivBackward0>), tensor([0.3354, 0.0506, 0.0984, 0.5200, 0.6074, 0.5278, 1.0000, 0.6215, 0.0158,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3458, 0.7180, 0.1137, 0.0000, 0.7827, 1.0000, 0.5825, 0.9548, 0.3205,
+        0.4143], grad_fn=<DivBackward0>), tensor([0.3354, 0.0506, 0.0984, 0.5200, 0.6074, 0.5278, 1.0000, 0.6215, 0.0158,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3389, 0.7246, 0.0952, 0.0000, 0.7833, 1.0000, 0.5854, 0.9600, 0.3101,
+        0.4118], grad_fn=<DivBackward0>), tensor([0.3331, 0.0470, 0.0991, 0.5216, 0.6148, 0.5247, 1.0000, 0.6292, 0.0195,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3389, 0.7246, 0.0952, 0.0000, 0.7833, 1.0000, 0.5854, 0.9600, 0.3101,
+        0.4118], grad_fn=<DivBackward0>), tensor([0.3331, 0.0470, 0.0991, 0.5216, 0.6148, 0.5247, 1.0000, 0.6292, 0.0195,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3307, 0.7221, 0.0890, 0.0000, 0.7836, 1.0000, 0.5759, 0.9521, 0.3101,
+        0.4110], grad_fn=<DivBackward0>), tensor([0.3332, 0.0486, 0.0992, 0.5208, 0.6130, 0.5244, 1.0000, 0.6272, 0.0155,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3307, 0.7221, 0.0890, 0.0000, 0.7836, 1.0000, 0.5759, 0.9521, 0.3101,
+        0.4110], grad_fn=<DivBackward0>), tensor([0.3332, 0.0486, 0.0992, 0.5208, 0.6130, 0.5244, 1.0000, 0.6272, 0.0155,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3606, 0.7286, 0.1247, 0.0000, 0.7790, 1.0000, 0.6108, 0.9797, 0.3244,
+        0.4143], grad_fn=<DivBackward0>), tensor([0.3291, 0.0457, 0.1029, 0.5219, 0.6115, 0.5313, 1.0000, 0.6221, 0.0178,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3606, 0.7286, 0.1247, 0.0000, 0.7790, 1.0000, 0.6108, 0.9797, 0.3244,
+        0.4143], grad_fn=<DivBackward0>), tensor([0.3291, 0.0457, 0.1029, 0.5219, 0.6115, 0.5313, 1.0000, 0.6221, 0.0178,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3560, 0.7206, 0.1260, 0.0000, 0.7885, 1.0000, 0.5767, 0.9411, 0.3515,
+        0.4159], grad_fn=<DivBackward0>), tensor([0.3386, 0.0521, 0.1049, 0.5371, 0.6278, 0.5446, 1.0000, 0.6332, 0.0129,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3560, 0.7206, 0.1260, 0.0000, 0.7885, 1.0000, 0.5767, 0.9411, 0.3515,
+        0.4159], grad_fn=<DivBackward0>), tensor([0.3386, 0.0521, 0.1049, 0.5371, 0.6278, 0.5446, 1.0000, 0.6332, 0.0129,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3779, 0.7251, 0.1330, 0.0000, 0.7803, 1.0000, 0.6207, 0.9821, 0.3363,
+        0.4168], grad_fn=<DivBackward0>), tensor([0.3329, 0.0466, 0.1072, 0.5308, 0.6215, 0.5401, 1.0000, 0.6297, 0.0185,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3779, 0.7251, 0.1330, 0.0000, 0.7803, 1.0000, 0.6207, 0.9821, 0.3363,
+        0.4168], grad_fn=<DivBackward0>), tensor([0.3329, 0.0466, 0.1072, 0.5308, 0.6215, 0.5401, 1.0000, 0.6297, 0.0185,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3534, 0.7244, 0.1166, 0.0000, 0.7779, 1.0000, 0.6060, 0.9813, 0.3114,
+        0.4132], grad_fn=<DivBackward0>), tensor([0.3274, 0.0421, 0.1043, 0.5196, 0.6112, 0.5283, 1.0000, 0.6216, 0.0198,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3534, 0.7244, 0.1166, 0.0000, 0.7779, 1.0000, 0.6060, 0.9813, 0.3114,
+        0.4132], grad_fn=<DivBackward0>), tensor([0.3274, 0.0421, 0.1043, 0.5196, 0.6112, 0.5283, 1.0000, 0.6216, 0.0198,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3418, 0.7223, 0.1145, 0.0000, 0.7866, 1.0000, 0.5740, 0.9393, 0.3303,
+        0.4177], grad_fn=<DivBackward0>), tensor([0.3353, 0.0494, 0.0983, 0.5261, 0.6151, 0.5315, 1.0000, 0.6255, 0.0147,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3418, 0.7223, 0.1145, 0.0000, 0.7866, 1.0000, 0.5740, 0.9393, 0.3303,
+        0.4177], grad_fn=<DivBackward0>), tensor([0.3353, 0.0494, 0.0983, 0.5261, 0.6151, 0.5315, 1.0000, 0.6255, 0.0147,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([0.3418, 0.7257, 0.1092, 0.0000, 0.7904, 1.0000, 0.5812, 0.9398, 0.3341,
+        0.4295], grad_fn=<DivBackward0>), tensor([0.3351, 0.0506, 0.0952, 0.5246, 0.6028, 0.5320, 1.0000, 0.6136, 0.0183,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([0.3418, 0.7257, 0.1092, 0.0000, 0.7904, 1.0000, 0.5812, 0.9398, 0.3341,
+        0.4295], grad_fn=<DivBackward0>), tensor([0.3351, 0.0506, 0.0952, 0.5246, 0.6028, 0.5320, 1.0000, 0.6136, 0.0183,
+        0.0000], grad_fn=<SqueezeBackward1>)]
+prob_mask_buffer {0: [tensor([0.3446, 0.7235, 0.1297, 0.0000, 0.7811, 1.0000, 0.5840, 0.9514, 0.3428,
+        0.4191], grad_fn=<DivBackward0>), tensor([0.3322, 0.0443, 0.1033, 0.5248, 0.6228, 0.5352, 1.0000, 0.6280, 0.0101,
+        0.0000], grad_fn=<SqueezeBackward1>)], 1: [tensor([0.3458, 0.7180, 0.1137, 0.0000, 0.7827, 1.0000, 0.5825, 0.9548, 0.3205,
+        0.4143], grad_fn=<DivBackward0>), tensor([0.3354, 0.0506, 0.0984, 0.5200, 0.6074, 0.5278, 1.0000, 0.6215, 0.0158,
+        0.0000], grad_fn=<SqueezeBackward1>)], 2: [tensor([0.3389, 0.7246, 0.0952, 0.0000, 0.7833, 1.0000, 0.5854, 0.9600, 0.3101,
+        0.4118], grad_fn=<DivBackward0>), tensor([0.3331, 0.0470, 0.0991, 0.5216, 0.6148, 0.5247, 1.0000, 0.6292, 0.0195,
+        0.0000], grad_fn=<SqueezeBackward1>)], 3: [tensor([0.3307, 0.7221, 0.0890, 0.0000, 0.7836, 1.0000, 0.5759, 0.9521, 0.3101,
+        0.4110], grad_fn=<DivBackward0>), tensor([0.3332, 0.0486, 0.0992, 0.5208, 0.6130, 0.5244, 1.0000, 0.6272, 0.0155,
+        0.0000], grad_fn=<SqueezeBackward1>)], 4: [tensor([0.3606, 0.7286, 0.1247, 0.0000, 0.7790, 1.0000, 0.6108, 0.9797, 0.3244,
+        0.4143], grad_fn=<DivBackward0>), tensor([0.3291, 0.0457, 0.1029, 0.5219, 0.6115, 0.5313, 1.0000, 0.6221, 0.0178,
+        0.0000], grad_fn=<SqueezeBackward1>)], 5: [tensor([0.3560, 0.7206, 0.1260, 0.0000, 0.7885, 1.0000, 0.5767, 0.9411, 0.3515,
+        0.4159], grad_fn=<DivBackward0>), tensor([0.3386, 0.0521, 0.1049, 0.5371, 0.6278, 0.5446, 1.0000, 0.6332, 0.0129,
+        0.0000], grad_fn=<SqueezeBackward1>)], 6: [tensor([0.3779, 0.7251, 0.1330, 0.0000, 0.7803, 1.0000, 0.6207, 0.9821, 0.3363,
+        0.4168], grad_fn=<DivBackward0>), tensor([0.3329, 0.0466, 0.1072, 0.5308, 0.6215, 0.5401, 1.0000, 0.6297, 0.0185,
+        0.0000], grad_fn=<SqueezeBackward1>)], 7: [tensor([0.3534, 0.7244, 0.1166, 0.0000, 0.7779, 1.0000, 0.6060, 0.9813, 0.3114,
+        0.4132], grad_fn=<DivBackward0>), tensor([0.3274, 0.0421, 0.1043, 0.5196, 0.6112, 0.5283, 1.0000, 0.6216, 0.0198,
+        0.0000], grad_fn=<SqueezeBackward1>)], 8: [tensor([0.3418, 0.7223, 0.1145, 0.0000, 0.7866, 1.0000, 0.5740, 0.9393, 0.3303,
+        0.4177], grad_fn=<DivBackward0>), tensor([0.3353, 0.0494, 0.0983, 0.5261, 0.6151, 0.5315, 1.0000, 0.6255, 0.0147,
+        0.0000], grad_fn=<SqueezeBackward1>)], 9: [tensor([0.3418, 0.7257, 0.1092, 0.0000, 0.7904, 1.0000, 0.5812, 0.9398, 0.3341,
+        0.4295], grad_fn=<DivBackward0>), tensor([0.3351, 0.0506, 0.0952, 0.5246, 0.6028, 0.5320, 1.0000, 0.6136, 0.0183,
+        0.0000], grad_fn=<SqueezeBackward1>)]}
+masks_for_this_net_type {0: [tensor([0.3446, 0.7235, 0.1297, 0.0000, 0.7811, 1.0000, 0.5840, 0.9514, 0.3428,
+        0.4191], grad_fn=<DivBackward0>), tensor([0.3322, 0.0443, 0.1033, 0.5248, 0.6228, 0.5352, 1.0000, 0.6280, 0.0101,
+        0.0000], grad_fn=<SqueezeBackward1>)], 1: [tensor([0.3458, 0.7180, 0.1137, 0.0000, 0.7827, 1.0000, 0.5825, 0.9548, 0.3205,
+        0.4143], grad_fn=<DivBackward0>), tensor([0.3354, 0.0506, 0.0984, 0.5200, 0.6074, 0.5278, 1.0000, 0.6215, 0.0158,
+        0.0000], grad_fn=<SqueezeBackward1>)], 2: [tensor([0.3389, 0.7246, 0.0952, 0.0000, 0.7833, 1.0000, 0.5854, 0.9600, 0.3101,
+        0.4118], grad_fn=<DivBackward0>), tensor([0.3331, 0.0470, 0.0991, 0.5216, 0.6148, 0.5247, 1.0000, 0.6292, 0.0195,
+        0.0000], grad_fn=<SqueezeBackward1>)], 3: [tensor([0.3307, 0.7221, 0.0890, 0.0000, 0.7836, 1.0000, 0.5759, 0.9521, 0.3101,
+        0.4110], grad_fn=<DivBackward0>), tensor([0.3332, 0.0486, 0.0992, 0.5208, 0.6130, 0.5244, 1.0000, 0.6272, 0.0155,
+        0.0000], grad_fn=<SqueezeBackward1>)], 4: [tensor([0.3606, 0.7286, 0.1247, 0.0000, 0.7790, 1.0000, 0.6108, 0.9797, 0.3244,
+        0.4143], grad_fn=<DivBackward0>), tensor([0.3291, 0.0457, 0.1029, 0.5219, 0.6115, 0.5313, 1.0000, 0.6221, 0.0178,
+        0.0000], grad_fn=<SqueezeBackward1>)], 5: [tensor([0.3560, 0.7206, 0.1260, 0.0000, 0.7885, 1.0000, 0.5767, 0.9411, 0.3515,
+        0.4159], grad_fn=<DivBackward0>), tensor([0.3386, 0.0521, 0.1049, 0.5371, 0.6278, 0.5446, 1.0000, 0.6332, 0.0129,
+        0.0000], grad_fn=<SqueezeBackward1>)], 6: [tensor([0.3779, 0.7251, 0.1330, 0.0000, 0.7803, 1.0000, 0.6207, 0.9821, 0.3363,
+        0.4168], grad_fn=<DivBackward0>), tensor([0.3329, 0.0466, 0.1072, 0.5308, 0.6215, 0.5401, 1.0000, 0.6297, 0.0185,
+        0.0000], grad_fn=<SqueezeBackward1>)], 7: [tensor([0.3534, 0.7244, 0.1166, 0.0000, 0.7779, 1.0000, 0.6060, 0.9813, 0.3114,
+        0.4132], grad_fn=<DivBackward0>), tensor([0.3274, 0.0421, 0.1043, 0.5196, 0.6112, 0.5283, 1.0000, 0.6216, 0.0198,
+        0.0000], grad_fn=<SqueezeBackward1>)], 8: [tensor([0.3418, 0.7223, 0.1145, 0.0000, 0.7866, 1.0000, 0.5740, 0.9393, 0.3303,
+        0.4177], grad_fn=<DivBackward0>), tensor([0.3353, 0.0494, 0.0983, 0.5261, 0.6151, 0.5315, 1.0000, 0.6255, 0.0147,
+        0.0000], grad_fn=<SqueezeBackward1>)], 9: [tensor([0.3418, 0.7257, 0.1092, 0.0000, 0.7904, 1.0000, 0.5812, 0.9398, 0.3341,
+        0.4295], grad_fn=<DivBackward0>), tensor([0.3351, 0.0506, 0.0952, 0.5246, 0.6028, 0.5320, 1.0000, 0.6136, 0.0183,
+        0.0000], grad_fn=<SqueezeBackward1>)]}
+euclidean_distance_matrix [tensor([0.3446, 0.7235, 0.1297, 0.0000, 0.7811, 1.0000, 0.5840, 0.9514, 0.3428,
+        0.4191, 0.3322, 0.0443, 0.1033, 0.5248, 0.6228, 0.5352, 1.0000, 0.6280,
+        0.0101, 0.0000], grad_fn=<CatBackward>), tensor([0.3458, 0.7180, 0.1137, 0.0000, 0.7827, 1.0000, 0.5825, 0.9548, 0.3205,
+        0.4143, 0.3354, 0.0506, 0.0984, 0.5200, 0.6074, 0.5278, 1.0000, 0.6215,
+        0.0158, 0.0000], grad_fn=<CatBackward>), tensor([0.3389, 0.7246, 0.0952, 0.0000, 0.7833, 1.0000, 0.5854, 0.9600, 0.3101,
+        0.4118, 0.3331, 0.0470, 0.0991, 0.5216, 0.6148, 0.5247, 1.0000, 0.6292,
+        0.0195, 0.0000], grad_fn=<CatBackward>), tensor([0.3307, 0.7221, 0.0890, 0.0000, 0.7836, 1.0000, 0.5759, 0.9521, 0.3101,
+        0.4110, 0.3332, 0.0486, 0.0992, 0.5208, 0.6130, 0.5244, 1.0000, 0.6272,
+        0.0155, 0.0000], grad_fn=<CatBackward>), tensor([0.3606, 0.7286, 0.1247, 0.0000, 0.7790, 1.0000, 0.6108, 0.9797, 0.3244,
+        0.4143, 0.3291, 0.0457, 0.1029, 0.5219, 0.6115, 0.5313, 1.0000, 0.6221,
+        0.0178, 0.0000], grad_fn=<CatBackward>), tensor([0.3560, 0.7206, 0.1260, 0.0000, 0.7885, 1.0000, 0.5767, 0.9411, 0.3515,
+        0.4159, 0.3386, 0.0521, 0.1049, 0.5371, 0.6278, 0.5446, 1.0000, 0.6332,
+        0.0129, 0.0000], grad_fn=<CatBackward>), tensor([0.3779, 0.7251, 0.1330, 0.0000, 0.7803, 1.0000, 0.6207, 0.9821, 0.3363,
+        0.4168, 0.3329, 0.0466, 0.1072, 0.5308, 0.6215, 0.5401, 1.0000, 0.6297,
+        0.0185, 0.0000], grad_fn=<CatBackward>), tensor([0.3534, 0.7244, 0.1166, 0.0000, 0.7779, 1.0000, 0.6060, 0.9813, 0.3114,
+        0.4132, 0.3274, 0.0421, 0.1043, 0.5196, 0.6112, 0.5283, 1.0000, 0.6216,
+        0.0198, 0.0000], grad_fn=<CatBackward>), tensor([0.3418, 0.7223, 0.1145, 0.0000, 0.7866, 1.0000, 0.5740, 0.9393, 0.3303,
+        0.4177, 0.3353, 0.0494, 0.0983, 0.5261, 0.6151, 0.5315, 1.0000, 0.6255,
+        0.0147, 0.0000], grad_fn=<CatBackward>), tensor([0.3418, 0.7257, 0.1092, 0.0000, 0.7904, 1.0000, 0.5812, 0.9398, 0.3341,
+        0.4295, 0.3351, 0.0506, 0.0952, 0.5246, 0.6028, 0.5320, 1.0000, 0.6136,
+        0.0183, 0.0000], grad_fn=<CatBackward>)]
+distances tensor([[0.0000, 0.0359, 0.0522, 0.0579, 0.0495, 0.0293, 0.0602, 0.0550, 0.0290,
+         0.0406],
+        [0.0359, 0.0000, 0.0272, 0.0334, 0.0450, 0.0517, 0.0676, 0.0409, 0.0245,
+         0.0306],
+        [0.0522, 0.0272, 0.0000, 0.0171, 0.0525, 0.0663, 0.0764, 0.0418, 0.0389,
+         0.0454],
+        [0.0579, 0.0334, 0.0171, 0.0000, 0.0675, 0.0700, 0.0912, 0.0570, 0.0386,
+         0.0456],
+        [0.0495, 0.0450, 0.0525, 0.0675, 0.0000, 0.0673, 0.0313, 0.0192, 0.0610,
+         0.0617],
+        [0.0293, 0.0517, 0.0663, 0.0700, 0.0673, 0.0000, 0.0684, 0.0746, 0.0372,
+         0.0499],
+        [0.0602, 0.0676, 0.0764, 0.0912, 0.0313, 0.0684, 0.0000, 0.0472, 0.0775,
+         0.0798],
+        [0.0550, 0.0409, 0.0418, 0.0570, 0.0192, 0.0746, 0.0472, 0.0000, 0.0603,
+         0.0621],
+        [0.0290, 0.0245, 0.0389, 0.0386, 0.0610, 0.0372, 0.0775, 0.0603, 0.0000,
+         0.0241],
+        [0.0406, 0.0306, 0.0454, 0.0456, 0.0617, 0.0499, 0.0798, 0.0621, 0.0241,
+         0.0000]], grad_fn=<SqrtBackward>)
+tensor([[1.0000, 0.5955, 0.4161, 0.3542, 0.4461, 0.6689, 0.3301, 0.3857, 0.6720,
+         0.5431],
+        [0.5955, 1.0000, 0.6917, 0.6236, 0.4951, 0.4219, 0.2506, 0.5405, 0.7229,
+         0.6540],
+        [0.4161, 0.6917, 1.0000, 0.8057, 0.4128, 0.2635, 0.1558, 0.5299, 0.5628,
+         0.4912],
+        [0.3542, 0.6236, 0.8057, 1.0000, 0.2516, 0.2240, 0.0000, 0.3641, 0.5654,
+         0.4881],
+        [0.4461, 0.4951, 0.4128, 0.2516, 1.0000, 0.2537, 0.6460, 0.7818, 0.3216,
+         0.3131],
+        [0.6689, 0.4219, 0.2635, 0.2240, 0.2537, 1.0000, 0.2414, 0.1753, 0.5808,
+         0.4413],
+        [0.3301, 0.2506, 0.1558, 0.0000, 0.6460, 0.2414, 1.0000, 0.4715, 0.1441,
+         0.1197],
+        [0.3857, 0.5405, 0.5299, 0.3641, 0.7818, 0.1753, 0.4715, 1.0000, 0.3281,
+         0.3089],
+        [0.6720, 0.7229, 0.5628, 0.5654, 0.3216, 0.5808, 0.1441, 0.3281, 1.0000,
+         0.7267],
+        [0.5431, 0.6540, 0.4912, 0.4881, 0.3131, 0.4413, 0.1197, 0.3089, 0.7267,
+         1.0000]], grad_fn=<DivBackward0>)
+mask_sim_mtx tensor([[1.0000, 0.5955, 0.4161, 0.3542, 0.4461, 0.6689, 0.3301, 0.3857, 0.6720,
+         0.5431, 0.5955, 1.0000, 0.6917, 0.6236, 0.4951, 0.4219, 0.2506, 0.5405,
+         0.7229, 0.6540, 0.4161, 0.6917, 1.0000, 0.8057, 0.4128, 0.2635, 0.1558,
+         0.5299, 0.5628, 0.4912, 0.3542, 0.6236, 0.8057, 1.0000, 0.2516, 0.2240,
+         0.0000, 0.3641, 0.5654, 0.4881, 0.4461, 0.4951, 0.4128, 0.2516, 1.0000,
+         0.2537, 0.6460, 0.7818, 0.3216, 0.3131, 0.6689, 0.4219, 0.2635, 0.2240,
+         0.2537, 1.0000, 0.2414, 0.1753, 0.5808, 0.4413, 0.3301, 0.2506, 0.1558,
+         0.0000, 0.6460, 0.2414, 1.0000, 0.4715, 0.1441, 0.1197, 0.3857, 0.5405,
+         0.5299, 0.3641, 0.7818, 0.1753, 0.4715, 1.0000, 0.3281, 0.3089, 0.6720,
+         0.7229, 0.5628, 0.5654, 0.3216, 0.5808, 0.1441, 0.3281, 1.0000, 0.7267,
+         0.5431, 0.6540, 0.4912, 0.4881, 0.3131, 0.4413, 0.1197, 0.3089, 0.7267,
+         1.0000]], grad_fn=<ViewBackward>)
+traj_sim_mtx tensor([[1.0000, 0.5245, 0.1794, 0.6529, 0.4356, 0.5641, 0.5620, 0.3144, 0.6078,
+         0.4937, 0.5245, 1.0000, 0.2296, 0.6819, 0.5738, 0.7427, 0.6252, 0.3958,
+         0.6010, 0.7736, 0.1794, 0.2296, 1.0000, 0.2787, 0.3873, 0.5874, 0.2846,
+         0.0344, 0.3436, 0.4865, 0.6529, 0.6819, 0.2787, 1.0000, 0.5531, 0.6078,
+         0.4294, 0.5219, 0.6514, 0.4934, 0.4356, 0.5738, 0.3873, 0.5531, 1.0000,
+         0.5854, 0.6888, 0.0495, 0.7879, 0.6771, 0.5641, 0.7427, 0.5874, 0.6078,
+         0.5854, 1.0000, 0.5985, 0.0012, 0.4883, 0.5915, 0.5620, 0.6252, 0.2846,
+         0.4294, 0.6888, 0.5985, 1.0000, 0.0000, 0.5523, 0.6880, 0.3144, 0.3958,
+         0.0344, 0.5219, 0.0495, 0.0012, 0.0000, 1.0000, 0.4983, 0.4149, 0.6078,
+         0.6010, 0.3436, 0.6514, 0.7879, 0.4883, 0.5523, 0.4983, 1.0000, 0.5174,
+         0.4937, 0.7736, 0.4865, 0.4934, 0.6771, 0.5915, 0.6880, 0.4149, 0.5174,
+         1.0000]])
+loss1 tensor([[0.4988]], grad_fn=<ViewBackward>)
+loss2 tensor([[2.7837]], grad_fn=<CdistBackward>)
+sample: [1, 9, 5, 3, 0, 2, 7, 8, 6, 4]
+replay_buffer._size: [600 600 600 600 600 600 600 600 600 600]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [12648.88, -21.08, -21.03, -42.98, -23.52, -18.16, -51.11, -20.26, -26.02, -27.14]
+return_array_smooth: [12118.33, -20.91, -20.86, -42.82, -23.7, -17.81, -48.12, -20.11, -26.47, -26.99][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+snapshot at best
+2023-07-29 16:38:26,650 MainThread INFO: EPOCH:2
+2023-07-29 16:38:26,651 MainThread INFO: Time Consumed:3.1823642253875732s
+2023-07-29 16:38:26,651 MainThread INFO: Total Frames:4500s
+  4%|▍         | 3/80 [00:29<15:29, 12.07s/it]------------------------------------  -----------  ----------  -----------  --------
+Name                                  Value
+Running_Average_Rewards               1239.75802
+Train_Epoch_Reward                    13861.48006
+Running_Training_Average_Rewards      1078.10866
+Explore_Time                          0.00531
+Train___Time                          1.77551
+Eval____Time                          0.00758
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -51.11022
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -42.98371
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -18.15653
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.52428
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.25656
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -21.02680
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -21.08146
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 12648.87591
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -27.13658
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.01960
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std         Max          Min
+Reward_Mean                           8.54983      0.41102     9.18674      7.98855
+alpha_0                               0.98817      0.00133     0.99046      0.98598
+alpha_1                               0.98834      0.00133     0.99067      0.98612
+alpha_2                               0.98843      0.00134     0.99074      0.98617
+alpha_3                               0.98848      0.00135     0.99078      0.98618
+alpha_4                               0.98853      0.00136     0.99081      0.98620
+alpha_5                               0.98857      0.00136     0.99084      0.98624
+alpha_6                               0.98858      0.00136     0.99086      0.98623
+alpha_7                               0.98861      0.00136     0.99088      0.98628
+alpha_8                               0.98863      0.00136     0.99093      0.98631
+alpha_9                               0.98865      0.00137     0.99099      0.98635
+Alpha_loss                            -0.07649     0.00903     -0.06233     -0.09107
+Training/policy_loss                  -2.75407     0.03463     -2.67346     -2.85203
+Training/qf1_loss                     1104.45998   3310.60920  12601.07812  5.05627
+Training/qf2_loss                     1104.99617   3311.86438  12603.82617  5.22712
+Training/pf_norm                      0.39699      0.10000     0.56302      0.12381
+Training/qf1_norm                     26.95907     63.64013    229.99626    5.12871
+Training/qf2_norm                     23.13472     54.25919    196.34491    4.65237
+log_std/mean                          -0.04605     0.00703     -0.03483     -0.06135
+log_std/std                           0.00192      0.00028     0.00258      0.00146
+log_std/max                           -0.04321     0.00700     -0.03092     -0.05719
+log_std/min                           -0.04880     0.00676     -0.03838     -0.06410
+log_probs/mean                        -2.70997     0.03189     -2.64092     -2.82852
+log_probs/std                         0.34420      0.02878     0.44163      0.28332
+log_probs/max                         -1.80929     0.12071     -1.54285     -2.09858
+log_probs/min                         -3.58667     0.44897     -3.26704     -6.25622
+mean/mean                             0.00060      0.00116     0.00250      -0.00137
+mean/std                              0.00228      0.00038     0.00309      0.00161
+mean/max                              0.00260      0.00115     0.00443      0.00069
+mean/min                              -0.00329     0.00166     -0.00072     -0.00651
+------------------------------------  -----------  ----------  -----------  --------
+sample: [8, 2, 3, 9, 0, 4, 7, 6, 1, 5]
+replay_buffer._size: [750 750 750 750 750 750 750 750 750 750]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [12454.43, -21.08, -21.03, -43.14, -23.88, -17.93, -48.15, -20.29, -26.13, -27.41]
+return_array_smooth: [12318.79, -21.0, -20.94, -42.95, -23.73, -17.91, -49.33, -20.19, -26.28, -27.15][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-07-29 16:38:28,690 MainThread INFO: EPOCH:3
+2023-07-29 16:38:28,691 MainThread INFO: Time Consumed:1.8869071006774902s
+2023-07-29 16:38:28,691 MainThread INFO: Total Frames:6000s
+  5%|▌         | 4/80 [00:31<10:16,  8.11s/it]  5%|▌         | 4/80 [00:39<12:30,  9.87s/it]
+------------------------------------  -----------  ----------  -----------  --------
+Name                                  Value
+Running_Average_Rewards               1220.53866
+Train_Epoch_Reward                    23513.72584
+Running_Training_Average_Rewards      1670.55500
+Explore_Time                          0.00479
+Train___Time                          1.87181
+Eval____Time                          0.00900
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -48.14849
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -43.14490
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.93022
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.88391
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.28614
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -21.02893
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -21.08498
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 12454.43082
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -27.40927
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.12743
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std         Max          Min
+Reward_Mean                           9.70813      0.19933     10.01925     9.42858
+alpha_0                               0.98355      0.00133     0.98584      0.98137
+alpha_1                               0.98371      0.00134     0.98606      0.98148
+alpha_2                               0.98379      0.00135     0.98611      0.98152
+alpha_3                               0.98382      0.00135     0.98611      0.98153
+alpha_4                               0.98386      0.00135     0.98612      0.98155
+alpha_5                               0.98389      0.00135     0.98615      0.98157
+alpha_6                               0.98387      0.00136     0.98613      0.98153
+alpha_7                               0.98390      0.00136     0.98617      0.98157
+alpha_8                               0.98391      0.00135     0.98619      0.98161
+alpha_9                               0.98391      0.00136     0.98622      0.98163
+Alpha_loss                            -0.10854     0.00908     -0.09437     -0.12369
+Training/policy_loss                  -2.82764     0.02985     -2.75311     -2.88869
+Training/qf1_loss                     1340.33132   4004.67528  13949.57227  4.48948
+Training/qf2_loss                     1341.69032   4007.97665  13962.58105  4.87281
+Training/pf_norm                      0.37045      0.06891     0.51321      0.25219
+Training/qf1_norm                     33.79841     82.16997    297.00418    5.74964
+Training/qf2_norm                     26.80481     64.54702    229.77272    4.78428
+log_std/mean                          -0.07226     0.00866     -0.05762     -0.09169
+log_std/std                           0.00272      0.00040     0.00353      0.00202
+log_std/max                           -0.06813     0.00807     -0.05426     -0.08613
+log_std/min                           -0.07588     0.00925     -0.06021     -0.09629
+log_probs/mean                        -2.72522     0.02286     -2.67802     -2.78621
+log_probs/std                         0.30135      0.03593     0.42851      0.25862
+log_probs/max                         -1.97968     0.10152     -1.75745     -2.19714
+log_probs/min                         -3.72468     0.56578     -3.27707     -5.87588
+mean/mean                             0.00145      0.00043     0.00224      0.00073
+mean/std                              0.00380      0.00089     0.00534      0.00261
+mean/max                              0.00586      0.00186     0.00907      0.00370
+mean/min                              -0.00416     0.00068     -0.00260     -0.00537
+------------------------------------  -----------  ----------  -----------  --------
+start to update mask
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+MaskGeneratorNet(
+  (base): TrajectoryEncoder(
+    (encoder_lstm): LSTM(19, 10, bidirectional=True)
+    (encoder_mu): Linear(in_features=10, out_features=10, bias=True)
+    (encoder_std): Linear(in_features=10, out_features=10, bias=True)
+    (decoder): Linear(in_features=29, out_features=38, bias=True)
+  )
+  (em_base): MLPBase(
+    (fc0): Linear(in_features=10, out_features=10, bias=True)
+    (fc1): Linear(in_features=10, out_features=10, bias=True)
+  )
+  (gating_weight_fc_0): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_cond_last): Linear(in_features=10, out_features=10, bias=True)
+  (gating_weight_last): Linear(in_features=10, out_features=10, bias=True)
+)
+inside gen task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+task_probs_masks [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]
+prob_mask_buffer {0: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 1: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 2: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 3: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 4: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 5: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 6: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 7: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 8: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 9: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]}
+masks_for_this_net_type {0: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 1: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 2: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 3: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 4: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 5: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 6: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 7: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 8: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)], 9: [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<DivBackward0>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<SqueezeBackward1>)]}
+euclidean_distance_matrix [tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>), tensor([nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       grad_fn=<CatBackward>)]
+distances tensor([[nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]],
+       grad_fn=<SqrtBackward>)
+tensor([[nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan],
+        [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]],
+       grad_fn=<DivBackward0>)
+mask_sim_mtx tensor([[nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan,
+         nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan,
+         nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan,
+         nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan,
+         nan, nan, nan, nan]], grad_fn=<ViewBackward>)
+traj_sim_mtx tensor([[1.0000, 0.0896, 0.1168, 0.7875, 0.7328, 0.6877, 0.6321, 0.4718, 0.5726,
+         0.2792, 0.0896, 1.0000, 0.0000, 0.4002, 0.3665, 0.3621, 0.4829, 0.3809,
+         0.3151, 0.6471, 0.1168, 0.0000, 1.0000, 0.2398, 0.4186, 0.2909, 0.5317,
+         0.3099, 0.3921, 0.4197, 0.7875, 0.4002, 0.2398, 1.0000, 0.7447, 0.6316,
+         0.7276, 0.4330, 0.6325, 0.4573, 0.7328, 0.3665, 0.4186, 0.7447, 1.0000,
+         0.7268, 0.6894, 0.5421, 0.8543, 0.7095, 0.6877, 0.3621, 0.2909, 0.6316,
+         0.7268, 1.0000, 0.7548, 0.7793, 0.7968, 0.6526, 0.6321, 0.4829, 0.5317,
+         0.7276, 0.6894, 0.7548, 1.0000, 0.7673, 0.8035, 0.7275, 0.4718, 0.3809,
+         0.3099, 0.4330, 0.5421, 0.7793, 0.7673, 1.0000, 0.6157, 0.4960, 0.5726,
+         0.3151, 0.3921, 0.6325, 0.8543, 0.7968, 0.8035, 0.6157, 1.0000, 0.7255,
+         0.2792, 0.6471, 0.4197, 0.4573, 0.7095, 0.6526, 0.7275, 0.4960, 0.7255,
+         1.0000]])
+wandb: Waiting for W&B process to finish... (failed 1). Press Control-C to abort syncing.
+wandb: 
+wandb: Run history:
+wandb:                     0 ███▁▁
+wandb:                     1 ███▁▁
+wandb:                     2 ███▁▁
+wandb:                     3 ███▁▁
+wandb:                     4 ███▁▁
+wandb:                     5 ███▁▁
+wandb:                     6 ███▁▁
+wandb:                     7 ███▁▁
+wandb:                     8 ███▁▁
+wandb:                     9 ███▁▁
+wandb:       Policy_sim_loss ▁
+wandb:      Policy_sim_loss2 ▁
+wandb:           Q1_sim_loss ▁
+wandb:          Q1_sim_loss2 ▁
+wandb:           Q2_sim_loss ▁
+wandb:          Q2_sim_loss2 ▁
+wandb:     mean_success_rate ▁▁▁▁
+wandb: trajectory_train_loss █▁
+wandb: 
+wandb: Run summary:
+wandb:                     0 16
+wandb:                     1 16
+wandb:                     2 16
+wandb:                     3 16
+wandb:                     4 16
+wandb:                     5 16
+wandb:                     6 16
+wandb:                     7 16
+wandb:                     8 16
+wandb:                     9 16
+wandb:       Policy_sim_loss 0.62397
+wandb:      Policy_sim_loss2 3.03871
+wandb:           Q1_sim_loss 0.34493
+wandb:          Q1_sim_loss2 2.35829
+wandb:           Q2_sim_loss 0.49878
+wandb:          Q2_sim_loss2 2.7837
+wandb:     mean_success_rate 0.0
+wandb: trajectory_train_loss 13.97151
+wandb: 
+wandb: 🚀 View run lucky-glitter-75 at: https://wandb.ai/liqianxi/dst_mtrl/runs/zihesnn6
+wandb: Synced 6 W&B file(s), 0 media file(s), 3 artifact file(s) and 2 other file(s)
+wandb: Find logs at: ./wandb/run-20230729_163752-zihesnn6/logs
+Process Process-8:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-5:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-3:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-4:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-6:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-9:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-2:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-11:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-7:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-20:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-21:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-16:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-17:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-13:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-15:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-19:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-18:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-14:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-12:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 423, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-10:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 316, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Traceback (most recent call last):
+  File "starter/mt_must_sac.py", line 288, in <module>
+    experiment(args)
+  File "starter/mt_must_sac.py", line 284, in experiment
+    agent.train(env.num_tasks,params)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/rl_algo.py", line 425, in train
+    self.update_masks(TASK_SAMPLE_NUM, task_amount, epoch)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/rl_algo.py", line 354, in update_masks
+    wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 389, in wrapper
+    return func(self, *args, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 340, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 330, in wrapper
+    return func(self, *args, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1745, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1526, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1396, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/interface/interface.py", line 578, in publish_partial_history
+    item.value_json = json_dumps_safer_history(v)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/util.py", line 821, in json_dumps_safer_history
+    return json.dumps(obj, cls=WandBHistoryJSONEncoder, **kwargs)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/util.py", line 783, in default
+    obj, compressed = maybe_compress_history(obj)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/util.py", line 684, in maybe_compress_history
+    return wandb.Histogram(obj, num_bins=32).to_json(), True
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/data_types/histogram.py", line 77, in __init__
+    self.histogram, self.bins = np.histogram(sequence, bins=num_bins)
+  File "<__array_function__ internals>", line 200, in histogram
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/numpy/lib/histograms.py", line 780, in histogram
+    bin_edges, uniform_bins = _get_bin_edges(a, bins, range, weights)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/numpy/lib/histograms.py", line 426, in _get_bin_edges
+    first_edge, last_edge = _get_outer_edges(a, range)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/numpy/lib/histograms.py", line 323, in _get_outer_edges
+    raise ValueError(
+ValueError: autodetected range of [nan, nan] is not finite
+134 seconds elapsed.
