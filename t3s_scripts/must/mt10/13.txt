@@ -1,0 +1,1793 @@
+task start
+Use seed 13
+2023-08-02 18:05:05,241 MainThread INFO: Experiment Name:must_mtsac
+2023-08-02 18:05:05,242 MainThread INFO: {
+  "env_name": "mt10",
+  "env": {
+    "reward_scale": 1,
+    "obs_norm": false
+  },
+  "meta_env": {
+    "obs_type": "with_goal_and_id"
+  },
+  "replay_buffer": {
+    "size": 1000000.0
+  },
+  "net": {
+    "hidden_shapes": [
+      400,
+      400
+    ]
+  },
+  "task_embedding": {
+    "em_hidden_shapes": [
+      256,
+      128
+    ]
+  },
+  "traj_encoder": {
+    "hidden_shapes": [
+      256,
+      128
+    ],
+    "latent_size": 128
+  },
+  "sparse_training": {
+    "pruning_ratio": 0.8
+  },
+  "general_setting": {
+    "discount": 0.99,
+    "pretrain_epochs": 0,
+    "num_epochs": 10000,
+    "epoch_frames": 150,
+    "max_episode_frames": 150,
+    "generator_lr": 1e-05,
+    "batch_size": 1280,
+    "min_pool": 10000,
+    "target_hard_update_period": 1000,
+    "use_soft_update": true,
+    "tau": 0.005,
+    "opt_times": 100,
+    "update_end_epoch": 7000,
+    "mask_update_interval": 50,
+    "eval_episodes": 3
+  },
+  "sac": {
+    "plr": 0.0003,
+    "qlr": 0.0003,
+    "reparameterization": true,
+    "automatic_entropy_tuning": true,
+    "policy_std_reg_weight": 0,
+    "policy_mean_reg_weight": 0
+  }
+}
+finish policy net init
+mask generator finish initialization
+/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Could not seed environment <MTEnv instance>[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+2023-08-02 18:05:56,487 MainThread INFO: Finished Pretrain
+  0%|          | 0/10000 [00:00<?, ?it/s]self.update_end_epoch 7000
+sample: [2, 8, 9, 4, 6, 7, 0, 1, 5, 3]
+replay_buffer._size: [300 300 300 300 300 300 300 300 300 300]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [11999.8, -20.91, -20.78, -43.07, -23.94, -17.6, -51.43, -20.3, -26.69, -26.97]
+return_array_smooth: [11999.8, -20.91, -20.78, -43.07, -23.94, -17.6, -51.43, -20.3, -26.69, -26.97][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+snapshot at best
+2023-08-02 18:06:10,010 MainThread INFO: EPOCH:0
+2023-08-02 18:06:10,010 MainThread INFO: Time Consumed:13.478030681610107s
+2023-08-02 18:06:10,010 MainThread INFO: Total Frames:1500s
+/scratch/qianxi/t3s/t3s_code/./torchrl/algo/rl_algo.py:415: UserWarning: This overload of nonzero is deprecated:
+	nonzero()
+Consider using one of the following signatures instead:
+	nonzero(*, bool as_tuple) (Triggered internally at  /pytorch/torch/csrc/utils/python_arg_parser.cpp:882.)
+  value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
+  0%|          | 1/10000 [00:14<40:05:40, 14.44s/it]------------------------------------  -----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               1174.80971
+Train_Epoch_Reward                    22217.72022
+Running_Training_Average_Rewards      2221.77202
+Explore_Time                          0.01417
+Train___Time                          12.01367
+Eval____Time                          0.00535
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -51.43100
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -43.07499
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.60146
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.94208
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.29711
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -20.77823
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -20.91151
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 11999.80227
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.97481
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.69402
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std        Max         Min
+Reward_Mean                           8.95315      0.53896    10.64421    7.54609
+alpha_0                               0.98498      0.00854    0.99970     0.97040
+alpha_1                               0.98498      0.00854    0.99970     0.97040
+alpha_2                               0.98498      0.00854    0.99970     0.97041
+alpha_3                               0.98498      0.00854    0.99970     0.97040
+alpha_4                               0.98499      0.00854    0.99970     0.97042
+alpha_5                               0.98498      0.00855    0.99970     0.97040
+alpha_6                               0.98497      0.00855    0.99970     0.97039
+alpha_7                               0.98499      0.00854    0.99970     0.97041
+alpha_8                               0.98498      0.00855    0.99970     0.97039
+alpha_9                               0.98498      0.00854    0.99970     0.97041
+Alpha_loss                            -0.10011     0.05842    -0.00000    -0.20020
+Training/policy_loss                  -3.26288     0.53792    -2.64720    -4.48961
+Training/qf1_loss                     1310.45909   162.25496  1774.58240  906.75702
+Training/qf2_loss                     1310.91271   162.13577  1774.66199  907.44202
+Training/pf_norm                      0.21972      0.09726    0.58690     0.12525
+Training/qf1_norm                     71.17373     37.36394   160.86304   28.50044
+Training/qf2_norm                     67.02007     35.28511   152.82932   27.31042
+log_std/mean                          -0.10860     0.04427    0.00108     -0.14529
+log_std/std                           0.00677      0.00315    0.01127     0.00166
+log_std/max                           -0.09475     0.03904    0.00414     -0.12775
+log_std/min                           -0.12406     0.05125    -0.00277    -0.16622
+log_probs/mean                        -2.72614     0.01881    -2.64678    -2.75134
+log_probs/std                         0.26910      0.06177    0.44970     0.20344
+log_probs/max                         -1.97303     0.27650    -1.09426    -2.27030
+log_probs/min                         -4.78788     0.75350    -3.50492    -8.25016
+mean/mean                             -0.00074     0.00388    0.00644     -0.00601
+mean/std                              0.01163      0.00370    0.01962     0.00206
+mean/max                              0.02474      0.00939    0.04748     0.00341
+mean/min                              -0.02831     0.01043    -0.00519    -0.04707
+------------------------------------  -----------  ---------  ----------  ---------
+snapshot at 0
+history save at ./log/must_mtsac/mt10/13/model
+self.update_end_epoch 7000
+sample: [0, 2, 5, 1, 6, 7, 4, 3, 8, 9]
+replay_buffer._size: [450 450 450 450 450 450 450 450 450 450]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [11999.8, -20.91, -20.78, -43.07, -23.94, -17.6, -54.92, -20.3, -26.69, -26.97]
+return_array_smooth: [11999.8, -20.91, -20.78, -43.07, -23.94, -17.6, -53.18, -20.3, -26.69, -26.97][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:06:17,580 MainThread INFO: EPOCH:1
+2023-08-02 18:06:17,580 MainThread INFO: Time Consumed:6.6211020946502686s
+2023-08-02 18:06:17,580 MainThread INFO: Total Frames:3000s
+  0%|          | 2/10000 [00:21<27:27:05,  9.88s/it]------------------------------------  -----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               1174.46082
+Train_Epoch_Reward                    5521.05025
+Running_Training_Average_Rewards      1386.93852
+Explore_Time                          0.00332
+Train___Time                          6.61028
+Eval____Time                          0.00696
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -54.91985
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -43.07499
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.60146
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.94208
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.29711
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -20.77823
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -20.91151
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 11999.80227
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.97481
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.69402
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std        Max         Min
+Reward_Mean                           8.59659      0.46146    9.64283     7.18122
+alpha_0                               0.95587      0.00825    0.97011     0.94184
+alpha_1                               0.95584      0.00828    0.97011     0.94170
+alpha_2                               0.95584      0.00828    0.97012     0.94171
+alpha_3                               0.95584      0.00828    0.97011     0.94170
+alpha_4                               0.95585      0.00828    0.97013     0.94172
+alpha_5                               0.95583      0.00829    0.97011     0.94169
+alpha_6                               0.95582      0.00828    0.97009     0.94169
+alpha_7                               0.95585      0.00828    0.97012     0.94172
+alpha_8                               0.95583      0.00828    0.97010     0.94170
+alpha_9                               0.95585      0.00828    0.97011     0.94172
+Alpha_loss                            -0.30199     0.05801    -0.20227    -0.40023
+Training/policy_loss                  -5.73087     0.60846    -4.52305    -6.75665
+Training/qf1_loss                     1033.49869   129.09453  1327.86475  756.23462
+Training/qf2_loss                     1035.04536   129.10103  1329.52722  757.80078
+Training/pf_norm                      0.16771      0.02045    0.23475     0.12393
+Training/qf1_norm                     274.88005    80.46318   432.39200   138.79761
+Training/qf2_norm                     266.75024    79.88126   422.66882   132.68716
+log_std/mean                          -0.13700     0.00269    -0.13296    -0.14369
+log_std/std                           0.01131      0.00186    0.01551     0.00858
+log_std/max                           -0.11492     0.00395    -0.10672    -0.12409
+log_std/min                           -0.16614     0.01006    -0.15275    -0.18628
+log_probs/mean                        -2.72695     0.00894    -2.69866    -2.74893
+log_probs/std                         0.26344      0.02724    0.33472     0.21274
+log_probs/max                         -1.74800     0.38463    -0.78951    -2.17639
+log_probs/min                         -4.99172     0.66717    -3.82632    -7.55678
+mean/mean                             -0.00602     0.00392    0.00090     -0.01207
+mean/std                              0.04788      0.02135    0.09215     0.02019
+mean/max                              0.13531      0.09026    0.32427     0.04917
+mean/min                              -0.15936     0.09560    -0.03613    -0.34207
+------------------------------------  -----------  ---------  ----------  ---------
+self.update_end_epoch 7000
+sample: [4, 3, 5, 7, 6, 9, 8, 0, 1, 2]
+replay_buffer._size: [600 600 600 600 600 600 600 600 600 600]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [12013.01, -21.36, -20.96, -45.92, -23.5, -18.08, -45.86, -17.7, -26.49, -25.73]
+return_array_smooth: [12004.21, -21.06, -20.84, -44.02, -23.79, -17.76, -50.74, -19.43, -26.63, -26.56][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+snapshot at best
+2023-08-02 18:06:25,967 MainThread INFO: EPOCH:2
+2023-08-02 18:06:25,967 MainThread INFO: Time Consumed:8.212712287902832s
+2023-08-02 18:06:25,967 MainThread INFO: Total Frames:4500s
+  0%|          | 3/10000 [00:29<25:33:00,  9.20s/it]------------------------------------  -----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               1176.73897
+Train_Epoch_Reward                    12164.82673
+Running_Training_Average_Rewards      1330.11991
+Explore_Time                          0.00386
+Train___Time                          7.82399
+Eval____Time                          0.00652
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -45.86275
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -45.92069
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -18.07977
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.50051
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -17.70231
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -20.96485
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -21.36394
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 12013.01094
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -25.73220
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.49419
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std        Max         Min
+Reward_Mean                           7.27748      0.58488    9.08577     6.01660
+alpha_0                               0.92853      0.00740    0.94157     0.91618
+alpha_1                               0.92757      0.00804    0.94142     0.91385
+alpha_2                               0.92758      0.00804    0.94143     0.91386
+alpha_3                               0.92758      0.00804    0.94142     0.91386
+alpha_4                               0.92760      0.00803    0.94144     0.91389
+alpha_5                               0.92756      0.00804    0.94141     0.91385
+alpha_6                               0.92756      0.00803    0.94141     0.91385
+alpha_7                               0.92759      0.00804    0.94144     0.91388
+alpha_8                               0.92758      0.00803    0.94142     0.91387
+alpha_9                               0.92759      0.00803    0.94143     0.91388
+Alpha_loss                            -0.49797     0.05506    -0.40334    -0.59164
+Training/policy_loss                  -8.31990     0.99264    -6.80207    -10.19001
+Training/qf1_loss                     646.88749    132.57531  1035.67908  364.29282
+Training/qf2_loss                     648.22219    132.68601  1037.27600  365.01318
+Training/pf_norm                      0.18883      0.02936    0.27889     0.13622
+Training/qf1_norm                     393.97842    49.48184   532.26129   296.13077
+Training/qf2_norm                     387.38209    49.05001   523.41833   292.48795
+log_std/mean                          -0.13943     0.00158    -0.13665    -0.14321
+log_std/std                           0.02877      0.00825    0.04396     0.01218
+log_std/max                           -0.11199     0.00234    -0.10834    -0.11677
+log_std/min                           -0.26348     0.04196    -0.17437    -0.33280
+log_probs/mean                        -2.65828     0.03317    -2.59215    -2.71871
+log_probs/std                         0.48020      0.09582    0.64484     0.31494
+log_probs/max                         0.24653      0.67588    1.36331     -1.17170
+log_probs/min                         -5.48868     0.72413    -4.10971    -7.84077
+mean/mean                             -0.01186     0.00512    -0.00359    -0.02345
+mean/std                              0.16067      0.03689    0.21448     0.09329
+mean/max                              0.61893      0.14832    0.82416     0.32987
+mean/min                              -0.63501     0.16233    -0.34850    -0.92034
+------------------------------------  -----------  ---------  ----------  ---------
+self.update_end_epoch 7000
+sample: [1, 4, 5, 0, 3, 7, 8, 2, 6, 9]
+replay_buffer._size: [750 750 750 750 750 750 750 750 750 750]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [3493.91, -20.93, -23.64, -43.28, -28.72, -22.15, -45.65, -20.64, -22.05, -29.25]
+return_array_smooth: [9168.91, -21.07, -21.79, -44.09, -25.39, -19.28, -48.81, -19.55, -25.08, -27.32][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:06:33,676 MainThread INFO: EPOCH:3
+2023-08-02 18:06:33,676 MainThread INFO: Time Consumed:7.6217498779296875s
+2023-08-02 18:06:33,676 MainThread INFO: Total Frames:6000s
+  0%|          | 4/10000 [00:37<23:55:30,  8.62s/it]------------------------------------  -----------  --------  ---------  ---------
+Name                                  Value
+Running_Average_Rewards               323.75849
+Train_Epoch_Reward                    11844.99517
+Running_Training_Average_Rewards      984.36241
+Explore_Time                          0.00493
+Train___Time                          7.60936
+Eval____Time                          0.00678
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -45.65248
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -43.27917
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -22.15437
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -28.72043
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.64346
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -23.63939
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -20.93036
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 3493.90932
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -29.25067
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -22.05408
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std       Max        Min
+Reward_Mean                           6.31997      0.58489   7.78809    5.15360
+alpha_0                               0.90373      0.00741   0.91594    0.89075
+alpha_1                               0.90014      0.00780   0.91358    0.88684
+alpha_2                               0.90016      0.00779   0.91359    0.88686
+alpha_3                               0.90015      0.00780   0.91359    0.88685
+alpha_4                               0.90018      0.00780   0.91361    0.88687
+alpha_5                               0.90015      0.00779   0.91358    0.88685
+alpha_6                               0.90015      0.00779   0.91358    0.88685
+alpha_7                               0.90017      0.00780   0.91360    0.88686
+alpha_8                               0.90016      0.00779   0.91359    0.88686
+alpha_9                               0.90017      0.00780   0.91360    0.88687
+Alpha_loss                            -0.69595     0.05965   -0.59232   -0.78250
+Training/policy_loss                  -12.53795    1.40752   -10.22642  -15.10659
+Training/qf1_loss                     395.42525    81.16217  639.82397  211.79224
+Training/qf2_loss                     396.42955    81.24653  640.92328  212.72539
+Training/pf_norm                      0.28919      0.12148   0.62872    0.13604
+Training/qf1_norm                     192.17502    99.43144  445.46494  17.91632
+Training/qf2_norm                     190.06625    97.93348  439.58563  17.72493
+log_std/mean                          -0.13980     0.00624   -0.13036   -0.15373
+log_std/std                           0.03028      0.01490   0.06972    0.00998
+log_std/max                           -0.10558     0.01006   -0.07777   -0.11997
+log_std/min                           -0.27757     0.08902   -0.15245   -0.52742
+log_probs/mean                        -2.65371     0.05051   -2.55131   -2.72764
+log_probs/std                         0.48171      0.13969   0.82193    0.30130
+log_probs/max                         0.13894      0.90909   2.07410    -1.26714
+log_probs/min                         -5.56598     0.84148   -4.14638   -8.36891
+mean/mean                             0.01404      0.02975   0.07675    -0.02417
+mean/std                              0.15634      0.05075   0.25867    0.08664
+mean/max                              0.66974      0.23035   1.37294    0.30378
+mean/min                              -0.55889     0.31818   -0.05266   -0.97648
+------------------------------------  -----------  --------  ---------  ---------
+self.update_end_epoch 7000
+sample: [0, 6, 4, 9, 8, 7, 5, 1, 2, 3]
+replay_buffer._size: [900 900 900 900 900 900 900 900 900 900]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [2077.67, -22.76, -21.43, -46.0, -26.11, -19.87, -48.24, -19.81, -22.51, -29.02]
+return_array_smooth: [5861.53, -21.68, -22.01, -45.07, -26.11, -20.03, -46.59, -19.39, -23.69, -28.0][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:06:41,693 MainThread INFO: EPOCH:4
+2023-08-02 18:06:41,693 MainThread INFO: Time Consumed:7.833765506744385s
+2023-08-02 18:06:41,693 MainThread INFO: Total Frames:7500s
+  0%|          | 5/10000 [00:45<23:20:14,  8.41s/it]------------------------------------  ----------  --------  ---------  ---------
+Name                                  Value
+Running_Average_Rewards               182.19116
+Train_Epoch_Reward                    2180.50200
+Running_Training_Average_Rewards      873.01080
+Explore_Time                          0.00703
+Train___Time                          7.82061
+Eval____Time                          0.00559
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -48.24199
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -46.00194
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -19.86663
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -26.10830
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -19.81410
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -21.43066
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -22.75928
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 2077.66649
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -29.01821
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -22.51372
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std       Max        Min
+Reward_Mean                           5.63842     0.54153   7.58346    4.61118
+alpha_0                               0.88211     0.00465   0.89052    0.87417
+alpha_1                               0.87356     0.00756   0.88658    0.86064
+alpha_2                               0.87356     0.00757   0.88660    0.86064
+alpha_3                               0.87355     0.00757   0.88659    0.86064
+alpha_4                               0.87357     0.00756   0.88660    0.86066
+alpha_5                               0.87355     0.00757   0.88659    0.86063
+alpha_6                               0.87355     0.00757   0.88659    0.86064
+alpha_7                               0.87356     0.00757   0.88660    0.86065
+alpha_8                               0.87357     0.00756   0.88660    0.86066
+alpha_9                               0.87357     0.00756   0.88661    0.86066
+Alpha_loss                            -0.86233    0.05448   -0.77653   -0.95723
+Training/policy_loss                  -15.49744   0.50262   -14.90183  -16.68152
+Training/qf1_loss                     364.14624   67.84279  560.85394  191.23311
+Training/qf2_loss                     364.29770   67.83254  561.19873  191.90138
+Training/pf_norm                      0.27166     0.09336   0.60194    0.13046
+Training/qf1_norm                     89.31077    60.33188  351.73032  16.22354
+Training/qf2_norm                     88.27241    59.44698  347.05005  16.10429
+log_std/mean                          -0.15735    0.00296   -0.15184   -0.16382
+log_std/std                           0.07900     0.00378   0.08876    0.07128
+log_std/max                           -0.11494    0.00591   -0.10018   -0.12410
+log_std/min                           -0.49801    0.02149   -0.45187   -0.55146
+log_probs/mean                        -2.41728    0.02464   -2.36510   -2.51619
+log_probs/std                         1.14039     0.06686   1.26348    0.85160
+log_probs/max                         3.71659     0.38225   4.43349    2.34796
+log_probs/min                         -6.08795    1.09495   -4.36310   -8.90103
+mean/mean                             0.03161     0.01867   0.07831    0.00653
+mean/std                              0.33088     0.01234   0.34941    0.27113
+mean/max                              1.33339     0.08525   1.54957    1.18219
+mean/min                              -1.15934    0.16114   -0.46343   -1.27530
+------------------------------------  ----------  --------  ---------  ---------
+self.update_end_epoch 7000
+sample: [1, 3, 2, 8, 6, 9, 4, 5, 0, 7]
+replay_buffer._size: [1050 1050 1050 1050 1050 1050 1050 1050 1050 1050]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [1990.75, -33.62, -21.42, -39.15, -29.32, -27.41, -46.17, -18.77, -35.34, -22.25]
+return_array_smooth: [2520.77, -25.77, -22.16, -42.81, -28.05, -23.14, -46.69, -19.74, -26.64, -26.84][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:06:49,766 MainThread INFO: EPOCH:5
+2023-08-02 18:06:49,767 MainThread INFO: Time Consumed:7.911419153213501s
+2023-08-02 18:06:49,767 MainThread INFO: Total Frames:9000s
+  0%|          | 6/10000 [00:53<23:01:27,  8.29s/it]------------------------------------  ----------  --------  ---------  ---------
+Name                                  Value
+Running_Average_Rewards               171.72991
+Train_Epoch_Reward                    2164.36055
+Running_Training_Average_Rewards      539.66192
+Explore_Time                          0.00597
+Train___Time                          7.89961
+Eval____Time                          0.00534
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -46.17096
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -39.15093
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -27.40608
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -29.31747
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -18.77441
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -21.41795
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -33.61857
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 1990.74528
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -22.25140
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -35.33842
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std       Max        Min
+Reward_Mean                           5.02441     0.46820   6.19460    3.91586
+alpha_0                               0.86442     0.00639   0.87400    0.85237
+alpha_1                               0.84773     0.00734   0.86039    0.83520
+alpha_2                               0.84773     0.00735   0.86039    0.83519
+alpha_3                               0.84773     0.00734   0.86038    0.83520
+alpha_4                               0.84775     0.00734   0.86040    0.83523
+alpha_5                               0.84772     0.00734   0.86037    0.83519
+alpha_6                               0.84773     0.00734   0.86038    0.83521
+alpha_7                               0.84773     0.00734   0.86039    0.83521
+alpha_8                               0.84775     0.00734   0.86041    0.83521
+alpha_9                               0.84775     0.00734   0.86040    0.83522
+Alpha_loss                            -1.07219    0.07019   -0.95632   -1.18409
+Training/policy_loss                  -17.23322   0.58765   -16.66460  -18.64040
+Training/qf1_loss                     363.98582   62.41291  518.96808  229.17371
+Training/qf2_loss                     363.67846   62.32993  518.60175  228.77702
+Training/pf_norm                      0.28425     0.06689   0.46641    0.16966
+Training/qf1_norm                     91.28050    51.35007  254.13614  18.56252
+Training/qf2_norm                     90.37889    50.62824  250.84798  18.54880
+log_std/mean                          -0.14664    0.00758   -0.13519   -0.15935
+log_std/std                           0.05087     0.02026   0.08166    0.02506
+log_std/max                           -0.10537    0.00823   -0.09171   -0.11975
+log_std/min                           -0.40619    0.08655   -0.26656   -0.54621
+log_probs/mean                        -2.55556    0.10217   -2.35971   -2.68432
+log_probs/std                         0.76198     0.28694   1.29635    0.44345
+log_probs/max                         1.84011     1.57368   4.59708    -0.17441
+log_probs/min                         -5.87506    1.13947   -4.30206   -11.93505
+mean/mean                             -0.00055    0.00247   0.00585    -0.00401
+mean/std                              0.24169     0.06927   0.34721    0.16330
+mean/max                              1.12629     0.22799   1.45733    0.78652
+mean/min                              -0.86308    0.30028   -0.41803   -1.27275
+------------------------------------  ----------  --------  ---------  ---------
+self.update_end_epoch 7000
+sample: [5, 6, 8, 3, 2, 0, 7, 9, 4, 1]
+replay_buffer._size: [1200 1200 1200 1200 1200 1200 1200 1200 1200 1200]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [380.87, -20.06, -21.31, -39.9, -23.37, -15.07, -50.87, -19.26, -29.75, -25.43]
+return_array_smooth: [1483.09, -25.48, -21.39, -41.69, -26.27, -20.78, -48.43, -19.28, -29.2, -25.57][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:06:58,111 MainThread INFO: EPOCH:6
+2023-08-02 18:06:58,112 MainThread INFO: Time Consumed:8.172536849975586s
+2023-08-02 18:06:58,112 MainThread INFO: Total Frames:10500s
+  0%|          | 7/10000 [01:01<23:04:57,  8.32s/it]------------------------------------  ----------  --------  ---------  ---------
+Name                                  Value
+Running_Average_Rewards               13.58512
+Train_Epoch_Reward                    3309.78527
+Running_Training_Average_Rewards      255.15493
+Explore_Time                          0.01801
+Train___Time                          8.14956
+Eval____Time                          0.00441
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -50.86900
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -39.90288
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -15.06648
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.37414
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -19.26395
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -21.30890
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -20.05517
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 380.87116
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -25.42849
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -29.75099
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std       Max        Min
+Reward_Mean                           4.55058     0.52204   6.04436    3.34189
+alpha_0                               0.84039     0.00633   0.85210    0.83057
+alpha_1                               0.82268     0.00712   0.83495    0.81052
+alpha_2                               0.82267     0.00712   0.83494    0.81051
+alpha_3                               0.82268     0.00712   0.83495    0.81051
+alpha_4                               0.82271     0.00712   0.83498    0.81056
+alpha_5                               0.82267     0.00712   0.83494    0.81051
+alpha_6                               0.82268     0.00712   0.83495    0.81052
+alpha_7                               0.82267     0.00713   0.83496    0.81051
+alpha_8                               0.82269     0.00712   0.83496    0.81054
+alpha_9                               0.82270     0.00712   0.83497    0.81054
+Alpha_loss                            -1.26003    0.04221   -1.18508   -1.33091
+Training/policy_loss                  -19.49141   0.75226   -18.57580  -20.77394
+Training/qf1_loss                     344.08014   58.57086  509.20294  204.10350
+Training/qf2_loss                     343.84148   58.55427  508.91818  204.04573
+Training/pf_norm                      0.43909     0.07748   0.67784    0.22719
+Training/qf1_norm                     96.17478    68.14051  276.55786  10.70038
+Training/qf2_norm                     95.25988    67.28108  273.72607  10.09978
+log_std/mean                          -0.15308    0.00640   -0.14189   -0.16620
+log_std/std                           0.06217     0.01280   0.08279    0.02903
+log_std/max                           -0.09691    0.02641   -0.03718   -0.12116
+log_std/min                           -0.44073    0.04919   -0.27613   -0.55565
+log_probs/mean                        -2.51754    0.08218   -2.34123   -2.66489
+log_probs/std                         0.85848     0.23380   1.34053    0.47307
+log_probs/max                         2.36229     1.20506   4.53620    0.34452
+log_probs/min                         -6.09174    1.02496   -4.51015   -10.67740
+mean/mean                             0.00056     0.00259   0.00340    -0.00706
+mean/std                              0.26980     0.05253   0.35777    0.17255
+mean/max                              0.92679     0.16853   1.15486    0.61267
+mean/min                              -1.21699    0.17066   -0.69712   -1.37692
+------------------------------------  ----------  --------  ---------  ---------
+self.update_end_epoch 7000
+sample: [2, 7, 8, 9, 5, 1, 4, 6, 3, 0]
+replay_buffer._size: [1350 1350 1350 1350 1350 1350 1350 1350 1350 1350]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [836.57, -18.76, -17.58, -43.39, -20.89, -18.41, -49.8, -16.46, -22.46, -28.69]
+return_array_smooth: [1069.4, -24.14, -20.1, -40.81, -24.53, -20.3, -48.95, -18.17, -29.18, -25.46][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:07:06,746 MainThread INFO: EPOCH:7
+2023-08-02 18:07:06,746 MainThread INFO: Time Consumed:8.476759195327759s
+2023-08-02 18:07:06,746 MainThread INFO: Total Frames:12000s
+  0%|          | 8/10000 [01:10<23:20:11,  8.41s/it]------------------------------------  ---------  --------  ---------  ---------
+Name                                  Value
+Running_Average_Rewards               60.01362
+Train_Epoch_Reward                    180.04029
+Running_Training_Average_Rewards      188.47287
+Explore_Time                          0.00543
+Train___Time                          8.46611
+Eval____Time                          0.00458
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -49.79653
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -43.38673
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -18.41382
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -20.88648
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -16.46241
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -17.57837
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -18.75984
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 836.57317
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -28.69151
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -22.46130
+mean_success_rate                     0.00000
+
+Name                                  Mean       Std       Max        Min
+Reward_Mean                           4.45778    0.46804   5.61982    3.57876
+alpha_0                               0.82266    0.00488   0.83042    0.81358
+alpha_1                               0.79836    0.00691   0.81028    0.78656
+alpha_2                               0.79835    0.00692   0.81027    0.78655
+alpha_3                               0.79835    0.00692   0.81027    0.78655
+alpha_4                               0.79839    0.00692   0.81031    0.78659
+alpha_5                               0.79835    0.00692   0.81027    0.78655
+alpha_6                               0.79836    0.00692   0.81028    0.78656
+alpha_7                               0.79835    0.00692   0.81027    0.78655
+alpha_8                               0.79838    0.00691   0.81029    0.78658
+alpha_9                               0.79837    0.00692   0.81030    0.78657
+Alpha_loss                            -1.43666   0.06569   -1.32491   -1.54897
+Training/policy_loss                  -21.93982  0.65713   -20.79746  -23.26063
+Training/qf1_loss                     334.06680  66.35848  536.55353  202.10368
+Training/qf2_loss                     334.09754  66.33530  536.13629  202.06781
+Training/pf_norm                      0.23913    0.05698   0.44260    0.14746
+Training/qf1_norm                     96.71539   65.44451  337.44290  8.62388
+Training/qf2_norm                     95.86315   64.65664  333.46494  8.79299
+log_std/mean                          -0.15778   0.00614   -0.14831   -0.16683
+log_std/std                           0.07463    0.00898   0.09329    0.06306
+log_std/max                           -0.11708   0.00261   -0.11124   -0.12199
+log_std/min                           -0.50858   0.03706   -0.47051   -0.59545
+log_probs/mean                        -2.43572   0.05958   -2.31145   -2.54068
+log_probs/std                         1.10139    0.17094   1.42562    0.81774
+log_probs/max                         3.79362    0.82995   5.43192    2.33957
+log_probs/min                         -5.97270   1.05323   -4.20326   -8.69758
+mean/mean                             -0.01973   0.00451   -0.00767   -0.02677
+mean/std                              0.32175    0.02994   0.37039    0.27763
+mean/max                              1.02963    0.05518   1.15372    0.95934
+mean/min                              -1.32561   0.02633   -1.27401   -1.37085
+------------------------------------  ---------  --------  ---------  ---------
+self.update_end_epoch 7000
+sample: [8, 2, 0, 1, 7, 5, 6, 3, 9, 4]
+replay_buffer._size: [1500 1500 1500 1500 1500 1500 1500 1500 1500 1500]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [4875.91, -23.95, -22.41, -45.16, -24.65, -21.12, -50.86, -22.73, -17.79, -28.77]
+return_array_smooth: [2031.12, -20.92, -20.43, -42.82, -22.97, -18.2, -50.51, -19.48, -23.33, -27.63][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:07:14,953 MainThread INFO: EPOCH:8
+2023-08-02 18:07:14,961 MainThread INFO: Time Consumed:8.026041507720947s
+2023-08-02 18:07:14,961 MainThread INFO: Total Frames:13500s
+  0%|          | 9/10000 [01:18<23:13:23,  8.37s/it]------------------------------------  ----------  --------  ---------  ---------
+Name                                  Value
+Running_Average_Rewards               461.84605
+Train_Epoch_Reward                    1509.63075
+Running_Training_Average_Rewards      166.64854
+Explore_Time                          0.01029
+Train___Time                          8.01035
+Eval____Time                          0.00487
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -50.86461
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -45.16394
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -21.12372
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -24.64869
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -22.72748
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -22.40764
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -23.95237
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 4875.90632
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -28.76565
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -17.79174
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std       Max        Min
+Reward_Mean                           4.21175     0.50748   5.94769    3.23888
+alpha_0                               0.80233     0.00664   0.81337    0.79074
+alpha_1                               0.77476     0.00671   0.78633    0.76331
+alpha_2                               0.77475     0.00671   0.78631    0.76330
+alpha_3                               0.77476     0.00671   0.78632    0.76330
+alpha_4                               0.77479     0.00671   0.78636    0.76334
+alpha_5                               0.77475     0.00671   0.78631    0.76329
+alpha_6                               0.77476     0.00671   0.78632    0.76331
+alpha_7                               0.77474     0.00671   0.78631    0.76329
+alpha_8                               0.77479     0.00671   0.78635    0.76334
+alpha_9                               0.77476     0.00671   0.78633    0.76331
+Alpha_loss                            -1.65518    0.06190   -1.54733   -1.75947
+Training/policy_loss                  -24.21122   0.76920   -23.15676  -25.42625
+Training/qf1_loss                     320.37316   65.96019  499.30020  193.24016
+Training/qf2_loss                     320.43697   65.94230  499.50494  193.28706
+Training/pf_norm                      0.28975     0.04886   0.38536    0.18631
+Training/qf1_norm                     106.62773   78.64215  441.26462  10.46295
+Training/qf2_norm                     105.59625   77.78120  436.98785  10.76982
+log_std/mean                          -0.14554    0.00314   -0.14125   -0.15166
+log_std/std                           0.05738     0.00412   0.06586    0.05096
+log_std/max                           -0.11137    0.00380   -0.10094   -0.11873
+log_std/min                           -0.46786    0.01847   -0.43533   -0.49632
+log_probs/mean                        -2.56032    0.03072   -2.48831   -2.62356
+log_probs/std                         0.73092     0.08150   0.91695    0.59868
+log_probs/max                         1.58355     0.54692   2.99517    0.67804
+log_probs/min                         -5.94042    1.00939   -4.37041   -9.45526
+mean/mean                             -0.01604    0.00645   -0.00207   -0.02378
+mean/std                              0.24568     0.01699   0.28023    0.22604
+mean/max                              0.88783     0.08882   1.05107    0.77184
+mean/min                              -1.25975    0.03863   -1.18025   -1.32439
+------------------------------------  ----------  --------  ---------  ---------
+self.update_end_epoch 7000
+sample: [7, 8, 9, 1, 5, 6, 3, 2, 0, 4]
+replay_buffer._size: [1650 1650 1650 1650 1650 1650 1650 1650 1650 1650]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [2554.62, -21.2, -22.81, -43.46, -24.73, -17.07, -53.47, -20.76, -23.94, -27.19]
+return_array_smooth: [2755.7, -21.3, -20.93, -44.0, -23.42, -18.87, -51.38, -19.98, -21.4, -28.21][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:07:23,681 MainThread INFO: EPOCH:9
+2023-08-02 18:07:23,681 MainThread INFO: Time Consumed:8.536342144012451s
+2023-08-02 18:07:23,681 MainThread INFO: Total Frames:15000s
+  0%|          | 10/10000 [01:27<23:27:12,  8.45s/it]------------------------------------  ----------  --------  ---------  ---------
+Name                                  Value
+Running_Average_Rewards               229.99933
+Train_Epoch_Reward                    4926.65094
+Running_Training_Average_Rewards      220.54407
+Explore_Time                          0.00851
+Train___Time                          8.52324
+Eval____Time                          0.00412
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -53.47124
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -43.45835
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.07057
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -24.72846
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.75975
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -22.81107
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -21.19899
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 2554.62082
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -27.18757
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -23.94155
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std       Max        Min
+Reward_Mean                           4.04712     0.46737   5.31127    3.06365
+alpha_0                               0.77905     0.00659   0.79050    0.76775
+alpha_1                               0.75185     0.00651   0.76308    0.74074
+alpha_2                               0.75185     0.00651   0.76307    0.74074
+alpha_3                               0.75185     0.00652   0.76307    0.74073
+alpha_4                               0.75189     0.00651   0.76312    0.74078
+alpha_5                               0.75184     0.00651   0.76306    0.74073
+alpha_6                               0.75185     0.00651   0.76308    0.74074
+alpha_7                               0.75184     0.00651   0.76306    0.74073
+alpha_8                               0.75189     0.00651   0.76311    0.74077
+alpha_9                               0.75185     0.00651   0.76308    0.74074
+Alpha_loss                            -1.85417    0.05801   -1.75668   -1.96076
+Training/policy_loss                  -26.50574   0.70908   -25.28604  -27.73421
+Training/qf1_loss                     316.60497   63.28411  501.70465  186.41869
+Training/qf2_loss                     316.62655   63.27091  501.85840  186.57607
+Training/pf_norm                      0.26669     0.08398   0.45081    0.11286
+Training/qf1_norm                     111.67742   77.01626  385.09238  12.71598
+Training/qf2_norm                     110.69706   76.08442  380.44431  12.70819
+log_std/mean                          -0.14632    0.00363   -0.14109   -0.15367
+log_std/std                           0.04608     0.00427   0.05293    0.03648
+log_std/max                           -0.11330    0.00537   -0.09948   -0.12046
+log_std/min                           -0.37416    0.04193   -0.30918   -0.45178
+log_probs/mean                        -2.57058    0.01899   -2.52843   -2.62090
+log_probs/std                         0.72168     0.04411   0.81552    0.60168
+log_probs/max                         1.86458     0.37167   2.67986    1.08878
+log_probs/min                         -5.84730    0.74432   -4.68569   -7.98963
+mean/mean                             0.01981     0.00951   0.02927    -0.00163
+mean/std                              0.24098     0.00823   0.24866    0.21636
+mean/max                              0.76048     0.04383   0.82805    0.65763
+mean/min                              -1.16116    0.10850   -0.94203   -1.30650
+------------------------------------  ----------  --------  ---------  ---------
+self.update_end_epoch 7000
+sample: [0, 9, 3, 6, 2, 1, 4, 7, 8, 5]
+replay_buffer._size: [1800 1800 1800 1800 1800 1800 1800 1800 1800 1800]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [3694.38, -22.43, -23.04, -42.94, -23.81, -20.48, -47.83, -22.52, -28.86, -26.5]
+return_array_smooth: [3708.3, -22.53, -22.75, -43.85, -24.4, -19.56, -50.72, -22.0, -23.53, -27.49][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:07:32,469 MainThread INFO: EPOCH:10
+2023-08-02 18:07:32,469 MainThread INFO: Time Consumed:8.593780040740967s
+2023-08-02 18:07:32,469 MainThread INFO: Total Frames:16500s
+  0%|          | 11/10000 [01:36<23:46:41,  8.57s/it]------------------------------------  ----------  ---------  ---------  ---------
+Name                                  Value
+Running_Average_Rewards               343.59607
+Train_Epoch_Reward                    3280.85295
+Running_Training_Average_Rewards      323.90449
+Explore_Time                          0.00758
+Train___Time                          8.58103
+Eval____Time                          0.00463
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -47.83105
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -42.93996
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -20.48362
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.81047
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -22.52001
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -23.03941
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -22.42936
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 3694.37778
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.50279
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -28.86044
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std        Max        Min
+Reward_Mean                           4.34800     0.58026    5.74247    3.02624
+alpha_0                               0.75609     0.00643    0.76751    0.74558
+alpha_1                               0.72962     0.00632    0.74051    0.71883
+alpha_2                               0.72963     0.00632    0.74052    0.71884
+alpha_3                               0.72962     0.00632    0.74051    0.71884
+alpha_4                               0.72967     0.00632    0.74056    0.71888
+alpha_5                               0.72961     0.00632    0.74050    0.71883
+alpha_6                               0.72963     0.00632    0.74052    0.71884
+alpha_7                               0.72962     0.00632    0.74051    0.71883
+alpha_8                               0.72965     0.00632    0.74055    0.71886
+alpha_9                               0.72963     0.00632    0.74052    0.71885
+Alpha_loss                            -2.04764    0.04613    -1.96273   -2.12824
+Training/policy_loss                  -29.43676   0.88453    -27.74799  -30.74043
+Training/qf1_loss                     442.70521   126.42175  795.43695  217.83366
+Training/qf2_loss                     442.71053   126.39888  795.55151  218.01067
+Training/pf_norm                      0.21251     0.05459    0.35134    0.10164
+Training/qf1_norm                     141.40276   102.36013  488.65665  16.88228
+Training/qf2_norm                     140.15059   101.16182  483.01221  17.18929
+log_std/mean                          -0.14745    0.00380    -0.14143   -0.15370
+log_std/std                           0.05268     0.01128    0.06613    0.03582
+log_std/max                           -0.11527    0.00347    -0.10644   -0.12026
+log_std/min                           -0.39913    0.06388    -0.30337   -0.48325
+log_probs/mean                        -2.55880    0.04290    -2.46832   -2.63178
+log_probs/std                         0.75349     0.10975    0.99947    0.58223
+log_probs/max                         1.85948     0.55910    3.07965    0.83615
+log_probs/min                         -5.93483    1.02341    -4.41511   -13.38556
+mean/mean                             0.01435     0.00210    0.01996    0.01085
+mean/std                              0.24409     0.02719    0.28912    0.20768
+mean/max                              0.92965     0.18847    1.23019    0.70596
+mean/min                              -1.05539    0.09984    -0.91048   -1.18037
+------------------------------------  ----------  ---------  ---------  ---------
+self.update_end_epoch 7000
+sample: [5, 9, 4, 7, 1, 0, 3, 8, 6, 2]
+replay_buffer._size: [1950 1950 1950 1950 1950 1950 1950 1950 1950 1950]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [9950.82, -20.15, -19.91, -39.47, -22.55, -17.67, -46.29, -20.34, -29.63, -25.57]
+return_array_smooth: [5399.94, -21.26, -21.92, -41.95, -23.7, -18.41, -49.2, -21.21, -27.48, -26.42][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:07:41,389 MainThread INFO: EPOCH:11
+2023-08-02 18:07:41,389 MainThread INFO: Time Consumed:8.718708276748657s
+2023-08-02 18:07:41,389 MainThread INFO: Total Frames:18000s
+  0%|          | 12/10000 [01:44<24:01:48,  8.66s/it]------------------------------------  ----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               970.92455
+Train_Epoch_Reward                    3448.55040
+Running_Training_Average_Rewards      388.53514
+Explore_Time                          0.00425
+Train___Time                          8.70896
+Eval____Time                          0.00487
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -46.28594
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -39.46648
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.66746
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -22.55232
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.34239
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -19.91282
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -20.14586
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 9950.81742
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -25.56809
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -29.63060
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std        Max         Min
+Reward_Mean                           4.86357     0.82424    7.20409     2.79058
+alpha_0                               0.73716     0.00434    0.74539     0.73060
+alpha_1                               0.70805     0.00613    0.71862     0.69758
+alpha_2                               0.70806     0.00613    0.71863     0.69760
+alpha_3                               0.70805     0.00613    0.71862     0.69759
+alpha_4                               0.70810     0.00613    0.71867     0.69764
+alpha_5                               0.70804     0.00613    0.71861     0.69758
+alpha_6                               0.70806     0.00613    0.71863     0.69760
+alpha_7                               0.70805     0.00613    0.71862     0.69759
+alpha_8                               0.70808     0.00614    0.71865     0.69761
+alpha_9                               0.70806     0.00613    0.71864     0.69760
+Alpha_loss                            -2.18853    0.03250    -2.12160    -2.25193
+Training/policy_loss                  -32.92956   1.08422    -30.66110   -34.48380
+Training/qf1_loss                     784.53655   360.18903  2037.61682  207.81473
+Training/qf2_loss                     784.44923   360.09560  2037.60864  207.92513
+Training/pf_norm                      0.22392     0.05823    0.39014     0.12905
+Training/qf1_norm                     235.74355   151.05650  796.29535   31.10378
+Training/qf2_norm                     233.55160   149.39515  788.43542   31.44623
+log_std/mean                          -0.16042    0.00598    -0.14942    -0.16901
+log_std/std                           0.08314     0.01187    0.10213     0.06522
+log_std/max                           -0.11859    0.00320    -0.11327    -0.12546
+log_std/min                           -0.52508    0.05685    -0.43951    -0.60637
+log_probs/mean                        -2.38329    0.07744    -2.21537    -2.51209
+log_probs/std                         1.23855     0.20647    1.70268     0.92058
+log_probs/max                         4.17986     0.89239    5.69336     2.40707
+log_probs/min                         -5.99503    1.13916    -4.03446    -10.85933
+mean/mean                             0.02349     0.00645    0.03398     0.01608
+mean/std                              0.34852     0.03798    0.41441     0.28906
+mean/max                              1.46495     0.16054    1.72745     1.23256
+mean/min                              -1.30829    0.09286    -1.14725    -1.45777
+------------------------------------  ----------  ---------  ----------  ---------
+self.update_end_epoch 7000
+sample: [3, 5, 1, 6, 8, 2, 0, 4, 9, 7]
+replay_buffer._size: [2100 2100 2100 2100 2100 2100 2100 2100 2100 2100]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [11126.55, -21.83, -22.73, -40.76, -22.05, -18.03, -50.14, -21.86, -26.54, -26.42]
+return_array_smooth: [8257.25, -21.47, -21.89, -41.05, -22.8, -18.73, -48.08, -21.58, -28.34, -26.16][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:07:50,469 MainThread INFO: EPOCH:12
+2023-08-02 18:07:50,511 MainThread INFO: Time Consumed:8.899271726608276s
+2023-08-02 18:07:50,571 MainThread INFO: Total Frames:19500s
+  0%|          | 13/10000 [01:54<24:35:44,  8.87s/it]------------------------------------  -----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               1087.62105
+Train_Epoch_Reward                    13651.91634
+Running_Training_Average_Rewards      679.37732
+Explore_Time                          0.00731
+Train___Time                          8.88574
+Eval____Time                          0.00568
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -50.13748
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -40.75820
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -18.02964
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -22.04610
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -21.86347
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -22.72677
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -21.83068
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 11126.55463
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.41613
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.53563
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std        Max         Min
+Reward_Mean                           5.09732      0.84150    7.56931     3.17029
+alpha_0                               0.72789      0.00102    0.73050     0.72703
+alpha_1                               0.68712      0.00595    0.69738     0.67696
+alpha_2                               0.68713      0.00595    0.69739     0.67697
+alpha_3                               0.68713      0.00595    0.69738     0.67698
+alpha_4                               0.68717      0.00595    0.69743     0.67702
+alpha_5                               0.68712      0.00595    0.69737     0.67697
+alpha_6                               0.68714      0.00595    0.69740     0.67698
+alpha_7                               0.68713      0.00595    0.69739     0.67697
+alpha_8                               0.68714      0.00595    0.69740     0.67700
+alpha_9                               0.68713      0.00595    0.69739     0.67697
+Alpha_loss                            -2.28876     0.03228    -2.23070    -2.35443
+Training/policy_loss                  -36.73430    1.10419    -34.46849   -38.75627
+Training/qf1_loss                     944.56768    395.68950  2099.85327  269.61667
+Training/qf2_loss                     944.35791    395.53267  2099.73999  269.78232
+Training/pf_norm                      0.31324      0.09152    0.63458     0.12573
+Training/qf1_norm                     234.04395    203.06113  987.24597   22.53933
+Training/qf2_norm                     232.12573    200.67323  976.62079   22.70727
+log_std/mean                          -0.17490     0.00541    -0.16894    -0.18593
+log_std/std                           0.11605      0.00866    0.12885     0.09786
+log_std/max                           -0.12165     0.00361    -0.11481    -0.12976
+log_std/min                           -0.61217     0.02936    -0.55675    -0.66079
+log_probs/mean                        -2.11230     0.07735    -1.96983    -2.27035
+log_probs/std                         2.00943      0.21965    2.39441     1.61586
+log_probs/max                         7.24574      0.82049    8.64896     5.65733
+log_probs/min                         -5.34455     0.93233    -3.82813    -8.45382
+mean/mean                             0.02081      0.00381    0.03144     0.01657
+mean/std                              0.47263      0.03211    0.51703     0.41608
+mean/max                              1.83624      0.07182    1.94527     1.69391
+mean/min                              -1.60720     0.08293    -1.44386    -1.71424
+------------------------------------  -----------  ---------  ----------  ---------
+self.update_end_epoch 7000
+sample: [7, 8, 0, 1, 2, 9, 6, 5, 4, 3]
+replay_buffer._size: [2250 2250 2250 2250 2250 2250 2250 2250 2250 2250]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [8546.37, -22.4, -22.88, -41.06, -20.8, -23.61, -48.87, -17.74, -18.0, -25.93]
+return_array_smooth: [9874.58, -21.46, -21.84, -40.43, -21.8, -19.77, -48.43, -19.98, -24.72, -25.97][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:07:59,811 MainThread INFO: EPOCH:13
+2023-08-02 18:07:59,812 MainThread INFO: Time Consumed:7.738754987716675s
+2023-08-02 18:07:59,812 MainThread INFO: Total Frames:21000s
+  0%|          | 14/10000 [02:03<24:46:39,  8.93s/it]------------------------------------  -----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               830.50659
+Train_Epoch_Reward                    16587.77224
+Running_Training_Average_Rewards      1122.94130
+Explore_Time                          0.00473
+Train___Time                          7.72554
+Eval____Time                          0.00798
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -48.87147
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -41.05879
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -23.61057
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -20.79935
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -17.74308
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -22.88202
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -22.39891
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 8546.36820
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -25.93427
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -18.00384
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std        Max         Min
+Reward_Mean                           5.03218      0.87434    7.29286     2.75869
+alpha_0                               0.72831      0.00067    0.72951     0.72720
+alpha_1                               0.66681      0.00578    0.67676     0.65695
+alpha_2                               0.66682      0.00578    0.67677     0.65696
+alpha_3                               0.66682      0.00578    0.67678     0.65697
+alpha_4                               0.66687      0.00577    0.67682     0.65701
+alpha_5                               0.66682      0.00577    0.67677     0.65696
+alpha_6                               0.66683      0.00577    0.67678     0.65697
+alpha_7                               0.66681      0.00578    0.67677     0.65696
+alpha_8                               0.66684      0.00578    0.67679     0.65698
+alpha_9                               0.66682      0.00577    0.67677     0.65697
+Alpha_loss                            -2.43844     0.05304    -2.33529    -2.53001
+Training/policy_loss                  -40.33947    0.94636    -38.49900   -41.65625
+Training/qf1_loss                     932.00209    412.79517  2170.61182  362.86728
+Training/qf2_loss                     931.82172    412.67503  2169.94238  362.73227
+Training/pf_norm                      0.30467      0.08913    0.67917     0.10707
+Training/qf1_norm                     276.27606    196.49530  910.58600   36.60261
+Training/qf2_norm                     274.06169    194.43719  901.98657   37.02493
+log_std/mean                          -0.17415     0.00266    -0.17004    -0.18280
+log_std/std                           0.12541      0.00262    0.12986     0.11826
+log_std/max                           -0.11477     0.00281    -0.10932    -0.12303
+log_std/min                           -0.62531     0.01754    -0.59434    -0.65701
+log_probs/mean                        -2.01075     0.02328    -1.94954    -2.06937
+log_probs/std                         2.29891      0.06097    2.46075     2.17004
+log_probs/max                         8.30847      0.25269    9.01900     7.77655
+log_probs/min                         -5.18469     1.03780    -3.92082    -9.65575
+mean/mean                             0.01606      0.00617    0.02784     0.00904
+mean/std                              0.51547      0.00484    0.52418     0.50432
+mean/max                              1.93977      0.03021    2.00171     1.89536
+mean/min                              -1.78366     0.02649    -1.72112    -1.83058
+------------------------------------  -----------  ---------  ----------  ---------
+self.update_end_epoch 7000
+sample: [4, 1, 5, 0, 2, 7, 3, 9, 6, 8]
+replay_buffer._size: [2400 2400 2400 2400 2400 2400 2400 2400 2400 2400]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [7765.48, -24.37, -23.37, -41.69, -21.48, -22.14, -49.08, -23.16, -19.25, -27.62]
+return_array_smooth: [9146.13, -22.87, -22.99, -41.17, -21.44, -21.26, -49.36, -20.92, -21.26, -26.66][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:08:09,144 MainThread INFO: EPOCH:14
+2023-08-02 18:08:09,144 MainThread INFO: Time Consumed:9.169908285140991s
+2023-08-02 18:08:09,145 MainThread INFO: Total Frames:22500s
+  0%|          | 15/10000 [02:12<25:08:42,  9.07s/it]------------------------------------  ----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               751.33334
+Train_Epoch_Reward                    9763.83399
+Running_Training_Average_Rewards      1333.45075
+Explore_Time                          0.00586
+Train___Time                          9.15866
+Eval____Time                          0.00481
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -49.07878
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -41.69226
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -22.13506
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -21.47845
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -23.15901
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -23.36905
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -24.36701
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 7765.47862
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -27.61554
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -19.25007
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std        Max         Min
+Reward_Mean                           4.92737     0.77952    6.67499     3.29119
+alpha_0                               0.72980     0.00023    0.73004     0.72920
+alpha_1                               0.64710     0.00561    0.65676     0.63753
+alpha_2                               0.64710     0.00560    0.65676     0.63754
+alpha_3                               0.64711     0.00561    0.65677     0.63755
+alpha_4                               0.64715     0.00560    0.65681     0.63759
+alpha_5                               0.64711     0.00560    0.65677     0.63755
+alpha_6                               0.64712     0.00560    0.65678     0.63755
+alpha_7                               0.64710     0.00561    0.65676     0.63754
+alpha_8                               0.64713     0.00560    0.65679     0.63757
+alpha_9                               0.64712     0.00561    0.65677     0.63755
+Alpha_loss                            -2.64073    0.06207    -2.53846    -2.75723
+Training/policy_loss                  -43.38785   0.91164    -41.49211   -44.64923
+Training/qf1_loss                     875.08042   343.75161  1715.09302  299.39792
+Training/qf2_loss                     874.77917   343.66289  1714.63599  299.33957
+Training/pf_norm                      0.33879     0.10323    0.78806     0.15889
+Training/qf1_norm                     263.08287   190.95362  885.58453   44.68269
+Training/qf2_norm                     261.14037   189.05682  877.96179   44.87557
+log_std/mean                          -0.17140    0.00391    -0.16566    -0.17872
+log_std/std                           0.11813     0.00207    0.12214     0.11284
+log_std/max                           -0.11489    0.00862    -0.09100    -0.12702
+log_std/min                           -0.61739    0.02128    -0.57928    -0.65430
+log_probs/mean                        -2.07519    0.03775    -1.98901    -2.17454
+log_probs/std                         2.10804     0.10569    2.34395     1.89481
+log_probs/max                         7.52677     0.46676    8.47164     6.38188
+log_probs/min                         -5.27442    1.07430    -4.08345    -11.04164
+mean/mean                             0.02856     0.00927    0.04913     0.01878
+mean/std                              0.49304     0.01141    0.51267     0.47384
+mean/max                              1.93527     0.02061    1.97660     1.89992
+mean/min                              -1.77664    0.02262    -1.74366    -1.82099
+------------------------------------  ----------  ---------  ----------  ---------
+self.update_end_epoch 7000
+sample: [0, 4, 8, 6, 9, 7, 1, 2, 5, 3]
+replay_buffer._size: [2550 2550 2550 2550 2550 2550 2550 2550 2550 2550]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [7697.29, -21.73, -24.54, -42.96, -22.67, -20.05, -48.69, -20.51, -24.98, -25.46]
+return_array_smooth: [8003.04, -22.83, -23.6, -41.9, -21.65, -21.93, -48.88, -20.47, -20.74, -26.34][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:08:18,573 MainThread INFO: EPOCH:15
+2023-08-02 18:08:18,573 MainThread INFO: Time Consumed:9.204896926879883s
+2023-08-02 18:08:18,573 MainThread INFO: Total Frames:24000s
+  0%|          | 16/10000 [02:22<25:24:38,  9.16s/it]------------------------------------  ----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               744.57100
+Train_Epoch_Reward                    8222.72568
+Running_Training_Average_Rewards      1152.47773
+Explore_Time                          0.00902
+Train___Time                          9.19025
+Eval____Time                          0.00479
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -48.68577
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -42.95907
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -20.04768
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -22.66843
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.50510
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -24.54364
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -21.73207
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 7697.28601
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -25.45623
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -24.97796
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std        Max         Min
+Reward_Mean                           5.00331     0.85577    6.82345     2.80054
+alpha_0                               0.72774     0.00080    0.72917     0.72646
+alpha_1                               0.62797     0.00544    0.63734     0.61870
+alpha_2                               0.62798     0.00544    0.63735     0.61870
+alpha_3                               0.62798     0.00544    0.63735     0.61871
+alpha_4                               0.62803     0.00544    0.63740     0.61875
+alpha_5                               0.62798     0.00544    0.63735     0.61870
+alpha_6                               0.62800     0.00544    0.63736     0.61872
+alpha_7                               0.62797     0.00544    0.63734     0.61869
+alpha_8                               0.62801     0.00544    0.63738     0.61873
+alpha_9                               0.62798     0.00544    0.63736     0.61870
+Alpha_loss                            -2.83239    0.05089    -2.73081    -2.92344
+Training/policy_loss                  -46.62820   1.07642    -44.54829   -48.62103
+Training/qf1_loss                     930.14288   349.25087  2135.63354  281.42407
+Training/qf2_loss                     929.62893   349.12058  2134.59229  281.29086
+Training/pf_norm                      0.30462     0.09580    0.63755     0.13111
+Training/qf1_norm                     319.95799   210.40466  932.38055   33.86300
+Training/qf2_norm                     317.29295   208.32226  924.77228   34.34958
+log_std/mean                          -0.16901    0.00278    -0.16192    -0.17281
+log_std/std                           0.11860     0.00265    0.12246     0.11251
+log_std/max                           -0.11711    0.00405    -0.10219    -0.12314
+log_std/min                           -0.63194    0.01494    -0.59958    -0.65805
+log_probs/mean                        -2.10663    0.02377    -2.05608    -2.16050
+log_probs/std                         2.00081     0.06149    2.14432     1.84679
+log_probs/max                         6.58351     0.21662    7.02155     6.05654
+log_probs/min                         -5.14466    0.83008    -3.99486    -10.13016
+mean/mean                             0.04981     0.00227    0.05348     0.04593
+mean/std                              0.48203     0.00636    0.49595     0.47263
+mean/max                              1.95107     0.02677    2.00589     1.91256
+mean/min                              -1.82195    0.02929    -1.77570    -1.87709
+------------------------------------  ----------  ---------  ----------  ---------
+self.update_end_epoch 7000
+sample: [7, 8, 0, 5, 3, 2, 1, 4, 9, 6]
+replay_buffer._size: [2700 2700 2700 2700 2700 2700 2700 2700 2700 2700]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [7794.97, -22.58, -22.37, -43.36, -24.02, -18.64, -48.65, -20.01, -25.6, -26.97]
+return_array_smooth: [7752.58, -22.89, -23.43, -42.67, -22.72, -20.27, -48.8, -21.23, -23.28, -26.68][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:08:28,243 MainThread INFO: EPOCH:16
+2023-08-02 18:08:28,243 MainThread INFO: Time Consumed:9.472099304199219s
+2023-08-02 18:08:28,243 MainThread INFO: Total Frames:25500s
+  0%|          | 17/10000 [02:31<25:55:39,  9.35s/it]------------------------------------  ----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               754.27590
+Train_Epoch_Reward                    6990.69688
+Running_Training_Average_Rewards      832.57522
+Explore_Time                          0.00889
+Train___Time                          9.45828
+Eval____Time                          0.00432
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -48.64724
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -43.36284
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -18.64186
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -24.02094
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.01258
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -22.37101
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -22.58436
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 7794.97164
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.96870
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -25.60316
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std        Max         Min
+Reward_Mean                           4.85625     0.76218    7.30409     3.16907
+alpha_0                               0.72596     0.00022    0.72643     0.72545
+alpha_1                               0.60941     0.00528    0.61851     0.60041
+alpha_2                               0.60942     0.00528    0.61851     0.60041
+alpha_3                               0.60943     0.00528    0.61852     0.60043
+alpha_4                               0.60947     0.00528    0.61856     0.60046
+alpha_5                               0.60942     0.00528    0.61851     0.60042
+alpha_6                               0.60944     0.00528    0.61853     0.60044
+alpha_7                               0.60940     0.00528    0.61850     0.60039
+alpha_8                               0.60945     0.00528    0.61855     0.60045
+alpha_9                               0.60942     0.00528    0.61851     0.60042
+Alpha_loss                            -3.00456    0.05502    -2.91272    -3.10349
+Training/policy_loss                  -49.75004   0.61107    -48.50002   -51.14541
+Training/qf1_loss                     920.36594   339.57587  2394.82666  276.07285
+Training/qf2_loss                     919.66931   339.49347  2393.73999  275.52646
+Training/pf_norm                      0.32367     0.09556    0.57974     0.13131
+Training/qf1_norm                     281.83374   207.02164  874.65924   46.61373
+Training/qf2_norm                     279.85197   204.92079  867.18329   46.64067
+log_std/mean                          -0.16933    0.00239    -0.16350    -0.17288
+log_std/std                           0.11976     0.00276    0.12451     0.11238
+log_std/max                           -0.11672    0.00498    -0.10650    -0.12706
+log_std/min                           -0.62430    0.01629    -0.57918    -0.64727
+log_probs/mean                        -2.07602    0.02760    -2.01022    -2.14427
+log_probs/std                         2.09701     0.07128    2.29597     1.91135
+log_probs/max                         7.35698     0.33451    8.06973     6.48618
+log_probs/min                         -5.26657    0.94526    -3.85862    -9.58988
+mean/mean                             0.05775     0.00431    0.06397     0.05054
+mean/std                              0.49294     0.00619    0.50561     0.48046
+mean/max                              1.93978     0.02493    1.98496     1.90161
+mean/min                              -1.87156    0.01845    -1.81782    -1.91017
+------------------------------------  ----------  ---------  ----------  ---------
+self.update_end_epoch 7000
+sample: [3, 5, 0, 6, 4, 9, 7, 1, 2, 8]
+replay_buffer._size: [2850 2850 2850 2850 2850 2850 2850 2850 2850 2850]
+[1;36;40msuccess_rate_array: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+success_rate_array_smooth:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0][0m
+[1;36;40mreturn_array: [7670.65, -22.05, -21.67, -43.66, -25.15, -19.86, -47.72, -22.16, -24.68, -27.64]
+return_array_smooth: [7720.97, -22.12, -22.86, -43.33, -23.95, -19.52, -48.35, -20.89, -25.09, -26.69][0m
+[1;36;40mp: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1][0m
+2023-08-02 18:08:37,760 MainThread INFO: EPOCH:17
+2023-08-02 18:08:37,761 MainThread INFO: Time Consumed:9.292169094085693s
+2023-08-02 18:08:37,761 MainThread INFO: Total Frames:27000s
+  0%|          | 18/10000 [02:41<26:00:11,  9.38s/it]  0%|          | 18/10000 [02:45<25:30:58,  9.20s/it]
+------------------------------------  ----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               741.60640
+Train_Epoch_Reward                    7772.07238
+Running_Training_Average_Rewards      766.18316
+Explore_Time                          0.00555
+Train___Time                          9.28018
+Eval____Time                          0.00502
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -47.71898
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -43.66208
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -19.85548
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -25.14825
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -22.16188
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -21.67173
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -22.04571
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 7670.65042
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -27.64384
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -24.67849
+mean_success_rate                     0.00000
+
+Name                                  Mean        Std        Max         Min
+Reward_Mean                           5.11964     0.94981    7.45615     3.02117
+alpha_0                               0.72509     0.00029    0.72586     0.72478
+alpha_1                               0.59140     0.00512    0.60023     0.58266
+alpha_2                               0.59140     0.00512    0.60023     0.58266
+alpha_3                               0.59143     0.00512    0.60025     0.58269
+alpha_4                               0.59146     0.00512    0.60028     0.58271
+alpha_5                               0.59141     0.00512    0.60024     0.58267
+alpha_6                               0.59143     0.00512    0.60025     0.58269
+alpha_7                               0.59138     0.00512    0.60021     0.58265
+alpha_8                               0.59144     0.00512    0.60027     0.58270
+alpha_9                               0.59141     0.00512    0.60024     0.58267
+Alpha_loss                            -3.17648    0.04266    -3.09988    -3.25756
+Training/policy_loss                  -53.09698   1.38814    -51.08670   -55.40872
+Training/qf1_loss                     1021.87655  346.10582  2123.49194  422.20401
+Training/qf2_loss                     1020.92803  345.87782  2121.93921  421.41534
+Training/pf_norm                      0.32692     0.10523    0.62188     0.14632
+Training/qf1_norm                     353.21535   243.63458  1293.73743  53.21622
+Training/qf2_norm                     350.50171   241.24821  1281.21436  54.38568
+log_std/mean                          -0.16894    0.00216    -0.16331    -0.17263
+log_std/std                           0.12330     0.00453    0.13092     0.11450
+log_std/max                           -0.11229    0.00388    -0.10498    -0.11949
+log_std/min                           -0.64032    0.01336    -0.62031    -0.67043
+log_probs/mean                        -2.04541    0.04133    -1.95241    -2.13084
+log_probs/std                         2.18978     0.11749    2.44735     1.94690
+log_probs/max                         7.81582     0.42029    8.57516     6.99318
+log_probs/min                         -5.19338    1.04947    -3.65328    -10.10913
+mean/mean                             0.06137     0.00561    0.06829     0.05021
+mean/std                              0.50412     0.01197    0.52396     0.48389
+mean/max                              1.96335     0.02073    2.00036     1.92436
+mean/min                              -1.92594    0.04361    -1.84684    -1.99210
+------------------------------------  ----------  ---------  ----------  ---------
+self.update_end_epoch 7000
+sample: [4, 9, 7, 3, 2, 0, 6, 1, 5, 8]
+replay_buffer._size: [3000 3000 3000 3000 3000 3000 3000 3000 3000 3000]
+Process Process-21:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-14:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-19:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-7:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-17:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-15:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-20:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-12:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-6:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-18:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-16:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-4:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-9:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-11:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-10:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-5:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-13:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 387, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-8:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-2:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-3:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 280, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "starter/mt_must_sac.py", line 285, in <module>
+    experiment(args)
+  File "starter/mt_must_sac.py", line 281, in experiment
+    agent.train(env.num_tasks,params)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/rl_algo.py", line 445, in train
+    self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/off_policy/must_sac.py", line 306, in update_per_epoch
+    all_info = self.update(batch, task_sample_index, task_scheduler, mask_buffer)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/off_policy/must_sac.py", line 173, in update
+    target_sample_info = self.pf.explore(next_obs,
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 99, in explore
+    action, z = dis.rsample(return_pretanh_value=True)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/distribution.py", line 68, in rsample
+    torch.zeros(self.normal_mean.size()),
+KeyboardInterrupt
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1083, in wait
+    return self._wait(timeout=timeout)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1806, in _wait
+    (pid, sts) = self._try_wait(0)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1764, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/wandb_manager.py", line 186, in _teardown
+    result = self._service.join()
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/service/service.py", line 235, in join
+    ret = self._internal_proc.wait()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1096, in wait
+    self._wait(timeout=sigint_timeout)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1800, in _wait
+    time.sleep(delay)
+KeyboardInterrupt

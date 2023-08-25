@@ -1,0 +1,50 @@
+W&B disabled.
+task start
+Use seed 31
+device cuda:0
+2023-06-25 13:44:08,528 MainThread INFO: Experiment Name:mtmhsac_rand
+2023-06-25 13:44:08,528 MainThread INFO: {
+  "env_name": "mt50",
+  "env": {
+    "reward_scale": 1,
+    "obs_norm": false
+  },
+  "meta_env": {
+    "obs_type": "with_goal_and_id",
+    "random_init": true
+  },
+  "replay_buffer": {
+    "size": 1000000.0
+  },
+  "net": {
+    "hidden_shapes": [
+      400,
+      400
+    ],
+    "append_hidden_shapes": [
+      400
+    ]
+  },
+  "general_setting": {
+    "discount": 0.99,
+    "pretrain_epochs": 2,
+    "num_epochs": 30,
+    "epoch_frames": 200,
+    "max_episode_frames": 200,
+    "batch_size": 5000,
+    "min_pool": 10000,
+    "target_hard_update_period": 1000,
+    "use_soft_update": true,
+    "tau": 0.005,
+    "opt_times": 200,
+    "eval_episodes": 3
+  },
+  "sac": {
+    "plr": 0.0003,
+    "qlr": 0.0003,
+    "reparameterization": true,
+    "automatic_entropy_tuning": true,
+    "policy_std_reg_weight": 0,
+    "policy_mean_reg_weight": 0
+  }
+}
