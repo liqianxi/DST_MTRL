@@ -86,11 +86,11 @@ def experiment(args):
     env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
     pruning_ratio = args.pruning_ratio
     params['sparse_training']["pruning_ratio"] = args.pruning_ratio
-    params['general_setting']["mask_update_interval"] = args.mask_update_interval
-    params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
-    group_name = args.id
+    # params['general_setting']["mask_update_interval"] = args.mask_update_interval
+    # params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
+    group_name = "0817_sweep"
 
-    print("pruning_ratio",pruning_ratio)
+    #print("pruning_ratio",pruning_ratio)
 
 
     env.seed(args.seed)
