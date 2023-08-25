@@ -447,7 +447,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 args=( self.__class__, self.shared_funcs,
                     self.env_info, self.replay_buffer,
                     self.shared_que, self.start_barrier,
-                    self.train_epochs * 10000, start_epoch, task, 
+                    self.train_epochs, start_epoch, task, 
                     self.shared_dict, 
                     self.mask_buffer, 
                     self.state_trajectory, 
