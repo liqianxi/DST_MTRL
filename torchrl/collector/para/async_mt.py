@@ -259,15 +259,25 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
  
             episode_state_traj = [ob]
             if env_info.env_rank in task_sample_index:
+                success = 0
                 for _ in range(env_info.epoch_frames):
-                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+                    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
                     c_ob["ob"] = next_ob
                     episode_state_traj.append(c_ob["ob"])
                     train_rew += reward
                     train_epoch_reward += reward
+
                     if done:
+
                         train_rews.append(train_rew)
                         train_rew = 0
+
+                    if max(info["success"],success) > 0:
+                        # this traj is success.
+                        success = 1
+                        break
+
+                 
 
                 # print(f'num_steps_can_sample: {replay_buffer.num_steps_can_sample()}')
             # Append the task state trajectory for this episode to the shared buffer.

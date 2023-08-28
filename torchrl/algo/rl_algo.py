@@ -290,8 +290,7 @@ class RLAlgo():
     def mask_update_scheduler(self, method, epoch, update_end_epoch,freq=None):
         assert update_end_epoch != None
         if method == "fix_interval":
-            print("epoch, update_end_epoch",epoch, update_end_epoch)
-            print("freq",freq)
+
             if epoch < update_end_epoch and epoch !=0:
                 assert freq != None
                 return epoch % freq == 0
