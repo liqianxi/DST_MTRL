@@ -50,10 +50,11 @@ def update_masks(state_trajectory):
 
     assert len(batch_traj_list) == len(batch_id_list)
 
-    task_traj_batch = torch.cat(batch_traj_list).float()#.to(self.device)
-    task_onehot_batch = torch.cat(batch_id_list)
+    task_traj_batch = torch.reshape(torch.cat(batch_traj_list).float(),(-1,batch_traj_list[0].shape[0],batch_traj_list[0].shape[1]))#.to(self.device)
+    task_onehot_batch = torch.reshape(torch.cat(batch_id_list),(-1,batch_id_list[0].shape[0],batch_id_list[0].shape[1]))
 
 
-    print(task_onehot_batch)
+    print(task_traj_batch.shape)
+    print(task_onehot_batch.shape)
 
 update_masks(state_trajectory)

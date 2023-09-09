@@ -4,12 +4,12 @@
 #SBATCH --gres=gpu:1
 #SBATCH --ntasks=1
 #SBATCH --mem=32G
-#SBATCH --cpus-per-task=8
-#SBATCH --time=48:00:00
+#SBATCH --cpus-per-task=4
+#SBATCH --time=72:00:00
 #SBATCH --account=def-mtaylor3
 #SBATCH --output=/home/qianxi/scratch/slurm_log/must/must_sweep/%A.out
 #SBATCH --mail-user=qianxi@ualberta.ca
-#SBATCH --mail-type=ALL
+#SBATCH --mail-type=END
 
 module load python/3.8
 module load cuda
@@ -26,6 +26,6 @@ echo "Use seed $1"
 export GROUP=MT10_MUSTSAC
 export NAME="10runs_MUST_fixgoal_MT10_exp2_seed${1}"
 export TASK_SAMPLE_NUM=10 
-python starter/mt_must_sac.py --config meta_config/must_configs/mt10/must_mtsac.json --worker_nums 10 --eval_worker_nums 10 --seed $1 --id "0817_endepi${2}_itv${3}_pr${4}" --mask_end_update_episode $2 --mask_update_interval $3 --pruning_ratio $4  
+python starter/mt_must_sac.py --config meta_config/must_configs/mt10/must_mtsac.json --worker_nums 10 --eval_worker_nums 10 --seed $1 --id "0904_bool${2}_pr${3}_end${4}" --success_traj_update_only $2 --pruning_ratio $3 --mask_end_update_episode $4
 duration=$SECONDS
 echo "$duration seconds elapsed."

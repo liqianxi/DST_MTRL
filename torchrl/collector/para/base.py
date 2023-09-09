@@ -16,7 +16,9 @@ TIMEOUT_CHILD = 200
 class ParallelCollector(BaseCollector):
 
     def __init__(self, 
-            env, pf, replay_buffer,state_trajectory,mask_buffer,
+            env, pf, replay_buffer,state_trajectory,
+            traj_collect_mod,
+            mask_buffer,
             env_cls, env_args,
             train_epochs,
             eval_epochs,
@@ -41,6 +43,7 @@ class ParallelCollector(BaseCollector):
             self.index_mapping[idx] = task_name
         self.tasks_progress = [0 for _ in range(len(self.tasks))]
         self.state_trajectory = state_trajectory
+        self.traj_collect_mod=traj_collect_mod
         self.mask_buffer = mask_buffer
 
         self.env_info.device = 'cpu' # CPU For multiprocess sampling

@@ -86,9 +86,10 @@ def experiment(args):
     env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
     pruning_ratio = args.pruning_ratio
     params['sparse_training']["pruning_ratio"] = args.pruning_ratio
-    # params['general_setting']["mask_update_interval"] = args.mask_update_interval
-    # params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
-    group_name = "0817_sweep"
+    params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
+    params['general_setting']["success_traj_update_only"] = args.success_traj_update_only
+    #print("args.success_traj_update_only",args.success_traj_update_only)
+    group_name = "0908_test"
 
     #print("pruning_ratio",pruning_ratio)
 
@@ -175,21 +176,7 @@ def experiment(args):
         pruning_ratio=pruning_ratio,
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
-        trajectory_encoder=encoder
-        )
-
-    # test_traj = torch.randn((4,20,19)).to(device)
-    # onehot = torch.zeros((4,1,10)).to(device)
-    # onehot[0][0][0] = 1
-    # onehot[1][0][1] = 1
-    # onehot[2][0][2] = 1
-    # onehot[3][0][3] = 1
-
-
-
-
-    # policy_mask_generator(test_traj,onehot)
-    #assert 1==2
+        trajectory_encoder=encoder)
 
     qf1_mask_generator = networks.MaskGeneratorNet(
         em_input_shape=np.prod(example_embedding.shape),
@@ -240,6 +227,12 @@ def experiment(args):
     for task_idx in range( env.num_tasks):
         state_trajectory[task_idx] = []
 
+
+    traj_collect_mod = manager.dict()
+
+    for task_idx in range( env.num_tasks):
+        traj_collect_mod[task_idx] = 0
+
     # Mask buffer, stores the current masks for each layer, 
     # for each task and for each network type(Q1, Q2, policy).
     # Initialize the binary mask for all the weights and bias, make sure
@@ -261,14 +254,12 @@ def experiment(args):
                 net = pf
 
             neuron_masks = random_initialize_masks(net, pruning_ratio)
-            #print("neuron_masks",neuron_masks)
+
             mask_buffer[task_idx] = neuron_masks
 
-        all_mask_buffer[net_type] = mask_buffer       
+        all_mask_buffer[net_type] = mask_buffer    
 
-    #print(all_mask_buffer["Policy"])
 
-    #assert 1==2
     if RESTORE:
         with open(osp.join(osp.join(logger.work_dir,"model"), "replay_buffer.pkl"), 'rb') as f:
             replay_buffer = pickle.load(f)
@@ -280,6 +271,7 @@ def experiment(args):
 
     params['general_setting']['collector'] = AsyncMultiTaskParallelCollectorUniform(
         env=env, pf=pf, replay_buffer=replay_buffer,state_trajectory=state_trajectory,
+        traj_collect_mod=traj_collect_mod,
         mask_buffer=all_mask_buffer["Policy"],
         env_cls = cls_dicts, env_args = [params["env"], cls_args, params["meta_env"]],
         device=device,
@@ -304,6 +296,7 @@ def experiment(args):
                            "qf2_mask_generator": qf2_mask_generator},
         task_nums=env.num_tasks,
         trajectory_encoder=encoder,
+        traj_collect_mod=traj_collect_mod,
         mask_buffer=all_mask_buffer,
         **params['sac'],
         **params['general_setting']
