@@ -56,17 +56,22 @@ class RLAlgo():
                  state_trajectory=None,
                  update_end_epoch=5000,
                  trajectory_encoder=None,
+                 traj_collect_mod=None,
                  generator_lr=1e-5,
-                 recent_traj_window=20
+                 recent_traj_window=20,
+                 success_traj_update_only=True
                  ):
 
         self.env = env
+        self.success_traj_update_only = success_traj_update_only
+        #print("self.success_traj_update_only",self.success_traj_update_only)
         self.mask_update_interval = mask_update_interval
         self.state_trajectory = state_trajectory
         self.policy_mask_generator = mask_generators["policy_mask_generator"]
         self.qf1_mask_generator = mask_generators["qf1_mask_generator"]
         self.qf2_mask_generator = mask_generators["qf2_mask_generator"]
         self.recent_traj_window = recent_traj_window
+        self.traj_collect_mod=traj_collect_mod
 
         self.continuous = isinstance(self.env.action_space, gym.spaces.Box)
         self.traj_encoder = trajectory_encoder
@@ -74,7 +79,6 @@ class RLAlgo():
         self.collector = collector
         # device specification
         self.device = device
-     
 
         self.mask_generator_optimizer = torch.optim.Adam([
             {'params':self.policy_mask_generator.parameters()},
@@ -114,6 +118,13 @@ class RLAlgo():
             os.mkdir(self.save_dir)
 
         self.best_eval = None
+
+        self.success_rate_dict = {}
+
+        for i in range(10):
+            self.success_rate_dict[i] = deque(maxlen=3)
+
+
 
     def construct_one_hot_map(self, total_tasks):
         one_hot_map = {}
@@ -161,6 +172,19 @@ class RLAlgo():
         with open(osp.join(prefix, "replay_buffer.pkl"), 'wb') as f:
             pickle.dump(self.replay_buffer, f)
         
+
+    def get_traj_availability(self,state_trajectory):
+        key_list = []
+        for key,value in state_trajectory.items():
+            if len(value) > 0:
+                key_list.append(key)
+
+        return key_list
+
+    def clip_by_window(self,list_of_trajs,window_length):
+        if len(list_of_trajs) > window_length:
+            return list_of_trajs[-window_length:]
+        return list_of_trajs
 
     def encode_policy_into_vectors(self, network, trajectories):
         """
@@ -212,45 +236,52 @@ class RLAlgo():
 
         return similarities.reshape(1,task_amount*task_amount)
 
+    def check_finish_update(self,success_rate_dict):
+        #print("success_rate_dict",success_rate_dict)
+        avg = sum(success_rate_dict) / len(success_rate_dict)
+        return avg >= 0.66
+
+    def sample_update_data(self,device):
+        #self.success_rate_dict
+        #self.state_trajectory
+        update_batch = []
+        #update_task_list = []
+        
+        for task_id, task_mod in self.traj_collect_mod.items():
+            task_state_traj_buffer = self.state_trajectory[task_id]
+            #print("task_state_traj_buffer",task_state_traj_buffer)
+            if task_mod == 1:
+                traj = random.choice(task_state_traj_buffer)
+
+            else: 
+                traj = task_state_traj_buffer[-1]
+
+            update_batch.append(torch.as_tensor(traj))
+            #print(update_batch[-1].shape)
+
+        return torch.stack(update_batch).float().to(device)
+
+    
     def update_masks(self, sampled_task_amount,all_task_amount, current_epoch):
         # First, update encoder
 
-        recent_window = self.recent_traj_window
-        #self.traj_encoder
+        recent_window = self.recent_traj_window   
+        for t_id in range(all_task_amount):
+            self.state_trajectory[t_id] = self.clip_by_window(self.state_trajectory[t_id],recent_window)    
 
-        recent_traj = {}
-        for each_task in range(sampled_task_amount):
-
-            recent_traj[each_task] = self.state_trajectory[each_task][-recent_window:]
-
-            # for each_traj in self.state_trajectory[each_task]:
-            #     trajectories += [torch.as_tensor(each_traj).float().to(self.device)]
-                #print(trajectories[-1].device)
-
-            # clear state_buffer.
-            # TODO: should we add a capacity instead?
-            self.state_trajectory[each_task] = []
-
-        #loss = self.train_trajectory_encoder(trajectories, self.traj_encoder_optimizer)
-        #wandb.log({"trajectory_train_loss":loss},step=current_epoch)
-        # Now we have updated our traj encoder,
-        # we can then leverage the encoder to update each net mask generator.
-        # (Since encoder is used to encoder traj at the beginning of the generators)
-
-        """
-        test_traj = torch.randn((4,20,19)).to(device)
-        onehot = torch.zeros((4,1,10)).to(device)
-        
-        """
         for each_net in ["Policy","Q1","Q2"]:
+
+
+
             mask_sim_mtx, traj_sim_mtx = None, None
             batch_task_probs_masks, batch_task_binary_masks = None, None
             loss = None
-            for each_traj_idx in range(recent_window):
-                task_traj_batch = torch.as_tensor([recent_traj[i][each_traj_idx] for i in range(sampled_task_amount)]).float().to(self.device)
 
-                task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(sampled_task_amount)]).to(self.device)
+            for optim_time in range(5):
+                task_traj_batch = self.sample_update_data(self.device)
+                #print("task_traj_batch",task_traj_batch.shape)task_traj_batch torch.Size([10, 19])
 
+                task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(all_task_amount)]).to(self.device)
 
                 generator = self.policy_mask_generator
                 if each_net == "Q1":
@@ -259,8 +290,6 @@ class RLAlgo():
                     generator = self.qf2_mask_generator
 
                 batch_task_probs_masks, batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
-                
-
 
                 # Calculate two losses.
                 mask_sim_mtx = self.compute_mask_similarity_matrix(batch_task_probs_masks, all_task_amount)
@@ -272,12 +301,16 @@ class RLAlgo():
                 # the mask generator network will be updated.
                 loss.backward()
                 self.mask_generator_optimizer.step()
-            #print("mask_sim_mtx",mask_sim_mtx)
-            #print("traj_sim_mtx",traj_sim_mtx)
+
             wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
             wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
             for each_task in range(sampled_task_amount):
-                self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+                if self.success_traj_update_only:
+                    if self.traj_collect_mod[each_task] and not self.check_finish_update(self.success_rate_dict[each_task]):
+                        self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+                else: 
+                    self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+    
             
             #print("loss1",loss1)
             #print("loss2",loss2)
@@ -334,17 +367,19 @@ class RLAlgo():
 
         # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
+            wandb.log({"save_traj_mod_sum":sum([i for i in self.traj_collect_mod.values()])},step=epoch)
             
             torch.cuda.empty_cache()
             for each_task in self.mask_buffer["Policy"].keys():
                 value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
 
                 name = str(each_task)
-                wandb.log({name:value},step=epoch)
+                wandb.log({f"task_policy_mask_{name}":value},step=epoch)
             #print("self.update_end_epoch",self.update_end_epoch)
             if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval):
                 # update mask
                 print("start to update mask")
+                print(self.success_rate_dict)
                 self.update_masks(TASK_SAMPLE_NUM, task_amount, epoch)
 
             log_dict = {}
@@ -370,6 +405,8 @@ class RLAlgo():
                 explore_time = time.time() - explore_start_time
 
                 train_start_time = time.time()
+
+            torch.cuda.empty_cache()
             self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch)
 
             train_time = time.time() - train_start_time
@@ -378,13 +415,17 @@ class RLAlgo():
 
             eval_start_time = time.time()
             eval_infos = self.collector.eval_one_epoch()
+            #print("eval_infos")
+
+            for task_id in range(task_scheduler.num_tasks):
+                self.success_rate_dict[task_id].append(eval_infos[str(task_id)])
 
             # task_scheduler.update_success_rate_array(eval_infos)
             # task_scheduler.update_return_array(eval_infos)
             # task_scheduler.update_p()
 
             eval_time = time.time() - eval_start_time
-            print("eval time",eval_time)
+            #print("eval time",eval_time)
             total_frames += self.collector.active_worker_nums * self.epoch_frames
 
             infos = {}
