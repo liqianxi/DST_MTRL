@@ -6,13 +6,16 @@ import torch
 def get_args():
     parser = argparse.ArgumentParser(description='RL')
 
-    parser.add_argument('--pruning_ratio', type=float, default=0.9,
+    parser.add_argument('--pruning_ratio', type=float, default=0.7,
                         help='prining ratio between 0 and 1.')
+
+    parser.add_argument('--success_traj_update_only', type=int, default=1,
+                        help='If enabled, only the tasks with success trajs, and success rate < 0.66 will be updated')
 
     parser.add_argument('--mask_update_interval', type=int, default=50,
                         help='mask update interval')
     
-    parser.add_argument('--mask_end_update_episode', type=int, default=5000,
+    parser.add_argument('--mask_end_update_episode', type=int, default=10000,
                         help='mask end update')
     
     parser.add_argument('--seed', type=int, default=0,

@@ -187,7 +187,9 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
     @staticmethod
     def train_worker_process(cls, shared_funcs, env_info,
         replay_buffer, shared_que,
-        start_barrier, epochs, start_epoch, task_name, shared_dict, mask_buffer, state_trajectory, index_mapping, lock, pretraining_epoch):
+        start_barrier, epochs, start_epoch, task_name, shared_dict, mask_buffer, state_trajectory, 
+        traj_collect_mod,
+        index_mapping, lock, pretraining_epoch):
 
         # Attention: Here mask_buffer is the policy net weight masks for each task.
         # i.e. mask_buffer[task_id] = [all layer neuron masks]
@@ -258,8 +260,9 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             task_sample_index = shared_dict['task_sample_index']
  
             episode_state_traj = [ob]
+            success = 0
             if env_info.env_rank in task_sample_index:
-                success = 0
+                
                 for _ in range(env_info.epoch_frames):
                     next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
                     c_ob["ob"] = next_ob
@@ -275,14 +278,40 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     if max(info["success"],success) > 0:
                         # this traj is success.
                         success = 1
-                        break
+                        
+                        #print("############train success###########!")
+                        #("episode_state_traj",episode_state_traj)
+                # if len(episode_state_traj) != 201:
+                #     print("len(episode_state_traj)",len(episode_state_traj),env_info.env_rank)
+                #     assert 1==2
+                
+                # # if ever traj_collect_mod[env_info.env_rank] is 1, that means this task
+                # # once succeed, we immediately switch the mode to only save successful traj states
+                # # to state traj buffer.
+                new_value = max(traj_collect_mod[env_info.env_rank],success)
+                if traj_collect_mod[env_info.env_rank] == 0:
+                    if new_value == 1:
+                        # first time set this to 1:
+                        # reset the task traj buffer, from now on the buffer shall only store
+                        # successful traj.
+                        state_trajectory[env_info.env_rank] = []
 
-                 
+                        # set the new mod to 1.
+                        traj_collect_mod[env_info.env_rank] = new_value
+            
+                if traj_collect_mod[env_info.env_rank] and success==0:
+                    # Append the task state trajectory for this episode to the shared buffer.
+                    print("first case")
+                    print(next_ob)
+                    pass
 
-                # print(f'num_steps_can_sample: {replay_buffer.num_steps_can_sample()}')
-            # Append the task state trajectory for this episode to the shared buffer.
+                else:
+                    # Append the task state trajectory for this episode to the shared buffer.
+                    #print("state_trajectory[env_info.env_rank] before",len(state_trajectory[env_info.env_rank]))
 
-            state_trajectory[env_info.env_rank] += [episode_state_traj]
+                    state_trajectory[env_info.env_rank] += [episode_state_traj]
+                    #print("state_trajectory[env_info.env_rank] after",len(state_trajectory[env_info.env_rank]))
+            
 
             if norm_obs_flag:
                 shared_dict[task_name] = {
@@ -306,6 +335,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                             shared_dict,
                             mask_buffer,
                             state_trajectory,
+                            traj_collect_mod,
                             lock
                             ):
         #TODO:
@@ -374,7 +404,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 rew = 0
 
                 current_success = 0
-                #episode_state_traj = [eval_ob]
+                episode_state_traj = [eval_ob]
                 while not done:
 
 
@@ -384,7 +414,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
 
                     eval_ob, r, done, info = env_info.env.step( act )
-                    #episode_state_traj.append(eval_ob)
+                    episode_state_traj.append(eval_ob)
                     rew += r
                     if env_info.eval_render:
                         env_info.env.render()
@@ -396,6 +426,35 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 eval_rews.append(rew)
                 done = False
                 success += current_success
+
+
+                # if ever traj_collect_mod[env_info.env_rank] is 1, that means this task
+                # once succeed, we immediately switch the mode to only save successful traj states
+                # to state traj buffer.
+                new_value = 0
+                if current_success > 0:
+                    new_value = 1
+
+                if traj_collect_mod[env_info.env_rank] == 0:
+                    if new_value == 1:
+                        # first time set this to 1:
+                        # reset the task traj buffer, from now on the buffer shall only store
+                        # successful traj.
+                        state_trajectory[env_info.env_rank] = []
+
+                        # set the new mod to 1.
+                        traj_collect_mod[env_info.env_rank] = new_value
+                
+                if traj_collect_mod[env_info.env_rank] and new_value==0:
+                    # Append the task state trajectory for this episode to the shared buffer.
+                    pass
+
+                else:
+                    # Append the task state trajectory for this episode to the shared buffer.
+                    #print("state_trajectory[env_info.env_rank] before",len(state_trajectory[env_info.env_rank]))
+
+                    state_trajectory[env_info.env_rank] += [episode_state_traj]
+                    #print("state_trajectory[env_info.env_rank] after",len(state_trajectory[env_info.env_rank]))
 
             shared_que.put({
                 'eval_rewards': eval_rews,
@@ -461,6 +520,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     self.shared_dict, 
                     self.mask_buffer, 
                     self.state_trajectory, 
+                    self.traj_collect_mod,
                     self.index_mapping,lock,self.pretraining_epoch))  #*
             p.start()
             self.workers.append(p)
@@ -518,12 +578,13 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                       self.env_info, 
                       self.eval_shared_que, 
                       self.eval_start_barrier,
-                      self.eval_epochs * 10000, 
+                      self.eval_epochs, 
                       start_epoch, 
                       task, 
                       self.shared_dict,
                       self.mask_buffer, 
                       self.state_trajectory,
+                      self.traj_collect_mod,
                       lock
                       ))  #*
             eval_p.start()
@@ -553,6 +614,9 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         for task_name, success_rate, eval_rewards in tasks_result:
             dic[task_name+"_success_rate"] = success_rate
             dic[task_name+"_eval_rewards"] = eval_rewards
+            dic[str(self.tasks_mapping[task_name])] = success_rate
+            # if success_rate > 0:
+            #     print("kkk task_name success",task_name)
             # if self.tasks_progress[self.tasks_mapping[task_name]] is None:
             #     self.tasks_progress[self.tasks_mapping[task_name]] = success_rate
             # else:

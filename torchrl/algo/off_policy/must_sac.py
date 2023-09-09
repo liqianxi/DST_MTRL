@@ -4,7 +4,7 @@ from .twin_sac_q import TwinSACQ
 import copy
 import torch
 import numpy as np
-import wandb
+import wandb,time
 import torchrl.policies as policies
 import torch.nn.functional as F
 
@@ -41,20 +41,50 @@ class MUST_SAC(TwinSACQ):
         self.sample_key.append("embedding_inputs")
         self.grad_clip = grad_clip
 
+    # def concat_mask_tensors(self, sample_task_amount, specific_mask_buffer, task_batch_size, device):
+    #     mask_layers = None
+    #     for i in range(sample_task_amount):
+    #         single_mask = [each.expand(task_batch_size, -1).to(device) for each in specific_mask_buffer[i]]
+            
+    #         if mask_layers:
+    #             for j in range(len(mask_layers)):
+    #                 mask_layers[j] = torch.cat((mask_layers[j], single_mask[j]), 0)
+    #         else: 
+    #             mask_layers = single_mask
+
+    #     return mask_layers
     def concat_mask_tensors(self, sample_task_amount, specific_mask_buffer, task_batch_size, device):
         mask_layers = None
         for i in range(sample_task_amount):
             single_mask = [each.expand(task_batch_size, -1).to(device) for each in specific_mask_buffer[i]]
             
-            if mask_layers:
-                for i in range(len(mask_layers)):
-                    mask_layers[i] = torch.cat((mask_layers[i], single_mask[i]), 0)
-            else: 
-                mask_layers = single_mask
+            if mask_layers is None:
+                mask_layers = torch.empty((0,) + single_mask[0].shape[1:], device=device)
+
+            for j in range(len(single_mask)):
+                mask_layers = torch.cat((mask_layers, single_mask[j]), dim=0)
 
         return mask_layers
 
-    def update(self, batch, task_sample_index, task_scheduler, mask_buffer):
+    def get_batch_size_and_idx(self,task_scheduler):
+        batch_size = 1280
+        each_task_batch_size = 0
+        if task_scheduler.task_sample_num == 10:
+            update_idxes = np.ones(10, dtype=np.int32) * (batch_size // 10)
+            each_task_batch_size = batch_size // 10
+        elif task_scheduler.task_sample_num == 50:
+            update_idxes = np.ones(50, dtype=np.int32) * (batch_size // 50)
+            each_task_batch_size = batch_size // 50
+        else:
+            update_idxes = (task_scheduler.p * batch_size).astype(np.int32)
+            update_idxes[-1] = batch_size - np.sum(update_idxes[:-1])
+
+        return each_task_batch_size, update_idxes
+
+    def update(self, batch, task_sample_index, task_scheduler, mask_buffer,
+               each_task_batch_size, update_idxes,
+               policy_device_masks,q1_device_masks,q2_device_masks
+               ):
         self.training_update_num += 1
 
         obs = batch['obs']
@@ -69,25 +99,12 @@ class MUST_SAC(TwinSACQ):
         actions = torch.Tensor(actions).to(self.device)
         next_obs = torch.Tensor(next_obs).to(self.device)
 
-        batch_size = batch['obs'].shape[0]
-        each_task_batch_size = 0
-        if task_scheduler.task_sample_num == 10:
-            update_idxes = np.ones(10, dtype=np.int32) * (batch_size // 10)
-            each_task_batch_size = batch_size // 10
-        elif task_scheduler.task_sample_num == 50:
-            update_idxes = np.ones(50, dtype=np.int32) * (batch_size // 50)
-            each_task_batch_size = batch_size // 50
-        else:
-            update_idxes = (task_scheduler.p * batch_size).astype(np.int32)
-            update_idxes[-1] = batch_size - np.sum(update_idxes[:-1])
-
-
         obs = torch.cat([obs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         actions = torch.cat([actions[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         next_obs = torch.cat([next_obs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         rewards = torch.cat([rewards[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         terminals = torch.cat([terminals[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
-
+        #print("obs.device",obs.device)
         embedding_inputs = batch["embedding_inputs"]
 
         embedding_inputs = torch.Tensor(embedding_inputs).to(self.device)
@@ -111,23 +128,15 @@ class MUST_SAC(TwinSACQ):
         
         # (1280,xx)
         # 1*128
+        time1 = time.time()
 
-        policy_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
-                                                      mask_buffer["Policy"], 
-                                                      each_task_batch_size, self.device)                                     
-
-        q1_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
-                                                      mask_buffer["Q1"], 
-                                                      each_task_batch_size, self.device)
-
-        q2_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
-                                                      mask_buffer["Q2"], 
-                                                      each_task_batch_size, self.device)
-        
+        #print("policy_device_masks.device",policy_device_masks[0].device)
+        time2 = time.time()
         sample_info = self.pf.explore(obs, 
                                       neuron_masks=policy_device_masks,
                                       return_log_probs=True)
 
+        time3 = time.time()
         mean = sample_info["mean"] #1280*xx
         log_std = sample_info["log_std"]
         new_actions = sample_info["action"]
@@ -138,7 +147,7 @@ class MUST_SAC(TwinSACQ):
 
         q1_pred = self.qf1(cat_input, q1_device_masks)
         q2_pred = self.qf2(cat_input, q2_device_masks)
-
+        time4 = time.time()
         # reweight_coeff = 1
         reweight_coeff = torch.ones((log_probs.shape[0], 1)).to(self.device)
 
@@ -157,6 +166,7 @@ class MUST_SAC(TwinSACQ):
             self.alpha_optimizer.zero_grad()
             alpha_loss.backward()
             self.alpha_optimizer.step()
+            time5 = time.time()
 
             alphas = torch.gather(self.log_alpha.exp(), 0, task_ids).unsqueeze(-1)
 
@@ -165,7 +175,7 @@ class MUST_SAC(TwinSACQ):
             alpha_loss = 0
 
         with torch.no_grad():
-
+            time6 = time.time()
             target_sample_info = self.pf.explore(next_obs,
                                                  neuron_masks=policy_device_masks,
                                                  return_log_probs=True)
@@ -181,7 +191,7 @@ class MUST_SAC(TwinSACQ):
             min_target_q = torch.min(target_q1_pred, target_q2_pred)
 
             target_v_values = min_target_q - alphas[:, :] * target_log_probs
-
+            time7 = time.time()
         """
         QF Loss
         """
@@ -199,7 +209,7 @@ class MUST_SAC(TwinSACQ):
 
         assert q1_pred.shape == q_target.shape
         assert q2_pred.shape == q_target.shape
-
+        time8 = time.time()
         cat_input = torch.cat([obs, new_actions], dim=1)
         q_new_actions = torch.min(
             self.qf1(cat_input,q1_device_masks),
@@ -219,7 +229,7 @@ class MUST_SAC(TwinSACQ):
         mean_reg_loss = self.policy_mean_reg_weight * (mean**2).mean()
 
         policy_loss += std_reg_loss + mean_reg_loss
-
+        time9 = time.time()
         """
         Update Networks
         """
@@ -246,7 +256,7 @@ class MUST_SAC(TwinSACQ):
         self.qf2.apply(rezero_weights)
 
         self._update_target_networks()
-
+        time10 = time.time()
         
 
         # Information For Logger
@@ -289,10 +299,42 @@ class MUST_SAC(TwinSACQ):
 
         #all_info.append(info)
 
-        return info
+        return info, {"diff1":time2-time1,
+                      "diff2":time3-time2,
+                      "diff3":time4-time3,
+                      "diff4":time5-time4,
+                      "diff5":time6-time5,
+                      "diff6":time7-time6,
+                      "diff7":time8-time7,
+                      "diff8":time9-time8,
+                      "diff9":time10-time9}
 
     def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer, epoch):
         info = None
+        dict2 = {"diff1":0,
+                      "diff2":0,
+                      "diff3":0,
+                      "diff4":0,
+                      "diff5":0,
+                      "diff6":0,
+                      "diff7":0,
+                      "diff8":0,
+                      "diff9":0}
+
+        each_task_batch_size, update_idxes = self.get_batch_size_and_idx(task_scheduler)
+        time0 = time.time()
+        policy_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
+                                                      mask_buffer["Policy"], 
+                                                      each_task_batch_size, self.device)                                     
+
+        q1_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
+                                                      mask_buffer["Q1"], 
+                                                      each_task_batch_size, self.device)
+
+        q2_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
+                                                      mask_buffer["Q2"], 
+                                                      each_task_batch_size, self.device)
+        timeafter = time.time()
         for _ in range(self.opt_times):
             batch = self.replay_buffer.random_batch(self.batch_size,
                                                     self.sample_key,
@@ -300,9 +342,16 @@ class MUST_SAC(TwinSACQ):
                                                     task_sample_index=task_sample_index,
                                                     reshape=False)
             # Here, mask_buffer is all network types and all tasks.
-            info = self.update(batch, task_sample_index, task_scheduler, mask_buffer)
+            info,time_dict = self.update(batch, task_sample_index, task_scheduler, mask_buffer,each_task_batch_size, update_idxes,
+                                        policy_device_masks,q1_device_masks,q2_device_masks)
+            for key in time_dict.keys():
+                dict2[key] += time_dict[key]
             
             self.logger.add_update_info(info)
-        
+
+        dict2["timeafter"] = timeafter - time0
         wandb.log(info,step=epoch)
+        wandb.log(dict2,step=epoch)
+
+
         # print(f'num_steps_can_sample: {self.replay_buffer.num_steps_can_sample()}')

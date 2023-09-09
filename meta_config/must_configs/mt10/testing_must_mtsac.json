@@ -11,38 +11,37 @@
         "size": 1e6
     },
     "net":{ 
-        "hidden_shapes": [50,50]
+        "hidden_shapes": [40,40]
         
     },
     "task_embedding":{
-        "em_hidden_shapes":[50, 50]
+        "em_hidden_shapes":[20,20]
     },
     "traj_encoder":{
-        "hidden_shapes": [50,50],
-        "latent_size": 64
+        "latent_size": 256
     },
     "sparse_training":{
-        "pruning_ratio":0.9
+        "pruning_ratio":0.8
 
-    }
-    ,
+    },
     "general_setting": {
         "discount" : 0.99,
-        "pretrain_epochs" : 0,
-        "num_epochs" : 200,
+        "pretrain_epochs" : 20,
+        "num_epochs" : 1000,
         "epoch_frames" : 150,
         "max_episode_frames" : 150,
-        
+        "generator_lr":1e-5,
         "batch_size" : 1280,
         "min_pool" : 10000,
-
+        "success_traj_update_only": true,
         "target_hard_update_period" : 1000,
         "use_soft_update" : true,
         "tau" : 0.005,
-        "opt_times" : 2,
-        "mask_update_interval": 22, 
-        "update_end_epoch":50,
-        "eval_episodes" : 1
+        "opt_times" : 200,
+        "update_end_epoch":1000,
+        "mask_update_interval": 25, 
+        "eval_episodes" : 3,
+        "recent_traj_window": 10
     },
     "sac":{
         
