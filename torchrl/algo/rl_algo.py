@@ -59,10 +59,12 @@ class RLAlgo():
                  traj_collect_mod=None,
                  generator_lr=1e-5,
                  recent_traj_window=20,
-                 success_traj_update_only=True
+                 success_traj_update_only=True,
+                 final_mask=None
                  ):
 
         self.env = env
+        self.final_mask=final_mask
         self.success_traj_update_only = success_traj_update_only
         #print("self.success_traj_update_only",self.success_traj_update_only)
         self.mask_update_interval = mask_update_interval
@@ -304,14 +306,19 @@ class RLAlgo():
 
             wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
             wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
+            tmp_dict = {}
             for each_task in range(sampled_task_amount):
+                
                 if self.success_traj_update_only:
                     if self.traj_collect_mod[each_task] and not self.check_finish_update(self.success_rate_dict[each_task]):
-                        self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+                        #self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+                        tmp_dict[each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
                 else: 
-                    self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
-    
-            
+                    tmp_dict[each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+
+                    #self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+
+            self.mask_buffer[each_net].update(tmp_dict)
             #print("loss1",loss1)
             #print("loss2",loss2)
             wandb.log({f"{each_net}_sim_loss":loss},step=current_epoch)
@@ -381,6 +388,13 @@ class RLAlgo():
                 print("start to update mask")
                 print(self.success_rate_dict)
                 self.update_masks(TASK_SAMPLE_NUM, task_amount, epoch)
+
+            if epoch >= self.update_end_epoch:
+                for net_type in ["Q1","Q2","Policy"]:
+                    for task_each_id in range(task_amount):
+                        self.final_mask[net_type][task_each_id] = copy.deepcopy(self.mask_buffer[net_type][task_each_id])
+                self.mask_buffer = self.final_mask
+                #print("new final mask buffer",self.mask_buffer)
 
             log_dict = {}
 

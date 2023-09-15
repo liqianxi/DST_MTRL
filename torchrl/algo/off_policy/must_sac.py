@@ -86,7 +86,7 @@ class MUST_SAC(TwinSACQ):
                policy_device_masks,q1_device_masks,q2_device_masks
                ):
         self.training_update_num += 1
-
+        time00 = time.time()
         obs = batch['obs']
         actions = batch['acts']
         next_obs = batch['next_obs']
@@ -109,7 +109,7 @@ class MUST_SAC(TwinSACQ):
 
         embedding_inputs = torch.Tensor(embedding_inputs).to(self.device)
         embedding_inputs = torch.cat([embedding_inputs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
-
+        time000 = time.time()
 
         task_idx = batch['task_idxs']
         task_idx = torch.Tensor(task_idx).to( self.device ).long()
@@ -125,7 +125,7 @@ class MUST_SAC(TwinSACQ):
         Policy operations.
         """
 
-        
+
         # (1280,xx)
         # 1*128
         time1 = time.time()
@@ -299,41 +299,47 @@ class MUST_SAC(TwinSACQ):
 
         #all_info.append(info)
 
-        return info, {"diff1":time2-time1,
-                      "diff2":time3-time2,
-                      "diff3":time4-time3,
-                      "diff4":time5-time4,
-                      "diff5":time6-time5,
-                      "diff6":time7-time6,
-                      "diff7":time8-time7,
-                      "diff8":time9-time8,
-                      "diff9":time10-time9}
+        return info
+
+    def concat_task_masks(self,specific_mask_buffer,task_amount):
+        batch_list =[]
+        for layer_amount in range(len(specific_mask_buffer[0])):
+            layer_list = [specific_mask_buffer[i][layer_amount].unsqueeze(0) for i in range(task_amount)]
+            #layer_list[0].shape torch.Size([40])
+            #print("layer_list[0].shape",layer_list[0].shape)
+            layer_tensor = torch.cat(layer_list,dim=0).unsqueeze(1).to(self.device)
+            batch_list.append(layer_tensor)
+            #print("layer_tensor shape",layer_tensor.shape)layer_tensor shape torch.Size([400, 1])
+
+        return batch_list
 
     def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer, epoch):
+        time0 = time.time()
+        mask_buffer_copy = copy.deepcopy(mask_buffer)
+        #mask_buffer_copy = mask_buffer
+
         info = None
-        dict2 = {"diff1":0,
-                      "diff2":0,
-                      "diff3":0,
-                      "diff4":0,
-                      "diff5":0,
-                      "diff6":0,
-                      "diff7":0,
-                      "diff8":0,
-                      "diff9":0}
+        dict2 = {}
 
         each_task_batch_size, update_idxes = self.get_batch_size_and_idx(task_scheduler)
-        time0 = time.time()
-        policy_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
-                                                      mask_buffer["Policy"], 
-                                                      each_task_batch_size, self.device)                                     
+        
+        # policy_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
+        #                                               mask_buffer["Policy"], 
+        #                                               each_task_batch_size, self.device)                                     
 
-        q1_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
-                                                      mask_buffer["Q1"], 
-                                                      each_task_batch_size, self.device)
+        # q1_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
+        #                                               mask_buffer["Q1"], 
+        #                                               each_task_batch_size, self.device)
 
-        q2_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
-                                                      mask_buffer["Q2"], 
-                                                      each_task_batch_size, self.device)
+        # q2_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
+        #                                               mask_buffer["Q2"], 
+        #                                               each_task_batch_size, self.device)
+
+        policy_device_masks = self.concat_task_masks(mask_buffer_copy["Policy"],self.task_nums)
+        time1 = time.time()
+        q1_device_masks = self.concat_task_masks(mask_buffer_copy["Q1"],self.task_nums)
+        time2 = time.time()
+        q2_device_masks = self.concat_task_masks(mask_buffer_copy["Q2"],self.task_nums)
         timeafter = time.time()
         for _ in range(self.opt_times):
             batch = self.replay_buffer.random_batch(self.batch_size,
@@ -342,14 +348,23 @@ class MUST_SAC(TwinSACQ):
                                                     task_sample_index=task_sample_index,
                                                     reshape=False)
             # Here, mask_buffer is all network types and all tasks.
-            info,time_dict = self.update(batch, task_sample_index, task_scheduler, mask_buffer,each_task_batch_size, update_idxes,
-                                        policy_device_masks,q1_device_masks,q2_device_masks)
-            for key in time_dict.keys():
-                dict2[key] += time_dict[key]
+            info = self.update(batch, task_sample_index, task_scheduler, 
+                                         mask_buffer_copy,each_task_batch_size, update_idxes,
+                                         policy_device_masks,q1_device_masks,q2_device_masks)
+
+
             
             self.logger.add_update_info(info)
+        time_final = time.time()
+        dict2["time0"] = time1 - time0
+        dict2["time1"] = time2 - time1
+        dict2["time2"] = timeafter - time2
+        dict2["time_final"] = time_final - timeafter
 
-        dict2["timeafter"] = timeafter - time0
+        del policy_device_masks
+        del q1_device_masks
+        del q2_device_masks
+        #del mask_buffer_copy
         wandb.log(info,step=epoch)
         wandb.log(dict2,step=epoch)
 
