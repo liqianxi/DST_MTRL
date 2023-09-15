@@ -89,7 +89,7 @@ def experiment(args):
     params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
     params['general_setting']["success_traj_update_only"] = args.success_traj_update_only
     #print("args.success_traj_update_only",args.success_traj_update_only)
-    group_name = "0908_test"
+    group_name = "0909_sweep"
 
     #print("pruning_ratio",pruning_ratio)
 
@@ -257,7 +257,10 @@ def experiment(args):
 
             mask_buffer[task_idx] = neuron_masks
 
-        all_mask_buffer[net_type] = mask_buffer    
+        all_mask_buffer[net_type] = mask_buffer   
+
+    final_mask = {"Q1":{},"Q2":{},"Policy":{}} 
+
 
 
     if RESTORE:
@@ -298,6 +301,7 @@ def experiment(args):
         trajectory_encoder=encoder,
         traj_collect_mod=traj_collect_mod,
         mask_buffer=all_mask_buffer,
+        final_mask=final_mask,
         **params['sac'],
         **params['general_setting']
     )

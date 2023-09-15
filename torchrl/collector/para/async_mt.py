@@ -228,6 +228,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
             # time to update local mask.
             mask_this_task = mask_buffer[env_info.env_rank]
+            mask_this_task = copy.deepcopy(mask_this_task)
 
             current_epoch += 1
 
@@ -318,7 +319,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     "obs_mean": env_info.env._obs_mean,
                     "obs_var": env_info.env._obs_var
                 }
-
+            del mask_this_task
             shared_que.put({
                 'train_rewards':train_rews,
                 'train_epoch_reward':train_epoch_reward
@@ -353,6 +354,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
         # Local mask for this task.
         mask_this_task = None
+        
 
         env_info.env.eval()
         env_info.env._reward_scale = 1
@@ -361,6 +363,8 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             start_barrier.wait()
 
             mask_this_task = mask_buffer[env_info.env_rank]
+            mask_this_task = copy.deepcopy(mask_this_task)
+
             current_epoch += 1
 
             if current_epoch < start_epoch:
@@ -455,7 +459,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
                     state_trajectory[env_info.env_rank] += [episode_state_traj]
                     #print("state_trajectory[env_info.env_rank] after",len(state_trajectory[env_info.env_rank]))
-
+            del mask_this_task
             shared_que.put({
                 'eval_rewards': eval_rews,
                 'success_rate': success / env_info.eval_episodes,

@@ -85,10 +85,20 @@ class MaskedNet(nn.Module):
 
     def forward(self, x, neuron_masks,enable_mask=True):
         # Have examined, this forward should be correct - 0723 qianxi.
+        #neuron_masks - (10,1,400)
         mask_out = x
         if enable_mask:
-            for idx, layer in enumerate(self.base.fcs):
-                mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+            if len(neuron_masks[0].shape) > 2:
+                # batch way
+                for idx, layer in enumerate(self.base.fcs):
+                    output = self.activation_func(layer(mask_out))
+                    output_reshape = output.reshape((10,128,output.shape[-1]))
+                    mask_out = output_reshape * neuron_masks[idx]
+                    mask_out = mask_out.reshape((x.shape[0],mask_out.shape[-1]))
+
+            else: 
+                for idx, layer in enumerate(self.base.fcs):
+                    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
 
             out = self.last(mask_out)
 
