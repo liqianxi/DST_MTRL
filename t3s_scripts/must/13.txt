@@ -1,0 +1,544 @@
+W&B disabled.
+2023-09-16 09:38:12,396 MainThread INFO: Experiment Name:testing_must_mtsac
+2023-09-16 09:38:12,412 MainThread INFO: {
+  "env_name": "mt10",
+  "env": {
+    "reward_scale": 1,
+    "obs_norm": false
+  },
+  "meta_env": {
+    "obs_type": "with_goal_and_id"
+  },
+  "replay_buffer": {
+    "size": 1000000.0
+  },
+  "net": {
+    "hidden_shapes": [
+      40,
+      40
+    ]
+  },
+  "task_embedding": {
+    "em_hidden_shapes": [
+      20,
+      20
+    ]
+  },
+  "traj_encoder": {
+    "latent_size": 256
+  },
+  "sparse_training": {
+    "pruning_ratio": 0.4
+  },
+  "general_setting": {
+    "discount": 0.99,
+    "pretrain_epochs": 0,
+    "num_epochs": 1000,
+    "epoch_frames": 150,
+    "max_episode_frames": 150,
+    "generator_lr": 1e-05,
+    "batch_size": 1280,
+    "min_pool": 10000,
+    "success_traj_update_only": 1,
+    "target_hard_update_period": 1000,
+    "use_soft_update": true,
+    "tau": 0.005,
+    "opt_times": 200,
+    "update_end_epoch": 10,
+    "mask_update_interval": 25,
+    "eval_episodes": 3,
+    "recent_traj_window": 10
+  },
+  "sac": {
+    "plr": 0.0003,
+    "qlr": 0.0003,
+    "reparameterization": true,
+    "automatic_entropy_tuning": true,
+    "policy_std_reg_weight": 0,
+    "policy_mean_reg_weight": 0
+  }
+}
+finish policy net init
+mask generator finish initialization
+/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Could not seed environment <MTEnv instance>[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+2023-09-16 09:40:29,034 MainThread INFO: Finished Pretrain
+  0%|          | 0/1000 [00:00<?, ?it/s]sample: [2, 8, 9, 4, 6, 7, 0, 1, 5, 3]
+replay_buffer._size: [300 300 300 300 300 300 300 300 300 300]
+train_time 135.78793287277222
+snapshot at best
+2023-09-16 09:42:46,147 MainThread INFO: EPOCH:0
+2023-09-16 09:42:46,213 MainThread INFO: Time Consumed:137.02569723129272s
+2023-09-16 09:42:46,213 MainThread INFO: Total Frames:1500s
+/scratch/qianxi/t3s/t3s_code/./torchrl/algo/rl_algo.py:381: UserWarning: This overload of nonzero is deprecated:
+	nonzero()
+Consider using one of the following signatures instead:
+	nonzero(*, bool as_tuple) (Triggered internally at  /pytorch/torch/csrc/utils/python_arg_parser.cpp:882.)
+  value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
+  0%|          | 1/1000 [02:18<38:29:23, 138.70s/it]  0%|          | 1/1000 [02:55<48:45:54, 175.73s/it]
+------------------------------------  -----------  --------  ---------  ---------
+Name                                  Value
+Running_Average_Rewards               1142.18154
+Train_Epoch_Reward                    11825.70564
+Running_Training_Average_Rewards      1182.57056
+Explore_Time                          0.00328
+Train___Time                          135.78793
+Eval____Time                          0.00356
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -49.08440
+6                                     0.00000
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -42.70875
+3                                     0.00000
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.58083
+5                                     0.00000
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -24.25984
+4                                     0.00000
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -20.38441
+7                                     0.00000
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -21.19228
+2                                     0.00000
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -21.21657
+1                                     0.00000
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 11672.02583
+0                                     0.00000
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.92930
+9                                     0.00000
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.85406
+8                                     0.00000
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std       Max        Min
+Reward_Mean                           7.04883      0.30338   7.99196    6.30548
+alpha_0                               0.97040      0.01684   0.99970    0.94167
+alpha_1                               0.97040      0.01684   0.99970    0.94166
+alpha_2                               0.97040      0.01684   0.99970    0.94166
+alpha_3                               0.97040      0.01684   0.99970    0.94166
+alpha_4                               0.97041      0.01684   0.99970    0.94168
+alpha_5                               0.97040      0.01684   0.99970    0.94166
+alpha_6                               0.97041      0.01683   0.99970    0.94169
+alpha_7                               0.97038      0.01685   0.99970    0.94164
+alpha_8                               0.97039      0.01684   0.99970    0.94166
+alpha_9                               0.97039      0.01685   0.99970    0.94166
+Alpha_loss                            -0.20124     0.11692   -0.00000   -0.40226
+Training/policy_loss                  -2.93740     0.24533   -2.64922   -3.56710
+Training/qf1_loss                     658.40375    44.87660  810.92468  549.91626
+Training/qf2_loss                     658.31924    44.86389  810.99231  550.06232
+Training/pf_norm                      0.20291      0.11611   0.53640    0.06037
+Training/qf1_norm                     35.01297     12.13163  63.70298   20.23732
+Training/qf2_norm                     35.41579     12.75391  67.62199   20.51482
+log_std/mean                          -0.10191     0.04538   -0.00135   -0.14199
+log_std/std                           0.00719      0.00338   0.01569    0.00137
+log_std/max                           -0.08749     0.03971   0.00179    -0.12666
+log_std/min                           -0.11831     0.05249   -0.00451   -0.17460
+log_probs/mean                        -2.72343     0.01805   -2.65155   -2.75069
+log_probs/std                         0.27513      0.06564   0.43984    0.20511
+log_probs/max                         -1.95305     0.29061   -1.15517   -2.23091
+log_probs/min                         -4.78493     0.66234   -3.58769   -7.17401
+mean/mean                             0.00181      0.00241   0.00948    -0.00207
+mean/std                              0.00522      0.00365   0.01637    0.00141
+mean/max                              0.01053      0.00683   0.03328    0.00263
+mean/min                              -0.00828     0.00527   -0.00091   -0.02120
+------------------------------------  -----------  --------  ---------  ---------
+snapshot at 0
+history save at ./log/testing_must_mtsac/mt10/13/model
+sample: [2, 8, 1, 3, 0, 6, 5, 7, 9, 4]
+replay_buffer._size: [450 450 450 450 450 450 450 450 450 450]
+Process Process-7:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-18:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-15:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-10:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-8:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-16:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-20:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-5:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-12:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-19:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-6:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-2:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-14:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-4:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-17:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-9:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-13:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-11:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-3:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-21:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "starter/mt_must_sac.py", line 314, in <module>
+    experiment(args)
+  File "starter/mt_must_sac.py", line 309, in experiment
+    agent.train(env.num_tasks,params,group_name)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/rl_algo.py", line 424, in train
+    self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/off_policy/must_sac.py", line 380, in update_per_epoch
+    all_dict = self.get_masks(self.task_nums,self.task_nums, epoch)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/off_policy/must_sac.py", line 65, in get_masks
+    self.state_trajectory[t_id] = self.clip_by_window(self.state_trajectory[t_id],recent_window)
+  File "<string>", line 2, in __getitem__
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 251, in recv
+    return _ForkingPickler.loads(buf.getbuffer())
+KeyboardInterrupt
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/wandb_manager.py", line 186, in _teardown
+    result = self._service.join()
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/service/service.py", line 235, in join
+    ret = self._internal_proc.wait()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1083, in wait
+    return self._wait(timeout=timeout)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1806, in _wait
+    (pid, sts) = self._try_wait(0)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1764, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+KeyboardInterrupt

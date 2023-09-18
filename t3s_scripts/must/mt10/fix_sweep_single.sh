@@ -26,6 +26,6 @@ echo "Use seed $1"
 export GROUP=MT10_MUSTSAC
 export NAME="10runs_MUST_fixgoal_MT10_exp2_seed${1}"
 export TASK_SAMPLE_NUM=10 
-python starter/mt_must_sac.py --config meta_config/must_configs/mt10/must_mtsac.json --worker_nums 10 --eval_worker_nums 10 --seed $1 --id "0909_bool${2}_pr${3}_end${4}" --success_traj_update_only $2 --pruning_ratio $3 --mask_end_update_episode $4
+python starter/mt_must_sac.py --config meta_config/must_configs/mt10/must_mtsac.json --worker_nums 10 --eval_worker_nums 10 --seed $1 --id "0916_itv${2}_pr${3}" --mask_update_interval $2 --pruning_ratio $3
 duration=$SECONDS
 echo "$duration seconds elapsed."

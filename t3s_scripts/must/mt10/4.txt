@@ -1,0 +1,790 @@
+W&B enabled.
+task start
+Use seed 3
+2023-09-16 14:19:20,212 MainThread INFO: Experiment Name:0916_bool1_pr0.5_end10000
+2023-09-16 14:19:20,213 MainThread INFO: {
+  "env_name": "mt10",
+  "env": {
+    "reward_scale": 1,
+    "obs_norm": false
+  },
+  "meta_env": {
+    "obs_type": "with_goal_and_id"
+  },
+  "replay_buffer": {
+    "size": 1000000.0
+  },
+  "net": {
+    "hidden_shapes": [
+      400,
+      400,
+      400
+    ]
+  },
+  "task_embedding": {
+    "em_hidden_shapes": [
+      256,
+      128
+    ]
+  },
+  "traj_encoder": {
+    "latent_size": 256
+  },
+  "sparse_training": {
+    "pruning_ratio": 0.5
+  },
+  "general_setting": {
+    "discount": 0.99,
+    "pretrain_epochs": 20,
+    "num_epochs": 10000,
+    "epoch_frames": 150,
+    "max_episode_frames": 150,
+    "generator_lr": 1e-05,
+    "batch_size": 1280,
+    "min_pool": 10000,
+    "success_traj_update_only": 1,
+    "target_hard_update_period": 1000,
+    "use_soft_update": true,
+    "tau": 0.005,
+    "opt_times": 200,
+    "update_end_epoch": 10000,
+    "mask_update_interval": 25,
+    "eval_episodes": 3,
+    "recent_traj_window": 10
+  },
+  "sac": {
+    "plr": 0.0003,
+    "qlr": 0.0003,
+    "reparameterization": true,
+    "automatic_entropy_tuning": true,
+    "policy_std_reg_weight": 0,
+    "policy_mean_reg_weight": 0
+  }
+}
+finish policy net init
+mask generator finish initialization
+/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Could not seed environment <MTEnv instance>[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+wandb: Currently logged in as: liqianxi. Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.15.10 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.15.5
+wandb: Run data is saved locally in /scratch/qianxi/t3s/t3s_code/wandb/run-20230916_142029-a6l0dqdb
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run zesty-bee-440
+wandb: ⭐️ View project at https://wandb.ai/liqianxi/dst_mtrl
+wandb: 🚀 View run at https://wandb.ai/liqianxi/dst_mtrl/runs/a6l0dqdb
+replay_buffer._size: [169 169 175 172 173 170 172 175 171 169]
+2023-09-16 14:20:33,935 MainThread INFO: EPOCH:0
+2023-09-16 14:20:33,936 MainThread INFO: Time Consumed:0.006468296051025391s
+2023-09-16 14:20:33,937 MainThread INFO: Total Frames:1500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                20590.39639
+Running_Training_Average_Rewards  2059.03964
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [300 300 300 300 300 300 300 300 300 300]
+2023-09-16 14:20:44,553 MainThread INFO: EPOCH:1
+2023-09-16 14:20:44,553 MainThread INFO: Time Consumed:10.579812049865723s
+2023-09-16 14:20:44,553 MainThread INFO: Total Frames:3000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                15934.93961
+Running_Training_Average_Rewards  1826.26680
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [450 450 450 450 450 450 450 450 450 450]
+2023-09-16 14:20:58,370 MainThread INFO: EPOCH:2
+2023-09-16 14:20:58,371 MainThread INFO: Time Consumed:13.81513237953186s
+2023-09-16 14:20:58,371 MainThread INFO: Total Frames:4500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                14718.88323
+Running_Training_Average_Rewards  1708.14064
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [600 600 600 600 600 600 600 600 600 600]
+2023-09-16 14:21:12,217 MainThread INFO: EPOCH:3
+2023-09-16 14:21:12,218 MainThread INFO: Time Consumed:13.844858407974243s
+2023-09-16 14:21:12,218 MainThread INFO: Total Frames:6000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                20912.37315
+Running_Training_Average_Rewards  1718.87320
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [750 750 750 750 750 750 750 750 750 750]
+2023-09-16 14:21:35,123 MainThread INFO: EPOCH:4
+2023-09-16 14:21:35,423 MainThread INFO: Time Consumed:22.90307092666626s
+2023-09-16 14:21:35,424 MainThread INFO: Total Frames:7500s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                4138.66239
+Running_Training_Average_Rewards  1325.66396
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [900 900 900 900 900 900 900 900 900 900]
+2023-09-16 14:21:55,854 MainThread INFO: EPOCH:5
+2023-09-16 14:21:55,854 MainThread INFO: Time Consumed:20.42852210998535s
+2023-09-16 14:21:55,855 MainThread INFO: Total Frames:9000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                11505.21180
+Running_Training_Average_Rewards  1218.54158
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [1050 1050 1050 1050 1050 1050 1050 1050 1050 1050]
+2023-09-16 14:22:14,180 MainThread INFO: EPOCH:6
+2023-09-16 14:22:14,180 MainThread INFO: Time Consumed:18.32338547706604s
+2023-09-16 14:22:14,181 MainThread INFO: Total Frames:10500s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                4193.30094
+Running_Training_Average_Rewards  661.23917
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1200 1200 1200 1200 1200 1200 1200 1200 1200 1200]
+2023-09-16 14:22:35,403 MainThread INFO: EPOCH:7
+2023-09-16 14:22:35,406 MainThread INFO: Time Consumed:21.218488216400146s
+2023-09-16 14:22:35,406 MainThread INFO: Total Frames:12000s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                8086.18028
+Running_Training_Average_Rewards  792.82310
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+wandb: Waiting for W&B process to finish... (failed 255). Press Control-C to abort syncing.
+Process Process-15:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-8:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-17:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-3:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-4:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-18:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-6:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-5:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-16:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-7:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-19:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-10:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-9:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-20:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-11:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-12:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+Process Process-2:
+Process Process-13:
+Process Process-21:
+Process Process-14:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 129, in _main
+    return self._bootstrap(parent_sentinel)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 268, in train_worker_process
+    next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 149, in take_actions
+    out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 86, in explore
+    mean, std, log_std = self.forward(x, neuron_masks, enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 109, in forward
+    mask_out = self.activation_func(layer(mask_out))
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 129, in _main
+    return self._bootstrap(parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 331, in _bootstrap
+    traceback.print_exc()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 163, in print_exc
+    print_exception(*sys.exc_info(), limit=limit, file=file, chain=chain)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 103, in print_exception
+    for line in TracebackException(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 508, in __init__
+    self.stack = StackSummary.extract(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 366, in extract
+    f.line
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 288, in line
+    self._line = linecache.getline(self.filename, self.lineno).strip()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 16, in getline
+    lines = getlines(filename, module_globals)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/_fx/graph_module.py", line 27, in patched_getline
+    return _orig_getlines(*args, **kwargs)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 47, in getlines
+    return updatecache(filename, module_globals)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 136, in updatecache
+    with tokenize.open(fullname) as fp:
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 394, in open
+    encoding, lines = detect_encoding(buffer.readline)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 363, in detect_encoding
+    first = read_or_stop()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 321, in read_or_stop
+    return readline()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 129, in _main
+    return self._bootstrap(parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 331, in _bootstrap
+    traceback.print_exc()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 163, in print_exc
+    print_exception(*sys.exc_info(), limit=limit, file=file, chain=chain)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 103, in print_exception
+    for line in TracebackException(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 508, in __init__
+    self.stack = StackSummary.extract(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 366, in extract
+    f.line
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 288, in line
+    self._line = linecache.getline(self.filename, self.lineno).strip()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 16, in getline
+    lines = getlines(filename, module_globals)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/_fx/graph_module.py", line 27, in patched_getline
+    return _orig_getlines(*args, **kwargs)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 47, in getlines
+    return updatecache(filename, module_globals)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 136, in updatecache
+    with tokenize.open(fullname) as fp:
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 394, in open
+    encoding, lines = detect_encoding(buffer.readline)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 363, in detect_encoding
+    first = read_or_stop()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 321, in read_or_stop
+    return readline()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 129, in _main
+    return self._bootstrap(parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 331, in _bootstrap
+    traceback.print_exc()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 163, in print_exc
+    print_exception(*sys.exc_info(), limit=limit, file=file, chain=chain)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 103, in print_exception
+    for line in TracebackException(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 508, in __init__
+    self.stack = StackSummary.extract(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 366, in extract
+    f.line
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 288, in line
+    self._line = linecache.getline(self.filename, self.lineno).strip()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 16, in getline
+    lines = getlines(filename, module_globals)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/_fx/graph_module.py", line 27, in patched_getline
+    return _orig_getlines(*args, **kwargs)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 47, in getlines
+    return updatecache(filename, module_globals)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 136, in updatecache
+    with tokenize.open(fullname) as fp:
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 394, in open
+    encoding, lines = detect_encoding(buffer.readline)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 363, in detect_encoding
+    first = read_or_stop()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 321, in read_or_stop
+    return readline()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 418, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 81, in eval_act
+    mean, _, _ = self.forward(x, neuron_masks)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/policies/continuous_policy.py", line 70, in forward
+    x = super().forward(x, neuron_masks,enable_mask)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/networks/nets.py", line 103, in forward
+    mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 93, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/nn/functional.py", line 1690, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 129, in _main
+    return self._bootstrap(parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 331, in _bootstrap
+    traceback.print_exc()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 163, in print_exc
+    print_exception(*sys.exc_info(), limit=limit, file=file, chain=chain)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 103, in print_exception
+    for line in TracebackException(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 508, in __init__
+    self.stack = StackSummary.extract(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 366, in extract
+    f.line
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/traceback.py", line 288, in line
+    self._line = linecache.getline(self.filename, self.lineno).strip()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 16, in getline
+    lines = getlines(filename, module_globals)
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/torch/_fx/graph_module.py", line 27, in patched_getline
+    return _orig_getlines(*args, **kwargs)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 47, in getlines
+    return updatecache(filename, module_globals)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/linecache.py", line 136, in updatecache
+    with tokenize.open(fullname) as fp:
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 394, in open
+    encoding, lines = detect_encoding(buffer.readline)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 363, in detect_encoding
+    first = read_or_stop()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/tokenize.py", line 321, in read_or_stop
+    return readline()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "starter/mt_must_sac.py", line 314, in <module>
+    experiment(args)
+  File "starter/mt_must_sac.py", line 309, in experiment
+    agent.train(env.num_tasks,params,group_name)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/rl_algo.py", line 365, in train
+    self.pretrain(task_amount)
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/algo/off_policy/off_rl_algo.py", line 63, in pretrain
+    training_epoch_info =  self.collector.train_one_epoch(list(range(task_amount)))  #*
+  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 650, in train_one_epoch
+    worker_rst = self.shared_que.get()
+  File "<string>", line 2, in get
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/wandb_manager.py", line 186, in _teardown
+    result = self._service.join()
+  File "/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/wandb/sdk/service/service.py", line 235, in join
+    ret = self._internal_proc.wait()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1083, in wait
+    return self._wait(timeout=timeout)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1806, in _wait
+    (pid, sts) = self._try_wait(0)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1764, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+KeyboardInterrupt
