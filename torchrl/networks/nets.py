@@ -65,6 +65,8 @@ class Net(nn.Module):
         out = self.last(out)
         return out
 
+
+
 class MaskedNet(nn.Module):
     def __init__(
             self, output_shape,
@@ -231,6 +233,27 @@ class MaskGeneratorNet(nn.Module):
         return res_array
 
 
+    def gumbel_softmax(self, logits, k, tau: float = 1, hard: bool = False, eps: float = 1e-10, dim: int = -1):
+        gumbels = (
+            -torch.empty_like(logits, memory_format=torch.legacy_contiguous_format).exponential_().log()
+        )  # ~Gumbel(0,1)
+        gumbels = (logits + gumbels) / tau  # ~Gumbel(logits,tau)
+        y_soft = gumbels.softmax(dim)
+
+
+        if hard:
+            # Straight through.
+            #index = y_soft.max(dim, keepdim=True)[1]
+            index = torch.topk(y_soft, k, dim=-1)[1]
+
+            y_hard = torch.zeros_like(logits, memory_format=torch.legacy_contiguous_format).scatter_(dim, index, 1.0)
+            ret = y_hard - y_soft.detach() + y_soft
+        else:
+            # Reparametrization trick.
+            ret = y_soft
+        return ret
+
+
 
     def forward(self, x, embedding_input):
         # Here x is a trajectory of shape [traj_length, dim_of_each_state]
@@ -239,6 +262,8 @@ class MaskGeneratorNet(nn.Module):
         # Trajectory encoder embedding
         
         #print("traj_input",traj_input)
+       
+
         traj_encodings = self.encoder.encode_lstm(x)
 
         # Task one hot embedding
@@ -258,19 +283,16 @@ class MaskGeneratorNet(nn.Module):
         idx = 0
         for layer_idx in range(len(self.layer_neurons)):
             neuron_amount = self.layer_neurons[layer_idx]
+            k = int(neuron_amount - neuron_amount * self.pruning_ratio)
+            
             selected = mask_vector[:,idx:idx+neuron_amount]# all batch rows, selected columns(neurons).
-            pruned_mask = self.keep_topk(selected, 
-                                         self.pruning_ratio,
-                                         neuron_amount).to("cpu")
+            pruned_mask = self.gumbel_softmax(selected,k,hard=True).to("cpu")
+            # pruned_mask = self.keep_topk(selected, 
+            #                              self.pruning_ratio,
+            #                              neuron_amount).to("cpu")
             task_binary_masks.append(pruned_mask)
 
             idx += neuron_amount
-
-        # print("task_binary_masks",task_binary_masks)
-
-
-        normalized_mask = self.sigmoid(mask_vector).to(self.device)
-        #print("normalized_mask",normalized_mask)
         
         converted_list = []
         for task in range(len(task_binary_masks[0])):
@@ -281,6 +303,6 @@ class MaskGeneratorNet(nn.Module):
             converted_list.append(inner_list)
         
         #print("converted_list",converted_list)
-        return [task_mask for task_mask in normalized_mask], converted_list
+        return converted_list
 
 

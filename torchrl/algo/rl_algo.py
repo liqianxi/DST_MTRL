@@ -82,11 +82,11 @@ class RLAlgo():
         # device specification
         self.device = device
 
-        self.mask_generator_optimizer = torch.optim.Adam([
-            {'params':self.policy_mask_generator.parameters()},
-            {'params':self.qf1_mask_generator.parameters()},
-            {'params':self.qf2_mask_generator.parameters()}
-        ], lr=generator_lr)
+        # self.mask_generator_optimizer = torch.optim.Adam([
+        #     {'params':self.policy_mask_generator.parameters()},
+        #     {'params':self.qf1_mask_generator.parameters()},
+        #     {'params':self.qf2_mask_generator.parameters()}
+        # ], lr=generator_lr)
 
 
         self.mask_buffer = mask_buffer
@@ -382,18 +382,18 @@ class RLAlgo():
 
                 name = str(each_task)
                 wandb.log({f"task_policy_mask_{name}":value},step=epoch)
-            #print("self.update_end_epoch",self.update_end_epoch)
-            if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval):
-                # update mask
-                print("start to update mask")
-                print(self.success_rate_dict)
-                self.update_masks(TASK_SAMPLE_NUM, task_amount, epoch)
+            # #print("self.update_end_epoch",self.update_end_epoch)
+            # if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval):
+            #     # update mask
+            #     print("start to update mask")
+            #     print(self.success_rate_dict)
+            #     self.update_masks(TASK_SAMPLE_NUM, task_amount, epoch)
 
-            if epoch >= self.update_end_epoch:
-                for net_type in ["Q1","Q2","Policy"]:
-                    for task_each_id in range(task_amount):
-                        self.final_mask[net_type][task_each_id] = copy.deepcopy(self.mask_buffer[net_type][task_each_id])
-                self.mask_buffer = self.final_mask
+            # if epoch >= self.update_end_epoch:
+            #     for net_type in ["Q1","Q2","Policy"]:
+            #         for task_each_id in range(task_amount):
+            #             self.final_mask[net_type][task_each_id] = copy.deepcopy(self.mask_buffer[net_type][task_each_id])
+            #     self.mask_buffer = self.final_mask
                 #print("new final mask buffer",self.mask_buffer)
 
             log_dict = {}
