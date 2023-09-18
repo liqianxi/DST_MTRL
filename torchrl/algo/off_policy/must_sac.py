@@ -14,6 +14,7 @@ class MUST_SAC(TwinSACQ):
     Support Different Temperature for different tasks
     """
     def __init__(self, task_nums,
+                 mask_update_itv,
                  temp_reweight=False,
                  grad_clip=True,
                  **kwargs):
@@ -21,6 +22,7 @@ class MUST_SAC(TwinSACQ):
         super().__init__(**kwargs)
 
         self.task_nums = task_nums
+        self.mask_update_itv = mask_update_itv
         if self.automatic_entropy_tuning:
             self.log_alpha = torch.zeros(self.task_nums).to(self.device)
             self.log_alpha.requires_grad_()
@@ -53,6 +55,41 @@ class MUST_SAC(TwinSACQ):
     #             mask_layers = single_mask
 
     #     return mask_layers
+
+    def clip_by_window(self,list_of_trajs,window_length):
+        if len(list_of_trajs) > window_length:
+            return list_of_trajs[-window_length:]
+        return list_of_trajs
+
+    def get_masks(self, sampled_task_amount,all_task_amount, current_epoch):
+        recent_window = self.recent_traj_window   
+        for t_id in range(all_task_amount):
+            self.state_trajectory[t_id] = self.clip_by_window(self.state_trajectory[t_id],recent_window)    
+
+        all_dict = {}
+        for each_net in ["Policy","Q1","Q2"]:      
+            task_traj_batch = self.sample_update_data(self.device)
+
+            task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(all_task_amount)]).to(self.device)
+
+            generator = self.policy_mask_generator
+            if each_net == "Q1":
+                generator = self.qf1_mask_generator
+            elif each_net == "Q2":
+                generator = self.qf2_mask_generator
+
+            batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
+
+            tmp_dict = {}
+            for each_task in range(sampled_task_amount):
+                tmp_dict[each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+
+            all_dict[each_net] = tmp_dict
+            #self.mask_buffer[each_net].update(tmp_dict)
+
+        return all_dict
+
+
     def concat_mask_tensors(self, sample_task_amount, specific_mask_buffer, task_batch_size, device):
         mask_layers = None
         for i in range(sample_task_amount):
@@ -110,7 +147,7 @@ class MUST_SAC(TwinSACQ):
         embedding_inputs = torch.Tensor(embedding_inputs).to(self.device)
         embedding_inputs = torch.cat([embedding_inputs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         time000 = time.time()
-
+        time1 = time.time()
         task_idx = batch['task_idxs']
         task_idx = torch.Tensor(task_idx).to( self.device ).long()
         task_idx = torch.cat([task_idx[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
@@ -128,7 +165,7 @@ class MUST_SAC(TwinSACQ):
 
         # (1280,xx)
         # 1*128
-        time1 = time.time()
+        
 
         #print("policy_device_masks.device",policy_device_masks[0].device)
         time2 = time.time()
@@ -299,74 +336,106 @@ class MUST_SAC(TwinSACQ):
 
         #all_info.append(info)
 
-        return info
+        return info, {"diff1":time2-time1,
+                      "diff2":time3-time2,
+                      "diff3":time4-time3,
+                      "diff4":time5-time4,
+                      "diff5":time6-time5,
+                      "diff6":time7-time6,
+                      "diff7":time8-time7,
+                      "diff8":time9-time8,
+                      "diff9":time10-time9}
 
-    def concat_task_masks(self,specific_mask_buffer,task_amount):
+    def concat_task_masks(self,specific_mask_buffer,task_amount,detach_mask=False):
         batch_list =[]
         for layer_amount in range(len(specific_mask_buffer[0])):
             layer_list = [specific_mask_buffer[i][layer_amount].unsqueeze(0) for i in range(task_amount)]
             #layer_list[0].shape torch.Size([40])
             #print("layer_list[0].shape",layer_list[0].shape)
             layer_tensor = torch.cat(layer_list,dim=0).unsqueeze(1).to(self.device)
-            batch_list.append(layer_tensor)
+            
             #print("layer_tensor shape",layer_tensor.shape)layer_tensor shape torch.Size([400, 1])
+
+            if detach_mask:
+                layer_tensor = layer_tensor.detach()
+
+            batch_list.append(layer_tensor)
 
         return batch_list
 
     def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer, epoch):
         time0 = time.time()
-        mask_buffer_copy = copy.deepcopy(mask_buffer)
+        
         #mask_buffer_copy = mask_buffer
 
         info = None
-        dict2 = {}
+        dict2 = {"diff1":0,
+                      "diff2":0,
+                      "diff3":0,
+                      "diff4":0,
+                      "diff5":0,
+                      "diff6":0,
+                      "diff7":0,
+                      "diff8":0,
+                      "diff9":0,
+                      "diff10":0,
+                      "diff11":0
+                      }
 
         each_task_batch_size, update_idxes = self.get_batch_size_and_idx(task_scheduler)
         
-        # policy_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
-        #                                               mask_buffer["Policy"], 
-        #                                               each_task_batch_size, self.device)                                     
+        mask_buffer_copy = copy.deepcopy(mask_buffer)
+        time_11 = time.time()
 
-        # q1_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
-        #                                               mask_buffer["Q1"], 
-        #                                               each_task_batch_size, self.device)
+        for opti_time in range(self.opt_times):
+            detach_mask = True
+            if opti_time % self.mask_update_itv  ==0:
+                time_before_mask = time.time()
+                mask_buffer_copy = self.get_masks(self.task_nums,self.task_nums, epoch)
+                time_before_mask_update = time.time()
+                #mask_buffer_copy.update(all_dict)
+                time_after_mask = time.time()
+                dict2["diff10"] += time_before_mask_update - time_before_mask
+                dict2["diff11"] += time_after_mask - time_before_mask_update
+                detach_mask=False
 
-        # q2_device_masks = self.concat_mask_tensors(task_scheduler.task_sample_num, 
-        #                                               mask_buffer["Q2"], 
-        #                                               each_task_batch_size, self.device)
+            policy_device_masks = self.concat_task_masks(mask_buffer_copy["Policy"],self.task_nums,detach_mask)
 
-        policy_device_masks = self.concat_task_masks(mask_buffer_copy["Policy"],self.task_nums)
-        time1 = time.time()
-        q1_device_masks = self.concat_task_masks(mask_buffer_copy["Q1"],self.task_nums)
-        time2 = time.time()
-        q2_device_masks = self.concat_task_masks(mask_buffer_copy["Q2"],self.task_nums)
-        timeafter = time.time()
-        for _ in range(self.opt_times):
+            q1_device_masks = self.concat_task_masks(mask_buffer_copy["Q1"],self.task_nums,detach_mask)
+
+            q2_device_masks = self.concat_task_masks(mask_buffer_copy["Q2"],self.task_nums,detach_mask)
+
             batch = self.replay_buffer.random_batch(self.batch_size,
                                                     self.sample_key,
                                                     self.task_nums,
                                                     task_sample_index=task_sample_index,
                                                     reshape=False)
             # Here, mask_buffer is all network types and all tasks.
-            info = self.update(batch, task_sample_index, task_scheduler, 
+            info, times = self.update(batch, task_sample_index, task_scheduler, 
                                          mask_buffer_copy,each_task_batch_size, update_idxes,
                                          policy_device_masks,q1_device_masks,q2_device_masks)
 
+            for key in times.keys():
+                dict2[key] += times[key]
 
-            
+
+
+
+
+
+
             self.logger.add_update_info(info)
-        time_final = time.time()
-        dict2["time0"] = time1 - time0
-        dict2["time1"] = time2 - time1
-        dict2["time2"] = timeafter - time2
-        dict2["time_final"] = time_final - timeafter
 
-        del policy_device_masks
-        del q1_device_masks
-        del q2_device_masks
-        #del mask_buffer_copy
+
+        time_12 = time.time()
+
+        # Avoid frequent access and write shared memory.
+        for each_net in ["Policy","Q1","Q2"]:  
+            mask_buffer[each_net].update(mask_buffer_copy[each_net])
+        #wandb.log(dict2,step=epoch)
+        dict2["diff_12"] = time_12-time_11
+
         wandb.log(info,step=epoch)
         wandb.log(dict2,step=epoch)
-
 
         # print(f'num_steps_can_sample: {self.replay_buffer.num_steps_can_sample()}')

@@ -85,11 +85,13 @@ def experiment(args):
 
     env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
     pruning_ratio = args.pruning_ratio
+    mask_update_interval = args.mask_update_interval
     params['sparse_training']["pruning_ratio"] = args.pruning_ratio
-    params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
-    params['general_setting']["success_traj_update_only"] = args.success_traj_update_only
+    #params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
+    params['general_setting']["mask_update_interval"] = args.mask_update_interval
+
     #print("args.success_traj_update_only",args.success_traj_update_only)
-    group_name = "0909_sweep"
+    group_name = "0916_sweep"
 
     #print("pruning_ratio",pruning_ratio)
 
@@ -302,6 +304,7 @@ def experiment(args):
         traj_collect_mod=traj_collect_mod,
         mask_buffer=all_mask_buffer,
         final_mask=final_mask,
+        mask_update_itv=mask_update_interval,
         **params['sac'],
         **params['general_setting']
     )

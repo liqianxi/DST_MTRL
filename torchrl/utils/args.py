@@ -12,7 +12,7 @@ def get_args():
     parser.add_argument('--success_traj_update_only', type=int, default=1,
                         help='If enabled, only the tasks with success trajs, and success rate < 0.66 will be updated')
 
-    parser.add_argument('--mask_update_interval', type=int, default=50,
+    parser.add_argument('--mask_update_interval', type=int, default=25,
                         help='mask update interval')
     
     parser.add_argument('--mask_end_update_episode', type=int, default=10000,
