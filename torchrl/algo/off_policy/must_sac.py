@@ -430,12 +430,13 @@ class MUST_SAC(TwinSACQ):
         time_12 = time.time()
 
         # Avoid frequent access and write shared memory.
+        
         for each_net in ["Policy","Q1","Q2"]:  
             mask_buffer[each_net].update(mask_buffer_copy[each_net])
         #wandb.log(dict2,step=epoch)
-        dict2["diff_12"] = time_12-time_11
+        #dict2["diff_12"] = time_12-time_11
 
         wandb.log(info,step=epoch)
-        wandb.log(dict2,step=epoch)
+        #wandb.log(dict2,step=epoch)
 
         # print(f'num_steps_can_sample: {self.replay_buffer.num_steps_can_sample()}')

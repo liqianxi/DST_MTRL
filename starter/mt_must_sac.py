@@ -91,7 +91,7 @@ def experiment(args):
     params['general_setting']["mask_update_interval"] = args.mask_update_interval
 
     #print("args.success_traj_update_only",args.success_traj_update_only)
-    group_name = "0916_sweep"
+    group_name = "0918_sweep_beluga"
 
     #print("pruning_ratio",pruning_ratio)
 
