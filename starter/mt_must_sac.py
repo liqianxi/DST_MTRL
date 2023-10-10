@@ -89,9 +89,12 @@ def experiment(args):
     params['sparse_training']["pruning_ratio"] = args.pruning_ratio
     #params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
     params['general_setting']["mask_update_interval"] = args.mask_update_interval
+    params["general_setting"]["sl_optim_times"] = args.sl_optim_times
+    params["general_setting"]["generator_lr"] = args.generator_lr
+    
 
     #print("args.success_traj_update_only",args.success_traj_update_only)
-    group_name = "0918_sweep_beluga"
+    group_name = args.wandb_group_name
 
     #print("pruning_ratio",pruning_ratio)
 
