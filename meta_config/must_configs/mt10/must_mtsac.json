@@ -30,7 +30,7 @@
         "num_epochs" : 10000,
         "epoch_frames" : 150,
         "max_episode_frames" : 150,
-        "generator_lr":1e-5,
+        "generator_lr":1e-4,
         "batch_size" : 1280,
         "min_pool" : 10000,
         "success_traj_update_only": true,
@@ -45,8 +45,8 @@
     },
     "sac":{
         
-        "plr" : 3e-4,
-        "qlr" : 3e-4,
+        "plr" : 1e-4,
+        "qlr" : 1e-4,
         
         "reparameterization": true,
         "automatic_entropy_tuning": true,

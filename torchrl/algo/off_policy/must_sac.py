@@ -78,7 +78,7 @@ class MUST_SAC(TwinSACQ):
             elif each_net == "Q2":
                 generator = self.qf2_mask_generator
 
-            batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
+            _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
 
             tmp_dict = {}
             for each_task in range(sampled_task_amount):
@@ -364,6 +364,10 @@ class MUST_SAC(TwinSACQ):
         return batch_list
 
     def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer, epoch):
+        detach_mask = True
+        if epoch % self.mask_update_itv == 0:
+            detach_mask = False
+     
         time0 = time.time()
         
         #mask_buffer_copy = mask_buffer
@@ -388,16 +392,16 @@ class MUST_SAC(TwinSACQ):
         time_11 = time.time()
 
         for opti_time in range(self.opt_times):
-            detach_mask = True
-            if opti_time % self.mask_update_itv  ==0:
-                time_before_mask = time.time()
+            
+            if epoch % self.mask_update_itv ==0:
+                #time_before_mask = time.time()
                 mask_buffer_copy = self.get_masks(self.task_nums,self.task_nums, epoch)
-                time_before_mask_update = time.time()
+                #time_before_mask_update = time.time()
                 #mask_buffer_copy.update(all_dict)
-                time_after_mask = time.time()
-                dict2["diff10"] += time_before_mask_update - time_before_mask
-                dict2["diff11"] += time_after_mask - time_before_mask_update
-                detach_mask=False
+                #time_after_mask = time.time()
+                # dict2["diff10"] += time_before_mask_update - time_before_mask
+                # dict2["diff11"] += time_after_mask - time_before_mask_update
+                
 
             policy_device_masks = self.concat_task_masks(mask_buffer_copy["Policy"],self.task_nums,detach_mask)
 
@@ -418,21 +422,15 @@ class MUST_SAC(TwinSACQ):
             for key in times.keys():
                 dict2[key] += times[key]
 
-
-
-
-
-
-
             self.logger.add_update_info(info)
 
 
         time_12 = time.time()
 
         # Avoid frequent access and write shared memory.
-        
-        for each_net in ["Policy","Q1","Q2"]:  
-            mask_buffer[each_net].update(mask_buffer_copy[each_net])
+        if epoch % self.mask_update_itv == 0:
+            for each_net in ["Policy","Q1","Q2"]:  
+                mask_buffer[each_net].update(mask_buffer_copy[each_net])
         #wandb.log(dict2,step=epoch)
         #dict2["diff_12"] = time_12-time_11
 

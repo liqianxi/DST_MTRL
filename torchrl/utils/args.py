@@ -5,14 +5,21 @@ import torch
 
 def get_args():
     parser = argparse.ArgumentParser(description='RL')
-
     parser.add_argument('--pruning_ratio', type=float, default=0.7,
                         help='prining ratio between 0 and 1.')
+    parser.add_argument('--generator_lr', type=float, default=1e-4,
+                        help='generator sl loss lr.')
+    
+    parser.add_argument('--wandb_group_name', type=str, default="default_group",
+                        help='wandb group name')
 
     parser.add_argument('--success_traj_update_only', type=int, default=1,
                         help='If enabled, only the tasks with success trajs, and success rate < 0.66 will be updated')
 
     parser.add_argument('--mask_update_interval', type=int, default=25,
+                        help='mask update interval')
+
+    parser.add_argument('--sl_optim_times', type=int, default=5,
                         help='mask update interval')
     
     parser.add_argument('--mask_end_update_episode', type=int, default=10000,

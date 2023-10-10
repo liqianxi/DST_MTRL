@@ -302,7 +302,6 @@ class MaskGeneratorNet(nn.Module):
                 inner_list.append(task_binary_masks[i][task])
             converted_list.append(inner_list)
         
-        #print("converted_list",converted_list)
-        return converted_list
+        return torch.cat(task_binary_masks,dim=1),converted_list
 
 

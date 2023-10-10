@@ -60,11 +60,13 @@ class RLAlgo():
                  generator_lr=1e-5,
                  recent_traj_window=20,
                  success_traj_update_only=True,
-                 final_mask=None
+                 final_mask=None,
+                 sl_optim_times=5
                  ):
 
         self.env = env
         self.final_mask=final_mask
+        self.sl_optim_times = sl_optim_times
         self.success_traj_update_only = success_traj_update_only
         #print("self.success_traj_update_only",self.success_traj_update_only)
         self.mask_update_interval = mask_update_interval
@@ -82,11 +84,11 @@ class RLAlgo():
         # device specification
         self.device = device
 
-        # self.mask_generator_optimizer = torch.optim.Adam([
-        #     {'params':self.policy_mask_generator.parameters()},
-        #     {'params':self.qf1_mask_generator.parameters()},
-        #     {'params':self.qf2_mask_generator.parameters()}
-        # ], lr=generator_lr)
+        self.mask_generator_optimizer = torch.optim.Adam([
+            {'params':self.policy_mask_generator.parameters()},
+            {'params':self.qf1_mask_generator.parameters()},
+            {'params':self.qf2_mask_generator.parameters()}
+        ], lr=generator_lr)
 
 
         self.mask_buffer = mask_buffer
@@ -227,9 +229,8 @@ class RLAlgo():
             return similarity_matrix.reshape(1,task_amount*task_amount)
 
     def compute_mask_similarity_matrix(self, mask_buffer, task_amount):
-        task_mask_list = mask_buffer
 
-        distances = self.euclidean_distance_matrix(task_mask_list)
+        distances = torch.cdist(mask_buffer,mask_buffer)
 
         similarities = torch.exp(-distances)
         max_value = torch.max(similarities)
@@ -264,7 +265,7 @@ class RLAlgo():
         return torch.stack(update_batch).float().to(device)
 
     
-    def update_masks(self, sampled_task_amount,all_task_amount, current_epoch):
+    def update_mask_generator(self, sampled_task_amount,all_task_amount, current_epoch):
         # First, update encoder
 
         recent_window = self.recent_traj_window   
@@ -279,7 +280,7 @@ class RLAlgo():
             batch_task_probs_masks, batch_task_binary_masks = None, None
             loss = None
 
-            for optim_time in range(5):
+            for optim_time in range(self.sl_optim_times):
                 task_traj_batch = self.sample_update_data(self.device)
                 #print("task_traj_batch",task_traj_batch.shape)task_traj_batch torch.Size([10, 19])
 
@@ -291,10 +292,11 @@ class RLAlgo():
                 elif each_net == "Q2":
                     generator = self.qf2_mask_generator
 
-                batch_task_probs_masks, batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
-
+                batch_complete_masks,_ = generator(task_traj_batch, task_onehot_batch)
                 # Calculate two losses.
-                mask_sim_mtx = self.compute_mask_similarity_matrix(batch_task_probs_masks, all_task_amount)
+                #print("batch_complete_masks",batch_complete_masks.shape)
+
+                mask_sim_mtx = self.compute_mask_similarity_matrix(batch_complete_masks.to(self.device), all_task_amount)
                 traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, task_traj_batch)
                 loss= self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
                 self.mask_generator_optimizer.zero_grad()
@@ -306,19 +308,19 @@ class RLAlgo():
 
             wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
             wandb.log({f"{each_net}_traj_sim_mtx":traj_sim_mtx},step=current_epoch)
-            tmp_dict = {}
-            for each_task in range(sampled_task_amount):
+            # tmp_dict = {}
+            # for each_task in range(sampled_task_amount):
                 
-                if self.success_traj_update_only:
-                    if self.traj_collect_mod[each_task] and not self.check_finish_update(self.success_rate_dict[each_task]):
-                        #self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
-                        tmp_dict[each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
-                else: 
-                    tmp_dict[each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+            #     if self.success_traj_update_only:
+            #         if self.traj_collect_mod[each_task] and not self.check_finish_update(self.success_rate_dict[each_task]):
+            #             #self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+            #             tmp_dict[each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+            #     else: 
+            #         tmp_dict[each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
 
                     #self.mask_buffer[each_net][each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
 
-            self.mask_buffer[each_net].update(tmp_dict)
+            #self.mask_buffer[each_net].update(tmp_dict)
             #print("loss1",loss1)
             #print("loss2",loss2)
             wandb.log({f"{each_net}_sim_loss":loss},step=current_epoch)
@@ -383,11 +385,10 @@ class RLAlgo():
                 name = str(each_task)
                 wandb.log({f"task_policy_mask_{name}":value},step=epoch)
             # #print("self.update_end_epoch",self.update_end_epoch)
-            # if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval):
-            #     # update mask
-            #     print("start to update mask")
-            #     print(self.success_rate_dict)
-            #     self.update_masks(TASK_SAMPLE_NUM, task_amount, epoch)
+            if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval):
+                # update mask
+                print("start to update mask")
+                self.update_mask_generator(TASK_SAMPLE_NUM, task_amount, epoch)
 
             # if epoch >= self.update_end_epoch:
             #     for net_type in ["Q1","Q2","Policy"]:
