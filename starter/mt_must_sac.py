@@ -91,6 +91,7 @@ def experiment(args):
     params['general_setting']["mask_update_interval"] = args.mask_update_interval
     params["general_setting"]["sl_optim_times"] = args.sl_optim_times
     params["general_setting"]["generator_lr"] = args.generator_lr
+    params["general_setting"]["use_trajectory_info"] = args.use_trajectory_info
     
 
     #print("args.success_traj_update_only",args.success_traj_update_only)
@@ -160,13 +161,16 @@ def experiment(args):
 
     # Initialize VAE model.
     encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
-                                         params['traj_encoder']["latent_size"], device=device).to(device)
+                                         params['traj_encoder']["latent_size"],
+                                          device=device).to(device)
 
     q1_encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
-                                         params['traj_encoder']["latent_size"], device=device).to(device)
+                                         params['traj_encoder']["latent_size"],
+                                          device=device).to(device)
 
     q2_encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
-                                         params['traj_encoder']["latent_size"], device=device).to(device)
+                                         params['traj_encoder']["latent_size"],
+                                          device=device).to(device)
 
     # Initialize Mask generators.
     # For Policy net, Q1, Q2, we need 3 mask generators.
@@ -181,7 +185,8 @@ def experiment(args):
         pruning_ratio=pruning_ratio,
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
-        trajectory_encoder=encoder)
+        trajectory_encoder=encoder,
+        use_trajectory_info=args.use_trajectory_info)
 
     qf1_mask_generator = networks.MaskGeneratorNet(
         em_input_shape=np.prod(example_embedding.shape),
@@ -190,7 +195,8 @@ def experiment(args):
         pruning_ratio=pruning_ratio,
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
-        trajectory_encoder=q1_encoder
+        trajectory_encoder=q1_encoder,
+        use_trajectory_info=args.use_trajectory_info
         )
     qf2_mask_generator = networks.MaskGeneratorNet(
         em_input_shape=np.prod(example_embedding.shape),
@@ -199,7 +205,8 @@ def experiment(args):
         pruning_ratio=pruning_ratio,
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
-        trajectory_encoder=q2_encoder)
+        trajectory_encoder=q2_encoder,
+        use_trajectory_info=args.use_trajectory_info)
     
     print("mask generator finish initialization")
 

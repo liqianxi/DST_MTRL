@@ -53,6 +53,7 @@ class RLAlgo():
                  mask_buffer=None,
                  mask_generators=None,
                  mask_update_interval=None,
+                 use_trajectory_info=1,
                  state_trajectory=None,
                  update_end_epoch=5000,
                  trajectory_encoder=None,
@@ -76,6 +77,7 @@ class RLAlgo():
         self.qf2_mask_generator = mask_generators["qf2_mask_generator"]
         self.recent_traj_window = recent_traj_window
         self.traj_collect_mod=traj_collect_mod
+        self.use_trajectory_info = use_trajectory_info
 
         self.continuous = isinstance(self.env.action_space, gym.spaces.Box)
         self.traj_encoder = trajectory_encoder
@@ -265,7 +267,7 @@ class RLAlgo():
         return torch.stack(update_batch).float().to(device)
 
     
-    def update_mask_generator(self, sampled_task_amount,all_task_amount, current_epoch):
+    def update_mask_generator(self, sampled_task_amount,all_task_amount, current_epoch,use_trajectory_info):
         # First, update encoder
 
         recent_window = self.recent_traj_window   
@@ -388,7 +390,7 @@ class RLAlgo():
             if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval):
                 # update mask
                 print("start to update mask")
-                self.update_mask_generator(TASK_SAMPLE_NUM, task_amount, epoch)
+                self.update_mask_generator(TASK_SAMPLE_NUM, task_amount, epoch,self.use_trajectory_info)
 
             # if epoch >= self.update_end_epoch:
             #     for net_type in ["Q1","Q2","Policy"]:
@@ -422,7 +424,7 @@ class RLAlgo():
                 train_start_time = time.time()
 
             torch.cuda.empty_cache()
-            self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch)
+            self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch,self.use_trajectory_info)
 
             train_time = time.time() - train_start_time
             print("train_time",train_time)

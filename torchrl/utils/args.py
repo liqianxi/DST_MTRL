@@ -9,6 +9,9 @@ def get_args():
                         help='prining ratio between 0 and 1.')
     parser.add_argument('--generator_lr', type=float, default=1e-4,
                         help='generator sl loss lr.')
+
+    parser.add_argument('--use_trajectory_info', type=int, default=1,
+                        help='if true, also uses trajectory info for generator')
     
     parser.add_argument('--wandb_group_name', type=str, default="default_group",
                         help='wandb group name')

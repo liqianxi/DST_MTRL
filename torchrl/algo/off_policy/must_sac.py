@@ -23,6 +23,7 @@ class MUST_SAC(TwinSACQ):
 
         self.task_nums = task_nums
         self.mask_update_itv = mask_update_itv
+
         if self.automatic_entropy_tuning:
             self.log_alpha = torch.zeros(self.task_nums).to(self.device)
             self.log_alpha.requires_grad_()
@@ -61,7 +62,7 @@ class MUST_SAC(TwinSACQ):
             return list_of_trajs[-window_length:]
         return list_of_trajs
 
-    def get_masks(self, sampled_task_amount,all_task_amount, current_epoch):
+    def get_masks(self, sampled_task_amount,all_task_amount, current_epoch,use_trajectory_info):
         recent_window = self.recent_traj_window   
         for t_id in range(all_task_amount):
             self.state_trajectory[t_id] = self.clip_by_window(self.state_trajectory[t_id],recent_window)    
@@ -363,7 +364,7 @@ class MUST_SAC(TwinSACQ):
 
         return batch_list
 
-    def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer, epoch):
+    def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer, epoch, use_trajectory_info):
         detach_mask = True
         if epoch % self.mask_update_itv == 0:
             detach_mask = False
@@ -395,7 +396,7 @@ class MUST_SAC(TwinSACQ):
             
             if epoch % self.mask_update_itv ==0:
                 #time_before_mask = time.time()
-                mask_buffer_copy = self.get_masks(self.task_nums,self.task_nums, epoch)
+                mask_buffer_copy = self.get_masks(self.task_nums,self.task_nums, epoch,use_trajectory_info)
                 #time_before_mask_update = time.time()
                 #mask_buffer_copy.update(all_dict)
                 #time_after_mask = time.time()
@@ -431,10 +432,5 @@ class MUST_SAC(TwinSACQ):
         if epoch % self.mask_update_itv == 0:
             for each_net in ["Policy","Q1","Q2"]:  
                 mask_buffer[each_net].update(mask_buffer_copy[each_net])
-        #wandb.log(dict2,step=epoch)
-        #dict2["diff_12"] = time_12-time_11
 
         wandb.log(info,step=epoch)
-        #wandb.log(dict2,step=epoch)
-
-        # print(f'num_steps_can_sample: {self.replay_buffer.num_steps_can_sample()}')

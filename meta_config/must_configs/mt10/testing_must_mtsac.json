@@ -39,7 +39,7 @@
         "tau" : 0.005,
         "opt_times" : 200,
         "update_end_epoch":1000,
-        "mask_update_interval": 25, 
+        "mask_update_interval": 5, 
         "eval_episodes" : 3,
         "recent_traj_window": 10
     },
