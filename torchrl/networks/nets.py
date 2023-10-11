@@ -160,6 +160,7 @@ class MaskGeneratorNet(nn.Module):
             info_dim,
             pruning_ratio,
             trajectory_encoder,
+            use_trajectory_info,
             device):
 
         super().__init__()
@@ -182,6 +183,7 @@ class MaskGeneratorNet(nn.Module):
 
         self.num_layers = num_layers
         self.layer_neurons = hidden_shapes
+        self.use_trajectory_info = use_trajectory_info
 
         # assert self.em_base.output_shape == self.base.output_shape, \
         #     "embedding should has the same dimension with base output for gated" 
@@ -190,14 +192,25 @@ class MaskGeneratorNet(nn.Module):
 
         result_all_neuron_amount = sum(self.layer_neurons)
         self.sigmoid = torch.nn.Sigmoid()
-       
-        self.generator_body = nn.Sequential(
-            nn.Linear(self.encode_dimension+self.one_hot_result_dim, 256),  
-            nn.ReLU(),  
-            nn.Linear(256, 512),
-            nn.ReLU(),                           
-            nn.Linear(512, result_all_neuron_amount)  
-        ).to(device)
+
+
+        if use_trajectory_info:
+
+            self.generator_body = nn.Sequential(
+                nn.Linear(self.encode_dimension+self.one_hot_result_dim, 256),  
+                nn.ReLU(),  
+                nn.Linear(256, 512),
+                nn.ReLU(),                           
+                nn.Linear(512, result_all_neuron_amount)  
+            ).to(device)
+        else:
+            self.generator_body = nn.Sequential(
+                nn.Linear(10, 256),  ##:
+                nn.ReLU(),  
+                nn.Linear(256, 512),
+                nn.ReLU(),                           
+                nn.Linear(512, result_all_neuron_amount)  
+            ).to(device)
 
         #print("self.generator_body",self.generator_body)
 
@@ -263,20 +276,20 @@ class MaskGeneratorNet(nn.Module):
         
         #print("traj_input",traj_input)
        
+        if self.use_trajectory_info:
+            traj_encodings = self.encoder.encode_lstm(x)
 
-        traj_encodings = self.encoder.encode_lstm(x)
-
-        # Task one hot embedding
-        embedding = self.mlp_layers(embedding_input).squeeze(1)
-        #print(embedding.shape)torch.Size([4, 1, 32])
-        # Element wise multi
-        #print("embedding",embedding.shape)
-        task_info_embedding = torch.cat([embedding, traj_encodings],dim=1)
+            # Task one hot embedding
+            embedding = self.mlp_layers(embedding_input).squeeze(1)
+            #print(embedding.shape)torch.Size([4, 1, 32])
+            # Element wise multi
+            #print("embedding",embedding.shape)
+            task_info_embedding = torch.cat([embedding, traj_encodings],dim=1)
         #print("task_info_embedding",task_info_embedding.shape)
+        else: 
+            task_info_embedding = embedding_input
 
-        mask_vector = self.generator_body(task_info_embedding) #mask_vector torch.Size([4, 20])
-
-        #print("mask_vector",mask_vector.shape)
+        mask_vector = self.generator_body(task_info_embedding)
 
         task_binary_masks = []
 
