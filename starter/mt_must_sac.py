@@ -57,19 +57,30 @@ torch.set_num_threads(CPU_NUM)
 
 def random_initialize_masks(network, pruning_ratio):
     neuron_mask_list = []
+    all = [i for i in network.base.fcs] + [network.last]
 
     #print("network",network)
-    for each_layer in network.base.fcs:
-        neurons = each_layer.bias.shape[0]
+    for each_layer in all:
+        weight_shape = each_layer.weight.shape
+        neurons = weight_shape[0]*weight_shape[1]
         #print("neurons",neurons)
         #print("ratio",pruning_ratio)
         neuron_mask = torch.zeros(neurons)
 
-        tmp = neurons - neurons * pruning_ratio
-        #print("tmp",tmp)
-        ones = int(tmp)
         #print("ones",ones)
-        idx = torch.randperm(neurons)[:ones]
+        idx = torch.randperm(neurons)[:int(neurons - neurons * pruning_ratio)]
+        neuron_mask[idx] = 1
+        neuron_mask_list.append(neuron_mask.reshape(weight_shape))
+
+        bias_shape = each_layer.bias.shape
+
+        neurons = bias_shape[0]
+        #print("neurons",neurons)
+        #print("ratio",pruning_ratio)
+        neuron_mask = torch.zeros(neurons)
+
+        #print("ones",ones)
+        idx = torch.randperm(neurons)[:int(neurons - neurons * pruning_ratio)]
         neuron_mask[idx] = 1
         neuron_mask_list.append(neuron_mask)
 
@@ -186,6 +197,8 @@ def experiment(args):
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
         trajectory_encoder=encoder,
+        main_input_dim=env.observation_space.shape[0],
+        main_out_dim=2 * env.action_space.shape[0],
         use_trajectory_info=args.use_trajectory_info)
 
     qf1_mask_generator = networks.MaskGeneratorNet(
@@ -196,6 +209,9 @@ def experiment(args):
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
         trajectory_encoder=q1_encoder,
+        main_input_dim=env.observation_space.shape[0] 
+                      + env.action_space.shape[0],
+        main_out_dim=1,
         use_trajectory_info=args.use_trajectory_info
         )
     qf2_mask_generator = networks.MaskGeneratorNet(
@@ -206,6 +222,9 @@ def experiment(args):
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
         trajectory_encoder=q2_encoder,
+        main_input_dim=env.observation_space.shape[0] 
+                      + env.action_space.shape[0],
+        main_out_dim=1,
         use_trajectory_info=args.use_trajectory_info)
     
     print("mask generator finish initialization")

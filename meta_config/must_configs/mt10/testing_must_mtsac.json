@@ -11,11 +11,11 @@
         "size": 1e6
     },
     "net":{ 
-        "hidden_shapes": [40,40]
+        "hidden_shapes": [40,40,40]
         
     },
     "task_embedding":{
-        "em_hidden_shapes":[20,20]
+        "em_hidden_shapes":[20,20,20]
     },
     "traj_encoder":{
         "latent_size": 256
