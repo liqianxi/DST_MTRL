@@ -1,1795 +1,0 @@
-W&B enabled.
-task start
-Use seed 4
-2023-09-16 13:10:47,222 MainThread INFO: Experiment Name:0909_bool1_pr0.5_end10000
-2023-09-16 13:10:47,222 MainThread INFO: {
-  "env_name": "mt10",
-  "env": {
-    "reward_scale": 1,
-    "obs_norm": false
-  },
-  "meta_env": {
-    "obs_type": "with_goal_and_id"
-  },
-  "replay_buffer": {
-    "size": 1000000.0
-  },
-  "net": {
-    "hidden_shapes": [
-      400,
-      400
-    ]
-  },
-  "task_embedding": {
-    "em_hidden_shapes": [
-      256,
-      128
-    ]
-  },
-  "traj_encoder": {
-    "latent_size": 256
-  },
-  "sparse_training": {
-    "pruning_ratio": 0.5
-  },
-  "general_setting": {
-    "discount": 0.99,
-    "pretrain_epochs": 20,
-    "num_epochs": 10000,
-    "epoch_frames": 150,
-    "max_episode_frames": 150,
-    "generator_lr": 1e-05,
-    "batch_size": 1280,
-    "min_pool": 10000,
-    "success_traj_update_only": 1,
-    "target_hard_update_period": 1000,
-    "use_soft_update": true,
-    "tau": 0.005,
-    "opt_times": 200,
-    "update_end_epoch": 10000,
-    "mask_update_interval": 25,
-    "eval_episodes": 3,
-    "recent_traj_window": 10
-  },
-  "sac": {
-    "plr": 0.0003,
-    "qlr": 0.0003,
-    "reparameterization": true,
-    "automatic_entropy_tuning": true,
-    "policy_std_reg_weight": 0,
-    "policy_mean_reg_weight": 0
-  }
-}
-finish policy net init
-mask generator finish initialization
-/scratch/qianxi/t3s/venv/lib/python3.8/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Could not seed environment <MTEnv instance>[0m
-  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
-wandb: Currently logged in as: liqianxi. Use `wandb login --relogin` to force relogin
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: | Waiting for wandb.init()...wandb: WARNING Serializing object of type str that is 885577 bytes
-wandb: wandb version 0.15.10 is available!  To upgrade, please run:
-wandb:  $ pip install wandb --upgrade
-wandb: Tracking run with wandb version 0.15.5
-wandb: Run data is saved locally in /scratch/qianxi/t3s/t3s_code/wandb/run-20230916_131141-7h9t991y
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run lively-night-437
-wandb: ⭐️ View project at https://wandb.ai/liqianxi/dst_mtrl
-wandb: 🚀 View run at https://wandb.ai/liqianxi/dst_mtrl/runs/7h9t991y
-replay_buffer._size: [302 300 300 302 302 302 302 300 300 300]
-2023-09-16 13:11:47,325 MainThread INFO: EPOCH:0
-2023-09-16 13:11:47,325 MainThread INFO: Time Consumed:0.04395484924316406s
-2023-09-16 13:11:47,326 MainThread INFO: Total Frames:1500s
---------------------------------  -----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                23834.99861
-Running_Training_Average_Rewards  2383.49986
-
-Name                              Mean         Std  Max  Min
---------------------------------  -----------  ---  ---  ---
-replay_buffer._size: [302 304 304 302 302 302 303 302 301 306]
-2023-09-16 13:11:47,363 MainThread INFO: EPOCH:1
-2023-09-16 13:11:47,364 MainThread INFO: Time Consumed:0.024127960205078125s
-2023-09-16 13:11:47,365 MainThread INFO: Total Frames:3000s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                3896.44393
-Running_Training_Average_Rewards  1386.57213
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [450 450 450 450 450 450 450 450 450 450]
-2023-09-16 13:11:48,569 MainThread INFO: EPOCH:2
-2023-09-16 13:11:48,570 MainThread INFO: Time Consumed:1.2004330158233643s
-2023-09-16 13:11:48,570 MainThread INFO: Total Frames:4500s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                7715.38309
-Running_Training_Average_Rewards  1181.56085
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [600 600 600 600 600 600 600 600 600 600]
-2023-09-16 13:11:49,943 MainThread INFO: EPOCH:3
-2023-09-16 13:11:49,944 MainThread INFO: Time Consumed:1.3719654083251953s
-2023-09-16 13:11:49,945 MainThread INFO: Total Frames:6000s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                7806.62565
-Running_Training_Average_Rewards  647.28176
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [750 750 750 750 750 750 750 750 750 750]
-2023-09-16 13:11:51,101 MainThread INFO: EPOCH:4
-2023-09-16 13:11:51,101 MainThread INFO: Time Consumed:1.1542656421661377s
-2023-09-16 13:11:51,102 MainThread INFO: Total Frames:7500s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                3738.01623
-Running_Training_Average_Rewards  642.00083
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [900 900 900 900 900 900 900 900 900 900]
-2023-09-16 13:11:52,138 MainThread INFO: EPOCH:5
-2023-09-16 13:11:52,138 MainThread INFO: Time Consumed:1.0331532955169678s
-2023-09-16 13:11:52,139 MainThread INFO: Total Frames:9000s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                4043.41906
-Running_Training_Average_Rewards  519.60203
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [1050 1050 1050 1050 1050 1050 1050 1050 1050 1050]
-2023-09-16 13:11:52,828 MainThread INFO: EPOCH:6
-2023-09-16 13:11:52,828 MainThread INFO: Time Consumed:0.6830909252166748s
-2023-09-16 13:11:52,829 MainThread INFO: Total Frames:10500s
---------------------------------  -----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                11143.91070
-Running_Training_Average_Rewards  630.84487
-
-Name                              Mean         Std  Max  Min
---------------------------------  -----------  ---  ---  ---
-replay_buffer._size: [1200 1200 1200 1200 1200 1200 1200 1200 1200 1200]
-2023-09-16 13:11:53,478 MainThread INFO: EPOCH:7
-2023-09-16 13:11:53,479 MainThread INFO: Time Consumed:0.6480724811553955s
-2023-09-16 13:11:53,479 MainThread INFO: Total Frames:12000s
---------------------------------  -----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                13103.87676
-Running_Training_Average_Rewards  943.04022
-
-Name                              Mean         Std  Max  Min
---------------------------------  -----------  ---  ---  ---
-replay_buffer._size: [1350 1350 1350 1350 1350 1350 1350 1350 1350 1350]
-2023-09-16 13:11:54,302 MainThread INFO: EPOCH:8
-2023-09-16 13:11:54,303 MainThread INFO: Time Consumed:0.8217852115631104s
-2023-09-16 13:11:54,303 MainThread INFO: Total Frames:13500s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                7629.81805
-Running_Training_Average_Rewards  1062.58685
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [1500 1500 1500 1500 1500 1500 1500 1500 1500 1500]
-2023-09-16 13:11:55,575 MainThread INFO: EPOCH:9
-2023-09-16 13:11:55,575 MainThread INFO: Time Consumed:1.2699289321899414s
-2023-09-16 13:11:55,575 MainThread INFO: Total Frames:15000s
---------------------------------  -----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                10112.38242
-Running_Training_Average_Rewards  1028.20257
-
-Name                              Mean         Std  Max  Min
---------------------------------  -----------  ---  ---  ---
-replay_buffer._size: [1650 1650 1650 1650 1650 1650 1650 1650 1650 1650]
-2023-09-16 13:11:56,848 MainThread INFO: EPOCH:10
-2023-09-16 13:11:56,848 MainThread INFO: Time Consumed:1.267939805984497s
-2023-09-16 13:11:56,848 MainThread INFO: Total Frames:16500s
---------------------------------  -----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                10074.32493
-Running_Training_Average_Rewards  927.21751
-
-Name                              Mean         Std  Max  Min
---------------------------------  -----------  ---  ---  ---
-replay_buffer._size: [1800 1800 1800 1800 1800 1800 1800 1800 1800 1800]
-2023-09-16 13:11:58,121 MainThread INFO: EPOCH:11
-2023-09-16 13:11:58,123 MainThread INFO: Time Consumed:1.271216869354248s
-2023-09-16 13:11:58,123 MainThread INFO: Total Frames:18000s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                4328.60028
-Running_Training_Average_Rewards  817.17692
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [1950 1950 1950 1950 1950 1950 1950 1950 1950 1950]
-2023-09-16 13:11:59,639 MainThread INFO: EPOCH:12
-2023-09-16 13:11:59,640 MainThread INFO: Time Consumed:1.5145971775054932s
-2023-09-16 13:11:59,640 MainThread INFO: Total Frames:19500s
---------------------------------  -----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                24808.29882
-Running_Training_Average_Rewards  1307.04080
-
-Name                              Mean         Std  Max  Min
---------------------------------  -----------  ---  ---  ---
-replay_buffer._size: [2100 2100 2100 2100 2100 2100 2100 2100 2100 2100]
-2023-09-16 13:12:00,295 MainThread INFO: EPOCH:13
-2023-09-16 13:12:00,295 MainThread INFO: Time Consumed:0.6514687538146973s
-2023-09-16 13:12:00,296 MainThread INFO: Total Frames:21000s
---------------------------------  -----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                25873.15979
-Running_Training_Average_Rewards  1833.66863
-
-Name                              Mean         Std  Max  Min
---------------------------------  -----------  ---  ---  ---
-replay_buffer._size: [2250 2250 2250 2250 2250 2250 2250 2250 2250 2250]
-2023-09-16 13:12:00,976 MainThread INFO: EPOCH:14
-2023-09-16 13:12:00,976 MainThread INFO: Time Consumed:0.6782200336456299s
-2023-09-16 13:12:00,976 MainThread INFO: Total Frames:22500s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                8480.61995
-Running_Training_Average_Rewards  1972.06929
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [2400 2400 2400 2400 2400 2400 2400 2400 2400 2400]
-2023-09-16 13:12:01,658 MainThread INFO: EPOCH:15
-2023-09-16 13:12:01,658 MainThread INFO: Time Consumed:0.6796755790710449s
-2023-09-16 13:12:01,659 MainThread INFO: Total Frames:24000s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                5386.06033
-Running_Training_Average_Rewards  1324.66134
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [2550 2550 2550 2550 2550 2550 2550 2550 2550 2550]
-2023-09-16 13:12:02,356 MainThread INFO: EPOCH:16
-2023-09-16 13:12:02,356 MainThread INFO: Time Consumed:0.6957545280456543s
-2023-09-16 13:12:02,357 MainThread INFO: Total Frames:25500s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                7925.92213
-Running_Training_Average_Rewards  726.42008
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [2700 2700 2700 2700 2700 2700 2700 2700 2700 2700]
-2023-09-16 13:12:03,048 MainThread INFO: EPOCH:17
-2023-09-16 13:12:03,049 MainThread INFO: Time Consumed:0.6897640228271484s
-2023-09-16 13:12:03,049 MainThread INFO: Total Frames:27000s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                9472.07046
-Running_Training_Average_Rewards  759.46843
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-replay_buffer._size: [2850 2850 2850 2850 2850 2850 2850 2850 2850 2850]
-2023-09-16 13:12:03,742 MainThread INFO: EPOCH:18
-2023-09-16 13:12:03,743 MainThread INFO: Time Consumed:0.6910712718963623s
-2023-09-16 13:12:03,743 MainThread INFO: Total Frames:28500s
---------------------------------  -----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                10598.74742
-Running_Training_Average_Rewards  933.22467
-
-Name                              Mean         Std  Max  Min
---------------------------------  -----------  ---  ---  ---
-replay_buffer._size: [3000 3000 3000 3000 3000 3000 3000 3000 3000 3000]
-2023-09-16 13:12:04,450 MainThread INFO: EPOCH:19
-2023-09-16 13:12:04,451 MainThread INFO: Time Consumed:0.7049682140350342s
-2023-09-16 13:12:04,451 MainThread INFO: Total Frames:30000s
---------------------------------  ----------  ---  ---  ---
-Name                              Value
-Train_Epoch_Reward                6844.53939
-Running_Training_Average_Rewards  897.17858
-
-Name                              Mean        Std  Max  Min
---------------------------------  ----------  ---  ---  ---
-2023-09-16 13:12:04,453 MainThread INFO: Finished Pretrain
-  0%|          | 0/10000 [00:00<?, ?it/s]sample: [9, 7, 6, 2, 0, 4, 1, 8, 3, 5]
-replay_buffer._size: [3150 3150 3150 3150 3150 3150 3150 3150 3150 3150]
-train_time 11.246678352355957
-snapshot at best
-2023-09-16 13:12:17,846 MainThread INFO: EPOCH:0
-2023-09-16 13:12:17,847 MainThread INFO: Time Consumed:13.291496276855469s
-2023-09-16 13:12:17,848 MainThread INFO: Total Frames:31500s
-/scratch/qianxi/t3s/t3s_code/./torchrl/algo/rl_algo.py:381: UserWarning: This overload of nonzero is deprecated:
-	nonzero()
-Consider using one of the following signatures instead:
-	nonzero(*, bool as_tuple) (Triggered internally at  /pytorch/torch/csrc/utils/python_arg_parser.cpp:882.)
-  value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
-  0%|          | 1/10000 [00:14<39:58:32, 14.39s/it]------------------------------------  -----------  ---------  ----------  ---------
-Name                                  Value
-Running_Average_Rewards               1185.71727
-Train_Epoch_Reward                    7829.51195
-Running_Training_Average_Rewards      842.42663
-Explore_Time                          0.64034
-Train___Time                          11.24668
-Eval____Time                          0.00475
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -51.92021
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -42.69658
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -17.72553
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -23.90183
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -20.17786
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -20.55079
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -20.86316
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 12108.66374
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -27.04650
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -26.60858
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean         Std        Max         Min
-Reward_Mean                           6.71285      0.55344    8.44986     5.27771
-alpha_0                               0.97043      0.01680    0.99970     0.94180
-alpha_1                               0.97044      0.01680    0.99970     0.94180
-alpha_2                               0.97043      0.01680    0.99970     0.94180
-alpha_3                               0.97044      0.01680    0.99970     0.94181
-alpha_4                               0.97044      0.01680    0.99970     0.94181
-alpha_5                               0.97044      0.01680    0.99970     0.94180
-alpha_6                               0.97044      0.01680    0.99970     0.94182
-alpha_7                               0.97043      0.01681    0.99970     0.94178
-alpha_8                               0.97045      0.01680    0.99970     0.94181
-alpha_9                               0.97043      0.01681    0.99970     0.94179
-Alpha_loss                            -0.20036     0.11577    -0.00000    -0.39850
-Training/policy_loss                  -7.45052     3.44053    -2.68438    -13.35134
-Training/qf1_loss                     761.25169    152.33273  1178.23425  441.56894
-Training/qf2_loss                     759.62690    152.53989  1177.00415  439.98752
-Training/pf_norm                      0.23586      0.08215    0.68418     0.13438
-Training/qf1_norm                     177.98231    80.46907   336.04370   30.71270
-Training/qf2_norm                     178.89397    80.94404   338.40829   30.47218
-log_std/mean                          -0.13199     0.02497    -0.00091    -0.17173
-log_std/std                           0.00848      0.00274    0.01704     0.00360
-log_std/max                           -0.11509     0.02331    0.00624     -0.15976
-log_std/min                           -0.15145     0.02818    -0.00738    -0.19063
-log_probs/mean                        -2.71751     0.01911    -2.66566    -2.74992
-log_probs/std                         0.29130      0.06280    0.43698     0.20116
-log_probs/max                         -1.91477     0.24665    -1.27525    -2.29803
-log_probs/min                         -4.98345     0.59951    -3.79158    -6.81153
-mean/mean                             0.03616      0.03809    0.12389     -0.00562
-mean/std                              0.04186      0.03124    0.09045     0.00177
-mean/max                              0.11155      0.09713    0.29894     0.00361
-mean/min                              -0.02458     0.01783    0.01444     -0.05740
-------------------------------------  -----------  ---------  ----------  ---------
-snapshot at 0
-history save at ./log/0909_bool1_pr0.5_end10000/mt10/4/model
-sample: [7, 6, 5, 9, 1, 8, 0, 3, 2, 4]
-replay_buffer._size: [3450 3450 3450 3450 3450 3450 3450 3450 3450 3450]
-train_time 10.640037059783936
-2023-09-16 13:12:29,537 MainThread INFO: EPOCH:1
-2023-09-16 13:12:29,537 MainThread INFO: Time Consumed:10.655295133590698s
-2023-09-16 13:12:29,538 MainThread INFO: Total Frames:33000s
-  0%|          | 2/10000 [00:25<34:05:27, 12.28s/it]------------------------------------  -----------  ---------  ---------  ---------
-Name                                  Value
-Running_Average_Rewards               1185.49914
-Train_Epoch_Reward                    8984.25400
-Running_Training_Average_Rewards      788.61018
-Explore_Time                          0.00640
-Train___Time                          10.64004
-Eval____Time                          0.00375
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -54.10155
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -42.69658
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -17.72553
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -23.90183
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -20.17786
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -20.55079
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -20.86316
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 12108.66374
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -27.04650
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -26.60858
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean         Std        Max        Min
-Reward_Mean                           6.39690      0.48248    7.82066    5.10342
-alpha_0                               0.91417      0.01574    0.94152    0.88725
-alpha_1                               0.91414      0.01574    0.94152    0.88723
-alpha_2                               0.91412      0.01576    0.94152    0.88718
-alpha_3                               0.91414      0.01576    0.94153    0.88720
-alpha_4                               0.91416      0.01575    0.94152    0.88721
-alpha_5                               0.91413      0.01575    0.94152    0.88718
-alpha_6                               0.91418      0.01575    0.94153    0.88724
-alpha_7                               0.91410      0.01576    0.94150    0.88716
-alpha_8                               0.91415      0.01576    0.94153    0.88720
-alpha_9                               0.91412      0.01575    0.94151    0.88720
-Alpha_loss                            -0.59771     0.11644    -0.40007   -0.79796
-Training/policy_loss                  -16.21282    1.55555    -13.40858  -18.92587
-Training/qf1_loss                     563.16114    118.68909  854.89691  287.43710
-Training/qf2_loss                     579.30479    115.63642  867.38818  299.44467
-Training/pf_norm                      0.24474      0.04232    0.40524    0.14042
-Training/qf1_norm                     274.22328    40.60516   409.82040  185.75337
-Training/qf2_norm                     277.24253    43.41047   407.13605  179.40031
-log_std/mean                          -0.13805     0.00612    -0.12281   -0.14875
-log_std/std                           0.01385      0.00289    0.02233    0.00726
-log_std/max                           -0.11178     0.00715    -0.09363   -0.12905
-log_std/min                           -0.17094     0.01222    -0.14277   -0.20976
-log_probs/mean                        -2.66627     0.02841    -2.60418   -2.72499
-log_probs/std                         0.43193      0.05948    0.53186    0.31604
-log_probs/max                         -1.38277     0.19901    -0.82033   -1.84809
-log_probs/min                         -5.14466     0.62540    -4.07655   -7.08710
-mean/mean                             0.11990      0.02549    0.17004    0.06701
-mean/std                              0.09862      0.02965    0.16113    0.04726
-mean/max                              0.30119      0.06869    0.43869    0.13248
-mean/min                              -0.02418     0.06855    0.06925    -0.18799
-------------------------------------  -----------  ---------  ---------  ---------
-sample: [0, 9, 7, 6, 2, 1, 4, 5, 8, 3]
-replay_buffer._size: [3600 3600 3600 3600 3600 3600 3600 3600 3600 3600]
-train_time 11.522149085998535
-2023-09-16 13:12:41,231 MainThread INFO: EPOCH:2
-2023-09-16 13:12:41,232 MainThread INFO: Time Consumed:11.553223609924316s
-2023-09-16 13:12:41,232 MainThread INFO: Total Frames:34500s
-  0%|          | 3/10000 [00:36<33:26:34, 12.04s/it]------------------------------------  ----------  ---------  ---------  ---------
-Name                                  Value
-Running_Average_Rewards               330.35781
-Train_Epoch_Reward                    6480.39182
-Running_Training_Average_Rewards      776.47193
-Explore_Time                          0.02020
-Train___Time                          11.52215
-Eval____Time                          0.00398
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -51.93612
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -26.96046
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -48.01450
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -33.69707
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -33.53369
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -43.45893
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -43.22485
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 3655.88172
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -18.91671
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -52.56135
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max        Min
-Reward_Mean                           6.44190     0.50415    8.03732    5.02653
-alpha_0                               0.86101     0.01492    0.88699    0.83557
-alpha_1                               0.86095     0.01494    0.88696    0.83548
-alpha_2                               0.86093     0.01493    0.88691    0.83547
-alpha_3                               0.86094     0.01493    0.88693    0.83548
-alpha_4                               0.86094     0.01493    0.88694    0.83547
-alpha_5                               0.86091     0.01494    0.88691    0.83544
-alpha_6                               0.86098     0.01493    0.88697    0.83552
-alpha_7                               0.86095     0.01490    0.88689    0.83552
-alpha_8                               0.86093     0.01493    0.88694    0.83548
-alpha_9                               0.86094     0.01493    0.88693    0.83549
-Alpha_loss                            -1.00150    0.11506    -0.80128   -1.19335
-Training/policy_loss                  -21.65658   1.81190    -17.87581  -25.22808
-Training/qf1_loss                     386.10477   112.16361  793.20929  137.41095
-Training/qf2_loss                     384.46855   110.99810  740.26953  138.10924
-Training/pf_norm                      0.30344     0.09927    0.72200    0.14424
-Training/qf1_norm                     259.36480   89.98839   477.92435  27.96897
-Training/qf2_norm                     256.26761   85.78130   495.20856  20.22587
-log_std/mean                          -0.12241    0.00971    -0.10074   -0.13887
-log_std/std                           0.01313     0.00292    0.02113    0.00731
-log_std/max                           -0.09678    0.01214    -0.06971   -0.11572
-log_std/min                           -0.15394    0.01450    -0.12683   -0.19947
-log_probs/mean                        -2.69659    0.02048    -2.63659   -2.73947
-log_probs/std                         0.36643     0.05044    0.49883    0.25154
-log_probs/max                         -1.53577    0.20488    -0.91529   -2.01775
-log_probs/min                         -5.02743    0.71001    -3.90248   -8.18638
-mean/mean                             0.03664     0.05699    0.11387    -0.07395
-mean/std                              0.09275     0.03146    0.16249    0.03024
-mean/max                              0.20677     0.06666    0.34626    0.07210
-mean/min                              -0.13731    0.10822    0.03707    -0.40540
-------------------------------------  ----------  ---------  ---------  ---------
-sample: [7, 2, 5, 4, 1, 8, 9, 0, 6, 3]
-replay_buffer._size: [3750 3750 3750 3750 3750 3750 3750 3750 3750 3750]
-train_time 11.47139024734497
-2023-09-16 13:12:52,986 MainThread INFO: EPOCH:3
-2023-09-16 13:12:52,986 MainThread INFO: Time Consumed:11.50678539276123s
-2023-09-16 13:12:52,987 MainThread INFO: Total Frames:36000s
-  0%|          | 4/10000 [00:48<33:01:12, 11.89s/it]------------------------------------  ----------  ---------  ---------  ---------
-Name                                  Value
-Running_Average_Rewards               510.75154
-Train_Epoch_Reward                    1578.01485
-Running_Training_Average_Rewards      568.08869
-Explore_Time                          0.02381
-Train___Time                          11.47139
-Eval____Time                          0.00461
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -49.52848
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -30.77993
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -36.46421
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -22.90712
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -31.40672
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -53.63516
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -36.22988
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 5423.35733
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -18.79783
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -36.09264
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max        Min
-Reward_Mean                           6.47511     0.52334    8.17062    5.42394
-alpha_0                               0.81101     0.01397    0.83532    0.78711
-alpha_1                               0.81083     0.01401    0.83523    0.78691
-alpha_2                               0.81081     0.01402    0.83522    0.78688
-alpha_3                               0.81086     0.01401    0.83523    0.78694
-alpha_4                               0.81082     0.01402    0.83522    0.78687
-alpha_5                               0.81077     0.01404    0.83519    0.78680
-alpha_6                               0.81085     0.01404    0.83527    0.78690
-alpha_7                               0.81093     0.01399    0.83527    0.78703
-alpha_8                               0.81081     0.01403    0.83523    0.78687
-alpha_9                               0.81091     0.01400    0.83524    0.78696
-Alpha_loss                            -1.39855    0.11609    -1.19422   -1.58556
-Training/policy_loss                  -27.36910   1.97174    -23.69279  -31.86181
-Training/qf1_loss                     319.35352   73.80684   539.07367  132.05400
-Training/qf2_loss                     320.27911   76.70328   537.89075  128.56662
-Training/pf_norm                      0.44894     0.15035    0.87986    0.15721
-Training/qf1_norm                     158.80286   106.82974  543.97729  15.68445
-Training/qf2_norm                     156.84125   107.95366  463.57974  23.13393
-log_std/mean                          -0.10747    0.01392    -0.07386   -0.13241
-log_std/std                           0.01784     0.00626    0.03616    0.00763
-log_std/max                           -0.07392    0.01404    -0.04069   -0.10467
-log_std/min                           -0.15249    0.03367    -0.10137   -0.26399
-log_probs/mean                        -2.67523    0.04176    -2.54292   -2.73394
-log_probs/std                         0.41844     0.08594    0.63761    0.30097
-log_probs/max                         -1.32786    0.30824    -0.54597   -1.80887
-log_probs/min                         -4.97937    0.64146    -3.89972   -8.12540
-mean/mean                             0.01601     0.06210    0.20009    -0.07823
-mean/std                              0.12176     0.04936    0.25006    0.05243
-mean/max                              0.25609     0.13784    0.69687    0.06279
-mean/min                              -0.18412    0.11922    -0.02525   -0.49236
-------------------------------------  ----------  ---------  ---------  ---------
-sample: [5, 2, 7, 4, 8, 9, 1, 3, 0, 6]
-replay_buffer._size: [3900 3900 3900 3900 3900 3900 3900 3900 3900 3900]
-train_time 11.583760023117065
-2023-09-16 13:13:04,722 MainThread INFO: EPOCH:4
-2023-09-16 13:13:04,723 MainThread INFO: Time Consumed:11.616310834884644s
-2023-09-16 13:13:04,723 MainThread INFO: Total Frames:37500s
-  0%|          | 5/10000 [01:00<32:58:38, 11.88s/it]------------------------------------  -----------  ---------  ---------  ---------
-Name                                  Value
-Running_Average_Rewards               427.94973
-Train_Epoch_Reward                    10783.20416
-Running_Training_Average_Rewards      628.05369
-Explore_Time                          0.01985
-Train___Time                          11.58376
-Eval____Time                          0.00531
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -74.64312
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -80.77228
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -43.75898
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -34.47530
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -58.95363
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -47.73555
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -34.35549
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 4746.04739
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -68.87961
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -22.97614
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean         Std        Max        Min
-Reward_Mean                           6.15758      0.51488    7.61181    4.85746
-alpha_0                               0.76394      0.01321    0.78688    0.74144
-alpha_1                               0.76361      0.01325    0.78668    0.74103
-alpha_2                               0.76363      0.01323    0.78665    0.74107
-alpha_3                               0.76367      0.01322    0.78670    0.74113
-alpha_4                               0.76363      0.01320    0.78663    0.74111
-alpha_5                               0.76354      0.01323    0.78657    0.74099
-alpha_6                               0.76366      0.01321    0.78666    0.74112
-alpha_7                               0.76376      0.01325    0.78680    0.74118
-alpha_8                               0.76362      0.01323    0.78663    0.74106
-alpha_9                               0.76369      0.01324    0.78673    0.74115
-Alpha_loss                            -1.80022     0.11242    -1.57747   -1.97513
-Training/policy_loss                  -32.17940    1.74115    -28.85190  -35.59736
-Training/qf1_loss                     298.83307    73.98116   489.07178  142.49287
-Training/qf2_loss                     299.81230    75.73407   491.89145  138.87407
-Training/pf_norm                      0.35018      0.09332    0.65259    0.17105
-Training/qf1_norm                     161.94747    105.14696  501.69760  30.78180
-Training/qf2_norm                     172.07490    112.18913  584.00537  20.00587
-log_std/mean                          -0.09833     0.01483    -0.07075   -0.12954
-log_std/std                           0.01832      0.00580    0.03442    0.00864
-log_std/max                           -0.06521     0.01161    -0.03739   -0.08545
-log_std/min                           -0.15103     0.03038    -0.10816   -0.22987
-log_probs/mean                        -2.68166     0.03852    -2.56422   -2.73229
-log_probs/std                         0.40872      0.08682    0.64724    0.29173
-log_probs/max                         -1.29257     0.33870    -0.37452   -1.88369
-log_probs/min                         -4.97564     0.68680    -3.86494   -8.06556
-mean/mean                             0.01508      0.03469    0.10961    -0.03444
-mean/std                              0.12045      0.05142    0.24492    0.05367
-mean/max                              0.28238      0.12204    0.57349    0.09718
-mean/min                              -0.20743     0.10123    -0.09551   -0.52325
-------------------------------------  -----------  ---------  ---------  ---------
-sample: [9, 8, 5, 3, 1, 6, 4, 2, 0, 7]
-replay_buffer._size: [4050 4050 4050 4050 4050 4050 4050 4050 4050 4050]
-train_time 11.431854486465454
-2023-09-16 13:13:16,467 MainThread INFO: EPOCH:5
-2023-09-16 13:13:16,468 MainThread INFO: Time Consumed:11.475220203399658s
-2023-09-16 13:13:16,468 MainThread INFO: Total Frames:39000s
-  0%|          | 6/10000 [01:12<32:46:33, 11.81s/it]------------------------------------  ----------  ---------  ---------  ---------
-Name                                  Value
-Running_Average_Rewards               40.90365
-Train_Epoch_Reward                    5499.78171
-Running_Training_Average_Rewards      595.36669
-Explore_Time                          0.03364
-Train___Time                          11.43185
-Eval____Time                          0.00452
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -73.34117
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -58.15296
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -12.97320
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -37.51635
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -30.39538
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -29.57038
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -28.60554
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 771.36634
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -45.76993
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -46.00495
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max        Min
-Reward_Mean                           6.01742     0.48099    7.72030    4.93975
-alpha_0                               0.72020     0.01189    0.74122    0.70027
-alpha_1                               0.71918     0.01244    0.74081    0.69797
-alpha_2                               0.71919     0.01244    0.74085    0.69798
-alpha_3                               0.71929     0.01242    0.74090    0.69813
-alpha_4                               0.71927     0.01242    0.74089    0.69811
-alpha_5                               0.71920     0.01239    0.74077    0.69804
-alpha_6                               0.71927     0.01242    0.74090    0.69809
-alpha_7                               0.71940     0.01239    0.74096    0.69823
-alpha_8                               0.71923     0.01241    0.74084    0.69805
-alpha_9                               0.71930     0.01244    0.74093    0.69808
-Alpha_loss                            -2.18157    0.10610    -1.98087   -2.38548
-Training/policy_loss                  -35.82401   2.27185    -31.65971  -40.13586
-Training/qf1_loss                     309.61056   76.26462   668.33459  178.39273
-Training/qf2_loss                     310.07237   76.56690   638.13495  176.99890
-Training/pf_norm                      0.45475     0.14676    0.82354    0.17635
-Training/qf1_norm                     194.34898   129.10358  591.44556  37.36546
-Training/qf2_norm                     197.52674   158.67377  844.16675  31.37505
-log_std/mean                          -0.08967    0.01605    -0.06152   -0.13492
-log_std/std                           0.03420     0.01168    0.06111    0.01612
-log_std/max                           -0.04789    0.01996    0.00287    -0.08507
-log_std/min                           -0.23043    0.06415    -0.12412   -0.38143
-log_probs/mean                        -2.62714    0.05899    -2.42022   -2.71748
-log_probs/std                         0.53027     0.11051    0.80813    0.33521
-log_probs/max                         -0.41902    0.76840    1.14172    -1.69916
-log_probs/min                         -5.20686    0.74197    -3.92377   -8.17439
-mean/mean                             0.08317     0.04426    0.21138    -0.01013
-mean/std                              0.15647     0.05867    0.29668    0.06976
-mean/max                              0.60114     0.18364    0.95399    0.26853
-mean/min                              -0.26781    0.20713    -0.03879   -0.94792
-------------------------------------  ----------  ---------  ---------  ---------
-sample: [0, 1, 5, 8, 6, 7, 3, 2, 9, 4]
-replay_buffer._size: [4200 4200 4200 4200 4200 4200 4200 4200 4200 4200]
-train_time 11.470737934112549
-2023-09-16 13:13:28,134 MainThread INFO: EPOCH:6
-2023-09-16 13:13:28,135 MainThread INFO: Time Consumed:11.485986232757568s
-2023-09-16 13:13:28,135 MainThread INFO: Total Frames:40500s
-  0%|          | 7/10000 [01:23<32:39:25, 11.76s/it]------------------------------------  ----------  ---------  ---------  ---------
-Name                                  Value
-Running_Average_Rewards               12.18029
-Train_Epoch_Reward                    1838.91011
-Running_Training_Average_Rewards      604.06320
-Explore_Time                          0.00552
-Train___Time                          11.47074
-Eval____Time                          0.00437
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -72.30489
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -53.77458
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -42.62836
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -58.64995
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -58.47598
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -54.57981
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -42.50574
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 608.23959
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -50.52456
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -52.99279
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max        Min
-Reward_Mean                           5.95099     0.47447    7.34831    4.72380
-alpha_0                               0.68191     0.01018    0.70008    0.66491
-alpha_1                               0.67741     0.01167    0.69776    0.65746
-alpha_2                               0.67740     0.01169    0.69778    0.65742
-alpha_3                               0.67753     0.01170    0.69792    0.65756
-alpha_4                               0.67751     0.01169    0.69790    0.65753
-alpha_5                               0.67745     0.01167    0.69783    0.65759
-alpha_6                               0.67750     0.01168    0.69788    0.65757
-alpha_7                               0.67768     0.01162    0.69802    0.65790
-alpha_8                               0.67753     0.01164    0.69785    0.65763
-alpha_9                               0.67748     0.01169    0.69787    0.65753
-Alpha_loss                            -2.54263    0.10002    -2.38842   -2.74013
-Training/policy_loss                  -39.29870   1.99974    -35.11208  -44.31852
-Training/qf1_loss                     302.32607   70.17636   499.15509  161.81755
-Training/qf2_loss                     296.15563   68.12601   495.56110  155.22450
-Training/pf_norm                      0.50348     0.15364    0.95356    0.24529
-Training/qf1_norm                     234.05801   168.22526  846.65594  41.23585
-Training/qf2_norm                     193.06896   134.70384  715.02087  35.27616
-log_std/mean                          -0.08887    0.01440    -0.06306   -0.12958
-log_std/std                           0.05539     0.01430    0.09772    0.02973
-log_std/max                           -0.03632    0.00772    -0.01983   -0.05409
-log_std/min                           -0.36276    0.07859    -0.20222   -0.57513
-log_probs/mean                        -2.54399    0.08635    -2.27865   -2.68922
-log_probs/std                         0.70906     0.17078    1.30106    0.42542
-log_probs/max                         0.95895     1.06232    4.38484    -1.01643
-log_probs/min                         -5.67630    0.80623    -4.17533   -7.85264
-mean/mean                             0.10833     0.06928    0.26178    -0.00832
-mean/std                              0.21844     0.04741    0.30354    0.12117
-mean/max                              1.01865     0.23864    1.54807    0.50592
-mean/min                              -0.21275    0.10606    -0.03662   -0.47784
-------------------------------------  ----------  ---------  ---------  ---------
-sample: [0, 7, 1, 9, 8, 4, 2, 6, 3, 5]
-replay_buffer._size: [4350 4350 4350 4350 4350 4350 4350 4350 4350 4350]
-train_time 11.332170248031616
-2023-09-16 13:13:39,674 MainThread INFO: EPOCH:7
-2023-09-16 13:13:39,675 MainThread INFO: Time Consumed:11.35088849067688s
-2023-09-16 13:13:39,676 MainThread INFO: Total Frames:42000s
-  0%|          | 8/10000 [01:35<32:26:09, 11.69s/it]------------------------------------  ----------  ---------  ---------  ---------
-Name                                  Value
-Running_Average_Rewards               549.31419
-Train_Epoch_Reward                    971.60553
-Running_Training_Average_Rewards      277.00991
-Explore_Time                          0.00902
-Train___Time                          11.33217
-Eval____Time                          0.00402
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -52.55156
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -29.61741
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -20.59178
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -25.09967
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -32.08540
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -57.69327
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -18.01859
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 5771.71531
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -23.46243
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -19.45329
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max        Min
-Reward_Mean                           5.74502     0.46951    6.81512    4.32282
-alpha_0                               0.64664     0.01025    0.66474    0.62992
-alpha_1                               0.63805     0.01100    0.65726    0.61930
-alpha_2                               0.63805     0.01098    0.65723    0.61936
-alpha_3                               0.63819     0.01098    0.65736    0.61947
-alpha_4                               0.63815     0.01101    0.65733    0.61939
-alpha_5                               0.63820     0.01102    0.65740    0.61945
-alpha_6                               0.63819     0.01100    0.65737    0.61953
-alpha_7                               0.63851     0.01100    0.65771    0.61995
-alpha_8                               0.63825     0.01095    0.65743    0.61968
-alpha_9                               0.63816     0.01098    0.65733    0.61951
-Alpha_loss                            -2.92237    0.08042    -2.71391   -3.08599
-Training/policy_loss                  -41.81267   2.03009    -37.00218  -44.85371
-Training/qf1_loss                     291.77446   65.25157   520.07520  138.43159
-Training/qf2_loss                     292.61884   65.33703   487.80557  127.95723
-Training/pf_norm                      0.53498     0.13449    0.84000    0.27967
-Training/qf1_norm                     231.44159   168.85093  950.95441  37.25410
-Training/qf2_norm                     259.92382   187.66009  917.22266  44.72669
-log_std/mean                          -0.09047    0.01155    -0.06807   -0.11548
-log_std/std                           0.05281     0.01840    0.09669    0.02382
-log_std/max                           -0.02870    0.01154    -0.00125   -0.05980
-log_std/min                           -0.34276    0.11231    -0.17458   -0.57541
-log_probs/mean                        -2.52872    0.10417    -2.25764   -2.67937
-log_probs/std                         0.71898     0.17783    1.15353    0.45797
-log_probs/max                         0.85339     1.03178    3.15398    -1.18080
-log_probs/min                         -5.65643    0.89494    -4.03827   -9.35605
-mean/mean                             -0.03007    0.05631    0.07949    -0.14494
-mean/std                              0.25228     0.06917    0.39451    0.12724
-mean/max                              1.00724     0.28711    1.59823    0.39917
-mean/min                              -0.58705    0.29260    -0.23182   -1.23381
-------------------------------------  ----------  ---------  ---------  ---------
-sample: [8, 7, 9, 0, 2, 5, 4, 3, 1, 6]
-replay_buffer._size: [4500 4500 4500 4500 4500 4500 4500 4500 4500 4500]
-train_time 11.69471549987793
-2023-09-16 13:13:51,551 MainThread INFO: EPOCH:8
-2023-09-16 13:13:51,552 MainThread INFO: Time Consumed:11.708818912506104s
-2023-09-16 13:13:51,552 MainThread INFO: Total Frames:43500s
-  0%|          | 9/10000 [01:47<32:36:08, 11.75s/it]------------------------------------  ----------  ---------  ----------  ---------
-Name                                  Value
-Running_Average_Rewards               173.88605
-Train_Epoch_Reward                    7481.94131
-Running_Training_Average_Rewards      343.08190
-Explore_Time                          0.00544
-Train___Time                          11.69472
-Eval____Time                          0.00363
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -56.30501
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -61.36562
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -60.41770
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -25.57277
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -44.25803
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -33.61930
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -18.67882
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 2110.97641
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -44.20108
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -27.69761
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max         Min
-Reward_Mean                           5.80765     0.49536    6.98096     4.47931
-alpha_0                               0.61242     0.01050    0.62978     0.59421
-alpha_1                               0.60111     0.01033    0.61911     0.58352
-alpha_2                               0.60117     0.01032    0.61918     0.58367
-alpha_3                               0.60125     0.01034    0.61928     0.58368
-alpha_4                               0.60114     0.01036    0.61921     0.58353
-alpha_5                               0.60120     0.01036    0.61927     0.58360
-alpha_6                               0.60129     0.01038    0.61935     0.58361
-alpha_7                               0.60164     0.01044    0.61976     0.58387
-alpha_8                               0.60149     0.01033    0.61950     0.58393
-alpha_9                               0.60125     0.01037    0.61933     0.58364
-Alpha_loss                            -3.32573    0.11621    -3.07336    -3.54036
-Training/policy_loss                  -45.24430   2.17345    -40.06776   -50.17553
-Training/qf1_loss                     364.34604   107.79504  664.08087   169.35739
-Training/qf2_loss                     368.77510   108.91927  640.69513   171.02290
-Training/pf_norm                      0.46810     0.17024    0.90217     0.16798
-Training/qf1_norm                     297.07711   208.86953  1014.45984  32.75381
-Training/qf2_norm                     330.69018   231.14652  1081.28320  44.66402
-log_std/mean                          -0.08292    0.01152    -0.05652    -0.10435
-log_std/std                           0.04353     0.00943    0.08132     0.03018
-log_std/max                           -0.02117    0.01816    0.03134     -0.04819
-log_std/min                           -0.30390    0.07260    -0.18771    -0.49734
-log_probs/mean                        -2.56169    0.06697    -2.36893    -2.66803
-log_probs/std                         0.66101     0.12091    0.99065     0.48955
-log_probs/max                         0.31857     0.95045    3.59849     -0.92268
-log_probs/min                         -5.34452    0.76495    -4.13342    -9.65227
-mean/mean                             -0.04963    0.07610    0.05110     -0.25750
-mean/std                              0.22519     0.04212    0.31854     0.16742
-mean/max                              0.76906     0.37162    1.56661     0.14096
-mean/min                              -0.63839    0.22074    -0.24198    -1.22350
-------------------------------------  ----------  ---------  ----------  ---------
-sample: [2, 5, 4, 1, 3, 9, 7, 6, 0, 8]
-replay_buffer._size: [4650 4650 4650 4650 4650 4650 4650 4650 4650 4650]
-train_time 10.686480522155762
-2023-09-16 13:14:02,543 MainThread INFO: EPOCH:9
-2023-09-16 13:14:02,544 MainThread INFO: Time Consumed:10.769840478897095s
-2023-09-16 13:14:02,544 MainThread INFO: Total Frames:45000s
-  0%|          | 10/10000 [01:58<31:57:05, 11.51s/it]------------------------------------  ----------  ---------  ----------  ---------
-Name                                  Value
-Running_Average_Rewards               941.74376
-Train_Epoch_Reward                    3151.90596
-Running_Training_Average_Rewards      386.84843
-Explore_Time                          0.07176
-Train___Time                          10.68648
-Eval____Time                          0.00417
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -51.10136
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -78.26978
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -51.26867
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -38.71240
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -47.14994
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -78.53077
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -37.05120
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 9860.82530
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -48.46073
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -12.84283
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max         Min
-Reward_Mean                           5.72681     0.54928    7.77948     4.04705
-alpha_0                               0.57631     0.00994    0.59402     0.55980
-alpha_1                               0.56638     0.00974    0.58334     0.54973
-alpha_2                               0.56649     0.00973    0.58349     0.54991
-alpha_3                               0.56652     0.00977    0.58351     0.54988
-alpha_4                               0.56646     0.00971    0.58336     0.54988
-alpha_5                               0.56647     0.00972    0.58342     0.54984
-alpha_6                               0.56652     0.00970    0.58344     0.54996
-alpha_7                               0.56678     0.00970    0.58370     0.55019
-alpha_8                               0.56681     0.00971    0.58376     0.55023
-alpha_9                               0.56655     0.00971    0.58346     0.54996
-Alpha_loss                            -3.70512    0.10620    -3.54394    -3.89170
-Training/policy_loss                  -48.68897   2.22018    -42.58393   -53.17222
-Training/qf1_loss                     374.17649   115.96063  812.20398   186.88652
-Training/qf2_loss                     379.74546   120.92384  781.27979   185.11168
-Training/pf_norm                      0.55177     0.17539    1.02814     0.24376
-Training/qf1_norm                     335.38762   220.75969  1166.29102  47.49253
-Training/qf2_norm                     393.74036   282.07326  1253.66016  47.87201
-log_std/mean                          -0.08120    0.01636    -0.04996    -0.11905
-log_std/std                           0.04934     0.02161    0.10289     0.02132
-log_std/max                           -0.01250    0.01448    0.04229     -0.03906
-log_std/min                           -0.31714    0.14303    -0.14889    -0.68106
-log_probs/mean                        -2.54224    0.10939    -2.21334    -2.70772
-log_probs/std                         0.67873     0.18396    1.19374     0.41732
-log_probs/max                         0.12614     1.12547    3.51690     -1.30799
-log_probs/min                         -5.43391    0.97128    -3.76492    -8.81062
-mean/mean                             -0.01821    0.09306    0.11021     -0.22801
-mean/std                              0.22697     0.07981    0.36607     0.09433
-mean/max                              0.61399     0.36282    1.58001     0.09184
-mean/min                              -0.60682    0.31411    -0.15726    -1.37398
-------------------------------------  ----------  ---------  ----------  ---------
-sample: [0, 1, 3, 2, 4, 5, 7, 9, 8, 6]
-replay_buffer._size: [4800 4800 4800 4800 4800 4800 4800 4800 4800 4800]
-train_time 11.851308584213257
-2023-09-16 13:14:14,604 MainThread INFO: EPOCH:10
-2023-09-16 13:14:14,605 MainThread INFO: Time Consumed:11.87951374053955s
-2023-09-16 13:14:14,606 MainThread INFO: Total Frames:46500s
-  0%|          | 11/10000 [02:10<32:25:37, 11.69s/it]------------------------------------  -----------  ---------  ----------  ---------
-Name                                  Value
-Running_Average_Rewards               148.73458
-Train_Epoch_Reward                    11395.97286
-Running_Training_Average_Rewards      734.32734
-Explore_Time                          0.01786
-Train___Time                          11.85131
-Eval____Time                          0.00431
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -66.64832
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -62.52021
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -29.66794
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -51.41690
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -25.50507
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -45.26124
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -38.55348
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 1894.54938
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -47.54955
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -40.08082
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean         Std        Max         Min
-Reward_Mean                           5.55881      0.51436    7.22317     4.28459
-alpha_0                               0.54415      0.00894    0.55967     0.52934
-alpha_1                               0.53362      0.00909    0.54956     0.51818
-alpha_2                               0.53372      0.00917    0.54975     0.51813
-alpha_3                               0.53372      0.00915    0.54971     0.51809
-alpha_4                               0.53366      0.00916    0.54972     0.51811
-alpha_5                               0.53366      0.00916    0.54968     0.51807
-alpha_6                               0.53373      0.00922    0.54980     0.51801
-alpha_7                               0.53397      0.00919    0.55003     0.51834
-alpha_8                               0.53404      0.00917    0.55007     0.51844
-alpha_9                               0.53384      0.00908    0.54979     0.51839
-Alpha_loss                            -4.06713     0.10551    -3.80141    -4.34137
-Training/policy_loss                  -50.18597    2.49074    -45.23209   -56.51484
-Training/qf1_loss                     373.78307    114.23624  782.64368   170.98997
-Training/qf2_loss                     365.31157    112.71630  777.63300   165.00816
-Training/pf_norm                      0.64835      0.20916    1.25625     0.28917
-Training/qf1_norm                     447.93046    298.77713  1455.59180  54.39449
-Training/qf2_norm                     347.15526    249.12267  1296.41968  49.19755
-log_std/mean                          -0.07897     0.02113    -0.03517    -0.13798
-log_std/std                           0.06074      0.02023    0.11657     0.03644
-log_std/max                           -0.00485     0.01799    0.04639     -0.04672
-log_std/min                           -0.38134     0.13405    -0.19617    -0.83388
-log_probs/mean                        -2.49937     0.13123    -2.07203    -2.67080
-log_probs/std                         0.75556      0.20063    1.45910     0.50218
-log_probs/max                         0.67642      1.16587    4.52134     -0.97297
-log_probs/min                         -5.58824     0.86761    -4.26220    -9.12896
-mean/mean                             -0.02318     0.06581    0.11133     -0.13876
-mean/std                              0.26589      0.08313    0.47629     0.15628
-mean/max                              0.65505      0.28707    1.45773     0.19443
-mean/min                              -0.95364     0.27865    -0.45400    -1.96276
-------------------------------------  -----------  ---------  ----------  ---------
-sample: [2, 9, 3, 5, 7, 4, 6, 8, 1, 0]
-replay_buffer._size: [4950 4950 4950 4950 4950 4950 4950 4950 4950 4950]
-train_time 10.869901657104492
-2023-09-16 13:14:25,716 MainThread INFO: EPOCH:11
-2023-09-16 13:14:25,717 MainThread INFO: Time Consumed:10.89527678489685s
-2023-09-16 13:14:25,717 MainThread INFO: Total Frames:48000s
-  0%|          | 12/10000 [02:21<31:58:21, 11.52s/it]------------------------------------  ----------  ---------  ----------  ---------
-Name                                  Value
-Running_Average_Rewards               48.14074
-Train_Epoch_Reward                    1445.19721
-Running_Training_Average_Rewards      533.10253
-Explore_Time                          0.00868
-Train___Time                          10.86990
-Eval____Time                          0.00390
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -38.20206
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -28.66236
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -27.12658
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -25.24850
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -43.39136
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -41.50325
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -28.98019
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 752.02514
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -16.55109
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -20.95230
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max         Min
-Reward_Mean                           5.34569     0.51433    6.95838     4.12997
-alpha_0                               0.51391     0.00873    0.52918     0.49891
-alpha_1                               0.50288     0.00866    0.51802     0.48811
-alpha_2                               0.50281     0.00868    0.51798     0.48799
-alpha_3                               0.50277     0.00869    0.51794     0.48791
-alpha_4                               0.50278     0.00870    0.51796     0.48795
-alpha_5                               0.50276     0.00868    0.51791     0.48797
-alpha_6                               0.50269     0.00867    0.51786     0.48793
-alpha_7                               0.50307     0.00863    0.51818     0.48833
-alpha_8                               0.50307     0.00871    0.51828     0.48824
-alpha_9                               0.50306     0.00869    0.51824     0.48821
-Alpha_loss                            -4.49246    0.10936    -4.31103    -4.74004
-Training/policy_loss                  -52.05620   2.07155    -46.54907   -56.05334
-Training/qf1_loss                     341.76148   104.84201  761.53143   156.84766
-Training/qf2_loss                     332.52827   105.23729  827.04102   157.01114
-Training/pf_norm                      0.59485     0.20197    1.28095     0.27045
-Training/qf1_norm                     435.58518   313.99597  1499.37183  51.36849
-Training/qf2_norm                     333.11362   268.62567  1385.95410  52.19275
-log_std/mean                          -0.08001    0.01299    -0.05147    -0.11455
-log_std/std                           0.05377     0.00967    0.07530     0.03058
-log_std/max                           -0.02068    0.01407    0.01518     -0.04707
-log_std/min                           -0.35859    0.05897    -0.17081    -0.49282
-log_probs/mean                        -2.55621    0.06019    -2.41516    -2.68620
-log_probs/std                         0.66317     0.10577    0.91355     0.44153
-log_probs/max                         0.21488     0.78813    2.57762     -1.18582
-log_probs/min                         -5.41786    0.67093    -4.31905    -7.89614
-mean/mean                             0.10397     0.08108    0.23365     -0.06496
-mean/std                              0.20525     0.03984    0.30639     0.11190
-mean/max                              0.74643     0.25992    1.21641     0.11520
-mean/min                              -0.46211    0.29772    -0.07299    -1.12955
-------------------------------------  ----------  ---------  ----------  ---------
-sample: [9, 4, 8, 0, 6, 2, 3, 1, 5, 7]
-replay_buffer._size: [5100 5100 5100 5100 5100 5100 5100 5100 5100 5100]
-train_time 11.076346158981323
-2023-09-16 13:14:37,050 MainThread INFO: EPOCH:12
-2023-09-16 13:14:37,051 MainThread INFO: Time Consumed:11.094756841659546s
-2023-09-16 13:14:37,051 MainThread INFO: Total Frames:49500s
-  0%|          | 13/10000 [02:32<31:43:56, 11.44s/it]------------------------------------  ----------  ---------  ----------  ---------
-Name                                  Value
-Running_Average_Rewards               38.80058
-Train_Epoch_Reward                    2276.80914
-Running_Training_Average_Rewards      503.93264
-Explore_Time                          0.00830
-Train___Time                          11.07635
-Eval____Time                          0.00466
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -69.91810
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -42.62062
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -27.82829
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -22.06351
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -26.59695
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -18.40640
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -21.77908
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 698.72860
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -40.17779
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -41.33209
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max         Min
-Reward_Mean                           5.35707     0.54495    7.02762     4.22656
-alpha_0                               0.48422     0.00811    0.49875     0.47113
-alpha_1                               0.47368     0.00824    0.48796     0.45963
-alpha_2                               0.47357     0.00822    0.48784     0.45956
-alpha_3                               0.47343     0.00824    0.48776     0.45938
-alpha_4                               0.47352     0.00823    0.48780     0.45947
-alpha_5                               0.47348     0.00823    0.48782     0.45951
-alpha_6                               0.47349     0.00824    0.48778     0.45944
-alpha_7                               0.47390     0.00821    0.48818     0.45997
-alpha_8                               0.47376     0.00826    0.48809     0.45971
-alpha_9                               0.47369     0.00827    0.48806     0.45963
-Alpha_loss                            -4.87835    0.09157    -4.68534    -5.02326
-Training/policy_loss                  -55.63403   2.08444    -50.51577   -60.68109
-Training/qf1_loss                     348.48464   114.09944  831.46301   151.79156
-Training/qf2_loss                     346.92908   112.59729  829.94354   146.58714
-Training/pf_norm                      0.61503     0.18624    1.04016     0.20150
-Training/qf1_norm                     371.77176   249.34538  1182.16345  63.05820
-Training/qf2_norm                     379.83553   251.82602  1231.15295  43.89963
-log_std/mean                          -0.08128    0.01771    -0.05195    -0.11853
-log_std/std                           0.06461     0.02058    0.10944     0.03465
-log_std/max                           -0.01097    0.01655    0.04184     -0.04632
-log_std/min                           -0.41206    0.14392    -0.23830    -0.73530
-log_probs/mean                        -2.54692    0.09249    -2.24782    -2.66415
-log_probs/std                         0.68764     0.16778    1.28258     0.47676
-log_probs/max                         0.45453     1.03768    4.25698     -0.99806
-log_probs/min                         -5.59760    0.93552    -4.14344    -10.58343
-mean/mean                             0.07453     0.06524    0.20591     -0.04285
-mean/std                              0.22488     0.04942    0.36570     0.14960
-mean/max                              1.05727     0.36519    2.07203     0.44323
-mean/min                              -0.35637    0.15263    -0.12728    -0.75383
-------------------------------------  ----------  ---------  ----------  ---------
-sample: [7, 9, 0, 6, 8, 1, 2, 4, 3, 5]
-replay_buffer._size: [5255 5258 5258 5255 5256 5261 5258 5258 5258 5258]
-train_time 11.42017936706543
-2023-09-16 13:14:48,717 MainThread INFO: EPOCH:13
-2023-09-16 13:14:48,718 MainThread INFO: Time Consumed:11.553091764450073s
-2023-09-16 13:14:48,718 MainThread INFO: Total Frames:51000s
-  0%|          | 14/10000 [02:44<31:58:51, 11.53s/it]------------------------------------  ----------  ---------  ----------  ---------
-Name                                  Value
-Running_Average_Rewards               180.22492
-Train_Epoch_Reward                    327.45071
-Running_Training_Average_Rewards      134.98190
-Explore_Time                          0.12485
-Train___Time                          11.42018
-Eval____Time                          0.00319
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -61.91778
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -54.10345
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -17.01828
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -45.59552
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -33.99100
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -70.55359
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -32.02150
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 2196.29934
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -47.23567
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -31.61332
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max         Min
-Reward_Mean                           5.35579     0.50956    6.80831     4.18495
-alpha_0                               0.45882     0.00687    0.47102     0.44718
-alpha_1                               0.44603     0.00776    0.45949     0.43279
-alpha_2                               0.44602     0.00774    0.45942     0.43282
-alpha_3                               0.44574     0.00776    0.45924     0.43250
-alpha_4                               0.44590     0.00774    0.45934     0.43270
-alpha_5                               0.44594     0.00774    0.45938     0.43273
-alpha_6                               0.44578     0.00777    0.45930     0.43255
-alpha_7                               0.44639     0.00772    0.45983     0.43319
-alpha_8                               0.44607     0.00777    0.45958     0.43280
-alpha_9                               0.44604     0.00774    0.45949     0.43283
-Alpha_loss                            -5.23621    0.11536    -4.93263    -5.49998
-Training/policy_loss                  -58.53410   1.91239    -54.51176   -63.40825
-Training/qf1_loss                     354.19069   96.60084   698.97504   155.55540
-Training/qf2_loss                     349.76786   95.83052   712.09906   158.06839
-Training/pf_norm                      0.57708     0.17900    1.10381     0.23460
-Training/qf1_norm                     439.05481   296.22758  1700.99805  75.09441
-Training/qf2_norm                     362.03739   269.52449  1666.79822  57.03410
-log_std/mean                          -0.07893    0.01601    -0.04594    -0.11847
-log_std/std                           0.07362     0.01927    0.10258     0.03174
-log_std/max                           -0.00887    0.02170    0.05075     -0.04432
-log_std/min                           -0.49416    0.15726    -0.19234    -0.74035
-log_probs/mean                        -2.50456    0.06639    -2.35574    -2.62624
-log_probs/std                         0.77808     0.12753    1.15036     0.54851
-log_probs/max                         1.17376     0.86874    3.32831     -0.28507
-log_probs/min                         -5.76967    0.89637    -4.02181    -9.40120
-mean/mean                             0.00838     0.08653    0.14347     -0.20030
-mean/std                              0.26111     0.05112    0.36682     0.14375
-mean/max                              1.40552     0.37424    1.95125     0.23391
-mean/min                              -0.53386    0.20754    -0.20063    -1.06295
-------------------------------------  ----------  ---------  ----------  ---------
-sample: [6, 9, 7, 2, 3, 5, 1, 4, 0, 8]
-replay_buffer._size: [5407 5404 5407 5407 5405 5407 5407 5404 5406 5406]
-train_time 10.950263261795044
-2023-09-16 13:15:00,031 MainThread INFO: EPOCH:14
-2023-09-16 13:15:00,033 MainThread INFO: Time Consumed:11.100761413574219s
-2023-09-16 13:15:00,033 MainThread INFO: Total Frames:52500s
-  0%|          | 15/10000 [02:55<31:45:01, 11.45s/it]------------------------------------  ----------  ---------  ----------  ---------
-Name                                  Value
-Running_Average_Rewards               553.27002
-Train_Epoch_Reward                    3662.01200
-Running_Training_Average_Rewards      208.87573
-Explore_Time                          0.13991
-Train___Time                          10.95026
-Eval____Time                          0.00499
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -62.85860
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -63.72558
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -58.60899
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -46.35199
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -53.39032
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -81.95303
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -59.13585
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 6055.30385
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -56.44769
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -40.13164
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max         Min
-Reward_Mean                           5.24796     0.56332    6.85368     3.94275
-alpha_0                               0.43408     0.00747    0.44705     0.42215
-alpha_1                               0.41998     0.00730    0.43266     0.40750
-alpha_2                               0.42004     0.00728    0.43269     0.40765
-alpha_3                               0.41978     0.00724    0.43238     0.40742
-alpha_4                               0.41992     0.00728    0.43257     0.40752
-alpha_5                               0.41992     0.00731    0.43260     0.40749
-alpha_6                               0.41979     0.00725    0.43242     0.40742
-alpha_7                               0.42041     0.00728    0.43306     0.40802
-alpha_8                               0.42002     0.00727    0.43267     0.40759
-alpha_9                               0.42004     0.00728    0.43270     0.40760
-Alpha_loss                            -5.63899    0.12509    -5.28843    -5.87173
-Training/policy_loss                  -62.16844   2.10687    -56.46693   -66.30579
-Training/qf1_loss                     347.77052   106.43677  794.03168   146.81276
-Training/qf2_loss                     351.48058   109.04936  788.03973   158.69243
-Training/pf_norm                      0.80158     0.27837    1.48519     0.29833
-Training/qf1_norm                     372.16627   242.41035  1399.88086  82.62124
-Training/qf2_norm                     442.13500   346.70596  1752.35498  49.40472
-log_std/mean                          -0.08030    0.02550    -0.04118    -0.14593
-log_std/std                           0.07480     0.02785    0.15531     0.03681
-log_std/max                           -0.00030    0.02702    0.07532     -0.04564
-log_std/min                           -0.41181    0.17705    -0.19149    -1.02602
-log_probs/mean                        -2.52313    0.11778    -2.15246    -2.67029
-log_probs/std                         0.73836     0.22192    1.40574     0.44587
-log_probs/max                         0.68406     1.26938    4.92755     -1.15007
-log_probs/min                         -5.58845    0.83988    -4.10677    -10.17416
-mean/mean                             0.02114     0.13201    0.30592     -0.22344
-mean/std                              0.22114     0.05453    0.37884     0.13424
-mean/max                              0.92393     0.35702    2.01398     0.21037
-mean/min                              -0.43944    0.28293    -0.02257    -1.24454
-------------------------------------  ----------  ---------  ----------  ---------
-sample: [4, 0, 9, 6, 5, 8, 2, 3, 7, 1]
-replay_buffer._size: [5550 5550 5550 5550 5550 5550 5550 5550 5550 5550]
-train_time 10.813599348068237
-2023-09-16 13:15:11,095 MainThread INFO: EPOCH:15
-2023-09-16 13:15:11,095 MainThread INFO: Time Consumed:10.928179025650024s
-2023-09-16 13:15:11,095 MainThread INFO: Total Frames:54000s
-  0%|          | 16/10000 [03:06<31:25:44, 11.33s/it]------------------------------------  ----------  ---------  ----------  ---------
-Name                                  Value
-Running_Average_Rewards               73.50770
-Train_Epoch_Reward                    8070.26692
-Running_Training_Average_Rewards      401.99099
-Explore_Time                          0.10360
-Train___Time                          10.81360
-Eval____Time                          0.00516
-button-press-topdown-v1_success_rate  0.00000
-button-press-topdown-v1_eval_rewards  -64.74384
-6                                     0.00000
-door-v1_success_rate                  0.00000
-door-v1_eval_rewards                  -51.76745
-3                                     0.00000
-drawer-close-v1_success_rate          0.00000
-drawer-close-v1_eval_rewards          -19.08582
-5                                     0.00000
-drawer-open-v1_success_rate           0.00000
-drawer-open-v1_eval_rewards           -50.57319
-4                                     0.00000
-ped-insert-side-v1_success_rate       0.00000
-ped-insert-side-v1_eval_rewards       -35.04490
-7                                     0.00000
-pick-place-v1_success_rate            0.00000
-pick-place-v1_eval_rewards            -85.22375
-2                                     0.00000
-push-v1_success_rate                  0.00000
-push-v1_eval_rewards                  -26.05399
-1                                     0.00000
-reach-v1_success_rate                 0.00000
-reach-v1_eval_rewards                 1148.79121
-0                                     0.00000
-window-close-v1_success_rate          0.00000
-window-close-v1_eval_rewards          -53.30701
-9                                     0.00000
-window-open-v1_success_rate           0.00000
-window-open-v1_eval_rewards           -27.91423
-8                                     0.00000
-mean_success_rate                     0.00000
-
-Name                                  Mean        Std        Max         Min
-Reward_Mean          wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635   0%|          | 22/10000 [11:38<383:49:15, 138.48s/it]Process Process-14:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-9:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-20:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-18:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-17:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-12:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-11:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-13:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-19:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-10:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-15:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-8:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-4:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-21:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-6:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/scratch/qianxi/t3s/t3s_code/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
-    shared_que.put({
-  File "<string>", line 2, in put
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
-    kind, result = conn.recv()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
-    buf = self._recv_bytes()
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-KeyboardInterrupt
-Process Process-16:
-Traceback (most recent call last):
-  File "/cvmfs/soft.computecanada.ca/easybuild/softwandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: - 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: \ 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: | 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)wandb: / 40.635 MB of 40.635 MB uploaded (0.000 MB deduped)
