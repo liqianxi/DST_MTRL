@@ -82,8 +82,13 @@ class MUST_SAC(TwinSACQ):
             _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
 
             tmp_dict = {}
-            for each_task in range(sampled_task_amount):
-                tmp_dict[each_task] = [i.clone().detach() for i in batch_task_binary_masks[each_task]]
+            for task in range(sampled_task_amount):
+                task_mask_list = []
+                for each_layer in range(len(batch_task_binary_masks)):
+                    single_msk = batch_task_binary_masks[each_layer][task]
+                    task_mask_list.append(single_msk)
+                tmp_dict[task] = task_mask_list
+                    #tmp_dict[each_task] = [i for i in batch_task_binary_masks[each_task]]
 
             all_dict[each_net] = tmp_dict
             #self.mask_buffer[each_net].update(tmp_dict)
