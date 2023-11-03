@@ -91,8 +91,9 @@ class MaskedNet(nn.Module):
         
         mask_out = x
         if enable_mask:
+            
             if len(neuron_masks[0].shape) > 2:
-
+                #print("x.shape",x.shape)x.shape torch.Size([1280, 19])
                 # for idx, layer in enumerate(self.base.fcs):
                 #     layer_weight = self.base.fcs[idx].weight # 400,19
                 #     layer_bias = self.base.fcs[idx].bias
@@ -101,16 +102,42 @@ class MaskedNet(nn.Module):
 
                 # out = torch.matmul(mask_out,self.last.weight.t() * neuron_masks[-2]+self.last.bias * neuron_masks[-1])
                 # batch way
+
+                """
+                neuron_masks[2*idx] torch.Size([10, 40, 19])
+                multi shape torch.Size([10, 40, 19])
+                mask_out shape torch.Size([1280, 19])   
+                """
+                
                 for idx, layer in enumerate(self.base.fcs):
-                    layer_weight = self.base.fcs[idx].weight
-                    layer_bias = self.base.fcs[idx].bias
-                    
-                    output = self.activation_func(torch.matmul(mask_out, (layer_weight*neuron_masks[2*idx]).t()) + layer_bias*neuron_masks[2*idx+1])##:
+                    mask_out = mask_out.reshape((10,128,mask_out.shape[-1]))
+                    layer_weight = self.base.fcs[idx].weight.unsqueeze(0) #  layer_weight torch.Size([1, 40, 19])
+                    layer_bias = self.base.fcs[idx].bias.unsqueeze(0) # layer_bias torch.Size([1, 40])
+
+                    weight_apply_mask = (layer_weight*neuron_masks[2*idx]).permute(0,2,1)#torch.Size([10, 19, 40])
+                    bias_apply_mask = (layer_bias*neuron_masks[2*idx+1])
+                    bias_apply_mask_batched = bias_apply_mask.unsqueeze(1).repeat(1, 128, 1)
+                    #print("bias_apply_mask",bias_apply_mask.shape) #torch.Size([10, 40])
+                    #net tmp shape torch.Size([10, 1, 40, 19])
+                    #print("multi shape",tmp.shape)
+                    #print("mask_out shape",mask_out.shape) #[10,128,19]
+                    tmp = torch.matmul(mask_out, weight_apply_mask)
+                    #print("tmp",tmp.shape)tmp torch.Size([10, 128, 40])
+                    output = self.activation_func(tmp + bias_apply_mask_batched)##:
+                    #print("output",output.shape)
                     mask_out = output.reshape((10,128,output.shape[-1]))
 
-                    mask_out = mask_out.reshape((x.shape[0],mask_out.shape[-1]))
+                    # mask_out = mask_out.reshape((x.shape[0],mask_out.shape[-1]))
 
-                out = torch.matmul(mask_out,(self.last.weight * neuron_masks[-2]).t())+self.last.bias * neuron_masks[-1]
+                last_weight_apply_mask = (self.last.weight * neuron_masks[-2]).permute(0,2,1)#torch.Size([10, 19, 40])
+                last_bias_apply_mask = self.last.bias * neuron_masks[-1]
+                last_bias_apply_mask_batched = last_bias_apply_mask.unsqueeze(1).repeat(1, 128, 1)
+                # print("last_bias_apply_mask_batched",last_bias_apply_mask_batched.shape)
+                # print("mask_out",mask_out.shape)
+
+                out = torch.matmul(mask_out,last_weight_apply_mask) + last_bias_apply_mask_batched
+                out = out.reshape(1280,out.shape[-1])
+                # print("out",out.shape)
 
             else: 
 
@@ -386,7 +413,7 @@ class MaskGeneratorNet(nn.Module):
         element_amount = self.main_input_dim*self.layer_neurons[0]
         weight = mask_vector[:,slice_index:slice_index+element_amount]
         k = int(element_amount - element_amount * self.pruning_ratio)
-        pruned_mask = self.gumbel_softmax(weight,k,hard=True).to("cpu")
+        pruned_mask = self.gumbel_softmax(weight,k,hard=True)
         task_binary_masks.append(pruned_mask.reshape((10, self.layer_neurons[0],self.main_input_dim)))
         slice_index += element_amount
 
@@ -394,7 +421,7 @@ class MaskGeneratorNet(nn.Module):
         element_amount = self.layer_neurons[0]
         biases = mask_vector[:,slice_index:slice_index+element_amount]
         k = int(element_amount - element_amount * self.pruning_ratio)
-        pruned_mask = self.gumbel_softmax(biases,k,hard=True).to("cpu")
+        pruned_mask = self.gumbel_softmax(biases,k,hard=True)
         task_binary_masks.append(pruned_mask.reshape((10,element_amount)))
         slice_index += element_amount
 
@@ -402,7 +429,7 @@ class MaskGeneratorNet(nn.Module):
         element_amount = self.layer_neurons[1]*self.layer_neurons[0]
         weight = mask_vector[:,slice_index:slice_index+element_amount]
         k = int(element_amount - element_amount * self.pruning_ratio)
-        pruned_mask = self.gumbel_softmax(weight,k,hard=True).to("cpu")
+        pruned_mask = self.gumbel_softmax(weight,k,hard=True)
         task_binary_masks.append(pruned_mask.reshape((10,self.layer_neurons[1], self.layer_neurons[0])))
         slice_index += element_amount
 
@@ -410,7 +437,7 @@ class MaskGeneratorNet(nn.Module):
         element_amount = self.layer_neurons[1]
         biases = mask_vector[:,slice_index:slice_index+element_amount]
         k = int(element_amount - element_amount * self.pruning_ratio)
-        pruned_mask = self.gumbel_softmax(biases,k,hard=True).to("cpu")
+        pruned_mask = self.gumbel_softmax(biases,k,hard=True)
         task_binary_masks.append(pruned_mask.reshape((10,element_amount)))
         slice_index += element_amount
 
@@ -418,7 +445,7 @@ class MaskGeneratorNet(nn.Module):
         element_amount = self.layer_neurons[2]*self.layer_neurons[1]
         weight = mask_vector[:,slice_index:slice_index+element_amount]
         k = int(element_amount - element_amount * self.pruning_ratio)
-        pruned_mask = self.gumbel_softmax(weight,k,hard=True).to("cpu")
+        pruned_mask = self.gumbel_softmax(weight,k,hard=True)
         task_binary_masks.append(pruned_mask.reshape((10,self.layer_neurons[2], self.layer_neurons[1])))
         slice_index += element_amount
 
@@ -429,7 +456,7 @@ class MaskGeneratorNet(nn.Module):
         # print(biases)
         # print(biases.shape)
         # print(k)
-        pruned_mask = self.gumbel_softmax(biases,k,hard=True).to("cpu")
+        pruned_mask = self.gumbel_softmax(biases,k,hard=True)
         task_binary_masks.append(pruned_mask.reshape((10,element_amount)))
         slice_index += element_amount
 
@@ -437,7 +464,7 @@ class MaskGeneratorNet(nn.Module):
         element_amount = self.layer_neurons[2] * self.main_out_dim
         biases = mask_vector[:,slice_index:slice_index+element_amount]
         k = int(element_amount - element_amount * self.pruning_ratio)
-        pruned_mask = self.gumbel_softmax(biases,k,hard=True).to("cpu")
+        pruned_mask = self.gumbel_softmax(biases,k,hard=True)
         task_binary_masks.append(pruned_mask.reshape((10,self.main_out_dim, self.layer_neurons[2])))
         slice_index += element_amount
 
@@ -449,7 +476,7 @@ class MaskGeneratorNet(nn.Module):
         biases = mask_vector[:,slice_index:slice_index+element_amount]
         k = int(element_amount - element_amount * self.pruning_ratio)
 
-        pruned_mask = self.gumbel_softmax(biases,k,hard=True).to("cpu")
+        pruned_mask = self.gumbel_softmax(biases,k,hard=True)
         task_binary_masks.append(pruned_mask.reshape((10,element_amount)))
         slice_index += element_amount
 
@@ -462,10 +489,10 @@ class MaskGeneratorNet(nn.Module):
         #     k = int(neuron_amount - neuron_amount * self.pruning_ratio)
             
         #     selected = mask_vector[:,idx:idx+neuron_amount]# all batch rows, selected columns(neurons).
-        #     pruned_mask = self.gumbel_softmax(selected,k,hard=True).to("cpu")
+        #     pruned_mask = self.gumbel_softmax(selected,k,hard=True)
         #     # pruned_mask = self.keep_topk(selected, 
         #     #                              self.pruning_ratio,
-        #     #                              neuron_amount).to("cpu")
+        #     #                              neuron_amount)
         #     task_binary_masks.append(pruned_mask.reshape((self.layer_neurons[layer_idx],self.layer_neurons[layer_idx])))
 
         #     idx += neuron_amount

@@ -9,6 +9,8 @@ def get_args():
                         help='prining ratio between 0 and 1.')
     parser.add_argument('--generator_lr', type=float, default=1e-4,
                         help='generator sl loss lr.')
+    parser.add_argument('--use_sl_loss', type=int, default=1,
+                        help='if 1, enable sl loss.')
 
     parser.add_argument('--use_trajectory_info', type=int, default=1,
                         help='if true, also uses trajectory info for generator')

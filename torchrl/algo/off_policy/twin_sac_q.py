@@ -162,6 +162,7 @@ class TwinSACQ(OffRLAlgo):
         """
 
         self.pf_optimizer.zero_grad()
+        policy_loss.register_hook(lambda grad: print(grad)) 
         policy_loss.backward()
         pf_norm = torch.nn.utils.clip_grad_norm_(self.pf.parameters(), 10)
         self.pf_optimizer.step()

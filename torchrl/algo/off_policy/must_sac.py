@@ -80,13 +80,25 @@ class MUST_SAC(TwinSACQ):
                 generator = self.qf2_mask_generator
 
             _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
-
+            #print("batch_task_binary_masks[0]",len(batch_task_binary_masks[0]))#
+            #print("batch_task_binary_masks[0]",batch_task_binary_masks[0].shape)#
             tmp_dict = {}
+            """
+            single_msk.shape torch.Size([40, 19])
+            single_msk.shape torch.Size([40])
+            single_msk.shape torch.Size([40, 40])
+            single_msk.shape torch.Size([40])
+            single_msk.shape torch.Size([40, 40])
+            single_msk.shape torch.Size([40])
+            single_msk.shape torch.Size([8, 40])
+            single_msk.shape torch.Size([8])
+            """
             for task in range(sampled_task_amount):
                 task_mask_list = []
-                for each_layer in range(len(batch_task_binary_masks)):
-                    single_msk = batch_task_binary_masks[each_layer][task]
+                for each_layer in range(len(batch_task_binary_masks[0])):
+                    single_msk = batch_task_binary_masks[task][each_layer]
                     task_mask_list.append(single_msk)
+
                 tmp_dict[task] = task_mask_list
                     #tmp_dict[each_task] = [i for i in batch_task_binary_masks[each_task]]
 
@@ -126,8 +138,10 @@ class MUST_SAC(TwinSACQ):
 
     def update(self, batch, task_sample_index, task_scheduler, mask_buffer,
                each_task_batch_size, update_idxes,
-               policy_device_masks,q1_device_masks,q2_device_masks
+               policy_device_masks,q1_device_masks,q2_device_masks, epoch
                ):
+
+
         self.training_update_num += 1
         time00 = time.time()
         obs = batch['obs']
@@ -207,7 +221,7 @@ class MUST_SAC(TwinSACQ):
                         (log_probs + self.target_entropy).detach()).mean()
             
             self.alpha_optimizer.zero_grad()
-            alpha_loss.backward()
+            alpha_loss.backward(retain_graph=True)
             self.alpha_optimizer.step()
             time5 = time.time()
 
@@ -278,23 +292,58 @@ class MUST_SAC(TwinSACQ):
         """
 
         self.pf_optimizer.zero_grad()
-        policy_loss.backward()
+        policy_loss.backward(retain_graph=True)
+
+        
+        # gradients_accumulated = False
+
+        # for param in self.policy_mask_generator.mlp_layers.parameters():
+        #     if param.grad is not None:
+        #         gradients_accumulated = True
+        #         break
+
+        # if gradients_accumulated:
+        #     #print("policy Gradients have been accumulated.")
+
+
+
+
+        # gradients_accumulated = False
+
+        # for param in self.qf1_mask_generator.mlp_layers.parameters():
+        #     if param.grad is not None:
+        #         gradients_accumulated = True
+        #         break
+
+        # if gradients_accumulated:
+        #     #print("q1 Gradients have been accumulated.")
+        #     assert 1==2
+      
+
+            
+
+
+
+
         if self.grad_clip:
             pf_norm = torch.nn.utils.clip_grad_norm_(self.pf.parameters(), 1)
+            torch.nn.utils.clip_grad_norm_(self.policy_mask_generator.generator_body.parameters(),1)
         self.pf_optimizer.step()
         self.pf.apply(rezero_weights)
 
         self.qf1_optimizer.zero_grad()
-        qf1_loss.backward()
+        qf1_loss.backward(retain_graph=True)
         if self.grad_clip:
             qf1_norm = torch.nn.utils.clip_grad_norm_(self.qf1.parameters(), 1)
+            torch.nn.utils.clip_grad_norm_(self.qf1_mask_generator.generator_body.parameters(),1)
         self.qf1_optimizer.step()
         self.qf1.apply(rezero_weights)
 
         self.qf2_optimizer.zero_grad()
-        qf2_loss.backward()
+        qf2_loss.backward(retain_graph=True)
         if self.grad_clip:
             qf2_norm = torch.nn.utils.clip_grad_norm_(self.qf2.parameters(), 1)
+            torch.nn.utils.clip_grad_norm_(self.qf2_mask_generator.generator_body.parameters(),1)
         self.qf2_optimizer.step()
         self.qf2.apply(rezero_weights)
 
@@ -354,13 +403,13 @@ class MUST_SAC(TwinSACQ):
 
     def concat_task_masks(self,specific_mask_buffer,task_amount,detach_mask=False):
         batch_list =[]
+
         for layer_amount in range(len(specific_mask_buffer[0])):
             layer_list = [specific_mask_buffer[i][layer_amount].unsqueeze(0) for i in range(task_amount)]
             #layer_list[0].shape torch.Size([40])
             #print("layer_list[0].shape",layer_list[0].shape)
-            layer_tensor = torch.cat(layer_list,dim=0).unsqueeze(1).to(self.device)
-            
-            #print("layer_tensor shape",layer_tensor.shape)layer_tensor shape torch.Size([400, 1])
+            layer_tensor = torch.cat(layer_list,dim=0).to(self.device)
+            #print("layer_tensor",layer_tensor.shape)
 
             if detach_mask:
                 layer_tensor = layer_tensor.detach()
@@ -408,7 +457,7 @@ class MUST_SAC(TwinSACQ):
                 # dict2["diff10"] += time_before_mask_update - time_before_mask
                 # dict2["diff11"] += time_after_mask - time_before_mask_update
                 
-
+            #print("mask_buffer_copy[Policy]",mask_buffer_copy["Policy"][0][0].device)
             policy_device_masks = self.concat_task_masks(mask_buffer_copy["Policy"],self.task_nums,detach_mask)
 
             q1_device_masks = self.concat_task_masks(mask_buffer_copy["Q1"],self.task_nums,detach_mask)
@@ -423,7 +472,7 @@ class MUST_SAC(TwinSACQ):
             # Here, mask_buffer is all network types and all tasks.
             info, times = self.update(batch, task_sample_index, task_scheduler, 
                                          mask_buffer_copy,each_task_batch_size, update_idxes,
-                                         policy_device_masks,q1_device_masks,q2_device_masks)
+                                         policy_device_masks,q1_device_masks,q2_device_masks, epoch)
 
             for key in times.keys():
                 dict2[key] += times[key]
@@ -436,6 +485,16 @@ class MUST_SAC(TwinSACQ):
         # Avoid frequent access and write shared memory.
         if epoch % self.mask_update_itv == 0:
             for each_net in ["Policy","Q1","Q2"]:  
-                mask_buffer[each_net].update(mask_buffer_copy[each_net])
+                local_mask_update_dict = {}
+                for i in range(self.task_nums):
+                    new_mask_list = [msk_tensor.detach().to("cpu") for msk_tensor in mask_buffer_copy[each_net][i]]
+                    local_mask_update_dict[i] = new_mask_list
+                mask_buffer[each_net].update(local_mask_update_dict)
+
+        gen_weight_change = torch.sum([param for param in self.policy_mask_generator.generator_body.parameters()][-1].data)
+        #print("gen_weight_change",gen_weight_change)
+        info["gen_weight_change"] = gen_weight_change
 
         wandb.log(info,step=epoch)
+
+        
