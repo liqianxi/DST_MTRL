@@ -26,7 +26,7 @@
     },
     "general_setting": {
         "discount" : 0.99,
-        "pretrain_epochs" : 0,
+        "pretrain_epochs" : 20,
         "num_epochs" : 1000,
         "epoch_frames" : 150,
         "max_episode_frames" : 150,
@@ -37,7 +37,7 @@
         "target_hard_update_period" : 1000,
         "use_soft_update" : true,
         "tau" : 0.005,
-        "opt_times" : 200,
+        "opt_times" : 5,
         "update_end_epoch":1000,
         "mask_update_interval": 5, 
         "eval_episodes" : 3,

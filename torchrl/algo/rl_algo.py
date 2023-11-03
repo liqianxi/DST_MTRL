@@ -54,6 +54,7 @@ class RLAlgo():
                  mask_generators=None,
                  mask_update_interval=None,
                  use_trajectory_info=1,
+                 use_sl_loss=1,
                  state_trajectory=None,
                  update_end_epoch=5000,
                  trajectory_encoder=None,
@@ -78,6 +79,7 @@ class RLAlgo():
         self.recent_traj_window = recent_traj_window
         self.traj_collect_mod=traj_collect_mod
         self.use_trajectory_info = use_trajectory_info
+        self.use_sl_loss = use_sl_loss 
 
         self.continuous = isinstance(self.env.action_space, gym.spaces.Box)
         self.traj_encoder = trajectory_encoder
@@ -231,8 +233,16 @@ class RLAlgo():
             return similarity_matrix.reshape(1,task_amount*task_amount)
 
     def compute_mask_similarity_matrix(self, mask_buffer, task_amount):
+        mask_buffer = [i.view(10,-1).to(self.device) for i in mask_buffer]
 
-        distances = torch.cdist(mask_buffer,mask_buffer)
+
+        # Concatenate the flattened tensors along dimension 0
+        concatenated_tensor = torch.cat(mask_buffer, dim=1)
+        #print("concatenated_tensor",concatenated_tensor.shape)torch.Size([10, 332008])
+        #time1=time.time()
+        distances = torch.cdist(concatenated_tensor,concatenated_tensor)
+        #time2=time.time()
+        #print("sim time",time2-time1)
 
         similarities = torch.exp(-distances)
         max_value = torch.max(similarities)
@@ -295,17 +305,23 @@ class RLAlgo():
                     generator = self.qf2_mask_generator
 
                 batch_complete_masks,_ = generator(task_traj_batch, task_onehot_batch)
+                #print("batch_complete_masks.device",batch_complete_masks[0].device)
                 # Calculate two losses.
                 #print("batch_complete_masks",batch_complete_masks.shape)
 
-                mask_sim_mtx = self.compute_mask_similarity_matrix(batch_complete_masks.to(self.device), all_task_amount)
+                mask_sim_mtx = self.compute_mask_similarity_matrix(batch_complete_masks, all_task_amount)
                 traj_sim_mtx = self.compute_policy_similarity_matrix(all_task_amount, task_traj_batch)
+                #print("mask_sim_mtx",mask_sim_mtx.device)
+                #print("traj_sim_mtx",traj_sim_mtx.device)
                 loss= self.compute_mask_loss(traj_sim_mtx, mask_sim_mtx)
                 self.mask_generator_optimizer.zero_grad()
             
                 norm = torch.nn.utils.clip_grad_norm_(generator.parameters(), 1)
                 # the mask generator network will be updated.
                 loss.backward()
+
+               
+                    
                 self.mask_generator_optimizer.step()
 
             wandb.log({f"{each_net}_mask_sim_mtx":mask_sim_mtx},step=current_epoch)
@@ -387,7 +403,7 @@ class RLAlgo():
                 name = str(each_task)
                 wandb.log({f"task_policy_mask_{name}":value},step=epoch)
             # #print("self.update_end_epoch",self.update_end_epoch)
-            if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval):
+            if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval) and self.use_sl_loss:
                 # update mask
                 print("start to update mask")
                 self.update_mask_generator(TASK_SAMPLE_NUM, task_amount, epoch,self.use_trajectory_info)

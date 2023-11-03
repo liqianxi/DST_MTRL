@@ -103,6 +103,7 @@ def experiment(args):
     params["general_setting"]["sl_optim_times"] = args.sl_optim_times
     params["general_setting"]["generator_lr"] = args.generator_lr
     params["general_setting"]["use_trajectory_info"] = args.use_trajectory_info
+    params["general_setting"]["use_sl_loss"] = args.use_sl_loss
     
 
     #print("args.success_traj_update_only",args.success_traj_update_only)
