@@ -1,0 +1,790 @@
+W&B offline. Running your script from this directory will only write metadata locally. Use wandb disabled to completely turn off W&B.
+task start
+Use seed 3
+2023-10-16 23:38:06,841 MainThread INFO: Experiment Name:0927_itv25_pr0.5_sllr1e-4
+2023-10-16 23:38:07,038 MainThread INFO: {
+  "env_name": "mt10",
+  "env": {
+    "reward_scale": 1,
+    "obs_norm": false
+  },
+  "meta_env": {
+    "obs_type": "with_goal_and_id"
+  },
+  "replay_buffer": {
+    "size": 1000000.0
+  },
+  "net": {
+    "hidden_shapes": [
+      400,
+      400,
+      400
+    ]
+  },
+  "task_embedding": {
+    "em_hidden_shapes": [
+      256,
+      128
+    ]
+  },
+  "traj_encoder": {
+    "latent_size": 256
+  },
+  "sparse_training": {
+    "pruning_ratio": 0.5
+  },
+  "general_setting": {
+    "discount": 0.99,
+    "pretrain_epochs": 20,
+    "num_epochs": 10000,
+    "epoch_frames": 150,
+    "max_episode_frames": 150,
+    "generator_lr": 0.0001,
+    "batch_size": 1280,
+    "min_pool": 10000,
+    "success_traj_update_only": true,
+    "target_hard_update_period": 1000,
+    "use_soft_update": true,
+    "tau": 0.005,
+    "opt_times": 200,
+    "update_end_epoch": 10000,
+    "mask_update_interval": 25,
+    "eval_episodes": 3,
+    "recent_traj_window": 10,
+    "sl_optim_times": 5,
+    "use_trajectory_info": 1
+  },
+  "sac": {
+    "plr": 0.0001,
+    "qlr": 0.0001,
+    "reparameterization": true,
+    "automatic_entropy_tuning": true,
+    "policy_std_reg_weight": 0,
+    "policy_mean_reg_weight": 0
+  }
+}
+finish policy net init
+mask generator finish initialization
+/lustre04/scratch/qianxi/sparse_training/sep_t3s/venv/lib/python3.8/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Could not seed environment <MTEnv instance>[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+wandb: Tracking run with wandb version 0.15.5
+wandb: W&B syncing is set to `offline` in this directory.  
+wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+replay_buffer._size: [300 300 300 300 300 300 300 300 300 300]
+2023-10-16 23:39:34,988 MainThread INFO: EPOCH:0
+2023-10-16 23:39:34,989 MainThread INFO: Time Consumed:0.029602766036987305s
+2023-10-16 23:39:34,989 MainThread INFO: Total Frames:1500s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                2281.48279
+Running_Training_Average_Rewards  228.14828
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [300 300 300 300 300 300 300 300 300 300]
+2023-10-16 23:39:35,014 MainThread INFO: EPOCH:1
+2023-10-16 23:39:35,015 MainThread INFO: Time Consumed:0.0058917999267578125s
+2023-10-16 23:39:35,015 MainThread INFO: Total Frames:3000s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                4734.48168
+Running_Training_Average_Rewards  350.79822
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [450 450 450 450 450 450 450 450 450 450]
+2023-10-16 23:39:35,805 MainThread INFO: EPOCH:2
+2023-10-16 23:39:35,805 MainThread INFO: Time Consumed:0.7887232303619385s
+2023-10-16 23:39:35,806 MainThread INFO: Total Frames:4500s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                1114.53481
+Running_Training_Average_Rewards  271.01664
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [600 600 600 600 600 600 600 600 600 600]
+2023-10-16 23:39:36,499 MainThread INFO: EPOCH:3
+2023-10-16 23:39:36,499 MainThread INFO: Time Consumed:0.6918473243713379s
+2023-10-16 23:39:36,500 MainThread INFO: Total Frames:6000s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                4553.67144
+Running_Training_Average_Rewards  346.75626
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [750 750 750 750 750 750 750 750 750 750]
+2023-10-16 23:39:37,247 MainThread INFO: EPOCH:4
+2023-10-16 23:39:37,248 MainThread INFO: Time Consumed:0.7463936805725098s
+2023-10-16 23:39:37,248 MainThread INFO: Total Frames:7500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                22860.59393
+Running_Training_Average_Rewards  950.96001
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [900 900 900 900 900 900 900 900 900 900]
+2023-10-16 23:39:38,202 MainThread INFO: EPOCH:5
+2023-10-16 23:39:38,202 MainThread INFO: Time Consumed:0.9521434307098389s
+2023-10-16 23:39:38,202 MainThread INFO: Total Frames:9000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                31823.79211
+Running_Training_Average_Rewards  1974.60192
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [1050 1050 1050 1050 1050 1050 1050 1050 1050 1050]
+2023-10-16 23:39:38,943 MainThread INFO: EPOCH:6
+2023-10-16 23:39:38,943 MainThread INFO: Time Consumed:0.7381856441497803s
+2023-10-16 23:39:38,944 MainThread INFO: Total Frames:10500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                47593.94008
+Running_Training_Average_Rewards  3409.27754
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [1200 1200 1200 1200 1200 1200 1200 1200 1200 1200]
+2023-10-16 23:39:39,714 MainThread INFO: EPOCH:7
+2023-10-16 23:39:39,714 MainThread INFO: Time Consumed:0.7691018581390381s
+2023-10-16 23:39:39,715 MainThread INFO: Total Frames:12000s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                5470.86227
+Running_Training_Average_Rewards  2829.61982
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1350 1350 1350 1350 1350 1350 1350 1350 1350 1350]
+2023-10-16 23:39:40,411 MainThread INFO: EPOCH:8
+2023-10-16 23:39:40,412 MainThread INFO: Time Consumed:0.6951858997344971s
+2023-10-16 23:39:40,412 MainThread INFO: Total Frames:13500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                11462.01161
+Running_Training_Average_Rewards  2150.89380
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [1500 1500 1500 1500 1500 1500 1500 1500 1500 1500]
+2023-10-16 23:39:41,090 MainThread INFO: EPOCH:9
+2023-10-16 23:39:41,091 MainThread INFO: Time Consumed:0.6767232418060303s
+2023-10-16 23:39:41,091 MainThread INFO: Total Frames:15000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                11867.24575
+Running_Training_Average_Rewards  960.00399
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [1650 1650 1650 1650 1650 1650 1650 1650 1650 1650]
+2023-10-16 23:39:41,675 MainThread INFO: EPOCH:10
+2023-10-16 23:39:41,676 MainThread INFO: Time Consumed:0.5828969478607178s
+2023-10-16 23:39:41,676 MainThread INFO: Total Frames:16500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                37186.38123
+Running_Training_Average_Rewards  2017.18795
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [1800 1800 1800 1800 1800 1800 1800 1800 1800 1800]
+2023-10-16 23:39:42,284 MainThread INFO: EPOCH:11
+2023-10-16 23:39:42,284 MainThread INFO: Time Consumed:0.6063916683197021s
+2023-10-16 23:39:42,284 MainThread INFO: Total Frames:18000s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                3376.56703
+Running_Training_Average_Rewards  1747.67313
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1950 1950 1950 1950 1950 1950 1950 1950 1950 1950]
+2023-10-16 23:39:42,898 MainThread INFO: EPOCH:12
+2023-10-16 23:39:42,899 MainThread INFO: Time Consumed:0.6122767925262451s
+2023-10-16 23:39:42,899 MainThread INFO: Total Frames:19500s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                9294.61214
+Running_Training_Average_Rewards  1661.91868
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [2100 2100 2100 2100 2100 2100 2100 2100 2100 2100]
+2023-10-16 23:39:43,587 MainThread INFO: EPOCH:13
+2023-10-16 23:39:43,588 MainThread INFO: Time Consumed:0.6871769428253174s
+2023-10-16 23:39:43,588 MainThread INFO: Total Frames:21000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                20919.21687
+Running_Training_Average_Rewards  1119.67987
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2250 2250 2250 2250 2250 2250 2250 2250 2250 2250]
+2023-10-16 23:39:44,266 MainThread INFO: EPOCH:14
+2023-10-16 23:39:44,266 MainThread INFO: Time Consumed:0.676077127456665s
+2023-10-16 23:39:44,266 MainThread INFO: Total Frames:22500s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                5875.39853
+Running_Training_Average_Rewards  1202.97425
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [2400 2400 2400 2400 2400 2400 2400 2400 2400 2400]
+2023-10-16 23:39:45,702 MainThread INFO: EPOCH:15
+2023-10-16 23:39:45,702 MainThread INFO: Time Consumed:1.4332761764526367s
+2023-10-16 23:39:45,703 MainThread INFO: Total Frames:24000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                15053.76380
+Running_Training_Average_Rewards  1394.94597
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2550 2550 2550 2550 2550 2550 2550 2550 2550 2550]
+2023-10-16 23:39:47,125 MainThread INFO: EPOCH:16
+2023-10-16 23:39:47,125 MainThread INFO: Time Consumed:1.4206008911132812s
+2023-10-16 23:39:47,125 MainThread INFO: Total Frames:25500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                20890.68201
+Running_Training_Average_Rewards  1393.99481
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2700 2700 2700 2700 2700 2700 2700 2700 2700 2700]
+2023-10-16 23:39:48,116 MainThread INFO: EPOCH:17
+2023-10-16 23:39:48,116 MainThread INFO: Time Consumed:0.9893417358398438s
+2023-10-16 23:39:48,117 MainThread INFO: Total Frames:27000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                39665.39064
+Running_Training_Average_Rewards  2520.32788
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2850 2850 2850 2850 2850 2850 2850 2850 2850 2850]
+2023-10-16 23:39:49,715 MainThread INFO: EPOCH:18
+2023-10-16 23:39:49,716 MainThread INFO: Time Consumed:1.5971620082855225s
+2023-10-16 23:39:49,716 MainThread INFO: Total Frames:28500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                25154.42471
+Running_Training_Average_Rewards  2857.01658
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [3000 3000 3000 3000 3000 3000 3000 3000 3000 3000]
+2023-10-16 23:39:50,708 MainThread INFO: EPOCH:19
+2023-10-16 23:39:50,709 MainThread INFO: Time Consumed:0.9907872676849365s
+2023-10-16 23:39:50,709 MainThread INFO: Total Frames:30000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                19694.22901
+Running_Training_Average_Rewards  2817.13481
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+2023-10-16 23:39:50,711 MainThread INFO: Finished Pretrain
+  0%|          | 0/10000 [00:00<?, ?it/s]/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/algo/rl_algo.py:385: UserWarning: This overload of nonzero is deprecated:
+	nonzero()
+Consider using one of the following signatures instead:
+	nonzero(*, bool as_tuple) (Triggered internally at  /pytorch/torch/csrc/utils/python_arg_parser.cpp:882.)
+  value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
+  0%|          | 0/10000 [00:01<?, ?it/s]
+sample: [8, 1, 5, 4, 0, 2, 6, 7, 3, 9]
+replay_buffer._size: [3150 3150 3150 3150 3150 3150 3150 3150 3150 3150]
+wandb: Waiting for W&B process to finish... (failed 1).
+wandb: 
+wandb: Run history:
+wandb:  save_traj_mod_sum ▁
+wandb: task_policy_mask_0 ▁
+wandb: task_policy_mask_1 ▁
+wandb: task_policy_mask_2 ▁
+wandb: task_policy_mask_3 ▁
+wandb: task_policy_mask_4 ▁
+wandb: task_policy_mask_5 ▁
+wandb: task_policy_mask_6 ▁
+wandb: task_policy_mask_7 ▁
+wandb: task_policy_mask_8 ▁
+wandb: task_policy_mask_9 ▁
+wandb: 
+wandb: Run summary:
+wandb:  save_traj_mod_sum 1
+wandb: task_policy_mask_0 785608
+wandb: task_policy_mask_1 787502
+wandb: task_policy_mask_2 798481
+wandb: task_policy_mask_3 789538
+wandb: task_policy_mask_4 787278
+wandb: task_policy_mask_5 797975
+wandb: task_policy_mask_6 794284
+wandb: task_policy_mask_7 782854
+wandb: task_policy_mask_8 789611
+wandb: task_policy_mask_9 795999
+wandb: 
+wandb: You can sync this run to the cloud by running:
+wandb: wandb sync /lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/wandb/offline-run-20231016_233930-gng0e3fv
+wandb: Find logs at: ./wandb/offline-run-20231016_233930-gng0e3fv/logs
+Process Process-10:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-19:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-21:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-2:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-12:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+first case
+[-0.03265199  0.51487863  0.23688568  0.          0.49999998  0.09
+  0.          0.7         0.04        0.          0.          0.
+  0.          0.          1.          0.          0.          0.
+  0.        ]
+Process Process-7:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-17:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-20:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-15:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-8:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-13:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-3:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-16:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-14:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-6:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-18:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-4:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-9:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-5:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-11:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Traceback (most recent call last):
+  File "starter/mt_must_sac.py", line 346, in <module>
+    experiment(args)
+  File "starter/mt_must_sac.py", line 341, in experiment
+    agent.train(env.num_tasks,params,group_name)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/algo/rl_algo.py", line 427, in train
+    self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch,self.use_trajectory_info)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/algo/off_policy/must_sac.py", line 409, in update_per_epoch
+    mask_buffer_copy = self.get_masks(self.task_nums,self.task_nums, epoch,use_trajectory_info)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/algo/off_policy/must_sac.py", line 88, in get_masks
+    single_msk = batch_task_binary_masks[each_layer][task]
+IndexError: list index out of range
+543 seconds elapsed.

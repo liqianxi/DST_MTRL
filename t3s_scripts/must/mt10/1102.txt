@@ -1,0 +1,868 @@
+W&B offline. Running your script from this directory will only write metadata locally. Use wandb disabled to completely turn off W&B.
+task start
+Use seed 3
+2023-11-02 22:24:42,032 MainThread INFO: Experiment Name:0927_itv3_pr0.5_sllr1e-4
+2023-11-02 22:24:42,033 MainThread INFO: {
+  "env_name": "mt10",
+  "env": {
+    "reward_scale": 1,
+    "obs_norm": false
+  },
+  "meta_env": {
+    "obs_type": "with_goal_and_id"
+  },
+  "replay_buffer": {
+    "size": 1000000.0
+  },
+  "net": {
+    "hidden_shapes": [
+      400,
+      400,
+      400
+    ]
+  },
+  "task_embedding": {
+    "em_hidden_shapes": [
+      256,
+      128
+    ]
+  },
+  "traj_encoder": {
+    "latent_size": 256
+  },
+  "sparse_training": {
+    "pruning_ratio": 0.5
+  },
+  "general_setting": {
+    "discount": 0.99,
+    "pretrain_epochs": 1,
+    "num_epochs": 10000,
+    "epoch_frames": 150,
+    "max_episode_frames": 150,
+    "generator_lr": 0.0001,
+    "batch_size": 1280,
+    "min_pool": 10000,
+    "success_traj_update_only": true,
+    "target_hard_update_period": 1000,
+    "use_soft_update": true,
+    "tau": 0.005,
+    "opt_times": 200,
+    "update_end_epoch": 10000,
+    "mask_update_interval": 3,
+    "eval_episodes": 3,
+    "recent_traj_window": 10,
+    "sl_optim_times": 5,
+    "use_trajectory_info": 1,
+    "use_sl_loss": 1
+  },
+  "sac": {
+    "plr": 0.0001,
+    "qlr": 0.0001,
+    "reparameterization": true,
+    "automatic_entropy_tuning": true,
+    "policy_std_reg_weight": 0,
+    "policy_mean_reg_weight": 0
+  }
+}
+finish policy net init
+mask generator finish initialization
+/lustre04/scratch/qianxi/sparse_training/sep_t3s/venv/lib/python3.8/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Could not seed environment <MTEnv instance>[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+wandb: Tracking run with wandb version 0.15.5
+wandb: W&B syncing is set to `offline` in this directory.  
+wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+replay_buffer._size: [300 300 300 300 300 300 300 300 300 300]
+2023-11-02 22:25:55,563 MainThread INFO: EPOCH:0
+2023-11-02 22:25:55,563 MainThread INFO: Time Consumed:0.01599264144897461s
+2023-11-02 22:25:55,563 MainThread INFO: Total Frames:1500s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                6410.35378
+Running_Training_Average_Rewards  641.03538
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+2023-11-02 22:25:55,567 MainThread INFO: Finished Pretrain
+  0%|          | 0/10000 [00:00<?, ?it/s]sample: [8, 1, 5, 4, 0, 2, 6, 7, 3, 9]
+replay_buffer._size: [329 331 336 333 327 334 329 333 397 326]
+train_time 103.52758407592773
+snapshot at best
+2023-11-02 22:27:41,043 MainThread INFO: EPOCH:0
+2023-11-02 22:27:41,145 MainThread INFO: Time Consumed:105.17795896530151s
+2023-11-02 22:27:41,146 MainThread INFO: Total Frames:3000s
+/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/algo/rl_algo.py:411: UserWarning: This overload of nonzero is deprecated:
+	nonzero()
+Consider using one of the following signatures instead:
+	nonzero(*, bool as_tuple) (Triggered internally at  /pytorch/torch/csrc/utils/python_arg_parser.cpp:882.)
+  value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
+  0%|          | 1/10000 [01:46<296:37:20, 106.79s/it]------------------------------------  -----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               1213.92168
+Train_Epoch_Reward                    9067.49605
+Running_Training_Average_Rewards      773.89249
+Explore_Time                          0.02938
+Train___Time                          103.52758
+Eval____Time                          0.00340
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -45.82073
+6                                     0.00000
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -42.79705
+3                                     0.00000
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.94001
+5                                     0.00000
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.50313
+4                                     0.00000
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -19.87396
+7                                     0.00000
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -20.87617
+2                                     0.00000
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -21.04220
+1                                     0.00000
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 12383.71443
+0                                     0.00000
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.55864
+9                                     0.00000
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.08571
+8                                     0.00000
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std        Max         Min
+Reward_Mean                           9.41582      0.54147    11.21492    8.16558
+alpha_0                               0.99000      0.00573    0.99990     0.98016
+alpha_1                               0.99000      0.00573    0.99990     0.98017
+alpha_2                               0.99000      0.00573    0.99990     0.98016
+alpha_3                               0.99000      0.00573    0.99990     0.98017
+alpha_4                               0.99000      0.00573    0.99990     0.98017
+alpha_5                               0.99000      0.00573    0.99990     0.98017
+alpha_6                               0.99000      0.00573    0.99990     0.98017
+alpha_7                               0.99000      0.00573    0.99990     0.98017
+alpha_8                               0.99000      0.00573    0.99990     0.98017
+alpha_9                               0.99000      0.00573    0.99990     0.98017
+Alpha_loss                            -0.06710     0.03896    -0.00000    -0.13433
+Training/policy_loss                  -4.20767     2.24117    -2.65995    -9.69631
+Training/qf1_loss                     1359.25056   150.25152  1845.97070  921.71094
+Training/qf2_loss                     1364.73550   148.91511  1851.75317  935.25775
+Training/pf_norm                      0.23388      0.06313    0.44771     0.13509
+Training/qf1_norm                     200.88663    224.22742  744.06244   20.67560
+Training/qf2_norm                     179.06287    203.77624  675.64716   20.15826
+log_std/mean                          -0.10868     0.04295    -0.00031    -0.14555
+log_std/std                           0.00781      0.00258    0.01258     0.00205
+log_std/max                           -0.09178     0.03773    0.00522     -0.12917
+log_std/min                           -0.12643     0.04804    -0.00612    -0.16889
+log_probs/mean                        -2.72618     0.01749    -2.65858    -2.74984
+log_probs/std                         0.27059      0.06220    0.44846     0.20842
+log_probs/max                         -1.98573     0.27746    -1.16843    -2.25006
+log_probs/min                         -4.91701     0.71264    -3.55255    -7.63807
+mean/mean                             0.00598      0.01419    0.05880     -0.00756
+mean/std                              0.00583      0.00196    0.01276     0.00254
+mean/max                              0.01786      0.01833    0.08814     0.00210
+mean/min                              -0.00555     0.01324    0.04543     -0.02588
+------------------------------------  -----------  ---------  ----------  ---------
+snapshot at 0
+history save at ./log/0927_itv3_pr0.5_sllr1e-4/mt10/3/model
+sample: [4, 1, 5, 6, 8, 2, 3, 9, 7, 0]
+replay_buffer._size: [600 600 600 600 600 600 600 600 600 600]
+train_time 18.680583477020264
+2023-11-02 22:28:01,117 MainThread INFO: EPOCH:1
+2023-11-02 22:28:01,118 MainThread INFO: Time Consumed:18.691952228546143s
+2023-11-02 22:28:01,118 MainThread INFO: Total Frames:4500s
+  0%|          | 2/10000 [02:05<152:56:21, 55.07s/it] ------------------------------------  -----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               1213.82649
+Train_Epoch_Reward                    26478.96541
+Running_Training_Average_Rewards      1398.56051
+Explore_Time                          0.00366
+Train___Time                          18.68058
+Eval____Time                          0.00328
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -46.77262
+6                                     0.00000
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -42.79705
+3                                     0.00000
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -17.94001
+5                                     0.00000
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -23.50313
+4                                     0.00000
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -19.87396
+7                                     0.00000
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -20.87617
+2                                     0.00000
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -21.04220
+1                                     0.00000
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 12383.71443
+0                                     0.00000
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -26.55864
+9                                     0.00000
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -26.08571
+8                                     0.00000
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std        Max         Min
+Reward_Mean                           8.92939      0.54193    10.73914    7.35244
+alpha_0                               0.97076      0.00519    0.98006     0.96222
+alpha_1                               0.97045      0.00555    0.98007     0.96091
+alpha_2                               0.97047      0.00552    0.98006     0.96100
+alpha_3                               0.97043      0.00556    0.98007     0.96088
+alpha_4                               0.97043      0.00557    0.98007     0.96085
+alpha_5                               0.97041      0.00558    0.98007     0.96082
+alpha_6                               0.97040      0.00559    0.98007     0.96079
+alpha_7                               0.97039      0.00560    0.98007     0.96078
+alpha_8                               0.97040      0.00559    0.98007     0.96079
+alpha_9                               0.97039      0.00560    0.98007     0.96078
+Alpha_loss                            -0.19768     0.03595    -0.13469    -0.26088
+Training/policy_loss                  -18.93613    4.35073    -9.42975    -22.76979
+Training/qf1_loss                     650.78112    240.59219  1312.30884  229.38841
+Training/qf2_loss                     693.73764    233.03889  1330.81335  270.83920
+Training/pf_norm                      0.26618      0.05037    0.40784     0.15935
+Training/qf1_norm                     502.71805    223.06443  939.51581   66.59704
+Training/qf2_norm                     451.56603    147.36140  943.51587   113.68329
+log_std/mean                          -0.12977     0.00431    -0.11665    -0.13666
+log_std/std                           0.02921      0.01562    0.05404     0.00873
+log_std/max                           -0.10135     0.00597    -0.09029    -0.11226
+log_std/min                           -0.25093     0.08331    -0.14580    -0.37996
+log_probs/mean                        -2.62023     0.06795    -2.51494    -2.74150
+log_probs/std                         0.54058      0.15923    0.76572     0.26720
+log_probs/max                         -0.11572     1.18510    1.67426     -1.94782
+log_probs/min                         -5.40537     0.81612    -3.93811    -9.94140
+mean/mean                             0.13714      0.03532    0.18950     0.05985
+mean/std                              0.12668      0.07525    0.22072     0.00967
+mean/max                              0.62001      0.35277    1.03954     0.08328
+mean/min                              0.02140      0.03108    0.05760     -0.02903
+------------------------------------  -----------  ---------  ----------  ---------
+sample: [7, 5, 3, 8, 1, 0, 4, 6, 2, 9]
+replay_buffer._size: [750 750 750 750 750 750 750 750 750 750]
+train_time 19.79270362854004
+snapshot at best
+2023-11-02 22:28:22,437 MainThread INFO: EPOCH:2
+2023-11-02 22:28:22,437 MainThread INFO: Time Consumed:21.11286163330078s
+2023-11-02 22:28:22,438 MainThread INFO: Total Frames:6000s
+  0%|          | 3/10000 [02:26<110:08:31, 39.66s/it]  0%|          | 3/10000 [02:27<136:41:20, 49.22s/it]
+------------------------------------  -----------  ---------  ----------  ---------
+Name                                  Value
+Running_Average_Rewards               1526.18733
+Train_Epoch_Reward                    14393.24359
+Running_Training_Average_Rewards      1664.65683
+Explore_Time                          0.03671
+Train___Time                          19.79270
+Eval____Time                          0.00301
+button-press-topdown-v1_success_rate  0.00000
+button-press-topdown-v1_eval_rewards  -40.59806
+6                                     0.00000
+door-v1_success_rate                  0.00000
+door-v1_eval_rewards                  -32.94943
+3                                     0.00000
+drawer-close-v1_success_rate          0.00000
+drawer-close-v1_eval_rewards          -29.44090
+5                                     0.00000
+drawer-open-v1_success_rate           0.00000
+drawer-open-v1_eval_rewards           -21.22229
+4                                     0.00000
+ped-insert-side-v1_success_rate       0.00000
+ped-insert-side-v1_eval_rewards       -19.63312
+7                                     0.00000
+pick-place-v1_success_rate            0.00000
+pick-place-v1_eval_rewards            -20.70644
+2                                     0.00000
+push-v1_success_rate                  0.00000
+push-v1_eval_rewards                  -29.43911
+1                                     0.00000
+reach-v1_success_rate                 0.00000
+reach-v1_eval_rewards                 15503.32737
+0                                     0.00000
+window-close-v1_success_rate          0.00000
+window-close-v1_eval_rewards          -18.83379
+9                                     0.00000
+window-open-v1_success_rate           0.00000
+window-open-v1_eval_rewards           -28.63090
+8                                     0.00000
+mean_success_rate                     0.00000
+
+Name                                  Mean         Std        Max         Min
+Reward_Mean                           7.67578      0.54935    9.15798     6.46781
+alpha_0                               0.95408      0.00425    0.96214     0.94822
+alpha_1                               0.95141      0.00538    0.96081     0.94231
+alpha_2                               0.95139      0.00549    0.96090     0.94201
+alpha_3                               0.95129      0.00547    0.96078     0.94193
+alpha_4                               0.95126      0.00548    0.96076     0.94187
+alpha_5                               0.95124      0.00548    0.96072     0.94184
+alpha_6                               0.95122      0.00547    0.96069     0.94184
+alpha_7                               0.95120      0.00547    0.96068     0.94181
+alpha_8                               0.95120      0.00548    0.96069     0.94180
+alpha_9                               0.95120      0.00547    0.96068     0.94180
+Alpha_loss                            -0.31878     0.02754    -0.26085    -0.36253
+Training/policy_loss                  -23.51204    2.17653    -19.98261   -28.60032
+Training/qf1_loss                     392.92424    66.43966   560.33472   243.58609
+Training/qf2_loss                     394.86514    68.05228   558.91284   246.99609
+Training/pf_norm                      0.42762      0.11042    0.72783     0.19225
+Training/qf1_norm                     252.19080    173.97536  1035.95801  26.44520
+Training/qf2_norm                     242.80216    159.59300  885.00970   30.24513
+log_std/mean                          -0.14450     0.01834    -0.10623    -0.17298
+log_std/std                           0.06057      0.03126    0.11001     0.01132
+log_std/max                           -0.09714     0.00874    -0.08148    -0.11582
+log_std/min                           -0.37638     0.11964    -0.14556    -0.56112
+log_probs/mean                        -2.43483     0.20509    -2.00936    -2.72327
+log_probs/std                         0.97651      0.45968    1.84353     0.31419
+log_probs/max                         2.58705      2.53173    6.69889     -1.65048
+log_probs/min                         -5.68352     0.87040    -4.03074    -8.49695
+mean/mean                             -0.16062     0.13701    0.12413     -0.32138
+mean/std                              0.23519      0.09116    0.37485     0.08650
+mean/max                              0.18337      0.32198    1.06298     -0.02586
+mean/min                              -0.89404     0.53997    -0.03068    -1.51675
+------------------------------------  -----------  ---------  ----------  ---------
+start to update mask
+wandb: Waiting for W&B process to finish... (failed 1).
+wandb: 
+wandb: Run history:
+wandb:                                    0 ▁▁▁
+wandb:                                    1 ▁▁▁
+wandb:                                    2 ▁▁▁
+wandb:                                    3 ▁▁▁
+wandb:                                    4 ▁▁▁
+wandb:                                    5 ▁▁▁
+wandb:                                    6 ▁▁▁
+wandb:                                    7 ▁▁▁
+wandb:                                    8 ▁▁▁
+wandb:                                    9 ▁▁▁
+wandb:                           Alpha_loss █▄▁
+wandb:                         Eval____Time █▆▁
+wandb:                         Explore_Time ▆▁█
+wandb:                          Reward_Mean ██▁
+wandb:              Running_Average_Rewards ▁▁█
+wandb:     Running_Training_Average_Rewards ▁▆█
+wandb:                   Train_Epoch_Reward ▁█▃
+wandb:                         Train___Time █▁▁
+wandb:                     Training/pf_norm ▁▄█
+wandb:                 Training/policy_loss █▃▁
+wandb:                    Training/qf1_loss █▂▁
+wandb:                    Training/qf1_norm █▁▆
+wandb:                    Training/qf2_loss █▂▁
+wandb:                    Training/qf2_norm █▁▆
+wandb:                              alpha_0 █▄▁
+wandb:                              alpha_1 █▄▁
+wandb:                              alpha_2 █▄▁
+wandb:                              alpha_3 █▄▁
+wandb:                              alpha_4 █▄▁
+wandb:                              alpha_5 █▄▁
+wandb:                              alpha_6 █▄▁
+wandb:                              alpha_7 █▄▁
+wandb:                              alpha_8 █▄▁
+wandb:                              alpha_9 █▄▁
+wandb: button-press-topdown-v1_eval_rewards ▂▁█
+wandb: button-press-topdown-v1_success_rate ▁▁▁
+wandb:                 door-v1_eval_rewards ▁▁█
+wandb:                 door-v1_success_rate ▁▁▁
+wandb:         drawer-close-v1_eval_rewards ██▁
+wandb:         drawer-close-v1_success_rate ▁▁▁
+wandb:          drawer-open-v1_eval_rewards ▁▁█
+wandb:          drawer-open-v1_success_rate ▁▁▁
+wandb:                        log_probs/max ▁▄█
+wandb:                       log_probs/mean ▁▃█
+wandb:                        log_probs/min ▃▁█
+wandb:                        log_probs/std ▁▃█
+wandb:                          log_std/max ▁▅█
+wandb:                         log_std/mean █▇▁
+wandb:                          log_std/min █▄▁
+wandb:                          log_std/std ▁▄█
+wandb:                             mean/max ▁█▁
+wandb:                            mean/mean ▇█▁
+wandb:                             mean/min ██▁
+wandb:                             mean/std ▁▅█
+wandb:                    mean_success_rate ▁▁▁
+wandb:      ped-insert-side-v1_eval_rewards ▁▁█
+wandb:      ped-insert-side-v1_success_rate ▁▁▁
+wandb:           pick-place-v1_eval_rewards ▁▁█
+wandb:           pick-place-v1_success_rate ▁▁▁
+wandb:                 push-v1_eval_rewards ██▁
+wandb:                 push-v1_success_rate ▁▁▁
+wandb:                reach-v1_eval_rewards ▁▁█
+wandb:                reach-v1_success_rate ▁▁▁
+wandb:                    save_traj_mod_sum ▁▁▁▁
+wandb:                   task_policy_mask_0 ▁███
+wandb:                   task_policy_mask_1 ▁███
+wandb:                   task_policy_mask_2 █▁▁▁
+wandb:                   task_policy_mask_3 █▁▁▁
+wandb:                   task_policy_mask_4 ▁███
+wandb:                   task_policy_mask_5 █▁▁▁
+wandb:                   task_policy_mask_6 ▁███
+wandb:                   task_policy_mask_7 ▁███
+wandb:                   task_policy_mask_8 ▁███
+wandb:                   task_policy_mask_9 ▁███
+wandb:         window-close-v1_eval_rewards ▁▁█
+wandb:         window-close-v1_success_rate ▁▁▁
+wandb:          window-open-v1_eval_rewards ██▁
+wandb:          window-open-v1_success_rate ▁▁▁
+wandb: 
+wandb: Run summary:
+wandb:                                    0 0.0
+wandb:                                    1 0.0
+wandb:                                    2 0.0
+wandb:                                    3 0.0
+wandb:                                    4 0.0
+wandb:                                    5 0.0
+wandb:                                    6 0.0
+wandb:                                    7 0.0
+wandb:                                    8 0.0
+wandb:                                    9 0.0
+wandb:                           Alpha_loss -0.36253
+wandb:                         Eval____Time 0.00301
+wandb:                         Explore_Time 0.03671
+wandb:                          Reward_Mean 6.80521
+wandb:              Running_Average_Rewards 1526.18733
+wandb:     Running_Training_Average_Rewards 1664.65683
+wandb:                   Train_Epoch_Reward 14393.24359
+wandb:                         Train___Time 19.7927
+wandb:                     Training/pf_norm 0.4812
+wandb:                 Training/policy_loss -28.60032
+wandb:                    Training/qf1_loss 276.81982
+wandb:                    Training/qf1_norm 507.93771
+wandb:                    Training/qf2_loss 275.5997
+wandb:                    Training/qf2_norm 465.16232
+wandb:                              alpha_0 0.94822
+wandb:                              alpha_1 0.94231
+wandb:                              alpha_2 0.94201
+wandb:                              alpha_3 0.94193
+wandb:                              alpha_4 0.94187
+wandb:                              alpha_5 0.94184
+wandb:                              alpha_6 0.94184
+wandb:                              alpha_7 0.94181
+wandb:                              alpha_8 0.9418
+wandb:                              alpha_9 0.9418
+wandb: button-press-topdown-v1_eval_rewards -40.59806
+wandb: button-press-topdown-v1_success_rate 0.0
+wandb:                 door-v1_eval_rewards -32.94943
+wandb:                 door-v1_success_rate 0.0
+wandb:         drawer-close-v1_eval_rewards -29.4409
+wandb:         drawer-close-v1_success_rate 0.0
+wandb:          drawer-open-v1_eval_rewards -21.22229
+wandb:          drawer-open-v1_success_rate 0.0
+wandb:                        log_probs/max 6.15793
+wandb:                       log_probs/mean -2.08233
+wandb:                        log_probs/min -4.75545
+wandb:                        log_probs/std 1.83441
+wandb:                          log_std/max -0.09842
+wandb:                         log_std/mean -0.17197
+wandb:                          log_std/min -0.56068
+wandb:                          log_std/std 0.1099
+wandb:                             mean/max 0.00996
+wandb:                            mean/mean -0.32045
+wandb:                             mean/min -1.49853
+wandb:                             mean/std 0.37382
+wandb:                    mean_success_rate 0.0
+wandb:      ped-insert-side-v1_eval_rewards -19.63312
+wandb:      ped-insert-side-v1_success_rate 0.0
+wandb:           pick-place-v1_eval_rewards -20.70644
+wandb:           pick-place-v1_success_rate 0.0
+wandb:                 push-v1_eval_rewards -29.43911
+wandb:                 push-v1_success_rate 0.0
+wandb:                reach-v1_eval_rewards 15503.32737
+wandb:                reach-v1_success_rate 0.0
+wandb:                    save_traj_mod_sum 0
+wandb:                   task_policy_mask_0 789904
+wandb:                   task_policy_mask_1 793487
+wandb:                   task_policy_mask_2 798376
+wandb:                   task_policy_mask_3 789218
+wandb:                   task_policy_mask_4 787952
+wandb:                   task_policy_mask_5 794281
+wandb:                   task_policy_mask_6 796604
+wandb:                   task_policy_mask_7 791799
+wandb:                   task_policy_mask_8 801004
+wandb:                   task_policy_mask_9 796221
+wandb:         window-close-v1_eval_rewards -18.83379
+wandb:         window-close-v1_success_rate 0.0
+wandb:          window-open-v1_eval_rewards -28.6309
+wandb:          window-open-v1_success_rate 0.0
+wandb: 
+wandb: You can sync this run to the cloud by running:
+wandb: wandb sync /lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/wandb/offline-run-20231102_222554-yrxdk226
+wandb: Find logs at: ./wandb/offline-run-20231102_222554-yrxdk226/logs
+Process Process-4:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-8:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-5:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-14:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-2:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-7:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-9:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-12:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-21:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-13:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-16:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-10:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-18:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-3:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-20:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-6:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-19:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-11:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 323, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-15:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Process Process-17:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/collector/para/async_mt.py", line 463, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError
+Traceback (most recent call last):
+  File "starter/mt_must_sac.py", line 347, in <module>
+    experiment(args)
+  File "starter/mt_must_sac.py", line 342, in experiment
+    agent.train(env.num_tasks,params,group_name)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/algo/rl_algo.py", line 419, in train
+    self.update_mask_generator(TASK_SAMPLE_NUM, task_amount, epoch,self.use_trajectory_info)
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/DST_RL/./torchrl/algo/rl_algo.py", line 325, in update_mask_generator
+    for param in generator.base.parameters():
+  File "/lustre04/scratch/qianxi/sparse_training/sep_t3s/venv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 778, in __getattr__
+    raise ModuleAttributeError("'{}' object has no attribute '{}'".format(
+torch.nn.modules.module.ModuleAttributeError: 'MaskGeneratorNet' object has no attribute 'base'
+260 seconds elapsed.
