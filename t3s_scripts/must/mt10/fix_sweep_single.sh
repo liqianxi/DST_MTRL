@@ -4,19 +4,34 @@
 #SBATCH --gres=gpu:1
 #SBATCH --ntasks=1
 #SBATCH --mem=32G
+<<<<<<< HEAD
 #SBATCH --cpus-per-task=4
 #SBATCH --time=96:00:00
 #SBATCH --account=rrg-mtaylor3
 #SBATCH --output=/home/qianxi/scratch/sparse_training/slurm_log/must/%A.out
 #SBATCH --mail-user=qianxi@ualberta.ca
 #SBATCH --mail-type=END
+=======
+#SBATCH --cpus-per-task=8
+#SBATCH --time=48:00:00
+#SBATCH --account=def-mtaylor3
+#SBATCH --output=/home/qianxi/scratch/slurm_log/must/must_sweep/%A.out
+#SBATCH --mail-user=qianxi@ualberta.ca
+#SBATCH --mail-type=ALL
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
 module load python/3.8
 module load cuda
 
+<<<<<<< HEAD
 source /home/qianxi/scratch/sparse_training/sep_t3s/venv/bin/activate
 cd /home/qianxi/scratch/sparse_training/sep_t3s/DST_RL
 wandb offline
+=======
+source /home/qianxi/scratch/t3s/venv/bin/activate
+cd /home/qianxi/scratch/t3s/t3s_code
+wandb enabled
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 export WANDB_API_KEY=b363daac0bf911130cb2eff814388eaf99942a0b
 SECONDS=0
 
@@ -26,8 +41,12 @@ echo "Use seed $1"
 export GROUP=MT10_MUSTSAC
 export NAME="10runs_MUST_fixgoal_MT10_exp2_seed${1}"
 export TASK_SAMPLE_NUM=10 
+<<<<<<< HEAD
 ID="1102_itv${2}_pr${3}_sllr${4}_slloss${5}_trajinfo${6}"
 GROUP_NAME="1102_sweep"
 python starter/mt_must_sac.py --config meta_config/must_configs/mt10/must_mtsac.json --worker_nums 10 --eval_worker_nums 10 --seed $1 --id $ID --mask_update_interval $2 --pruning_ratio $3 --generator_lr $4 --use_sl_loss $5 --use_trajectory_info $6  --wandb_group_name $GROUP_NAME
+=======
+python starter/mt_must_sac.py --config meta_config/must_configs/mt10/must_mtsac.json --worker_nums 10 --eval_worker_nums 10 --seed $1 --id "0817_endepi${2}_itv${3}_pr${4}" --mask_end_update_episode $2 --mask_update_interval $3 --pruning_ratio $4  
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 duration=$SECONDS
 echo "$duration seconds elapsed."

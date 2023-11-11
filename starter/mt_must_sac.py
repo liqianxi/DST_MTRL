@@ -57,16 +57,24 @@ torch.set_num_threads(CPU_NUM)
 
 def random_initialize_masks(network, pruning_ratio):
     neuron_mask_list = []
+<<<<<<< HEAD
     all = [i for i in network.base.fcs] + [network.last]
 
     #print("network",network)
     for each_layer in all:
         weight_shape = each_layer.weight.shape
         neurons = weight_shape[0]*weight_shape[1]
+=======
+
+    #print("network",network)
+    for each_layer in network.base.fcs:
+        neurons = each_layer.bias.shape[0]
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
         #print("neurons",neurons)
         #print("ratio",pruning_ratio)
         neuron_mask = torch.zeros(neurons)
 
+<<<<<<< HEAD
         #print("ones",ones)
         idx = torch.randperm(neurons)[:int(neurons - neurons * pruning_ratio)]
         neuron_mask[idx] = 1
@@ -81,6 +89,13 @@ def random_initialize_masks(network, pruning_ratio):
 
         #print("ones",ones)
         idx = torch.randperm(neurons)[:int(neurons - neurons * pruning_ratio)]
+=======
+        tmp = neurons - neurons * pruning_ratio
+        #print("tmp",tmp)
+        ones = int(tmp)
+        #print("ones",ones)
+        idx = torch.randperm(neurons)[:ones]
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
         neuron_mask[idx] = 1
         neuron_mask_list.append(neuron_mask)
 
@@ -96,6 +111,7 @@ def experiment(args):
 
     env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
     pruning_ratio = args.pruning_ratio
+<<<<<<< HEAD
     mask_update_interval = args.mask_update_interval
     params['sparse_training']["pruning_ratio"] = args.pruning_ratio
     #params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
@@ -108,6 +124,12 @@ def experiment(args):
 
     #print("args.success_traj_update_only",args.success_traj_update_only)
     group_name = args.wandb_group_name
+=======
+    params['sparse_training']["pruning_ratio"] = args.pruning_ratio
+    # params['general_setting']["mask_update_interval"] = args.mask_update_interval
+    # params['general_setting']["update_end_epoch"] = args.mask_end_update_episode
+    group_name = "0817_sweep"
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
     #print("pruning_ratio",pruning_ratio)
 
@@ -173,6 +195,7 @@ def experiment(args):
 
     # Initialize VAE model.
     encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
+<<<<<<< HEAD
                                          params['traj_encoder']["latent_size"],
                                           device=device).to(device)
 
@@ -183,6 +206,15 @@ def experiment(args):
     q2_encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
                                          params['traj_encoder']["latent_size"],
                                           device=device).to(device)
+=======
+                                         params['traj_encoder']["latent_size"], device=device).to(device)
+
+    q1_encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
+                                         params['traj_encoder']["latent_size"], device=device).to(device)
+
+    q2_encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
+                                         params['traj_encoder']["latent_size"], device=device).to(device)
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
     # Initialize Mask generators.
     # For Policy net, Q1, Q2, we need 3 mask generators.
@@ -197,10 +229,28 @@ def experiment(args):
         pruning_ratio=pruning_ratio,
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
+<<<<<<< HEAD
         trajectory_encoder=encoder,
         main_input_dim=env.observation_space.shape[0],
         main_out_dim=2 * env.action_space.shape[0],
         use_trajectory_info=args.use_trajectory_info)
+=======
+        trajectory_encoder=encoder
+        )
+
+    # test_traj = torch.randn((4,20,19)).to(device)
+    # onehot = torch.zeros((4,1,10)).to(device)
+    # onehot[0][0][0] = 1
+    # onehot[1][0][1] = 1
+    # onehot[2][0][2] = 1
+    # onehot[3][0][3] = 1
+
+
+
+
+    # policy_mask_generator(test_traj,onehot)
+    #assert 1==2
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
     qf1_mask_generator = networks.MaskGeneratorNet(
         em_input_shape=np.prod(example_embedding.shape),
@@ -209,11 +259,15 @@ def experiment(args):
         pruning_ratio=pruning_ratio,
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
+<<<<<<< HEAD
         trajectory_encoder=q1_encoder,
         main_input_dim=env.observation_space.shape[0] 
                       + env.action_space.shape[0],
         main_out_dim=1,
         use_trajectory_info=args.use_trajectory_info
+=======
+        trajectory_encoder=q1_encoder
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
         )
     qf2_mask_generator = networks.MaskGeneratorNet(
         em_input_shape=np.prod(example_embedding.shape),
@@ -222,11 +276,15 @@ def experiment(args):
         pruning_ratio=pruning_ratio,
         device=device,
         info_dim=params['traj_encoder']["latent_size"],
+<<<<<<< HEAD
         trajectory_encoder=q2_encoder,
         main_input_dim=env.observation_space.shape[0] 
                       + env.action_space.shape[0],
         main_out_dim=1,
         use_trajectory_info=args.use_trajectory_info)
+=======
+        trajectory_encoder=q2_encoder)
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
     
     print("mask generator finish initialization")
 
@@ -259,12 +317,15 @@ def experiment(args):
     for task_idx in range( env.num_tasks):
         state_trajectory[task_idx] = []
 
+<<<<<<< HEAD
 
     traj_collect_mod = manager.dict()
 
     for task_idx in range( env.num_tasks):
         traj_collect_mod[task_idx] = 0
 
+=======
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
     # Mask buffer, stores the current masks for each layer, 
     # for each task and for each network type(Q1, Q2, policy).
     # Initialize the binary mask for all the weights and bias, make sure
@@ -286,6 +347,7 @@ def experiment(args):
                 net = pf
 
             neuron_masks = random_initialize_masks(net, pruning_ratio)
+<<<<<<< HEAD
 
             mask_buffer[task_idx] = neuron_masks
 
@@ -295,6 +357,16 @@ def experiment(args):
 
 
 
+=======
+            #print("neuron_masks",neuron_masks)
+            mask_buffer[task_idx] = neuron_masks
+
+        all_mask_buffer[net_type] = mask_buffer       
+
+    #print(all_mask_buffer["Policy"])
+
+    #assert 1==2
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
     if RESTORE:
         with open(osp.join(osp.join(logger.work_dir,"model"), "replay_buffer.pkl"), 'rb') as f:
             replay_buffer = pickle.load(f)
@@ -306,7 +378,10 @@ def experiment(args):
 
     params['general_setting']['collector'] = AsyncMultiTaskParallelCollectorUniform(
         env=env, pf=pf, replay_buffer=replay_buffer,state_trajectory=state_trajectory,
+<<<<<<< HEAD
         traj_collect_mod=traj_collect_mod,
+=======
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
         mask_buffer=all_mask_buffer["Policy"],
         env_cls = cls_dicts, env_args = [params["env"], cls_args, params["meta_env"]],
         device=device,
@@ -331,10 +406,14 @@ def experiment(args):
                            "qf2_mask_generator": qf2_mask_generator},
         task_nums=env.num_tasks,
         trajectory_encoder=encoder,
+<<<<<<< HEAD
         traj_collect_mod=traj_collect_mod,
         mask_buffer=all_mask_buffer,
         final_mask=final_mask,
         mask_update_itv=mask_update_interval,
+=======
+        mask_buffer=all_mask_buffer,
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
         **params['sac'],
         **params['general_setting']
     )

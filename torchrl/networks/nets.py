@@ -65,8 +65,6 @@ class Net(nn.Module):
         out = self.last(out)
         return out
 
-
-
 class MaskedNet(nn.Module):
     def __init__(
             self, output_shape,
@@ -75,8 +73,28 @@ class MaskedNet(nn.Module):
             activation_func=F.relu,
             **kwargs):
 
+<<<<<<< HEAD
+
+class MaskedNet(nn.Module):
+    def __init__(
+            self, output_shape,
+            base_type,
+            net_last_init_func=init.uniform_init,
+            activation_func=F.relu,
+            **kwargs):
+=======
         super().__init__()
 
+        self.base = base_type(activation_func=activation_func, **kwargs)
+
+        self.activation_func = activation_func
+        append_input_shape = self.base.output_shape
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
+
+        self.last = nn.Linear(append_input_shape, output_shape)
+        net_last_init_func(self.last)
+
+<<<<<<< HEAD
         self.base = base_type(activation_func=activation_func, **kwargs)
 
         self.activation_func = activation_func
@@ -192,6 +210,17 @@ class MaskedNet(nn.Module):
                 out = torch.matmul(mask_out,tmp.t())+self.last.bias * neuron_masks[-1]
                 #out = self.last(mask_out)
 
+=======
+    def forward(self, x, neuron_masks,enable_mask=True):
+        # Have examined, this forward should be correct - 0723 qianxi.
+        mask_out = x
+        if enable_mask:
+            for idx, layer in enumerate(self.base.fcs):
+                mask_out = self.activation_func(layer(mask_out)) * neuron_masks[idx]
+
+            out = self.last(mask_out)
+
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
         else: 
             for idx, layer in enumerate(self.base.fcs):
                 mask_out = self.activation_func(layer(mask_out))
@@ -205,8 +234,13 @@ class FlattenNet(MaskedNet):
     def forward(self, input):
         out = torch.cat(input, dim = -1)
         return super().forward(out)
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 def null_activation(x):
     return x
  
@@ -248,9 +282,12 @@ class MaskGeneratorNet(nn.Module):
             info_dim,
             pruning_ratio,
             trajectory_encoder,
+<<<<<<< HEAD
             use_trajectory_info,
             main_input_dim,
             main_out_dim,
+=======
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
             device):
 
         super().__init__()
@@ -273,12 +310,16 @@ class MaskGeneratorNet(nn.Module):
 
         self.num_layers = num_layers
         self.layer_neurons = hidden_shapes
+<<<<<<< HEAD
         self.use_trajectory_info = use_trajectory_info
+=======
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
         # assert self.em_base.output_shape == self.base.output_shape, \
         #     "embedding should has the same dimension with base output for gated" 
 
         self.encoder = trajectory_encoder
+<<<<<<< HEAD
         self.main_input_dim = main_input_dim
         self.main_out_dim = main_out_dim
 
@@ -326,6 +367,19 @@ class MaskGeneratorNet(nn.Module):
                 nn.ReLU(),  
                 nn.Linear(256, result_all_neuron_amount)  
             ).to(device)
+=======
+
+        result_all_neuron_amount = sum(self.layer_neurons)
+        self.sigmoid = torch.nn.Sigmoid()
+       
+        self.generator_body = nn.Sequential(
+            nn.Linear(self.encode_dimension+self.one_hot_result_dim, 256),  
+            nn.ReLU(),  
+            nn.Linear(256, 512),
+            nn.ReLU(),                           
+            nn.Linear(512, result_all_neuron_amount)  
+        ).to(device)
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
         #print("self.generator_body",self.generator_body)
 
@@ -361,6 +415,7 @@ class MaskGeneratorNet(nn.Module):
         return res_array
 
 
+<<<<<<< HEAD
     def gumbel_softmax(self, logits, k, tau: float = 1, hard: bool = False, eps: float = 1e-10, dim: int = -1):
         gumbels = (
             -torch.empty_like(logits, memory_format=torch.legacy_contiguous_format).exponential_().log()
@@ -382,6 +437,8 @@ class MaskGeneratorNet(nn.Module):
         return ret
 
 
+=======
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
     def forward(self, x, embedding_input):
         # Here x is a trajectory of shape [traj_length, dim_of_each_state]
@@ -390,6 +447,7 @@ class MaskGeneratorNet(nn.Module):
         # Trajectory encoder embedding
         
         #print("traj_input",traj_input)
+<<<<<<< HEAD
        
         if self.use_trajectory_info:
             traj_encodings = self.encoder.encode_lstm(x)
@@ -496,6 +554,40 @@ class MaskGeneratorNet(nn.Module):
         #     task_binary_masks.append(pruned_mask.reshape((self.layer_neurons[layer_idx],self.layer_neurons[layer_idx])))
 
         #     idx += neuron_amount
+=======
+        traj_encodings = self.encoder.encode_lstm(x)
+
+        # Task one hot embedding
+        embedding = self.mlp_layers(embedding_input).squeeze(1)
+        #print(embedding.shape)torch.Size([4, 1, 32])
+        # Element wise multi
+        #print("embedding",embedding.shape)
+        task_info_embedding = torch.cat([embedding, traj_encodings],dim=1)
+        #print("task_info_embedding",task_info_embedding.shape)
+
+        mask_vector = self.generator_body(task_info_embedding) #mask_vector torch.Size([4, 20])
+
+        #print("mask_vector",mask_vector.shape)
+
+        task_binary_masks = []
+
+        idx = 0
+        for layer_idx in range(len(self.layer_neurons)):
+            neuron_amount = self.layer_neurons[layer_idx]
+            selected = mask_vector[:,idx:idx+neuron_amount]# all batch rows, selected columns(neurons).
+            pruned_mask = self.keep_topk(selected, 
+                                         self.pruning_ratio,
+                                         neuron_amount).to("cpu")
+            task_binary_masks.append(pruned_mask)
+
+            idx += neuron_amount
+
+        # print("task_binary_masks",task_binary_masks)
+
+
+        normalized_mask = self.sigmoid(mask_vector).to(self.device)
+        #print("normalized_mask",normalized_mask)
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
         
         converted_list = []
         for task in range(len(task_binary_masks[0])):
@@ -504,10 +596,16 @@ class MaskGeneratorNet(nn.Module):
                 
                 inner_list.append(task_binary_masks[i][task])
             converted_list.append(inner_list)
+<<<<<<< HEAD
 
         #print([i.shape for i in task_binary_masks])
         #[torch.Size([10, 40, 19]), torch.Size([10, 40]), torch.Size([10, 40, 40]), torch.Size([10, 40]), torch.Size([10, 40, 40]), torch.Size([10, 40]), torch.Size([10, 8, 40]), torch.Size([10, 8])]
         
         return task_binary_masks,converted_list
+=======
+        
+        #print("converted_list",converted_list)
+        return [task_mask for task_mask in normalized_mask], converted_list
+>>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
 
