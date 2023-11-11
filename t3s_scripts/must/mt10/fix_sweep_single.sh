@@ -16,7 +16,7 @@
 
 # source /home/qianxi/scratch/venv/bin/activate
 cd /home/qianxi/scratch/DST/DST_RL
-wandb disabled
+wandb enabled
 export WANDB_API_KEY=b363daac0bf911130cb2eff814388eaf99942a0b
 SECONDS=0
 
