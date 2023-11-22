@@ -11,7 +11,6 @@
         "size": 1e6
     },
     "net":{ 
-<<<<<<< HEAD
         "hidden_shapes": [40,40,40]
         
     },
@@ -24,6 +23,11 @@
     "sparse_training":{
         "pruning_ratio":0.8
 
+    },
+    "generator":{
+        "one_hot_mlp_hidden": 256,
+        "generator_mlp_hidden": 256,
+        "one_hot_result_dim": 64
     },
     "general_setting": {
         "discount" : 0.99,
@@ -43,40 +47,6 @@
         "mask_update_interval": 5, 
         "eval_episodes" : 3,
         "recent_traj_window": 10
-=======
-        "hidden_shapes": [50,50]
-        
-    },
-    "task_embedding":{
-        "em_hidden_shapes":[50, 50]
-    },
-    "traj_encoder":{
-        "hidden_shapes": [50,50],
-        "latent_size": 64
-    },
-    "sparse_training":{
-        "pruning_ratio":0.9
-
-    }
-    ,
-    "general_setting": {
-        "discount" : 0.99,
-        "pretrain_epochs" : 0,
-        "num_epochs" : 200,
-        "epoch_frames" : 150,
-        "max_episode_frames" : 150,
-        
-        "batch_size" : 1280,
-        "min_pool" : 10000,
-
-        "target_hard_update_period" : 1000,
-        "use_soft_update" : true,
-        "tau" : 0.005,
-        "opt_times" : 2,
-        "mask_update_interval": 22, 
-        "update_end_epoch":50,
-        "eval_episodes" : 1
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
     },
     "sac":{
         

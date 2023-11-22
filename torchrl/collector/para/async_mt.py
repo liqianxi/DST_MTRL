@@ -187,13 +187,9 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
     @staticmethod
     def train_worker_process(cls, shared_funcs, env_info,
         replay_buffer, shared_que,
-<<<<<<< HEAD
         start_barrier, epochs, start_epoch, task_name, shared_dict, mask_buffer, state_trajectory, 
         traj_collect_mod,
         index_mapping, lock, pretraining_epoch):
-=======
-        start_barrier, epochs, start_epoch, task_name, shared_dict, mask_buffer, state_trajectory, index_mapping, lock, pretraining_epoch):
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
         # Attention: Here mask_buffer is the policy net weight masks for each task.
         # i.e. mask_buffer[task_id] = [all layer neuron masks]
@@ -232,10 +228,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
             # time to update local mask.
             mask_this_task = mask_buffer[env_info.env_rank]
-<<<<<<< HEAD
             mask_this_task = copy.deepcopy(mask_this_task)
-=======
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
             current_epoch += 1
 
@@ -268,18 +261,11 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             task_sample_index = shared_dict['task_sample_index']
  
             episode_state_traj = [ob]
-<<<<<<< HEAD
             success = 0
-=======
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
             if env_info.env_rank in task_sample_index:
                 
                 for _ in range(env_info.epoch_frames):
-<<<<<<< HEAD
                     next_ob, done, reward, info = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
-=======
-                    next_ob, done, reward, _ = cls.take_actions(local_funcs, env_info, c_ob, replay_buffer, index_mapping, mask_this_task, enable_mask)
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
                     c_ob["ob"] = next_ob
                     episode_state_traj.append(c_ob["ob"])
                     train_rew += reward
@@ -290,7 +276,6 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                         train_rews.append(train_rew)
                         train_rew = 0
 
-<<<<<<< HEAD
                     if max(info["success"],success) > 0:
                         # this traj is success.
                         success = 1
@@ -328,23 +313,13 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     state_trajectory[env_info.env_rank] += [episode_state_traj]
                     #print("state_trajectory[env_info.env_rank] after",len(state_trajectory[env_info.env_rank]))
             
-=======
-                # print(f'num_steps_can_sample: {replay_buffer.num_steps_can_sample()}')
-            # Append the task state trajectory for this episode to the shared buffer.
-
-            state_trajectory[env_info.env_rank] += [episode_state_traj]
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
             if norm_obs_flag:
                 shared_dict[task_name] = {
                     "obs_mean": env_info.env._obs_mean,
                     "obs_var": env_info.env._obs_var
                 }
-<<<<<<< HEAD
             del mask_this_task
-=======
-
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
             shared_que.put({
                 'train_rewards':train_rews,
                 'train_epoch_reward':train_epoch_reward
@@ -361,10 +336,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                             shared_dict,
                             mask_buffer,
                             state_trajectory,
-<<<<<<< HEAD
                             traj_collect_mod,
-=======
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
                             lock
                             ):
         #TODO:
@@ -382,10 +354,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
         # Local mask for this task.
         mask_this_task = None
-<<<<<<< HEAD
         
-=======
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
 
         env_info.env.eval()
         env_info.env._reward_scale = 1
@@ -394,11 +363,8 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             start_barrier.wait()
 
             mask_this_task = mask_buffer[env_info.env_rank]
-<<<<<<< HEAD
             mask_this_task = copy.deepcopy(mask_this_task)
 
-=======
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
             current_epoch += 1
 
             if current_epoch < start_epoch:
@@ -442,11 +408,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 rew = 0
 
                 current_success = 0
-<<<<<<< HEAD
                 episode_state_traj = [eval_ob]
-=======
-                #episode_state_traj = [eval_ob]
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
                 while not done:
 
 
@@ -456,11 +418,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
 
                     eval_ob, r, done, info = env_info.env.step( act )
-<<<<<<< HEAD
                     episode_state_traj.append(eval_ob)
-=======
-                    #episode_state_traj.append(eval_ob)
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
                     rew += r
                     if env_info.eval_render:
                         env_info.env.render()
@@ -566,10 +524,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                     self.shared_dict, 
                     self.mask_buffer, 
                     self.state_trajectory, 
-<<<<<<< HEAD
                     self.traj_collect_mod,
-=======
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
                     self.index_mapping,lock,self.pretraining_epoch))  #*
             p.start()
             self.workers.append(p)
@@ -627,20 +582,13 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                       self.env_info, 
                       self.eval_shared_que, 
                       self.eval_start_barrier,
-<<<<<<< HEAD
                       self.eval_epochs, 
-=======
-                      self.eval_epochs * 10000, 
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
                       start_epoch, 
                       task, 
                       self.shared_dict,
                       self.mask_buffer, 
                       self.state_trajectory,
-<<<<<<< HEAD
                       self.traj_collect_mod,
-=======
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
                       lock
                       ))  #*
             eval_p.start()

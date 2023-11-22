@@ -5,7 +5,6 @@ import torch
 
 def get_args():
     parser = argparse.ArgumentParser(description='RL')
-<<<<<<< HEAD
     parser.add_argument('--pruning_ratio', type=float, default=0.7,
                         help='prining ratio between 0 and 1.')
     parser.add_argument('--generator_lr', type=float, default=1e-4,
@@ -29,16 +28,6 @@ def get_args():
                         help='mask update interval')
     
     parser.add_argument('--mask_end_update_episode', type=int, default=10000,
-=======
-
-    parser.add_argument('--pruning_ratio', type=float, default=0.9,
-                        help='prining ratio between 0 and 1.')
-
-    parser.add_argument('--mask_update_interval', type=int, default=50,
-                        help='mask update interval')
-    
-    parser.add_argument('--mask_end_update_episode', type=int, default=5000,
->>>>>>> 62bf759bad2fb88b65a7ddf8d02b6641832ddc1e
                         help='mask end update')
     
     parser.add_argument('--seed', type=int, default=0,
