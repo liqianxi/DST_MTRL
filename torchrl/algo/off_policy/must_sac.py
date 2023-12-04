@@ -58,7 +58,7 @@ class MUST_SAC(TwinSACQ):
 
         all_dict = {}
         for each_net in ["Policy","Q1","Q2"]:      
-            task_traj_batch = self.sample_update_data(self.device)
+            
 
             task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(all_task_amount)]).to(self.device)
 
@@ -67,8 +67,12 @@ class MUST_SAC(TwinSACQ):
                 generator = self.qf1_mask_generator
             elif each_net == "Q2":
                 generator = self.qf2_mask_generator
-
-            _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
+            if self.use_sl_loss:
+                task_traj_batch = self.sample_update_data(self.device)
+                _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
+            else: 
+                task_traj_batch = None
+                _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
 
             tmp_dict = {}
             """
@@ -95,7 +99,7 @@ class MUST_SAC(TwinSACQ):
         return all_dict
 
     def get_batch_size_and_idx(self,task_scheduler):
-        batch_size = 1280
+        batch_size = self.batch_size
         each_task_batch_size = 0
         if task_scheduler.task_sample_num == 10:
             update_idxes = np.ones(10, dtype=np.int32) * (batch_size // 10)
@@ -104,8 +108,10 @@ class MUST_SAC(TwinSACQ):
             update_idxes = np.ones(50, dtype=np.int32) * (batch_size // 50)
             each_task_batch_size = batch_size // 50
         else:
-            update_idxes = (task_scheduler.p * batch_size).astype(np.int32)
-            update_idxes[-1] = batch_size - np.sum(update_idxes[:-1])
+            # update_idxes = (task_scheduler.p * batch_size).astype(np.int32)
+            # update_idxes[-1] = batch_size - np.sum(update_idxes[:-1])
+            update_idxes = np.ones(self.task_nums, dtype=np.int32) * (batch_size // self.task_nums)
+            each_task_batch_size = batch_size // self.task_nums
 
         return each_task_batch_size, update_idxes
 

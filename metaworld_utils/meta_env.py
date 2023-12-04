@@ -134,6 +134,7 @@ class MTEnv(MultiClassMultiTaskEnv):
 
 
 def generate_single_task_env(env_id, kwargs):
+    #print(globals())
     env = globals()[env_id](**kwargs)
     env = SingleWrapper(env)
     return env
@@ -175,6 +176,45 @@ def generate_single_mt_env(task_cls, task_args, env_rank, num_tasks,
         env = NormAct(env)
     return env
 
+def generate_selected_env(mt_param,id_list):
+    from metaworld.envs.mujoco.env_dict import EASY_MODE_CLS_DICT, EASY_MODE_ARGS_KWARGS
+
+    # ----------
+    # mt4_env_name = ['reach-v1']  # , 'push-v1', 'pick-place-v1', 'door-v1']
+    # NEW_EASY_MODE_CLS_DICT = {}
+    # NEW_EASY_MODE_ARGS_KWARGS = {}
+    #
+    # for env_name in mt4_env_name:
+    #     NEW_EASY_MODE_CLS_DICT[env_name] = EASY_MODE_CLS_DICT[env_name]
+    #     NEW_EASY_MODE_ARGS_KWARGS[env_name] = EASY_MODE_ARGS_KWARGS[env_name]
+    #
+    # EASY_MODE_CLS_DICT = NEW_EASY_MODE_CLS_DICT
+    # EASY_MODE_ARGS_KWARGS = NEW_EASY_MODE_ARGS_KWARGS
+    # ----------
+
+    selected_envs_dict = {}
+    selected_args_dict = {}
+    for each in id_list:
+        selected_envs_dict[each] = EASY_MODE_CLS_DICT[each]
+        selected_args_dict[each] = EASY_MODE_ARGS_KWARGS[each]
+
+
+
+    if "random_init" in mt_param:
+        for key in selected_args_dict:
+            selected_args_dict[key]["kwargs"]["random_init"]=True
+
+    #print(EASY_MODE_CLS_DICT, EASY_MODE_ARGS_KWARGS,mt_param)
+    """
+    {'reach-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, 'push-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, 'pick-place-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, 'door-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_door.SawyerDoorEnv'>, 'drawer-open-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_drawer_open.SawyerDrawerOpenEnv'>, 'drawer-close-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_drawer_close.SawyerDrawerCloseEnv'>, 'button-press-topdown-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_button_press_topdown.SawyerButtonPressTopdownEnv'>, 'ped-insert-side-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_peg_insertion_side.SawyerPegInsertionSideEnv'>, 'window-open-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_window_open.SawyerWindowOpenEnv'>, 'window-close-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_window_close.SawyerWindowCloseEnv'>} 
+    {'reach-v1': {'args': [], 'kwargs': {'obs_type': 'plain', 'task_type': 'reach'}}, 'push-v1': {'args': [], 'kwargs': {'obs_type': 'plain', 'task_type': 'push'}}, 'pick-place-v1': {'args': [], 'kwargs': {'obs_type': 'plain', 'task_type': 'pick_place'}}, 'door-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'drawer-open-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'drawer-close-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'button-press-topdown-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'ped-insert-side-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'window-open-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'window-close-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}} 
+    {'obs_type': 'with_goal_and_id'}
+
+    
+    """
+
+    return generate_mt_env(selected_envs_dict, selected_args_dict, **mt_param), \
+        selected_envs_dict, selected_args_dict
 
 def generate_mt10_env(mt_param):
     from metaworld.envs.mujoco.env_dict import EASY_MODE_CLS_DICT, EASY_MODE_ARGS_KWARGS
@@ -195,6 +235,15 @@ def generate_mt10_env(mt_param):
     if "random_init" in mt_param:
         for key in EASY_MODE_ARGS_KWARGS:
             EASY_MODE_ARGS_KWARGS[key]["kwargs"]["random_init"]=True
+
+    #print(EASY_MODE_CLS_DICT, EASY_MODE_ARGS_KWARGS,mt_param)
+    """
+    {'reach-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, 'push-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, 'pick-place-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_reach_push_pick_place.SawyerReachPushPickPlaceEnv'>, 'door-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_door.SawyerDoorEnv'>, 'drawer-open-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_drawer_open.SawyerDrawerOpenEnv'>, 'drawer-close-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_drawer_close.SawyerDrawerCloseEnv'>, 'button-press-topdown-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_button_press_topdown.SawyerButtonPressTopdownEnv'>, 'ped-insert-side-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_peg_insertion_side.SawyerPegInsertionSideEnv'>, 'window-open-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_window_open.SawyerWindowOpenEnv'>, 'window-close-v1': <class 'metaworld.envs.mujoco.sawyer_xyz.sawyer_window_close.SawyerWindowCloseEnv'>} 
+    {'reach-v1': {'args': [], 'kwargs': {'obs_type': 'plain', 'task_type': 'reach'}}, 'push-v1': {'args': [], 'kwargs': {'obs_type': 'plain', 'task_type': 'push'}}, 'pick-place-v1': {'args': [], 'kwargs': {'obs_type': 'plain', 'task_type': 'pick_place'}}, 'door-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'drawer-open-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'drawer-close-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'button-press-topdown-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'ped-insert-side-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'window-open-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}, 'window-close-v1': {'args': [], 'kwargs': {'obs_type': 'plain'}}} 
+    {'obs_type': 'with_goal_and_id'}
+
+    
+    """
 
     return generate_mt_env(EASY_MODE_CLS_DICT, EASY_MODE_ARGS_KWARGS, **mt_param), \
         EASY_MODE_CLS_DICT, EASY_MODE_ARGS_KWARGS
@@ -217,7 +266,7 @@ def generate_mt50_env(mt_param):
         cls_dict, args_kwargs
 
 
-def get_meta_env(env_id, env_param, mt_param, return_dicts=True):
+def get_meta_env(env_id, env_param, mt_param, return_dicts=True,id_list=[]):
     cls_dicts = None
     args_kwargs = None
     if env_id == "mt10":
@@ -225,7 +274,9 @@ def get_meta_env(env_id, env_param, mt_param, return_dicts=True):
     elif env_id == "mt50":
         env, cls_dicts, args_kwargs = generate_mt50_env(mt_param)
     else:
-        env = generate_single_task_env(env_id, mt_param)
+        assert id_list != []
+        env, cls_dicts, args_kwargs = generate_selected_env(mt_param,id_list)
+        #env = generate_single_task_env(env_id, mt_param)
 
     env = wrap_continuous_env(env, **env_param)
 
@@ -235,7 +286,7 @@ def get_meta_env(env_id, env_param, mt_param, return_dicts=True):
     if env_id == "mt10" or env_id == "mt50":
         env.num_tasks = len(cls_dicts)
     else:
-        env.num_tasks = 1
+        env.num_tasks = len(id_list)
 
     if cls_dicts is not None and return_dicts is True:
         return env, cls_dicts, args_kwargs

@@ -32,7 +32,7 @@ class ParallelCollector(BaseCollector):
             **kwargs)
 
         self.task_amount = env.num_tasks
-        assert self.task_amount in [10,50],"wrong task amount"
+        #assert self.task_amount in [10,50],"wrong task amount"
         self.env_cls  = env_cls
         self.env_args = env_args
         self.tasks = list(self.env_cls.keys())

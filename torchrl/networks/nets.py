@@ -198,6 +198,9 @@ class FlattenBootstrappedNet(BootstrappedNet):
         out = torch.cat( input, dim = -1 )
         return super().forward(out, idx)
 
+
+
+
 class MaskGeneratorNet(nn.Module):
     def __init__(self, 
             em_input_shape,
@@ -271,13 +274,15 @@ class MaskGeneratorNet(nn.Module):
             self.generator_body = nn.Sequential(
                 nn.Linear(self.encode_dimension+self.one_hot_result_dim, generator_mlp_hidden),  
                 nn.ReLU(),  
-                nn.Linear(generator_mlp_hidden, result_all_neuron_amount)  
+                nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
+                nn.ReLU()  
             ).to(device)
         else:
             self.generator_body = nn.Sequential(
                 nn.Linear(self.one_hot_result_dim, generator_mlp_hidden),  
                 nn.ReLU(),  
-                nn.Linear(generator_mlp_hidden, result_all_neuron_amount)  
+                nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
+                nn.ReLU()    
             ).to(device)
     
     def sum_up_dim(self, layer_neurons, main_input, main_output):
@@ -341,6 +346,7 @@ class MaskGeneratorNet(nn.Module):
 
         else: 
             task_info_embedding = self.mlp_layers(embedding_input).squeeze(1)
+
 
         mask_vector = self.generator_body(task_info_embedding)
 

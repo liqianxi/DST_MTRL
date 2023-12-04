@@ -76,7 +76,7 @@ class SharedBaseReplayBuffer(BaseReplayBuffer):
 
     #*
     def random_batch(self, batch_size, sample_key, task_nums, task_sample_index, reshape=True):
-        assert task_nums in [10,50]
+        #assert task_nums in [10,50]
         assert batch_size % self.worker_nums == 0, \
             "batch size should be dividable by worker_nums"
         # batch_size //= self.worker_nums

@@ -16,13 +16,13 @@ SCHEDULER_MODE = int(os.getenv('SCHEDULER_MODE', '0'))
 ###
 
 class TaskScheduler():
-    def __init__(self, num_tasks=10, task_sample_num=5, k=0.1, alpha=0.5, n=3, sample_gap=1):
+    def __init__(self, num_tasks=10, task_sample_num=5, k=0.1, alpha=0.5, n=3, sample_gap=1, task_name_list=[]):
         if num_tasks == 10:
             self.task_name_list = task_name_list_10
         elif num_tasks == 50:
             self.task_name_list = task_name_list_50
         else:
-            raise ValueError
+            self.task_name_list = task_name_list
 
         self.num_tasks = num_tasks
         self.task_sample_num = task_sample_num

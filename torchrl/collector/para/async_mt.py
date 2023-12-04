@@ -2,6 +2,7 @@
 import torch
 import copy
 import numpy as np
+import time
 
 from .base import AsyncParallelCollector
 import torch.multiprocessing as mp
@@ -139,6 +140,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         ob = ob_info["ob"]
 
         pf.eval()
+        time0 = time.time()
 
         with torch.no_grad():
             embedding_input = torch.zeros(env_info.num_tasks)
@@ -152,6 +154,8 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
 
 
         act = act.detach().cpu().numpy()
+
+        time1 = time.time()
         if not env_info.continuous:
             act = act[0]
         
@@ -161,9 +165,14 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 exit()
 
         next_ob, reward, done, info = env_info.env.step(act)
+
+        time2 = time.time()
         if env_info.train_render:
             env_info.env.render()
         env_info.current_step += 1
+
+        time3 = time.time()
+
 
         sample_dict = {
             "obs": ob,
@@ -181,7 +190,12 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             env_info.start_episode() # reset current_step
 
         replay_buffer.add_sample(sample_dict, env_info.env_rank)
+        time4 = time.time()
 
+        print(f"time diff 0 {time1-time0}")
+        print(f"time diff 1 {time2-time1}")
+        print(f"time diff 2 {time3-time2}")
+        print(f"time diff 3 {time4-time3}")
         return next_ob, done, reward, info
 
     @staticmethod

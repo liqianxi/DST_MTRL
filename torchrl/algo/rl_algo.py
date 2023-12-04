@@ -63,7 +63,8 @@ class RLAlgo():
                  recent_traj_window=20,
                  success_traj_update_only=True,
                  final_mask=None,
-                 sl_optim_times=5
+                 sl_optim_times=5,
+                 task_id_list=None
                  ):
 
         self.env = env
@@ -80,7 +81,7 @@ class RLAlgo():
         self.use_trajectory_info = use_trajectory_info
         self.use_sl_loss = use_sl_loss 
 
-
+        self.task_id_list = task_id_list
         self.continuous = isinstance(self.env.action_space, gym.spaces.Box)
         self.traj_encoder = trajectory_encoder
         self.replay_buffer = replay_buffer
@@ -310,7 +311,7 @@ class RLAlgo():
     def train(self, task_amount,params, group_name):
         global EPOCH
         self.all_task_amount = task_amount
-        assert task_amount in [10,50]
+
         self.one_hot_map = self.construct_one_hot_map(task_amount)
         
         wandb.init(
@@ -340,7 +341,7 @@ class RLAlgo():
 
         #*
         self.start_epoch()
-        task_scheduler = TaskScheduler(num_tasks=task_amount, task_sample_num=TASK_SAMPLE_NUM)
+        task_scheduler = TaskScheduler(num_tasks=task_amount, task_sample_num=TASK_SAMPLE_NUM, task_name_list=self.task_id_list)
 
         # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):

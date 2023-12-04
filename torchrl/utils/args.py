@@ -11,6 +11,8 @@ def get_args():
                         help='generator sl loss lr.')
     parser.add_argument('--use_sl_loss', type=int, default=1,
                         help='if 1, enable sl loss.')
+    parser.add_argument('--selected_task_amount', type=int, default=1,
+                        help='only use a few tasks from metaworld.')
 
     parser.add_argument('--use_trajectory_info', type=int, default=1,
                         help='if true, also uses trajectory info for generator')

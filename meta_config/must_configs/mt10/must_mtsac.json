@@ -1,5 +1,6 @@
 {
     "env_name" : "mt10",
+    "selected_task_amount":10,
     "env":{
         "reward_scale":1,
         "obs_norm":false
@@ -33,8 +34,8 @@
         "discount" : 0.99,
         "pretrain_epochs" : 20,
         "num_epochs" : 10000,
-        "epoch_frames" : 150,
-        "max_episode_frames" : 150,
+        "epoch_frames" : 200,
+        "max_episode_frames" : 200,
         "generator_lr":1e-4,
         "batch_size" : 1280,
         "min_pool" : 10000,

@@ -81,13 +81,30 @@ def random_initialize_masks(network, pruning_ratio):
 
 
 
+all_tasks = [
+    'reach-v1',
+    'push-v1',
+    'pick-place-v1',
+    'door-v1',
+    'drawer-open-v1',
+    'drawer-close-v1',
+    'button-press-topdown-v1',
+    'ped-insert-side-v1',
+    'window-open-v1',
+    'window-close-v1'
+]
+
+
 
 def experiment(args):
 
 
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
 
-    env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
+    #env, cls_dicts, cls_args = get_meta_env( params['env_name'], params['env'], params['meta_env'])
+
+    #print(env, cls_dicts, cls_args)
+    #assert 1==2
     pruning_ratio = args.pruning_ratio
     mask_update_interval = args.mask_update_interval
     params['sparse_training']["pruning_ratio"] = args.pruning_ratio
@@ -97,8 +114,16 @@ def experiment(args):
     params["general_setting"]["generator_lr"] = args.generator_lr
     params["general_setting"]["use_trajectory_info"] = args.use_trajectory_info
     params["general_setting"]["use_sl_loss"] = args.use_sl_loss
+    params["selected_task_amount"] = args.selected_task_amount
     
     group_name = args.wandb_group_name
+
+    id_list = all_tasks[:params["selected_task_amount"]]
+    args.worker_nums = len(id_list)
+    args.eval_worker_nums = len(id_list)
+
+
+    env, cls_dicts, cls_args = get_meta_env( "selected", params['env'], params['meta_env'],id_list=id_list)
 
     env.seed(args.seed)
     torch.manual_seed(args.seed)
@@ -325,12 +350,48 @@ def experiment(args):
         mask_buffer=all_mask_buffer,
         final_mask=final_mask,
         mask_update_itv=mask_update_interval,
+        task_id_list=id_list,
         **params['sac'],
         **params['general_setting']
     )
 
     agent.train(env.num_tasks,params,group_name)
 
+
+
+# class TestDifferentiability(unittest.TestCase):
+#     def setUp(self):
+#         # Initialize your neural network
+#         encoder = networks.TrajectoryEncoder((19,),
+#                                          32,
+#                                           device='cpu').to("cpu")
+
+#         self.net = networks.MaskGeneratorNet(
+#         em_input_shape=np.prod(10),
+#         hidden_shapes=20,
+#         pruning_ratio=0.5,
+#         device="cpu",
+#         info_dim=32,
+#         trajectory_encoder=encoder,
+#         main_input_dim=(19,),
+#         main_out_dim=2 * 4,
+#         use_trajectory_info=True, 
+#         task_amount=2,
+#         one_hot_mlp_hidden=32,
+#         generator_mlp_hidden=32,
+#         one_hot_result_dim=32
+#         )
+
+#     def test_forward_differentiable(self):
+#         # Define input tensors for testing
+#         input_tensor_2d = torch.randn((3, 4), requires_grad=True)
+#         input_tensor_1d = torch.randn(4, requires_grad=True)
+
+#         # Check differentiability for the 2d tensor input
+#         self.assertTrue(torch.autograd.gradcheck(self.net.forward, input_tensor_2d))
+
+#         # Check differentiability for the 1d tensor input
+#         self.assertTrue(torch.autograd.gradcheck(self.net.forward, input_tensor_1d))
 
 if __name__ == "__main__":
     experiment(args)

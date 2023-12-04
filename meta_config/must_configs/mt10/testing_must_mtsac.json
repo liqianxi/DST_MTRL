@@ -1,5 +1,6 @@
 {
     "env_name" : "mt10",
+    "selected_task_amount":2,
     "env":{
         "reward_scale":1,
         "obs_norm":false
@@ -25,7 +26,7 @@
 
     },
     "generator":{
-        "one_hot_mlp_hidden": 256,
+        "one_hot_mlp_hidden": 64,
         "generator_mlp_hidden": 256,
         "one_hot_result_dim": 64
     },
