@@ -192,10 +192,10 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         replay_buffer.add_sample(sample_dict, env_info.env_rank)
         time4 = time.time()
 
-        print(f"time diff 0 {time1-time0}")
-        print(f"time diff 1 {time2-time1}")
-        print(f"time diff 2 {time3-time2}")
-        print(f"time diff 3 {time4-time3}")
+        # print(f"time diff 0 {time1-time0}")
+        # print(f"time diff 1 {time2-time1}")
+        # print(f"time diff 2 {time3-time2}")
+        # print(f"time diff 3 {time4-time3}")
         return next_ob, done, reward, info
 
     @staticmethod

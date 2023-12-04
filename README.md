@@ -29,4 +29,26 @@ The way to install metaworld and other dependencies can be found at here:https:/
 
 /t3s_scripts/must : the bash scripts I use to submit jobs on compute canada.
 
+## Install
+
+1. Use python3.8;  
+2. run `git clone --single-branch --branch accurate_mask_revise https://github.com/liqianxi/DST_RL.git` to clone my work branch.  
+3. Find req.txt in the root. In your virtual env, use `pip install -r req.txt`.
+4. Find a location outside DST_RL, install metaworld:
+`git clone https://github.com/RchalYang/metaworld.git ;
+cd metaworld ;pip install -e .;
+
+5. Install mujoco: go to https://www.roboti.us/download.html and download mujoco200, add this to your .bashrc: `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/qianxi/.mujoco/mujoco200/bin`, replace my own path with your mujoco200/bin file path. DOn't forget to run `source .bashrc` after you modify your bashrc.
+
+## Run
+
+1.Go to `/DST_RL/t3s_scripts/must/mt10/`. 
+2. Open run_review.sh, change `cd /home/qianxi/scratch/sparse_training/dec_must/DST_RL` to your DST_RL root address.  
+3. Run format:  
+`bash run_review.sh $seed $update_interval $pruning_ratio $mask_generator_learning_rate $Use_supervised_loss $use_trajectory_info $selected_task`
+
+4. For example:  
+`bash run_review.sh 3 50 0.5 1e-4 1 1 10`
+will run with random seed 3, the mask update interval is 50 iterations, pruning ratio=0.5, mask_generator_learning_rate is 1e-4 for the supervised loss, $Use_supervised_loss=1 means we use supervised loss and RL loss, $use_trajectory_info=1 means the mask generator also requires task trajectory as the input to generate the mask, $selected_task=10 means all 10 tasks in Metaworld MT10 benchmark will be used.
+
 

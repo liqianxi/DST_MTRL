@@ -18,11 +18,11 @@ gym==0.12.1+computecanada
 gym_notices==0.0.8+computecanada
 idna==3.4+computecanada
 imageio==2.31.1
+#-e git+https://github.com/RchalYang/metaworld.git@bad7ea503fa90fb73cafda0619b6b117fb88a433#egg=metaworld
 importlib-metadata==6.7.0
 importlib_resources==5.12.0+computecanada
 kiwisolver==1.4.4+computecanada
 matplotlib==3.7.0+computecanada
--e git+https://github.com/RchalYang/metaworld.git@bad7ea503fa90fb73cafda0619b6b117fb88a433#egg=metaworld
 mujoco-py==2.0.2.10
 numpy==1.24.2+computecanada
 opencv-python==4.5.1.48+computecanada
