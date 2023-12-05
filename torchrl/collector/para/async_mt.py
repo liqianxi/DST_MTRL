@@ -147,7 +147,7 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             embedding_input[env_info.env_rank] = 1
             # embedding_input = torch.cat([torch.Tensor(env_info.env.goal.copy()), embedding_input])
             embedding_input = embedding_input.unsqueeze(0).to(env_info.device)
-
+            #print("env_info.device",env_info.device)
             out = pf.explore(torch.Tensor( ob ).to(env_info.device).unsqueeze(0),
                                 neuron_masks=neuron_masks,enable_mask=enable_mask)
             act = out["action"]
@@ -241,8 +241,10 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             start_barrier.wait()
 
             # time to update local mask.
+            #del mask_this_task
             mask_this_task = mask_buffer[env_info.env_rank]
-            mask_this_task = copy.deepcopy(mask_this_task)
+            mask_this_task = [i.to(env_info.device) for i in copy.deepcopy(mask_this_task)]
+            #mask_this_task = copy.deepcopy(mask_this_task).to(env_info.device)
 
             current_epoch += 1
 
@@ -263,11 +265,6 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
                 # Load the base network's weights into this network copy.
                 # Need to apply mask.
                 local_funcs[key].load_state_dict(shared_funcs[key].state_dict())
-
-                # Here, apply the binary mask to the weight matrix.
-                # Since weights are changing every episode, we need to do this 
-                # every episode.
-                #apply_mask(mask_this_task, local_funcs[key])
 
             train_rews = []
             train_epoch_reward = 0    
@@ -375,10 +372,9 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
         current_epoch = 0
         while True:
             start_barrier.wait()
-
+            #del mask_this_task
             mask_this_task = mask_buffer[env_info.env_rank]
-            mask_this_task = copy.deepcopy(mask_this_task)
-
+            mask_this_task = [i.to(env_info.device) for i in copy.deepcopy(mask_this_task)]
             current_epoch += 1
 
             if current_epoch < start_epoch:

@@ -378,12 +378,14 @@ class RLAlgo():
                     self.training_episode_rewards.append(reward)
                 explore_time = time.time() - explore_start_time
 
-                train_start_time = time.time()
+            train_start_time = time.time()
 
+            print("collect time",time.time()-start)
             torch.cuda.empty_cache()
             self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch,self.use_trajectory_info)
 
             train_time = time.time() - train_start_time
+            
             print("train_time",train_time)
             finish_epoch_info = self.finish_epoch()
 
@@ -398,7 +400,7 @@ class RLAlgo():
             # task_scheduler.update_p()
 
             eval_time = time.time() - eval_start_time
-            #print("eval time",eval_time)
+            print("eval time",eval_time)
             total_frames += self.collector.active_worker_nums * self.epoch_frames
 
             infos = {}

@@ -46,6 +46,7 @@ class ParallelCollector(BaseCollector):
         self.traj_collect_mod=traj_collect_mod
         self.mask_buffer = mask_buffer
 
+        #self.env_info.device = 'cuda:0' # CPU For multiprocess sampling
         self.env_info.device = 'cpu' # CPU For multiprocess sampling
         
         self.shared_funcs = copy.deepcopy(self.funcs)

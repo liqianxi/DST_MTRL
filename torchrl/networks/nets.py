@@ -101,7 +101,8 @@ class MaskedNet(nn.Module):
                 """
                 
                 for idx, layer in enumerate(self.base.fcs):
-                    mask_out = mask_out.reshape((self.task_amount,self.each_task_batch_size,mask_out.shape[-1]))
+                    mask_out = mask_out.view(self.task_amount, self.each_task_batch_size, -1)
+
                     layer_weight = self.base.fcs[idx].weight.unsqueeze(0) 
                     layer_bias = self.base.fcs[idx].bias.unsqueeze(0)
 
@@ -109,18 +110,18 @@ class MaskedNet(nn.Module):
                     bias_apply_mask = (layer_bias*neuron_masks[2*idx+1])
                     bias_apply_mask_batched = bias_apply_mask.unsqueeze(1).repeat(1, self.each_task_batch_size, 1)
                    
-                    tmp = torch.matmul(mask_out, weight_apply_mask)
+                    tmp = torch.bmm(mask_out, weight_apply_mask)
 
                     output = self.activation_func(tmp + bias_apply_mask_batched)##:
 
-                    mask_out = output.reshape((self.task_amount,self.each_task_batch_size,output.shape[-1]))
+                    mask_out = output.view(self.task_amount, self.each_task_batch_size, -1)
 
                 last_weight_apply_mask = (self.last.weight * neuron_masks[-2]).permute(0,2,1)
                 last_bias_apply_mask = self.last.bias * neuron_masks[-1]
                 last_bias_apply_mask_batched = last_bias_apply_mask.unsqueeze(1).repeat(1, self.each_task_batch_size, 1)
 
-                out = torch.matmul(mask_out,last_weight_apply_mask) + last_bias_apply_mask_batched
-                out = out.reshape(self.all_batch_size,out.shape[-1])
+                out = torch.bmm(mask_out,last_weight_apply_mask) + last_bias_apply_mask_batched
+                out = out.view(self.all_batch_size, -1)
 
             else: 
                 """
@@ -143,12 +144,12 @@ class MaskedNet(nn.Module):
 
                     new_bias = layer_bias * neuron_masks[2*idx+1]
 
-                    multi = torch.matmul(mask_out, new_weight.t())
-                    mask_out = self.activation_func( multi+ new_bias)
+                    mask_out = self.activation_func( torch.mm(mask_out, new_weight.t())+ new_bias)
 
                 tmp = self.last.weight* neuron_masks[-2]
 
-                out = torch.matmul(mask_out,tmp.t())+self.last.bias * neuron_masks[-1]
+                out = torch.mm(mask_out, tmp.t()) + self.last.bias * neuron_masks[-1]
+                #out = torch.matmul(mask_out,tmp.t())+self.last.bias * neuron_masks[-1]
 
         else: 
             for idx, layer in enumerate(self.base.fcs):
@@ -218,7 +219,7 @@ class MaskGeneratorNet(nn.Module):
             one_hot_result_dim):
 
         super().__init__()
-
+        self.to(device)
         #Note: Embedding base is the network part that 
         # converts a full trajectory into
         # a D-dim vector.
@@ -229,11 +230,11 @@ class MaskGeneratorNet(nn.Module):
         self.task_amount = task_amount
         
         # Define the MLP layers
-        self.mlp_layers = nn.Sequential(
-            nn.Linear(em_input_shape, one_hot_mlp_hidden),
-            nn.ReLU(), 
-            nn.Linear(one_hot_mlp_hidden, self.one_hot_result_dim )
-        ).to(device)
+        # self.mlp_layers = nn.Sequential(
+        #     nn.Linear(em_input_shape, one_hot_mlp_hidden),
+        #     nn.ReLU(), 
+        #     nn.Linear(one_hot_mlp_hidden, self.one_hot_result_dim )
+        # ).to(device)
 
         self.layer_neurons = hidden_shapes
         self.use_trajectory_info = use_trajectory_info
@@ -269,17 +270,33 @@ class MaskGeneratorNet(nn.Module):
                                                    self.main_input_dim,
                                                    self.main_out_dim)
 
+        # if use_trajectory_info:
+        #     # Traj onehot dim + trajectory encode dim.
+        #     self.generator_body = nn.Sequential(
+        #         nn.Linear(self.encode_dimension+self.one_hot_result_dim, generator_mlp_hidden),  
+        #         nn.ReLU(),  
+        #         nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
+        #         nn.ReLU()  
+        #     ).to(device)
+        # else:
+        #     self.generator_body = nn.Sequential(
+        #         nn.Linear(self.one_hot_result_dim, generator_mlp_hidden),  
+        #         nn.ReLU(),  
+        #         nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
+        #         nn.ReLU()    
+        #     ).to(device)
+
         if use_trajectory_info:
             # Traj onehot dim + trajectory encode dim.
             self.generator_body = nn.Sequential(
-                nn.Linear(self.encode_dimension+self.one_hot_result_dim, generator_mlp_hidden),  
+                nn.Linear(self.encode_dimension+em_input_shape, generator_mlp_hidden),  
                 nn.ReLU(),  
                 nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
                 nn.ReLU()  
             ).to(device)
         else:
             self.generator_body = nn.Sequential(
-                nn.Linear(self.one_hot_result_dim, generator_mlp_hidden),  
+                nn.Linear(em_input_shape, generator_mlp_hidden),  
                 nn.ReLU(),  
                 nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
                 nn.ReLU()    
@@ -301,8 +318,8 @@ class MaskGeneratorNet(nn.Module):
 
         # Pick the highest k values. Set the rest to zero.
         values, indices = torch.topk(tensor, k)
-        output = torch.zeros_like(tensor)
-        ones = torch.ones_like(values)
+        output = torch.zeros_like(tensor).to(self.device)
+        ones = torch.ones_like(values).to(self.device)
         output.scatter_(dim=1, index=indices, src=ones)
 
         return output
@@ -320,7 +337,7 @@ class MaskGeneratorNet(nn.Module):
             #index = y_soft.max(dim, keepdim=True)[1]
             index = torch.topk(y_soft, k, dim=-1)[1]
 
-            y_hard = torch.zeros_like(logits, memory_format=torch.legacy_contiguous_format).scatter_(dim, index, 1.0)
+            y_hard = torch.zeros_like(logits, memory_format=torch.legacy_contiguous_format).scatter_(dim, index, 1.0).to(self.device)
             ret = y_hard - y_soft.detach() + y_soft
         else:
             # Reparametrization trick.
@@ -333,19 +350,19 @@ class MaskGeneratorNet(nn.Module):
     def forward(self, x, embedding_input):
         # Here x is a trajectory of shape [traj_length, dim_of_each_state]
         # Return weights for visualization
-
+        
         # Trajectory encoder embedding       
         if self.use_trajectory_info:
             traj_encodings = self.encoder.encode_lstm(x)
 
             # Task one hot embedding
-            embedding = self.mlp_layers(embedding_input).squeeze(1)
+            embedding = embedding_input.squeeze(1)#self.mlp_layers(embedding_input).squeeze(1)
 
             # Concat
             task_info_embedding = torch.cat([embedding, traj_encodings],dim=1)
 
         else: 
-            task_info_embedding = self.mlp_layers(embedding_input).squeeze(1)
+            task_info_embedding = embedding_input.squeeze(1)#self.mlp_layers(embedding_input).squeeze(1)
 
 
         mask_vector = self.generator_body(task_info_embedding)

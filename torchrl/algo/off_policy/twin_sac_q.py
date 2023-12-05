@@ -43,18 +43,32 @@ class TwinSACQ(OffRLAlgo):
 
         self.optimizer_class = optimizer_class
 
-        self.qf1_optimizer = optimizer_class(
+        self.qf1_optimizer_with_gen = optimizer_class(
             list(self.qf1.parameters())+list(self.qf1_mask_generator.parameters()),
             lr=self.qlr,
         )
 
-        self.qf2_optimizer = optimizer_class(
+        self.qf2_optimizer_with_gen = optimizer_class(
             list(self.qf2.parameters())+list(self.qf2_mask_generator.parameters()),
             lr=self.qlr,
         )
 
-        self.pf_optimizer = optimizer_class(
+        self.pf_optimizer_with_gen = optimizer_class(
             list(self.pf.parameters())+list(self.policy_mask_generator.parameters()),
+            lr=self.plr,
+        )
+        self.qf1_optimizer = optimizer_class(
+            list(self.qf1.parameters()),
+            lr=self.qlr,
+        )
+
+        self.qf2_optimizer = optimizer_class(
+            list(self.qf2.parameters()),
+            lr=self.qlr,
+        )
+
+        self.pf_optimizer = optimizer_class(
+            list(self.pf.parameters()),
             lr=self.plr,
         )
 
