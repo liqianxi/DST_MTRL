@@ -163,7 +163,7 @@ def experiment(args):
         output_shape = 2 * env.action_space.shape[0],
         all_batch_size = params['general_setting']["batch_size"],
         task_amount=env.num_tasks,
-        **params['net'])
+        **params['net']).to(device)
 
     print("finish policy net init")
 
@@ -176,14 +176,14 @@ def experiment(args):
         output_shape = 1,
         all_batch_size = params['general_setting']["batch_size"],
         task_amount=env.num_tasks,
-        **params['net'] )
+        **params['net'] ).to(device)
     qf2 = networks.MaskedNet( 
         input_shape = env.observation_space.shape[0]
                     + env.action_space.shape[0],
         output_shape = 1,
         all_batch_size = params['general_setting']["batch_size"],
         task_amount=env.num_tasks,
-        **params['net'] )
+        **params['net'] ).to(device)
 
     # Initialize VAE model.
     encoder = networks.TrajectoryEncoder(env.observation_space.shape[0],
@@ -218,7 +218,7 @@ def experiment(args):
         one_hot_mlp_hidden=params['generator']["one_hot_mlp_hidden"],
         generator_mlp_hidden=params['generator']["generator_mlp_hidden"],
         one_hot_result_dim=params['generator']["one_hot_result_dim"]
-        )
+        ).to(device)
 
     qf1_mask_generator = networks.MaskGeneratorNet(
         em_input_shape=np.prod(example_embedding.shape),
@@ -236,7 +236,7 @@ def experiment(args):
         generator_mlp_hidden=params['generator']["generator_mlp_hidden"],
         one_hot_result_dim=params['generator']["one_hot_result_dim"]
 
-        )
+        ).to(device)
     qf2_mask_generator = networks.MaskGeneratorNet(
         em_input_shape=np.prod(example_embedding.shape),
         hidden_shapes=params['net']['hidden_shapes'],
@@ -251,7 +251,7 @@ def experiment(args):
         task_amount=env.num_tasks,
         one_hot_mlp_hidden=params['generator']["one_hot_mlp_hidden"],
         generator_mlp_hidden=params['generator']["generator_mlp_hidden"],
-        one_hot_result_dim=params['generator']["one_hot_result_dim"])
+        one_hot_result_dim=params['generator']["one_hot_result_dim"]).to(device)
     
     print("mask generator finish initialization")
     

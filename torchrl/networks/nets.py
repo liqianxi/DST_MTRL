@@ -105,11 +105,20 @@ class MaskedNet(nn.Module):
 
                     layer_weight = self.base.fcs[idx].weight.unsqueeze(0) 
                     layer_bias = self.base.fcs[idx].bias.unsqueeze(0)
-
+                    # print("layer_weight.shape",layer_weight.shape)
+                    # print("neuron_masks[2*idx].shape",neuron_masks[2*idx].shape)
                     weight_apply_mask = (layer_weight*neuron_masks[2*idx]).permute(0,2,1)
                     bias_apply_mask = (layer_bias*neuron_masks[2*idx+1])
                     bias_apply_mask_batched = bias_apply_mask.unsqueeze(1).repeat(1, self.each_task_batch_size, 1)
                    
+                    # """
+                    # layer_weight.shape torch.Size([1, 400, 23])
+                    # neuron_masks[2*idx].shape torch.Size([10, 400, 23])
+                    # mask_out torch.Size([10, 128, 23])
+                    # weight_apply_mask torch.Size([10, 23, 400])
+                    # """
+                    # print("mask_out",mask_out.shape)
+                    # print("weight_apply_mask",weight_apply_mask.shape)
                     tmp = torch.bmm(mask_out, weight_apply_mask)
 
                     output = self.activation_func(tmp + bias_apply_mask_batched)##:

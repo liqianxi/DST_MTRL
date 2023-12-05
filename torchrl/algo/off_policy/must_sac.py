@@ -129,6 +129,8 @@ class MUST_SAC(TwinSACQ):
         next_obs = batch['next_obs']
         rewards = batch['rewards']
         terminals = batch['terminals']
+        embedding_inputs = batch["embedding_inputs"]
+        task_idx = batch['task_idxs']
 
 
         rewards = torch.Tensor(rewards).to(self.device)
@@ -136,22 +138,16 @@ class MUST_SAC(TwinSACQ):
         obs = torch.Tensor(obs).to(self.device)
         actions = torch.Tensor(actions).to(self.device)
         next_obs = torch.Tensor(next_obs).to(self.device)
+        embedding_inputs = torch.Tensor(embedding_inputs).to(self.device)
+        task_idx = torch.Tensor(task_idx).to( self.device ).long()
+        time1 = time.time()
 
         obs = torch.cat([obs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         actions = torch.cat([actions[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         next_obs = torch.cat([next_obs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         rewards = torch.cat([rewards[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         terminals = torch.cat([terminals[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
-
-        time1 = time.time()
-
-        embedding_inputs = batch["embedding_inputs"]
-
-        embedding_inputs = torch.Tensor(embedding_inputs).to(self.device)
         embedding_inputs = torch.cat([embedding_inputs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
-
-        task_idx = batch['task_idxs']
-        task_idx = torch.Tensor(task_idx).to( self.device ).long()
         task_idx = torch.cat([task_idx[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
         #print("task_idx",task_idx.shape) #task_idx torch.Size([1280, 1])
         # Here task idx: 0000000... 111111.. ...999999

@@ -143,3 +143,4 @@ dmypy.json
 /torchrl/hypernetworks/output
 /tmp
 output
+/t3s_scripts/must/mt10/*.txt
