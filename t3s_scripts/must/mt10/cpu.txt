@@ -1,0 +1,791 @@
+W&B disabled.
+task start
+Use seed 3
+2023-12-04 21:08:38,159 MainThread INFO: Experiment Name:1125_itv50_pr0.5_sllr1e-4_slloss1_trajinfo1_selected2
+2023-12-04 21:08:38,159 MainThread INFO: {
+  "env_name": "mt10",
+  "selected_task_amount": 2,
+  "env": {
+    "reward_scale": 1,
+    "obs_norm": false
+  },
+  "meta_env": {
+    "obs_type": "with_goal_and_id"
+  },
+  "replay_buffer": {
+    "size": 1000000.0
+  },
+  "net": {
+    "hidden_shapes": [
+      400,
+      400,
+      400
+    ]
+  },
+  "task_embedding": {
+    "em_hidden_shapes": [
+      256,
+      128
+    ]
+  },
+  "traj_encoder": {
+    "latent_size": 256
+  },
+  "generator": {
+    "one_hot_mlp_hidden": 64,
+    "generator_mlp_hidden": 256,
+    "one_hot_result_dim": 64
+  },
+  "sparse_training": {
+    "pruning_ratio": 0.5
+  },
+  "general_setting": {
+    "discount": 0.99,
+    "pretrain_epochs": 20,
+    "num_epochs": 10000,
+    "epoch_frames": 150,
+    "max_episode_frames": 150,
+    "generator_lr": 0.0001,
+    "batch_size": 1280,
+    "min_pool": 10000,
+    "success_traj_update_only": true,
+    "target_hard_update_period": 1000,
+    "use_soft_update": true,
+    "tau": 0.005,
+    "opt_times": 200,
+    "update_end_epoch": 10000,
+    "mask_update_interval": 50,
+    "eval_episodes": 3,
+    "recent_traj_window": 10,
+    "sl_optim_times": 5,
+    "use_trajectory_info": 1,
+    "use_sl_loss": 1
+  },
+  "sac": {
+    "plr": 0.0001,
+    "qlr": 0.0001,
+    "reparameterization": true,
+    "automatic_entropy_tuning": true,
+    "policy_std_reg_weight": 0,
+    "policy_mean_reg_weight": 0
+  }
+}
+finish policy net init
+mask generator finish initialization
+/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Could not seed environment <MTEnv instance>[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+wandb: Tracking run with wandb version 0.15.5
+wandb: W&B syncing is set to `offline` in this directory.  
+wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+replay_buffer._size: [300 300]
+2023-12-04 21:09:06,334 MainThread INFO: EPOCH:0
+2023-12-04 21:09:06,334 MainThread INFO: Time Consumed:0.01707601547241211s
+2023-12-04 21:09:06,335 MainThread INFO: Total Frames:300s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                3704.97463
+Running_Training_Average_Rewards  1852.48732
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [329 317]
+2023-12-04 21:09:06,411 MainThread INFO: EPOCH:1
+2023-12-04 21:09:06,412 MainThread INFO: Time Consumed:0.0022025108337402344s
+2023-12-04 21:09:06,412 MainThread INFO: Total Frames:600s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                20185.20400
+Running_Training_Average_Rewards  5972.54466
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [450 450]
+2023-12-04 21:09:06,744 MainThread INFO: EPOCH:2
+2023-12-04 21:09:06,745 MainThread INFO: Time Consumed:0.33135414123535156s
+2023-12-04 21:09:06,745 MainThread INFO: Total Frames:900s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                5103.03210
+Running_Training_Average_Rewards  4832.20179
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [600 600]
+2023-12-04 21:09:07,189 MainThread INFO: EPOCH:3
+2023-12-04 21:09:07,189 MainThread INFO: Time Consumed:0.4425954818725586s
+2023-12-04 21:09:07,189 MainThread INFO: Total Frames:1200s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                44893.74909
+Running_Training_Average_Rewards  9235.86998
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [750 750]
+2023-12-04 21:09:07,707 MainThread INFO: EPOCH:4
+2023-12-04 21:09:07,707 MainThread INFO: Time Consumed:0.5161523818969727s
+2023-12-04 21:09:07,707 MainThread INFO: Total Frames:1500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                10988.31017
+Running_Training_Average_Rewards  8487.52700
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [900 900]
+2023-12-04 21:09:08,252 MainThread INFO: EPOCH:5
+2023-12-04 21:09:08,253 MainThread INFO: Time Consumed:0.5435543060302734s
+2023-12-04 21:09:08,253 MainThread INFO: Total Frames:1800s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                8431.98120
+Running_Training_Average_Rewards  7775.60427
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1050 1050]
+2023-12-04 21:09:08,710 MainThread INFO: EPOCH:6
+2023-12-04 21:09:08,711 MainThread INFO: Time Consumed:0.4563145637512207s
+2023-12-04 21:09:08,711 MainThread INFO: Total Frames:2100s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                4369.83861
+Running_Training_Average_Rewards  6976.93499
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1200 1200]
+2023-12-04 21:09:09,180 MainThread INFO: EPOCH:7
+2023-12-04 21:09:09,181 MainThread INFO: Time Consumed:0.46802806854248047s
+2023-12-04 21:09:09,181 MainThread INFO: Total Frames:2400s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                31561.13309
+Running_Training_Average_Rewards  8077.38893
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [1350 1350]
+2023-12-04 21:09:09,964 MainThread INFO: EPOCH:8
+2023-12-04 21:09:09,964 MainThread INFO: Time Consumed:0.7817246913909912s
+2023-12-04 21:09:09,965 MainThread INFO: Total Frames:2700s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                6597.58502
+Running_Training_Average_Rewards  7546.43377
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1500 1500]
+2023-12-04 21:09:10,502 MainThread INFO: EPOCH:9
+2023-12-04 21:09:10,502 MainThread INFO: Time Consumed:0.5356199741363525s
+2023-12-04 21:09:10,502 MainThread INFO: Total Frames:3000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                15799.67703
+Running_Training_Average_Rewards  7581.77425
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [1650 1650]
+2023-12-04 21:09:11,001 MainThread INFO: EPOCH:10
+2023-12-04 21:09:11,002 MainThread INFO: Time Consumed:0.4979112148284912s
+2023-12-04 21:09:11,002 MainThread INFO: Total Frames:3300s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                6907.24600
+Running_Training_Average_Rewards  7206.48777
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1800 1800]
+2023-12-04 21:09:11,477 MainThread INFO: EPOCH:11
+2023-12-04 21:09:11,477 MainThread INFO: Time Consumed:0.473724365234375s
+2023-12-04 21:09:11,478 MainThread INFO: Total Frames:3600s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                8135.34423
+Running_Training_Average_Rewards  6944.91980
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1950 1950]
+2023-12-04 21:09:11,945 MainThread INFO: EPOCH:12
+2023-12-04 21:09:11,946 MainThread INFO: Time Consumed:0.4662480354309082s
+2023-12-04 21:09:11,946 MainThread INFO: Total Frames:3900s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                23589.58107
+Running_Training_Average_Rewards  7317.98678
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2100 2100]
+2023-12-04 21:09:12,562 MainThread INFO: EPOCH:13
+2023-12-04 21:09:12,563 MainThread INFO: Time Consumed:0.6151168346405029s
+2023-12-04 21:09:12,563 MainThread INFO: Total Frames:4200s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                12122.67551
+Running_Training_Average_Rewards  7228.22613
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2250 2250]
+2023-12-04 21:09:13,087 MainThread INFO: EPOCH:14
+2023-12-04 21:09:13,087 MainThread INFO: Time Consumed:0.5228700637817383s
+2023-12-04 21:09:13,088 MainThread INFO: Total Frames:4500s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                24602.93421
+Running_Training_Average_Rewards  7566.44220
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2400 2400]
+2023-12-04 21:09:13,642 MainThread INFO: EPOCH:15
+2023-12-04 21:09:13,642 MainThread INFO: Time Consumed:0.5529429912567139s
+2023-12-04 21:09:13,643 MainThread INFO: Total Frames:4800s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                19158.95509
+Running_Training_Average_Rewards  8081.57488
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2550 2550]
+2023-12-04 21:09:14,317 MainThread INFO: EPOCH:16
+2023-12-04 21:09:14,317 MainThread INFO: Time Consumed:0.6726279258728027s
+2023-12-04 21:09:14,317 MainThread INFO: Total Frames:5100s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                13412.84701
+Running_Training_Average_Rewards  7855.82965
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2700 2700]
+2023-12-04 21:09:15,010 MainThread INFO: EPOCH:17
+2023-12-04 21:09:15,010 MainThread INFO: Time Consumed:0.6915473937988281s
+2023-12-04 21:09:15,011 MainThread INFO: Total Frames:5400s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                2946.16530
+Running_Training_Average_Rewards  7783.93409
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [2850 2850]
+2023-12-04 21:09:15,645 MainThread INFO: EPOCH:18
+2023-12-04 21:09:15,645 MainThread INFO: Time Consumed:0.6330125331878662s
+2023-12-04 21:09:15,646 MainThread INFO: Total Frames:5700s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                12563.19055
+Running_Training_Average_Rewards  6706.24880
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [3000 3000]
+2023-12-04 21:09:16,385 MainThread INFO: EPOCH:19
+2023-12-04 21:09:16,386 MainThread INFO: Time Consumed:0.7383124828338623s
+2023-12-04 21:09:16,386 MainThread INFO: Total Frames:6000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                14436.74686
+Running_Training_Average_Rewards  6821.19669
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+2023-12-04 21:09:16,387 MainThread INFO: Finished Pretrain
+  0%|          | 0/10000 [00:00<?, ?it/s]sample: [1, 0]
+replay_buffer._size: [3150 3150]
+collect time 0.6278560161590576
+train_time 64.88974094390869
+eval time 0.04898214340209961
+snapshot at best
+2023-12-04 21:10:22,939 MainThread INFO: EPOCH:0
+2023-12-04 21:10:22,940 MainThread INFO: Time Consumed:66.44889831542969s
+2023-12-04 21:10:22,940 MainThread INFO: Total Frames:6300s
+/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/algo/rl_algo.py:352: UserWarning: This overload of nonzero is deprecated:
+	nonzero()
+Consider using one of the following signatures instead:
+	nonzero(*, bool as_tuple) (Triggered internally at  /pytorch/torch/csrc/utils/python_arg_parser.cpp:882.)
+  value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
+  0%|          | 1/10000 [01:07<186:51:12, 67.27s/it]--------------------------------  -----------  ---------  -----------  ----------
+Name                              Value
+Running_Average_Rewards           6072.97521
+Train_Epoch_Reward                3439.21043
+Running_Training_Average_Rewards  6654.77100
+Explore_Time                      0.62690
+Train___Time                      64.88974
+Eval____Time                      0.04898
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -20.79564
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12166.74605
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max          Min
+Reward_Mean                       49.61203     1.73778    54.43483     45.18007
+alpha_0                           0.99000      0.00573    0.99990      0.98016
+alpha_1                           0.99000      0.00573    0.99990      0.98016
+Alpha_loss                        -0.06710     0.03900    -0.00000     -0.13427
+Training/policy_loss              -3.03726     0.42219    -2.65194     -4.50350
+Training/qf1_loss                 9542.51414   763.32770  11630.56738  7420.38135
+Training/qf2_loss                 9541.62389   763.18631  11627.83887  7420.54688
+Training/pf_norm                  0.26171      0.10292    0.52663      0.09007
+Training/qf1_norm                 317.68577    248.66811  1180.60498   100.18931
+Training/qf2_norm                 323.09974    264.88246  1232.44824   102.34996
+log_std/mean                      -0.10019     0.04687    -0.00025     -0.14732
+log_std/std                       0.00663      0.00307    0.01458      0.00103
+log_std/max                       -0.08928     0.04295    0.00240      -0.13572
+log_std/min                       -0.11079     0.05089    -0.00305     -0.17693
+log_probs/mean                    -2.72335     0.01942    -2.65453     -2.75115
+log_probs/std                     0.27820      0.06703    0.44469      0.19902
+log_probs/max                     -1.95775     0.30596    -1.13522     -2.23904
+log_probs/min                     -4.84076     0.75699    -3.62834     -8.71598
+mean/mean                         0.00017      0.00163    0.00385      -0.00400
+mean/std                          0.00390      0.00155    0.00929      0.00112
+mean/max                          0.00628      0.00315    0.01548      0.00027
+mean/min                          -0.00581     0.00333    -0.00010     -0.01744
+--------------------------------  -----------  ---------  -----------  ----------
+snapshot at 0
+history save at ./log/1125_itv50_pr0.5_sllr1e-4_slloss1_trajinfo1_selected2/mt10/3/model
+sample: [0, 1]
+replay_buffer._size: [3457 3457]
+collect time 0.03947043418884277
+train_time 34.02959084510803
+eval time 0.04777407646179199
+snapshot at best
+2023-12-04 21:10:58,781 MainThread INFO: EPOCH:1
+2023-12-04 21:10:58,782 MainThread INFO: Time Consumed:35.02116060256958s
+2023-12-04 21:10:58,782 MainThread INFO: Total Frames:6600s
+  0%|          | 2/10000 [01:42<134:19:54, 48.37s/it]--------------------------------  -----------  ----------  -----------  ----------
+Name                              Value
+Running_Average_Rewards           6072.97521
+Train_Epoch_Reward                11994.70485
+Running_Training_Average_Rewards  6908.93321
+Explore_Time                      0.03865
+Train___Time                      34.02959
+Eval____Time                      0.04777
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -20.79564
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12166.74605
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std         Max          Min
+Reward_Mean                       48.87906     1.73866     53.32238     44.53599
+alpha_0                           0.97053      0.00540     0.98006      0.96173
+alpha_1                           0.97037      0.00560     0.98006      0.96077
+Alpha_loss                        -0.19267     0.02870     -0.13468     -0.23022
+Training/policy_loss              -21.62789    14.78273    -4.52641     -55.59994
+Training/qf1_loss                 7063.32073   1659.94853  10720.25781  3648.81616
+Training/qf2_loss                 7056.10644   1657.86525  10711.11523  3650.82275
+Training/pf_norm                  0.31043      0.14505     0.89603      0.11311
+Training/qf1_norm                 4281.88722   1680.69732  7139.77295   1124.19861
+Training/qf2_norm                 4313.59482   1674.82247  7168.64404   1173.01929
+log_std/mean                      -0.14062     0.01680     -0.12203     -0.18168
+log_std/std                       0.03110      0.03147     0.10830      0.00311
+log_std/max                       -0.11570     0.00541     -0.09650     -0.12911
+log_std/min                       -0.21625     0.09642     -0.12843     -0.43249
+log_probs/mean                    -2.49067     0.30402     -1.73818     -2.74891
+log_probs/std                     0.63019      0.41498     1.54618      0.21691
+log_probs/max                     -0.50926     1.62502     2.94238      -2.21195
+log_probs/min                     -5.52647     0.97349     -3.92694     -8.83477
+mean/mean                         -0.05358     0.03795     -0.00354     -0.14819
+mean/std                          0.21941      0.19275     0.58058      0.00533
+mean/max                          0.25146      0.26589     0.78163      0.00511
+mean/min                          -0.51672     0.42675     -0.01162     -1.26408
+--------------------------------  -----------  ----------  -----------  ----------
+sample: [0, 1]
+replay_buffer._size: [3607 3607]
+collect time 0.053736209869384766
+train_time 34.35524129867554
+eval time 0.0462489128112793
+snapshot at best
+2023-12-04 21:11:34,301 MainThread INFO: EPOCH:2
+2023-12-04 21:11:34,302 MainThread INFO: Time Consumed:35.39041042327881s
+2023-12-04 21:11:34,302 MainThread INFO: Total Frames:6900s
+  0%|          | 3/10000 [02:17<118:03:25, 42.51s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6111.67936
+Train_Epoch_Reward                36033.38434
+Running_Training_Average_Rewards  7058.00825
+Explore_Time                      0.05299
+Train___Time                      34.35524
+Eval____Time                      0.04625
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -19.76392
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12397.93925
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       47.00526     1.71296    51.58448    42.10257
+alpha_0                           0.95357      0.00472    0.96166     0.94602
+alpha_1                           0.95119      0.00549    0.96067     0.94175
+Alpha_loss                        -0.28810     0.02478    -0.22240    -0.31738
+Training/policy_loss              -69.82398    6.93302    -56.13691   -83.98779
+Training/qf1_loss                 4081.36290   462.68393  5540.86182  2993.62793
+Training/qf2_loss                 4083.86953   462.96836  5547.59473  2999.08521
+Training/pf_norm                  1.05636      0.48841    2.07599     0.27216
+Training/qf1_norm                 768.12859    609.28148  2816.12793  88.97974
+Training/qf2_norm                 774.97052    609.78954  2820.24341  96.54129
+log_std/mean                      -0.15809     0.03727    -0.09871    -0.21058
+log_std/std                       0.09143      0.02837    0.12625     0.03670
+log_std/max                       -0.07233     0.02979    -0.01047    -0.10794
+log_std/min                       -0.33942     0.08010    -0.15279    -0.45137
+log_probs/mean                    -1.91593     0.37778    -1.35372    -2.53290
+log_probs/std                     1.36051      0.39099    1.95329     0.73100
+log_probs/max                     2.14787      1.24172    3.98097     -0.10227
+log_probs/min                     -6.79274     1.05081    -4.90582    -11.48605
+mean/mean                         -0.06441     0.05315    0.06215     -0.14787
+mean/std                          0.51863      0.14135    0.69508     0.28478
+mean/max                          0.84572      0.31496    1.19871     0.19108
+mean/min                          -0.99923     0.22178    -0.57335    -1.34306
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [3755 3757]
+collect time 0.038188934326171875
+train_time 34.5155975818634
+eval time 0.04968857765197754
+2023-12-04 21:12:09,075 MainThread INFO: EPOCH:3
+2023-12-04 21:12:09,076 MainThread INFO: Time Consumed:34.60658144950867s
+2023-12-04 21:12:09,076 MainThread INFO: Total Frames:7200s
+  0%|          | 4/10000 [02:52<109:31:47, 39.45s/it]--------------------------------  ----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           4961.43038
+Train_Epoch_Reward                9205.28390
+Running_Training_Average_Rewards  7144.93155
+Explore_Time                      0.03750
+Train___Time                      34.51560
+Eval____Time                      0.04969
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -18.64441
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             3040.01132
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean        Std        Max         Min
+Reward_Mean                       45.20022    1.71315    53.22570    41.35128
+alpha_0                           0.93733     0.00545    0.94595     0.92798
+alpha_1                           0.93233     0.00539    0.94165     0.92308
+Alpha_loss                        -0.42234    0.04897    -0.31359    -0.47659
+Training/policy_loss              -98.64132   10.07805   -83.10524   -116.21246
+Training/qf1_loss                 3918.15303  438.84509  5317.59863  2952.30249
+Training/qf2_loss                 3925.10045  439.01903  5325.78223  2957.48706
+Training/pf_norm                  0.81707     0.40747    2.00706     0.25156
+Training/qf1_norm                 945.37541   670.94280  4465.33936  153.95750
+Training/qf2_norm                 952.30975   675.88746  4486.27686  151.39545
+log_std/mean                      -0.11904    0.03649    -0.07306    -0.20350
+log_std/std                       0.05398     0.02881    0.12621     0.01335
+log_std/max                       -0.05363    0.03336    -0.00800    -0.10191
+log_std/min                       -0.21132    0.08963    -0.10421    -0.41311
+log_probs/mean                    -2.24231    0.35135    -1.37693    -2.68370
+log_probs/std                     1.03886     0.39709    1.90988     0.48514
+log_probs/max                     1.32092     1.33874    4.08464     -0.96395
+log_probs/min                     -6.12385    1.08889    -4.12406    -9.15575
+mean/mean                         -0.02290    0.05328    0.06093     -0.10321
+mean/std                          0.39397     0.15518    0.69574     0.15748
+mean/max                          0.62185     0.31021    1.19967     0.16846
+mean/min                          -0.74672    0.25877    -0.37887    -1.18270
+--------------------------------  ----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [3907 3907]
+collect time 0.038271188735961914
+train_time 35.25338339805603
+eval time 0.04214644432067871
+2023-12-04 21:12:44,526 MainThread INFO: EPOCH:4
+2023-12-04 21:12:44,537 MainThread INFO: Time Consumed:35.33667731285095s
+2023-12-04 21:12:44,537 MainThread INFO: Total Frames:7500s
+  0%|          | 5/10000 [03:28<105:31:45, 38.01s/it]--------------------------------  ----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           3998.65826
+Train_Epoch_Reward                2567.45816
+Running_Training_Average_Rewards  6703.85758
+Explore_Time                      0.03752
+Train___Time                      35.25338
+Eval____Time                      0.04215
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -29.64238
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             324.78189
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean        Std        Max         Min
+Reward_Mean                       45.48471    1.88493    49.58149    41.30986
+alpha_0                           0.91937     0.00484    0.92789     0.91089
+alpha_1                           0.91386     0.00528    0.92299     0.90478
+Alpha_loss                        -0.53202    0.03796    -0.47451    -0.62023
+Training/policy_loss              -136.50003  11.63800   -115.71255  -158.09898
+Training/qf1_loss                 4156.73693  508.03623  5613.97070  3020.28979
+Training/qf2_loss                 4165.59909  509.40817  5627.03662  3023.90356
+Training/pf_norm                  0.61277     0.16774    1.06699     0.27439
+Training/qf1_norm                 1427.14667  932.81653  4160.62646  210.41519
+Training/qf2_norm                 1438.58113  940.58277  4187.64258  213.17033
+log_std/mean                      -0.11701    0.01876    -0.08274    -0.15859
+log_std/std                       0.06143     0.01648    0.09904     0.04188
+log_std/max                       -0.01036    0.02769    0.03731     -0.06863
+log_std/min                       -0.23094    0.04997    -0.15992    -0.32863
+log_probs/mean                    -2.09336    0.17448    -1.67250    -2.40952
+log_probs/std                     1.25422     0.16971    1.69959     0.93688
+log_probs/max                     2.18618     0.54866    3.35779     0.90990
+log_probs/min                     -6.59387    0.79761    -5.37228    -9.73306
+mean/mean                         -0.11857    0.03123    -0.06241    -0.17306
+mean/std                          0.47247     0.05978    0.59529     0.36652
+mean/max                          0.82835     0.12876    1.11157     0.61327
+mean/min                          -0.89340    0.10590    -0.73815    -1.12063
+--------------------------------  ----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [4057 4057]
+collect time 0.05267333984375
+train_time 35.20511293411255
+eval time 0.0503385066986084
+snapshot at best
+2023-12-04 21:13:20,815 MainThread INFO: EPOCH:5
+2023-12-04 21:13:20,826 MainThread INFO: Time Consumed:36.173365354537964s
+2023-12-04 21:13:20,826 MainThread INFO: Total Frames:7800s
+  0%|          | 6/10000 [04:04<103:53:41, 37.42s/it]  0%|          | 6/10000 [04:07<114:23:28, 41.21s/it]
+--------------------------------  -----------  ----------  -----------  ----------
+Name                              Value
+Running_Average_Rewards           4270.76150
+Train_Epoch_Reward                285.24289
+Running_Training_Average_Rewards  6483.12415
+Explore_Time                      0.05203
+Train___Time                      35.20511
+Eval____Time                      0.05034
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.03843
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             14889.02125
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std         Max          Min
+Reward_Mean                       49.63012     2.39411     54.79251     43.10399
+alpha_0                           0.90572      0.00191     0.91080      0.90391
+alpha_1                           0.89575      0.00517     0.90469      0.88686
+Alpha_loss                        -0.46399     0.07112     -0.39325     -0.62572
+Training/policy_loss              -187.48400   15.98346    -157.28035   -213.78819
+Training/qf1_loss                 6690.89285   1201.03605  10308.07324  4117.05859
+Training/qf2_loss                 6707.47216   1204.31766  10331.48340  4121.17383
+Training/pf_norm                  1.01726      0.30787     1.81862      0.41017
+Training/qf1_norm                 2314.54893   1505.61725  7664.54785   340.83008
+Training/qf2_norm                 2327.11785   1516.22251  7718.84180   357.75250
+log_std/mean                      -0.24862     0.06966     -0.08334     -0.30610
+log_std/std                       0.16738      0.05475     0.21771      0.04949
+log_std/max                       -0.07251     0.04357     0.02999      -0.10975
+log_std/min                       -0.48855     0.13536     -0.16365     -0.61067
+log_probs/mean                    -0.33280     0.93553     0.61780      -2.44048
+log_probs/std                     2.87127      0.85077     3.73079      0.91873
+log_probs/max                     6.17186      1.98401     8.11272      0.98093
+log_probs/min                     -6.70346     1.39661     -4.04801     -11.94594
+mean/mean                         -0.05568     0.01925     -0.02281     -0.09482
+mean/std                          0.90639      0.21592     1.09662      0.36931
+mean/max                          1.42010      0.26427     1.64964      0.63482
+mean/min                          -1.49550     0.29044     -0.77244     -1.74438
+--------------------------------  -----------  ----------  -----------  ----------
+sample: [0, 1]
+replay_buffer._size: [4207 4207]
+collect time 0.039107322692871094
+Process Process-4:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/collector/para/async_mt.py", line 473, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-5:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/collector/para/async_mt.py", line 473, in eval_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-3:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/collector/para/async_mt.py", line 334, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-2:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/collector/para/async_mt.py", line 334, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/linecache.py", line 47, in getlines
+    return updatecache(filename, module_globals)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/linecache.py", line 136, in updatecache
+    with tokenize.open(fullname) as fp:
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/tokenize.py", line 392, in open
+    buffer = _builtin_open(filename, 'rb')
+KeyboardInterrupt
+
+Original exception was:
+Traceback (most recent call last):
+  File "starter/mt_must_sac.py", line 397, in <module>
+    experiment(args)
+  File "starter/mt_must_sac.py", line 358, in experiment
+    agent.train(env.num_tasks,params,group_name)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/algo/rl_algo.py", line 385, in train
+    self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch,self.use_trajectory_info)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/algo/off_policy/must_sac.py", line 364, in update_per_epoch
+    info = self.update(batch, task_sample_index, task_scheduler, 
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/algo/off_policy/must_sac.py", line 263, in update
+    self.pf_optimizer.step()
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/torch/autograd/grad_mode.py", line 26, in decorate_context
+    return func(*args, **kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/torch/optim/adam.py", line 108, in step
+    F.adam(params_with_grad,
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/torch/optim/functional.py", line 98, in adam
+    param.addcdiv_(exp_avg, denom, value=-step_size)
+KeyboardInterrupt
+wandb: Waiting for W&B process to finish... (failed 255).
+wandb: 
+wandb: Run history:
+wandb:                                0 ▁▁▁▁▁▁
+wandb:                                1 ▁▁▁▁▁▁
+wandb:                       Alpha_loss █▇▅▃▁▄
+wandb:                     Eval____Time ▇▆▅▇▁█
+wandb:                     Explore_Time █▁▁▁▁▁
+wandb:                      Reward_Mean ▆▂▁▁▂█
+wandb:          Running_Average_Rewards ███▄▁▂
+wandb: Running_Training_Average_Rewards ▃▆▇█▃▁
+wandb:               Train_Epoch_Reward ▂▃█▃▁▁
+wandb:                     Train___Time █▁▁▁▁▁
+wandb:                 Training/pf_norm ▁▂▃▂▃█
+wandb:             Training/policy_loss █▆▅▄▃▁
+wandb:                Training/qf1_loss █▂▁▁▂█
+wandb:                Training/qf1_norm ▂▃▁▂▁█
+wandb:                Training/qf2_loss █▂▁▁▂█
+wandb:                Training/qf2_norm ▂▃▁▂▁█
+wandb:                          alpha_0 █▆▅▃▂▁
+wandb:                          alpha_1 █▇▅▄▂▁
+wandb:                gen_weight_change ▁█████
+wandb:                    log_probs/max ▁▅▅▄▃█
+wandb:                   log_probs/mean ▁▃▄▂▂█
+wandb:                    log_probs/min ▇▁▁▃▆█
+wandb:                    log_probs/std ▁▄▅▃▃█
+wandb:                      log_std/max ▁▂▂▆█▃
+wandb:                     log_std/mean ▇▅▄▇█▁
+wandb:                      log_std/min █▃▃▆▇▁
+wandb:                      log_std/std ▁▅▅▃▃█
+wandb:                         mean/max ▁▅▇▅▄█
+wandb:                        mean/mean ▆▁█▄▄▃
+wandb:                         mean/min █▃▃▄▅▁
+wandb:                         mean/std ▁▅▆▄▃█
+wandb:                mean_success_rate ▁▁▁▁▁▁
+wandb:             push-v1_eval_rewards ▇▇▇█▁▆
+wandb:             push-v1_success_rate ▁▁▁▁▁▁
+wandb:            reach-v1_eval_rewards ▇▇▇▂▁█
+wandb:            reach-v1_success_rate ▁▁▁▁▁▁
+wandb:                save_traj_mod_sum ▁▁▁▁▁▁▁
+wandb:               task_policy_mask_0 ▁██████
+wandb:               task_policy_mask_1 ▁██████
+wandb: 
+wandb: Run summary:
+wandb:                                0 0.0
+wandb:                                1 0.0
+wandb:                       Alpha_loss -0.43025
+wandb:                     Eval____Time 0.05034
+wandb:                     Explore_Time 0.05203
+wandb:                      Reward_Mean 54.15615
+wandb:          Running_Average_Rewards 4270.7615
+wandb: Running_Training_Average_Rewards 6483.12415
+wandb:               Train_Epoch_Reward 285.24289
+wandb:                     Train___Time 35.20511
+wandb:                 Training/pf_norm 1.11013
+wandb:             Training/policy_loss -213.78819
+wandb:                Training/qf1_loss 10175.75781
+wandb:                Training/qf1_norm 5989.59619
+wandb:                Training/qf2_loss 10205.5459
+wandb:                Training/qf2_norm 6075.2334
+wandb:                          alpha_0 0.90391
+wandb:                          alpha_1 0.88686
+wandb:                gen_weight_change -9.76833
+wandb:                    log_probs/max 7.45325
+wandb:                   log_probs/mean 0.37157
+wandb:                    log_probs/min -5.01673
+wandb:                    log_probs/std 3.48445
+wandb:                      log_std/max -0.07996
+wandb:                     log_std/mean -0.28901
+wandb:                      log_std/min -0.56016
+wandb:                      log_std/std 0.20938
+wandb:                         mean/max 1.50012
+wandb:                        mean/mean -0.07509
+wandb:                         mean/min -1.72013
+wandb:                         mean/std 1.05858
+wandb:                mean_success_rate 0.0
+wandb:             push-v1_eval_rewards -22.03843
+wandb:             push-v1_success_rate 0.0
+wandb:            reach-v1_eval_rewards 14889.02125
+wandb:            reach-v1_success_rate 0.0
+wandb:                save_traj_mod_sum 0
+wandb:               task_policy_mask_0 452134
+wandb:               task_policy_mask_1 449748
+wandb: 
+wandb: You can sync this run to the cloud by running:
+wandb: wandb sync /lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/wandb/offline-run-20231204_210905-w9gaz9yu
+wandb: Find logs at: ./wandb/offline-run-20231204_210905-w9gaz9yu/logs

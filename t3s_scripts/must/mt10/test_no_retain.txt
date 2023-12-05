@@ -1,0 +1,2400 @@
+W&B disabled.
+task start
+Use seed 3
+2023-12-05 00:34:55,556 MainThread INFO: Experiment Name:1125_itv50_pr0.5_sllr1e-4_slloss1_trajinfo1_selected2
+2023-12-05 00:34:55,557 MainThread INFO: {
+  "env_name": "mt10",
+  "selected_task_amount": 2,
+  "env": {
+    "reward_scale": 1,
+    "obs_norm": false
+  },
+  "meta_env": {
+    "obs_type": "with_goal_and_id"
+  },
+  "replay_buffer": {
+    "size": 1000000.0
+  },
+  "net": {
+    "hidden_shapes": [
+      400,
+      400,
+      400
+    ]
+  },
+  "task_embedding": {
+    "em_hidden_shapes": [
+      256,
+      128
+    ]
+  },
+  "traj_encoder": {
+    "latent_size": 256
+  },
+  "generator": {
+    "one_hot_mlp_hidden": 64,
+    "generator_mlp_hidden": 256,
+    "one_hot_result_dim": 64
+  },
+  "sparse_training": {
+    "pruning_ratio": 0.5
+  },
+  "general_setting": {
+    "discount": 0.99,
+    "pretrain_epochs": 20,
+    "num_epochs": 10000,
+    "epoch_frames": 150,
+    "max_episode_frames": 150,
+    "generator_lr": 0.0001,
+    "batch_size": 1280,
+    "min_pool": 10000,
+    "success_traj_update_only": true,
+    "target_hard_update_period": 1000,
+    "use_soft_update": true,
+    "tau": 0.005,
+    "opt_times": 200,
+    "update_end_epoch": 10000,
+    "mask_update_interval": 50,
+    "eval_episodes": 3,
+    "recent_traj_window": 10,
+    "sl_optim_times": 5,
+    "use_trajectory_info": 1,
+    "use_sl_loss": 1
+  },
+  "sac": {
+    "plr": 0.0001,
+    "qlr": 0.0001,
+    "reparameterization": true,
+    "automatic_entropy_tuning": true,
+    "policy_std_reg_weight": 0,
+    "policy_mean_reg_weight": 0
+  }
+}
+finish policy net init
+mask generator finish initialization
+/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Could not seed environment <MTEnv instance>[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+wandb: Tracking run with wandb version 0.15.5
+wandb: W&B syncing is set to `offline` in this directory.  
+wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+replay_buffer._size: [300 300]
+2023-12-05 00:35:24,009 MainThread INFO: EPOCH:0
+2023-12-05 00:35:24,010 MainThread INFO: Time Consumed:0.01679825782775879s
+2023-12-05 00:35:24,010 MainThread INFO: Total Frames:300s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                15534.53521
+Running_Training_Average_Rewards  7767.26760
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [318 317]
+2023-12-05 00:35:24,060 MainThread INFO: EPOCH:1
+2023-12-05 00:35:24,060 MainThread INFO: Time Consumed:0.002828359603881836s
+2023-12-05 00:35:24,060 MainThread INFO: Total Frames:600s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                1757.46323
+Running_Training_Average_Rewards  4322.99961
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [450 450]
+2023-12-05 00:35:24,430 MainThread INFO: EPOCH:2
+2023-12-05 00:35:24,430 MainThread INFO: Time Consumed:0.36798834800720215s
+2023-12-05 00:35:24,430 MainThread INFO: Total Frames:900s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                8256.62193
+Running_Training_Average_Rewards  4258.10340
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [600 600]
+2023-12-05 00:35:25,059 MainThread INFO: EPOCH:3
+2023-12-05 00:35:25,059 MainThread INFO: Time Consumed:0.6271216869354248s
+2023-12-05 00:35:25,059 MainThread INFO: Total Frames:1200s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                18443.93166
+Running_Training_Average_Rewards  5499.06900
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [750 750]
+2023-12-05 00:35:25,532 MainThread INFO: EPOCH:4
+2023-12-05 00:35:25,533 MainThread INFO: Time Consumed:0.47181153297424316s
+2023-12-05 00:35:25,533 MainThread INFO: Total Frames:1500s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                8161.53845
+Running_Training_Average_Rewards  5215.40905
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [900 900]
+2023-12-05 00:35:26,002 MainThread INFO: EPOCH:5
+2023-12-05 00:35:26,002 MainThread INFO: Time Consumed:0.4675941467285156s
+2023-12-05 00:35:26,003 MainThread INFO: Total Frames:1800s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                5156.79962
+Running_Training_Average_Rewards  4775.90751
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1050 1050]
+2023-12-05 00:35:26,515 MainThread INFO: EPOCH:6
+2023-12-05 00:35:26,516 MainThread INFO: Time Consumed:0.511538028717041s
+2023-12-05 00:35:26,516 MainThread INFO: Total Frames:2100s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                8881.42787
+Running_Training_Average_Rewards  4728.02271
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1200 1200]
+2023-12-05 00:35:27,012 MainThread INFO: EPOCH:7
+2023-12-05 00:35:27,013 MainThread INFO: Time Consumed:0.495072603225708s
+2023-12-05 00:35:27,013 MainThread INFO: Total Frames:2400s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                6068.35629
+Running_Training_Average_Rewards  4516.29214
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1350 1350]
+2023-12-05 00:35:27,457 MainThread INFO: EPOCH:8
+2023-12-05 00:35:27,457 MainThread INFO: Time Consumed:0.442396879196167s
+2023-12-05 00:35:27,457 MainThread INFO: Total Frames:2700s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                1978.68990
+Running_Training_Average_Rewards  4124.40912
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1500 1500]
+2023-12-05 00:35:28,200 MainThread INFO: EPOCH:9
+2023-12-05 00:35:28,200 MainThread INFO: Time Consumed:0.7412567138671875s
+2023-12-05 00:35:28,201 MainThread INFO: Total Frames:3000s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                7183.98150
+Running_Training_Average_Rewards  4071.16728
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1650 1650]
+2023-12-05 00:35:28,680 MainThread INFO: EPOCH:10
+2023-12-05 00:35:28,680 MainThread INFO: Time Consumed:0.47771191596984863s
+2023-12-05 00:35:28,680 MainThread INFO: Total Frames:3300s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                9573.93054
+Running_Training_Average_Rewards  4136.23983
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [1800 1800]
+2023-12-05 00:35:29,123 MainThread INFO: EPOCH:11
+2023-12-05 00:35:29,123 MainThread INFO: Time Consumed:0.44123029708862305s
+2023-12-05 00:35:29,123 MainThread INFO: Total Frames:3600s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                21684.26000
+Running_Training_Average_Rewards  4695.06401
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [1950 1950]
+2023-12-05 00:35:29,575 MainThread INFO: EPOCH:12
+2023-12-05 00:35:29,576 MainThread INFO: Time Consumed:0.45023131370544434s
+2023-12-05 00:35:29,576 MainThread INFO: Total Frames:3900s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                8886.73163
+Running_Training_Average_Rewards  4675.70261
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [2100 2100]
+2023-12-05 00:35:30,068 MainThread INFO: EPOCH:13
+2023-12-05 00:35:30,068 MainThread INFO: Time Consumed:0.4903683662414551s
+2023-12-05 00:35:30,068 MainThread INFO: Total Frames:4200s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                2585.63367
+Running_Training_Average_Rewards  4434.06791
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [2250 2250]
+2023-12-05 00:35:30,563 MainThread INFO: EPOCH:14
+2023-12-05 00:35:30,563 MainThread INFO: Time Consumed:0.4936671257019043s
+2023-12-05 00:35:30,564 MainThread INFO: Total Frames:4500s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                8819.02121
+Running_Training_Average_Rewards  4432.43076
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [2400 2400]
+2023-12-05 00:35:31,071 MainThread INFO: EPOCH:15
+2023-12-05 00:35:31,071 MainThread INFO: Time Consumed:0.5060100555419922s
+2023-12-05 00:35:31,072 MainThread INFO: Total Frames:4800s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                15099.97012
+Running_Training_Average_Rewards  4417.94525
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2550 2550]
+2023-12-05 00:35:31,590 MainThread INFO: EPOCH:16
+2023-12-05 00:35:31,591 MainThread INFO: Time Consumed:0.5171463489532471s
+2023-12-05 00:35:31,591 MainThread INFO: Total Frames:5100s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                10098.45475
+Running_Training_Average_Rewards  4695.97831
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [2700 2700]
+2023-12-05 00:35:32,266 MainThread INFO: EPOCH:17
+2023-12-05 00:35:32,267 MainThread INFO: Time Consumed:0.674048662185669s
+2023-12-05 00:35:32,267 MainThread INFO: Total Frames:5400s
+--------------------------------  ----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                7044.04648
+Running_Training_Average_Rewards  4655.55912
+
+Name                              Mean        Std  Max  Min
+--------------------------------  ----------  ---  ---  ---
+replay_buffer._size: [2850 2850]
+2023-12-05 00:35:32,786 MainThread INFO: EPOCH:18
+2023-12-05 00:35:32,786 MainThread INFO: Time Consumed:0.5175273418426514s
+2023-12-05 00:35:32,786 MainThread INFO: Total Frames:5700s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                14705.24583
+Running_Training_Average_Rewards  4530.93626
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+replay_buffer._size: [3000 3000]
+2023-12-05 00:35:33,362 MainThread INFO: EPOCH:19
+2023-12-05 00:35:33,362 MainThread INFO: Time Consumed:0.5740997791290283s
+2023-12-05 00:35:33,362 MainThread INFO: Total Frames:6000s
+--------------------------------  -----------  ---  ---  ---
+Name                              Value
+Train_Epoch_Reward                24906.85985
+Running_Training_Average_Rewards  5089.11364
+
+Name                              Mean         Std  Max  Min
+--------------------------------  -----------  ---  ---  ---
+2023-12-05 00:35:33,364 MainThread INFO: Finished Pretrain
+  0%|          | 0/10000 [00:00<?, ?it/s]sample: [1, 0]
+replay_buffer._size: [3150 3150]
+collect time 0.6824126243591309
+time1 0.09403300285339355
+grad tensor(1.6825e-05, device='cuda:0')
+grad tensor(6.6546e-05, device='cuda:0')
+grad tensor(5.5055e-06, device='cuda:0')
+grad tensor(5.8758e-05, device='cuda:0')
+grad tensor(4.0460e-05, device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0031261444091796875, 'sac_diff1': 0.011880874633789062, 'sac_diff2': 0.06091570854187012, 'sac_diff3': 0.018528461456298828, 'sac_diff4': 0.01305079460144043, 'sac_diff5': 1.8439631462097168}
+diff5_list [0.7295122146606445, 0.42433762550354004, 0.21208810806274414, 0.27630615234375, 0.20171904563903809]
+time3 0.07210278511047363
+time5 1.998023271560669
+time7 0.08738350868225098
+gen_weight_change tensor(-7.4319, device='cuda:0')
+train_time 4.134629487991333
+eval time 4.806764125823975
+snapshot at best
+2023-12-05 00:35:44,013 MainThread INFO: EPOCH:0
+2023-12-05 00:35:44,014 MainThread INFO: Time Consumed:10.532371044158936s
+2023-12-05 00:35:44,014 MainThread INFO: Total Frames:6300s
+/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/algo/rl_algo.py:352: UserWarning: This overload of nonzero is deprecated:
+	nonzero()
+Consider using one of the following signatures instead:
+	nonzero(*, bool as_tuple) (Triggered internally at  /pytorch/torch/csrc/utils/python_arg_parser.cpp:882.)
+  value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
+  0%|          | 1/10000 [00:11<32:58:21, 11.87s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6217.23851
+Train_Epoch_Reward                15202.12524
+Running_Training_Average_Rewards  5423.95783
+Explore_Time                      0.68141
+Train___Time                      4.13463
+Eval____Time                      4.80676
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -20.98389
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12455.46091
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       37.46588     1.25149    39.59514    35.88517
+alpha_0                           0.99970      0.00014    0.99990     0.99950
+alpha_1                           0.99970      0.00014    0.99990     0.99950
+Alpha_loss                        -0.00134     0.00094    -0.00000    -0.00267
+Training/policy_loss              -2.68305     0.00663    -2.67417    -2.69285
+Training/qf1_loss                 5015.44629   284.19631  5504.35400  4693.90723
+Training/qf2_loss                 5015.59258   284.31814  5504.72754  4693.94873
+Training/pf_norm                  0.47191      0.05814    0.57069     0.40046
+Training/qf1_norm                 83.67747     2.90061    89.02792    80.51349
+Training/qf2_norm                 84.77493     3.20271    90.45664    80.93195
+log_std/mean                      -0.00267     0.00142    -0.00026    -0.00401
+log_std/std                       0.00176      0.00060    0.00272     0.00115
+log_std/max                       0.00005      0.00169    0.00227     -0.00197
+log_std/min                       -0.00563     0.00192    -0.00329    -0.00910
+log_probs/mean                    -2.68443     0.00766    -2.67399    -2.69522
+log_probs/std                     0.43447      0.01023    0.44804     0.41960
+log_probs/max                     -1.25003     0.09455    -1.13997    -1.39993
+log_probs/min                     -4.79871     0.63063    -3.61877    -5.51468
+mean/mean                         0.00140      0.00038    0.00186     0.00092
+mean/std                          0.00181      0.00052    0.00267     0.00138
+mean/max                          0.00401      0.00070    0.00498     0.00293
+mean/min                          -0.00136     0.00102    0.00029     -0.00238
+--------------------------------  -----------  ---------  ----------  ----------
+snapshot at 0
+history save at ./log/1125_itv50_pr0.5_sllr1e-4_slloss1_trajinfo1_selected2/mt10/3/model
+sample: [0, 1]
+replay_buffer._size: [3457 3457]
+collect time 0.04588174819946289
+time1 0.09879517555236816
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.003877401351928711, 'sac_diff1': 0.010263204574584961, 'sac_diff2': 0.04602193832397461, 'sac_diff3': 0.013270378112792969, 'sac_diff4': 0.012880086898803711, 'sac_diff5': 1.5026957988739014}
+diff5_list [0.6539921760559082, 0.4029245376586914, 0.14806222915649414, 0.14748764038085938, 0.15022921562194824]
+time3 0
+time5 1.6284959316253662
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4190, device='cuda:0')
+train_time 2.118375778198242
+eval time 0.0512998104095459
+2023-12-05 00:35:47,557 MainThread INFO: EPOCH:1
+2023-12-05 00:35:47,557 MainThread INFO: Time Consumed:2.218250274658203s
+2023-12-05 00:35:47,557 MainThread INFO: Total Frames:6600s
+  0%|          | 2/10000 [00:14<17:23:39,  6.26s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6217.23851
+Train_Epoch_Reward                13043.75071
+Running_Training_Average_Rewards  5562.70192
+Explore_Time                      0.04517
+Train___Time                      2.11838
+Eval____Time                      0.05130
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -20.98389
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12455.46091
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       36.14496     1.77263    37.97285    33.77651
+alpha_0                           0.99920      0.00014    0.99940     0.99900
+alpha_1                           0.99920      0.00014    0.99940     0.99900
+Alpha_loss                        -0.00468     0.00095    -0.00335    -0.00603
+Training/policy_loss              -2.68530     0.01399    -2.66254    -2.70178
+Training/qf1_loss                 4568.22715   493.58167  5372.72119  4044.04858
+Training/qf2_loss                 4568.24687   493.58744  5372.75146  4044.05859
+Training/pf_norm                  0.45370      0.03408    0.49218     0.40993
+Training/qf1_norm                 82.58932     3.80570    86.51872    77.58114
+Training/qf2_norm                 86.73584     3.93542    90.73386    81.61450
+log_std/mean                      -0.00646     0.00170    -0.00414    -0.00893
+log_std/std                       0.00203      0.00006    0.00212     0.00194
+log_std/max                       -0.00382     0.00173    -0.00148    -0.00634
+log_std/min                       -0.01032     0.00174    -0.00794    -0.01286
+log_probs/mean                    -2.68319     0.01347    -2.66125    -2.69804
+log_probs/std                     0.42009      0.01333    0.43234     0.39514
+log_probs/max                     -1.41107     0.10698    -1.31726    -1.58757
+log_probs/min                     -4.11588     0.19041    -3.83356    -4.37740
+mean/mean                         0.00019      0.00018    0.00046     -0.00001
+mean/std                          0.00233      0.00013    0.00256     0.00216
+mean/max                          0.00261      0.00033    0.00297     0.00208
+mean/min                          -0.00501     0.00087    -0.00377    -0.00621
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [3607 3607]
+collect time 0.038918495178222656
+time1 0.11339211463928223
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0029449462890625, 'sac_diff1': 0.010520458221435547, 'sac_diff2': 0.12590599060058594, 'sac_diff3': 0.013509273529052734, 'sac_diff4': 0.03113532066345215, 'sac_diff5': 1.809114933013916}
+diff5_list [0.6521124839782715, 0.39370274543762207, 0.39243268966674805, 0.22266697883605957, 0.14820003509521484]
+time3 0
+time5 2.032707929611206
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4124, device='cuda:0')
+train_time 2.5004541873931885
+eval time 0.0451045036315918
+2023-12-05 00:35:50,256 MainThread INFO: EPOCH:2
+2023-12-05 00:35:50,256 MainThread INFO: Time Consumed:2.587185859680176s
+2023-12-05 00:35:50,256 MainThread INFO: Total Frames:6900s
+  0%|          | 3/10000 [00:16<12:52:27,  4.64s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6217.23851
+Train_Epoch_Reward                22309.71543
+Running_Training_Average_Rewards  6104.08056
+Explore_Time                      0.03829
+Train___Time                      2.50045
+Eval____Time                      0.04510
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -20.98389
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12455.46091
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       36.17205     0.68341    37.07245    35.09106
+alpha_0                           0.99870      0.00014    0.99890     0.99850
+alpha_1                           0.99870      0.00014    0.99890     0.99850
+Alpha_loss                        -0.00802     0.00095    -0.00668    -0.00934
+Training/policy_loss              -2.68529     0.01292    -2.67450    -2.70937
+Training/qf1_loss                 4778.37646   163.48105  5056.75391  4604.91504
+Training/qf2_loss                 4778.46621   163.48136  5056.83936  4605.00146
+Training/pf_norm                  0.48208      0.03235    0.51839     0.42857
+Training/qf1_norm                 75.89556     1.50076    77.46219    73.40537
+Training/qf2_norm                 84.47381     1.62641    86.10892    81.76473
+log_std/mean                      -0.01155     0.00170    -0.00924    -0.01404
+log_std/std                       0.00220      0.00007    0.00231     0.00210
+log_std/max                       -0.00866     0.00148    -0.00667    -0.01083
+log_std/min                       -0.01451     0.00181    -0.01203    -0.01716
+log_probs/mean                    -2.68127     0.01288    -2.67053    -2.70469
+log_probs/std                     0.41847      0.00601    0.42928     0.41225
+log_probs/max                     -1.24518     0.03246    -1.19894    -1.30051
+log_probs/min                     -4.32740     0.44110    -3.75772    -4.86549
+mean/mean                         0.00141      0.00011    0.00154     0.00122
+mean/std                          0.00203      0.00009    0.00217     0.00189
+mean/max                          0.00479      0.00025    0.00507     0.00439
+mean/min                          -0.00184     0.00042    -0.00150    -0.00263
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [3761 3757]
+collect time 0.044640302658081055
+time1 0.08406782150268555
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.02508378028869629, 'sac_diff1': 0.041991472244262695, 'sac_diff2': 0.07146763801574707, 'sac_diff3': 0.01352238655090332, 'sac_diff4': 0.013054609298706055, 'sac_diff5': 1.8262898921966553}
+diff5_list [0.6385781764984131, 0.4492056369781494, 0.4039597511291504, 0.186798095703125, 0.14774823188781738]
+time3 0
+time5 2.0310187339782715
+time7 1.6689300537109375e-06
+gen_weight_change tensor(-7.4086, device='cuda:0')
+train_time 2.490074396133423
+eval time 0.04561924934387207
+snapshot at best
+2023-12-05 00:35:54,082 MainThread INFO: EPOCH:3
+2023-12-05 00:35:54,083 MainThread INFO: Time Consumed:3.704341173171997s
+2023-12-05 00:35:54,083 MainThread INFO: Total Frames:7200s
+  0%|          | 4/10000 [00:20<12:00:21,  4.32s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6241.21139
+Train_Epoch_Reward                9594.25723
+Running_Training_Average_Rewards  6357.93281
+Explore_Time                      0.04402
+Train___Time                      2.49007
+Eval____Time                      0.04562
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.12110
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12647.38117
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       35.10078     1.51758    37.98750    33.62836
+alpha_0                           0.99820      0.00014    0.99840     0.99800
+alpha_1                           0.99820      0.00014    0.99840     0.99800
+Alpha_loss                        -0.01138     0.00093    -0.01005    -0.01267
+Training/policy_loss              -2.69933     0.01119    -2.67891    -2.71030
+Training/qf1_loss                 4510.86221   689.33257  5809.85010  3929.76147
+Training/qf2_loss                 4510.94619   689.33460  5809.93750  3929.84155
+Training/pf_norm                  0.43484      0.05224    0.52515     0.36166
+Training/qf1_norm                 81.21441     2.90199    86.59455    77.87743
+Training/qf2_norm                 79.94305     2.92891    85.41918    76.66424
+log_std/mean                      -0.01644     0.00172    -0.01412    -0.01898
+log_std/std                       0.00192      0.00017    0.00218     0.00171
+log_std/max                       -0.01358     0.00155    -0.01148    -0.01586
+log_std/min                       -0.02036     0.00207    -0.01759    -0.02344
+log_probs/mean                    -2.69237     0.01190    -2.67032    -2.70345
+log_probs/std                     0.39749      0.00615    0.40682     0.38964
+log_probs/max                     -1.46918     0.06633    -1.35687    -1.53786
+log_probs/min                     -4.08109     0.33526    -3.61308    -4.50729
+mean/mean                         0.00016      0.00014    0.00032     -0.00007
+mean/std                          0.00144      0.00002    0.00147     0.00141
+mean/max                          0.00346      0.00024    0.00376     0.00303
+mean/min                          -0.00168     0.00022    -0.00139    -0.00195
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [3907 3907]
+collect time 0.09035515785217285
+time1 0.0817108154296875
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002929210662841797, 'sac_diff1': 0.010294675827026367, 'sac_diff2': 0.04942893981933594, 'sac_diff3': 0.0132293701171875, 'sac_diff4': 0.01296854019165039, 'sac_diff5': 1.1154630184173584}
+diff5_list [0.5176694393157959, 0.1508784294128418, 0.15172505378723145, 0.14744257926940918, 0.14774751663208008]
+time3 0
+time5 1.2438530921936035
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4064, device='cuda:0')
+train_time 1.903233528137207
+eval time 0.04531383514404297
+snapshot at best
+2023-12-05 00:35:57,245 MainThread INFO: EPOCH:4
+2023-12-05 00:35:57,246 MainThread INFO: Time Consumed:3.02892804145813s
+2023-12-05 00:35:57,246 MainThread INFO: Total Frames:7500s
+  0%|          | 5/10000 [00:23<10:49:04,  3.90s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6260.93753
+Train_Epoch_Reward                2550.39629
+Running_Training_Average_Rewards  6203.47997
+Explore_Time                      0.08951
+Train___Time                      1.90323
+Eval____Time                      0.04531
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.15006
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12700.83419
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       33.09676     0.75023    33.78181    31.67579
+alpha_0                           0.99770      0.00014    0.99790     0.99750
+alpha_1                           0.99770      0.00014    0.99790     0.99750
+Alpha_loss                        -0.01474     0.00095    -0.01339    -0.01606
+Training/policy_loss              -2.70980     0.00704    -2.70140    -2.72083
+Training/qf1_loss                 4062.08345   193.94064  4241.72998  3687.23608
+Training/qf2_loss                 4062.19888   193.94380  4241.84863  3687.34546
+Training/pf_norm                  0.44031      0.01052    0.45838     0.42839
+Training/qf1_norm                 76.25383     2.00374    78.32346    72.54511
+Training/qf2_norm                 77.42843     2.02563    79.49385    73.67550
+log_std/mean                      -0.02112     0.00193    -0.01851    -0.02397
+log_std/std                       0.00155      0.00002    0.00158     0.00152
+log_std/max                       -0.01779     0.00183    -0.01531    -0.02049
+log_std/min                       -0.02293     0.00191    -0.02037    -0.02575
+log_probs/mean                    -2.69919     0.00707    -2.69086    -2.70946
+log_probs/std                     0.38785      0.00961    0.40325     0.37948
+log_probs/max                     -1.46388     0.06557    -1.37742    -1.55825
+log_probs/min                     -4.60323     0.38763    -4.05718    -5.16181
+mean/mean                         0.00004      0.00011    0.00022     -0.00011
+mean/std                          0.00256      0.00008    0.00272     0.00250
+mean/max                          0.00458      0.00017    0.00490     0.00445
+mean/min                          -0.00346     0.00013    -0.00332    -0.00366
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [4057 4057]
+collect time 0.03803563117980957
+time1 0.12993931770324707
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0028886795043945312, 'sac_diff1': 0.010088920593261719, 'sac_diff2': 0.050234317779541016, 'sac_diff3': 0.01326131820678711, 'sac_diff4': 0.012937307357788086, 'sac_diff5': 1.1783955097198486}
+diff5_list [0.5797243118286133, 0.1551990509033203, 0.14760518074035645, 0.148789644241333, 0.14707732200622559]
+time3 0
+time5 1.3130228519439697
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4051, device='cuda:0')
+train_time 1.8323543071746826
+eval time 0.04432797431945801
+2023-12-05 00:35:59,280 MainThread INFO: EPOCH:5
+2023-12-05 00:35:59,280 MainThread INFO: Time Consumed:1.9174208641052246s
+2023-12-05 00:35:59,280 MainThread INFO: Total Frames:7800s
+  0%|          | 6/10000 [00:25<9:03:36,  3.26s/it] --------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6275.76858
+Train_Epoch_Reward                5793.15403
+Running_Training_Average_Rewards  6077.45408
+Explore_Time                      0.03738
+Train___Time                      1.83235
+Eval____Time                      0.04433
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.07641
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12603.86398
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       35.03669     1.30253    36.67878    32.97961
+alpha_0                           0.99720      0.00014    0.99740     0.99700
+alpha_1                           0.99720      0.00014    0.99740     0.99700
+Alpha_loss                        -0.01809     0.00096    -0.01674    -0.01946
+Training/policy_loss              -2.71171     0.00772    -2.70212    -2.72119
+Training/qf1_loss                 4734.95352   449.44930  5415.78955  4233.05371
+Training/qf2_loss                 4735.22344   449.45661  5416.07129  4233.31787
+Training/pf_norm                  0.40524      0.02745    0.43684     0.36610
+Training/qf1_norm                 80.43208     2.57810    83.86824    77.59226
+Training/qf2_norm                 76.44175     2.46672    79.73450    73.49931
+log_std/mean                      -0.02851     0.00222    -0.02551    -0.03178
+log_std/std                       0.00438      0.00020    0.00466     0.00411
+log_std/max                       -0.01896     0.00184    -0.01650    -0.02169
+log_std/min                       -0.03254     0.00241    -0.02929    -0.03608
+log_probs/mean                    -2.69977     0.00698    -2.69104    -2.70853
+log_probs/std                     0.38217      0.00962    0.39880     0.37158
+log_probs/max                     -1.53132     0.04857    -1.44219    -1.58271
+log_probs/min                     -4.76696     0.58273    -3.82260    -5.42018
+mean/mean                         0.00035      0.00012    0.00048     0.00016
+mean/std                          0.00281      0.00024    0.00315     0.00254
+mean/max                          0.00476      0.00025    0.00510     0.00443
+mean/min                          -0.00344     0.00030    -0.00307    -0.00385
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [4207 4207]
+collect time 0.04515886306762695
+time1 0.10819172859191895
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002953767776489258, 'sac_diff1': 0.010523557662963867, 'sac_diff2': 0.09130024909973145, 'sac_diff3': 0.013597488403320312, 'sac_diff4': 0.013057231903076172, 'sac_diff5': 1.8524420261383057}
+diff5_list [0.6192307472229004, 0.47385239601135254, 0.38306474685668945, 0.22512412071228027, 0.151170015335083]
+time3 0
+time5 2.032505512237549
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4043, device='cuda:0')
+train_time 2.501901865005493
+eval time 0.040796756744384766
+2023-12-05 00:36:01,981 MainThread INFO: EPOCH:6
+2023-12-05 00:36:01,981 MainThread INFO: Time Consumed:2.590553045272827s
+2023-12-05 00:36:01,981 MainThread INFO: Total Frames:8100s
+  0%|          | 7/10000 [00:28<8:32:38,  3.08s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6269.55663
+Train_Epoch_Reward                3915.08779
+Running_Training_Average_Rewards  5485.14834
+Explore_Time                      0.04453
+Train___Time                      2.50190
+Eval____Time                      0.04080
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.10294
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12393.46041
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       32.59099     1.11144    33.48680    30.40755
+alpha_0                           0.99670      0.00014    0.99690     0.99651
+alpha_1                           0.99670      0.00014    0.99690     0.99650
+Alpha_loss                        -0.02146     0.00094    -0.02014    -0.02282
+Training/policy_loss              -2.71955     0.00848    -2.70385    -2.72646
+Training/qf1_loss                 4021.47485   347.47729  4510.46436  3423.83521
+Training/qf2_loss                 4021.29238   347.47241  4510.28223  3423.66528
+Training/pf_norm                  0.38475      0.04533    0.46071     0.32267
+Training/qf1_norm                 74.32379     2.53161    76.54574    69.44479
+Training/qf2_norm                 78.00345     2.66363    80.44044    72.91061
+log_std/mean                      -0.03282     0.00226    -0.02980    -0.03618
+log_std/std                       0.00399      0.00019    0.00427     0.00374
+log_std/max                       -0.02651     0.00196    -0.02391    -0.02945
+log_std/min                       -0.03990     0.00283    -0.03614    -0.04409
+log_probs/mean                    -2.70542     0.00903    -2.68882    -2.71329
+log_probs/std                     0.37237      0.00752    0.38186     0.36028
+log_probs/max                     -1.57618     0.06929    -1.48229    -1.67344
+log_probs/min                     -4.52370     0.53504    -3.97781    -5.20322
+mean/mean                         -0.00012     0.00007    -0.00002    -0.00019
+mean/std                          0.00226      0.00029    0.00276     0.00193
+mean/max                          0.00502      0.00053    0.00590     0.00443
+mean/min                          -0.00234     0.00049    -0.00173    -0.00314
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [4357 4357]
+collect time 0.04655337333679199
+time1 0.09839487075805664
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002989530563354492, 'sac_diff1': 0.010488748550415039, 'sac_diff2': 0.06541180610656738, 'sac_diff3': 0.013414144515991211, 'sac_diff4': 0.013016939163208008, 'sac_diff5': 1.8740651607513428}
+diff5_list [0.6337602138519287, 0.4765496253967285, 0.38338661193847656, 0.23220610618591309, 0.1481626033782959]
+time3 0
+time5 2.0279786586761475
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4038, device='cuda:0')
+train_time 2.4975101947784424
+eval time 0.05219531059265137
+2023-12-05 00:36:04,693 MainThread INFO: EPOCH:7
+2023-12-05 00:36:04,704 MainThread INFO: Time Consumed:2.598956346511841s
+2023-12-05 00:36:04,704 MainThread INFO: Total Frames:8400s
+  0%|          | 8/10000 [00:31<8:12:45,  2.96s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6239.73472
+Train_Epoch_Reward                3641.08751
+Running_Training_Average_Rewards  5310.29354
+Explore_Time                      0.04594
+Train___Time                      2.49751
+Eval____Time                      0.05220
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.22172
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12157.47963
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       33.48982     0.45548    34.03406    32.70384
+alpha_0                           0.99621      0.00014    0.99641     0.99601
+alpha_1                           0.99621      0.00014    0.99640     0.99601
+Alpha_loss                        -0.02483     0.00094    -0.02351    -0.02621
+Training/policy_loss              -2.72778     0.01361    -2.70534    -2.74205
+Training/qf1_loss                 4333.31577   174.74821  4589.20459  4066.90552
+Training/qf2_loss                 4333.25928   174.75561  4589.16650  4066.85010
+Training/pf_norm                  0.37877      0.04893    0.46264     0.33444
+Training/qf1_norm                 79.83541     1.53367    81.73905    77.85892
+Training/qf2_norm                 84.01515     1.60696    86.00623    81.94065
+log_std/mean                      -0.04017     0.00260    -0.03670    -0.04403
+log_std/std                       0.00319      0.00008    0.00330     0.00307
+log_std/max                       -0.03505     0.00234    -0.03194    -0.03853
+log_std/min                       -0.04648     0.00266    -0.04290    -0.05039
+log_probs/mean                    -2.70936     0.01403    -2.68586    -2.72479
+log_probs/std                     0.36104      0.01068    0.37800     0.34746
+log_probs/max                     -1.58576     0.06739    -1.51555    -1.69218
+log_probs/min                     -4.55092     0.45300    -4.05589    -5.35641
+mean/mean                         -0.00099     0.00039    -0.00048    -0.00157
+mean/std                          0.00553      0.00050    0.00626     0.00483
+mean/max                          0.00395      0.00038    0.00434     0.00335
+mean/min                          -0.01251     0.00132    -0.01069    -0.01442
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [4507 4507]
+collect time 0.03817462921142578
+time1 0.11119484901428223
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.003042459487915039, 'sac_diff1': 0.011006593704223633, 'sac_diff2': 0.07562875747680664, 'sac_diff3': 0.013524770736694336, 'sac_diff4': 0.024197816848754883, 'sac_diff5': 1.8505632877349854}
+diff5_list [0.6715917587280273, 0.42717695236206055, 0.3747267723083496, 0.22963237762451172, 0.14743542671203613]
+time3 0
+time5 2.028621196746826
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4035, device='cuda:0')
+train_time 2.4959967136383057
+eval time 0.05269503593444824
+2023-12-05 00:36:07,401 MainThread INFO: EPOCH:8
+2023-12-05 00:36:07,402 MainThread INFO: Time Consumed:2.590864896774292s
+2023-12-05 00:36:07,402 MainThread INFO: Total Frames:8700s
+  0%|          | 9/10000 [00:34<7:59:43,  2.88s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6176.60345
+Train_Epoch_Reward                4763.00570
+Running_Training_Average_Rewards  5382.87261
+Explore_Time                      0.03751
+Train___Time                      2.49600
+Eval____Time                      0.05270
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.34822
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12016.29566
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       32.93984     1.11924    34.82666    31.77090
+alpha_0                           0.99571      0.00014    0.99591     0.99551
+alpha_1                           0.99571      0.00014    0.99591     0.99551
+Alpha_loss                        -0.02822     0.00099    -0.02682    -0.02961
+Training/policy_loss              -2.73581     0.01177    -2.72093    -2.75046
+Training/qf1_loss                 3980.18887   215.43524  4309.22412  3740.71460
+Training/qf2_loss                 3980.14131   215.43364  4309.17285  3740.67041
+Training/pf_norm                  0.33512      0.02984    0.37074     0.29665
+Training/qf1_norm                 80.85362     3.68087    87.70139    76.91517
+Training/qf2_norm                 83.96388     3.72138    90.87177    79.96695
+log_std/mean                      -0.04508     0.00273    -0.04140    -0.04910
+log_std/std                       0.00489      0.00012    0.00507     0.00471
+log_std/max                       -0.03463     0.00250    -0.03126    -0.03829
+log_std/min                       -0.05159     0.00276    -0.04783    -0.05563
+log_probs/mean                    -2.71452     0.01038    -2.70172    -2.72681
+log_probs/std                     0.34801      0.01100    0.36122     0.33273
+log_probs/max                     -1.62222     0.06032    -1.54280    -1.70813
+log_probs/min                     -4.23556     0.45918    -3.75257    -4.89560
+mean/mean                         0.00034      0.00009    0.00051     0.00026
+mean/std                          0.00571      0.00017    0.00591     0.00548
+mean/max                          0.00681      0.00009    0.00688     0.00664
+mean/min                          -0.00919     0.00034    -0.00877    -0.00958
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [4657 4659]
+collect time 0.052822113037109375
+time1 0.14284729957580566
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.020335674285888672, 'sac_diff1': 0.010599613189697266, 'sac_diff2': 0.04455900192260742, 'sac_diff3': 0.013319969177246094, 'sac_diff4': 0.013019084930419922, 'sac_diff5': 1.9476678371429443}
+diff5_list [0.6453578472137451, 0.43257784843444824, 0.5169236660003662, 0.20516490936279297, 0.1476435661315918]
+time3 0
+time5 2.098177909851074
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4033, device='cuda:0')
+train_time 2.629695415496826
+eval time 0.05199241638183594
+2023-12-05 00:36:10,227 MainThread INFO: EPOCH:9
+2023-12-05 00:36:10,227 MainThread INFO: Time Consumed:2.737215042114258s
+2023-12-05 00:36:10,228 MainThread INFO: Total Frames:9000s
+  0%|          | 10/10000 [00:36<7:57:39,  2.87s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6074.10009
+Train_Epoch_Reward                12941.81890
+Running_Training_Average_Rewards  5520.29920
+Explore_Time                      0.05122
+Train___Time                      2.62970
+Eval____Time                      0.05199
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.41551
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             11676.06600
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       33.00976     1.14468    34.70571    31.41554
+alpha_0                           0.99521      0.00014    0.99541     0.99501
+alpha_1                           0.99521      0.00014    0.99541     0.99501
+Alpha_loss                        -0.03158     0.00095    -0.03025    -0.03295
+Training/policy_loss              -2.74182     0.00598    -2.73069    -2.74881
+Training/qf1_loss                 4034.66953   306.76514  4434.50098  3680.03979
+Training/qf2_loss                 4034.73843   306.76632  4434.57178  3680.10913
+Training/pf_norm                  0.34310      0.02504    0.37481     0.31044
+Training/qf1_norm                 88.05322     4.31743    95.05868    81.86674
+Training/qf2_norm                 89.17025     4.29406    96.10847    82.97970
+log_std/mean                      -0.05555     0.00318    -0.05129    -0.06028
+log_std/std                       0.00247      0.00009    0.00259     0.00233
+log_std/max                       -0.05206     0.00312    -0.04794    -0.05673
+log_std/min                       -0.05943     0.00342    -0.05481    -0.06446
+log_probs/mean                    -2.71509     0.00574    -2.70406    -2.71947
+log_probs/std                     0.33034      0.00837    0.34252     0.31683
+log_probs/max                     -1.72688     0.02149    -1.69546    -1.75786
+log_probs/min                     -4.60105     0.55865    -4.01256    -5.30894
+mean/mean                         -0.00198     0.00012    -0.00175    -0.00207
+mean/std                          0.00728      0.00014    0.00745     0.00708
+mean/max                          0.00351      0.00021    0.00376     0.00325
+mean/min                          -0.01601     0.00045    -0.01532    -0.01644
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [4807 4807]
+collect time 0.03863120079040527
+time1 0.10143876075744629
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002910137176513672, 'sac_diff1': 0.010340452194213867, 'sac_diff2': 0.1269679069519043, 'sac_diff3': 0.013506174087524414, 'sac_diff4': 0.013079643249511719, 'sac_diff5': 1.8611195087432861}
+diff5_list [0.6658289432525635, 0.43662357330322266, 0.39276719093322754, 0.2180187702178955, 0.14788103103637695]
+time3 0
+time5 2.0763139724731445
+time7 1.6689300537109375e-06
+gen_weight_change tensor(-7.4032, device='cuda:0')
+train_time 2.491363525390625
+eval time 0.05235791206359863
+2023-12-05 00:36:12,924 MainThread INFO: EPOCH:10
+2023-12-05 00:36:12,924 MainThread INFO: Time Consumed:2.5850796699523926s
+2023-12-05 00:36:12,925 MainThread INFO: Total Frames:9300s
+  0%|          | 11/10000 [00:39<7:47:59,  2.81s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           5963.89647
+Train_Epoch_Reward                10860.13859
+Running_Training_Average_Rewards  5378.97148
+Explore_Time                      0.03799
+Train___Time                      2.49136
+Eval____Time                      0.05236
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.62479
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             11502.37616
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       33.10942     0.70869    34.04572    32.03794
+alpha_0                           0.99471      0.00014    0.99491     0.99451
+alpha_1                           0.99471      0.00014    0.99491     0.99451
+Alpha_loss                        -0.03496     0.00093    -0.03365    -0.03630
+Training/policy_loss              -2.74682     0.00478    -2.73960    -2.75306
+Training/qf1_loss                 3798.50234   338.77758  4276.25293  3347.58203
+Training/qf2_loss                 3798.61865   338.77979  4276.37061  3347.69312
+Training/pf_norm                  0.31011      0.04161    0.38988     0.27400
+Training/qf1_norm                 82.04050     2.13342    84.87096    78.68709
+Training/qf2_norm                 85.75580     2.12067    88.43127    82.45840
+log_std/mean                      -0.06377     0.00349    -0.05911    -0.06894
+log_std/std                       0.00365      0.00011    0.00382     0.00351
+log_std/max                       -0.05891     0.00333    -0.05447    -0.06384
+log_std/min                       -0.06810     0.00341    -0.06350    -0.07315
+log_probs/mean                    -2.71855     0.00588    -2.71147    -2.72638
+log_probs/std                     0.30789      0.01372    0.32482     0.29032
+log_probs/max                     -1.77688     0.12689    -1.57245    -1.97183
+log_probs/min                     -4.52269     0.51816    -3.82125    -5.15701
+mean/mean                         0.00045      0.00006    0.00053     0.00034
+mean/std                          0.00750      0.00015    0.00771     0.00726
+mean/max                          0.00772      0.00067    0.00850     0.00664
+mean/min                          -0.01617     0.00009    -0.01604    -0.01632
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [4957 4957]
+collect time 0.04078078269958496
+time1 0.10567402839660645
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002972841262817383, 'sac_diff1': 0.028574466705322266, 'sac_diff2': 0.07854914665222168, 'sac_diff3': 0.013429641723632812, 'sac_diff4': 0.013039827346801758, 'sac_diff5': 1.8358099460601807}
+diff5_list [0.6564421653747559, 0.4008617401123047, 0.4025001525878906, 0.2281792163848877, 0.1478266716003418]
+time3 0
+time5 2.033734083175659
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.4994544982910156
+eval time 0.049276113510131836
+2023-12-05 00:36:15,628 MainThread INFO: EPOCH:11
+2023-12-05 00:36:15,628 MainThread INFO: Time Consumed:2.5922014713287354s
+2023-12-05 00:36:15,629 MainThread INFO: Total Frames:9600s
+  0%|          | 12/10000 [00:42<7:42:52,  2.78s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           5875.14125
+Train_Epoch_Reward                8755.12276
+Running_Training_Average_Rewards  5334.19374
+Explore_Time                      0.04012
+Train___Time                      2.49945
+Eval____Time                      0.04928
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.82203
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             11506.62728
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       33.23241     1.04252    34.19976    31.68216
+alpha_0                           0.99421      0.00014    0.99441     0.99401
+alpha_1                           0.99421      0.00014    0.99441     0.99401
+Alpha_loss                        -0.03836     0.00098    -0.03697    -0.03969
+Training/policy_loss              -2.76005     0.01161    -2.74488    -2.77420
+Training/qf1_loss                 3983.40151   310.25911  4445.89014  3668.78516
+Training/qf2_loss                 3983.68564   310.26596  4446.16016  3669.07983
+Training/pf_norm                  0.30338      0.04176    0.35706     0.23454
+Training/qf1_norm                 95.39878     3.31617    101.11048   91.01318
+Training/qf2_norm                 94.78920     3.22676    100.23418   90.39432
+log_std/mean                      -0.07653     0.00399    -0.07113    -0.08240
+log_std/std                       0.00421      0.00013    0.00439     0.00402
+log_std/max                       -0.07026     0.00374    -0.06522    -0.07576
+log_std/min                       -0.08199     0.00405    -0.07652    -0.08795
+log_probs/mean                    -2.72457     0.01059    -2.71099    -2.73732
+log_probs/std                     0.29622      0.00763    0.30891     0.28732
+log_probs/max                     -1.85758     0.05637    -1.77376    -1.94584
+log_probs/min                     -4.34103     0.18634    -4.03139    -4.57251
+mean/mean                         0.00030      0.00003    0.00035     0.00027
+mean/std                          0.00454      0.00015    0.00472     0.00432
+mean/max                          0.00627      0.00044    0.00691     0.00570
+mean/min                          -0.00797     0.00029    -0.00753    -0.00833
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [5107 5107]
+collect time 0.038101911544799805
+time1 0.09843635559082031
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0029032230377197266, 'sac_diff1': 0.01952219009399414, 'sac_diff2': 0.07434511184692383, 'sac_diff3': 0.013372659683227539, 'sac_diff4': 0.013036251068115234, 'sac_diff5': 1.84147310256958}
+diff5_list [0.5859165191650391, 0.49750638008117676, 0.38251709938049316, 0.2283933162689209, 0.1471397876739502]
+time3 0
+time5 2.0149500370025635
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.4905107021331787
+eval time 0.044234514236450195
+2023-12-05 00:36:18,320 MainThread INFO: EPOCH:12
+2023-12-05 00:36:18,320 MainThread INFO: Time Consumed:2.575554370880127s
+2023-12-05 00:36:18,321 MainThread INFO: Total Frames:9900s
+  0%|          | 13/10000 [00:44<7:38:43,  2.76s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           5828.01714
+Train_Epoch_Reward                12476.37507
+Running_Training_Average_Rewards  5515.27136
+Explore_Time                      0.03748
+Train___Time                      2.49051
+Eval____Time                      0.04423
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.91268
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             11686.92957
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       31.08374     0.71617    32.21513    30.19039
+alpha_0                           0.99371      0.00014    0.99391     0.99351
+alpha_1                           0.99371      0.00014    0.99391     0.99351
+Alpha_loss                        -0.04176     0.00096    -0.04041    -0.04310
+Training/policy_loss              -2.77001     0.00382    -2.76393    -2.77326
+Training/qf1_loss                 3616.44258   206.03781  3832.02271  3240.10986
+Training/qf2_loss                 3616.12515   206.04307  3831.72144  3239.77930
+Training/pf_norm                  0.27466      0.04392    0.35724     0.23190
+Training/qf1_norm                 87.89200     3.01412    92.29382    83.99216
+Training/qf2_norm                 93.57926     3.21549    98.24937    89.38941
+log_std/mean                      -0.08489     0.00431    -0.07905    -0.09119
+log_std/std                       0.00401      0.00021    0.00433     0.00378
+log_std/max                       -0.08038     0.00402    -0.07495    -0.08626
+log_std/min                       -0.09409     0.00469    -0.08785    -0.10098
+log_probs/mean                    -2.72863     0.00250    -2.72442    -2.73212
+log_probs/std                     0.28989      0.01953    0.32028     0.26657
+log_probs/max                     -1.89405     0.03824    -1.84584    -1.95713
+log_probs/min                     -5.47768     1.80496    -3.83897    -8.90604
+mean/mean                         0.00112      0.00031    0.00165     0.00082
+mean/std                          0.00563      0.00009    0.00580     0.00553
+mean/max                          0.00934      0.00009    0.00951     0.00925
+mean/min                          -0.00832     0.00017    -0.00811    -0.00850
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [5257 5257]
+collect time 0.038127899169921875
+time1 0.10734319686889648
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0029325485229492188, 'sac_diff1': 0.019631385803222656, 'sac_diff2': 0.07566046714782715, 'sac_diff3': 0.013480424880981445, 'sac_diff4': 0.01301121711730957, 'sac_diff5': 1.857297658920288}
+diff5_list [0.6345312595367432, 0.46184468269348145, 0.3807523250579834, 0.23303508758544922, 0.14713430404663086]
+time3 0
+time5 2.0216727256774902
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.492025136947632
+eval time 0.042704105377197266
+2023-12-05 00:36:21,015 MainThread INFO: EPOCH:13
+2023-12-05 00:36:21,015 MainThread INFO: Time Consumed:2.5755715370178223s
+2023-12-05 00:36:21,015 MainThread INFO: Total Frames:10200s
+  0%|          | 14/10000 [00:47<7:35:33,  2.74s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           5817.94191
+Train_Epoch_Reward                3855.19784
+Running_Training_Average_Rewards  5153.60310
+Explore_Time                      0.03747
+Train___Time                      2.49203
+Eval____Time                      0.04270
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.96722
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             11916.16233
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       32.54385     1.20415    34.78404    31.35438
+alpha_0                           0.99322      0.00014    0.99341     0.99302
+alpha_1                           0.99322      0.00014    0.99341     0.99302
+Alpha_loss                        -0.04510     0.00098    -0.04379    -0.04648
+Training/policy_loss              -2.77284     0.01005    -2.75480    -2.78239
+Training/qf1_loss                 3784.66514   376.96339  4466.61963  3383.11963
+Training/qf2_loss                 3784.68247   376.96588  4466.64453  3383.13989
+Training/pf_norm                  0.26268      0.02483    0.30425     0.23881
+Training/qf1_norm                 99.91366     5.34742    110.42687   95.65356
+Training/qf2_norm                 101.64535    5.36757    112.20788   97.39085
+log_std/mean                      -0.09712     0.00438    -0.09119    -0.10352
+log_std/std                       0.00763      0.00003    0.00766     0.00759
+log_std/max                       -0.08405     0.00414    -0.07852    -0.09017
+log_std/min                       -0.11295     0.00422    -0.10715    -0.11909
+log_probs/mean                    -2.72374     0.00859    -2.70780    -2.73140
+log_probs/std                     0.26213      0.00780    0.27744     0.25608
+log_probs/max                     -1.96846     0.04072    -1.92044    -2.04241
+log_probs/min                     -4.85886     0.27114    -4.60980    -5.36431
+mean/mean                         -0.00001     0.00012    0.00006     -0.00025
+mean/std                          0.00482      0.00016    0.00497     0.00453
+mean/max                          0.00608      0.00026    0.00631     0.00557
+mean/min                          -0.00773     0.00019    -0.00748    -0.00796
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [5407 5411]
+collect time 0.043111324310302734
+time1 0.09842753410339355
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002965211868286133, 'sac_diff1': 0.02559375762939453, 'sac_diff2': 0.045957088470458984, 'sac_diff3': 0.013303041458129883, 'sac_diff4': 0.013019561767578125, 'sac_diff5': 1.899899959564209}
+diff5_list [0.685387372970581, 0.44330453872680664, 0.39724302291870117, 0.2266988754272461, 0.14726614952087402]
+time3 0
+time5 2.049457550048828
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.5121653079986572
+eval time 0.04857587814331055
+2023-12-05 00:36:23,738 MainThread INFO: EPOCH:14
+2023-12-05 00:36:23,739 MainThread INFO: Time Consumed:2.6065726280212402s
+2023-12-05 00:36:23,739 MainThread INFO: Total Frames:10500s
+  0%|          | 15/10000 [00:50<7:35:34,  2.74s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           5857.92257
+Train_Epoch_Reward                8947.86682
+Running_Training_Average_Rewards  4621.63666
+Explore_Time                      0.04245
+Train___Time                      2.51217
+Eval____Time                      0.04858
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.24516
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12076.70226
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       32.00164     1.09963    33.26973    30.33947
+alpha_0                           0.99272      0.00014    0.99292     0.99252
+alpha_1                           0.99272      0.00014    0.99292     0.99252
+Alpha_loss                        -0.04855     0.00095    -0.04728    -0.04992
+Training/policy_loss              -2.78295     0.00807    -2.77318    -2.79084
+Training/qf1_loss                 3649.59658   346.01734  4156.12354  3120.08325
+Training/qf2_loss                 3650.49497   346.04748  4157.02295  3120.90283
+Training/pf_norm                  0.20882      0.03707    0.24233     0.16014
+Training/qf1_norm                 102.92459    4.72593    108.19176   94.51308
+Training/qf2_norm                 97.72313     4.53114    102.81453   89.65829
+log_std/mean                      -0.11096     0.00392    -0.10557    -0.11661
+log_std/std                       0.00569      0.00002    0.00572     0.00567
+log_std/max                       -0.10372     0.00405    -0.09818    -0.10955
+log_std/min                       -0.12230     0.00393    -0.11684    -0.12796
+log_probs/mean                    -2.73491     0.00776    -2.72531    -2.74672
+log_probs/std                     0.24394      0.00939    0.25616     0.22907
+log_probs/max                     -2.03582     0.04380    -1.98134    -2.09157
+log_probs/min                     -4.45462     0.30614    -4.10111    -4.83827
+mean/mean                         0.00107      0.00040    0.00152     0.00049
+mean/std                          0.00550      0.00016    0.00563     0.00519
+mean/max                          0.00886      0.00025    0.00909     0.00840
+mean/min                          -0.00824     0.00066    -0.00710    -0.00902
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [5557 5557]
+collect time 0.05091214179992676
+time1 0.1004798412322998
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0030412673950195312, 'sac_diff1': 0.010707378387451172, 'sac_diff2': 0.059577226638793945, 'sac_diff3': 0.013407468795776367, 'sac_diff4': 0.013035058975219727, 'sac_diff5': 2.1616554260253906}
+diff5_list [0.8142411708831787, 0.5460104942321777, 0.4271810054779053, 0.2272186279296875, 0.1470041275024414]
+time3 0
+time5 2.3212947845458984
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.8126156330108643
+eval time 0.05101490020751953
+2023-12-05 00:36:26,770 MainThread INFO: EPOCH:15
+2023-12-05 00:36:26,770 MainThread INFO: Time Consumed:2.9172475337982178s
+2023-12-05 00:36:26,771 MainThread INFO: Total Frames:10800s
+  0%|          | 16/10000 [00:53<7:49:21,  2.82s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           5933.64781
+Train_Epoch_Reward                5727.02420
+Running_Training_Average_Rewards  4305.79996
+Explore_Time                      0.05017
+Train___Time                      2.81262
+Eval____Time                      0.05101
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.40988
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12260.41361
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       32.25131     1.08214    34.29943    31.08641
+alpha_0                           0.99222      0.00014    0.99242     0.99202
+alpha_1                           0.99222      0.00014    0.99242     0.99202
+Alpha_loss                        -0.05194     0.00089    -0.05070    -0.05320
+Training/policy_loss              -2.80098     0.00609    -2.79563    -2.81106
+Training/qf1_loss                 3556.37124   195.23659  3925.03052  3410.94604
+Training/qf2_loss                 3556.12681   195.22896  3924.77124  3410.70557
+Training/pf_norm                  0.22607      0.03792    0.28624     0.19234
+Training/qf1_norm                 108.73537    4.58521    117.28120   104.58928
+Training/qf2_norm                 112.81922    4.78895    121.72176   108.46824
+log_std/mean                      -0.11526     0.00342    -0.11052    -0.12020
+log_std/std                       0.00355      0.00051    0.00437     0.00297
+log_std/max                       -0.10968     0.00259    -0.10601    -0.11335
+log_std/min                       -0.12014     0.00354    -0.11537    -0.12547
+log_probs/mean                    -2.73623     0.00926    -2.72510    -2.75151
+log_probs/std                     0.24778      0.01672    0.27305     0.22672
+log_probs/max                     -2.05495     0.02320    -2.01032    -2.07735
+log_probs/min                     -5.14253     0.76720    -3.97005    -5.98147
+mean/mean                         0.00074      0.00012    0.00088     0.00060
+mean/std                          0.00436      0.00038    0.00503     0.00403
+mean/max                          0.00762      0.00019    0.00799     0.00746
+mean/min                          -0.00613     0.00075    -0.00485    -0.00703
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [5707 5707]
+collect time 0.03834342956542969
+time1 0.09651970863342285
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002961874008178711, 'sac_diff1': 0.010465860366821289, 'sac_diff2': 0.1270763874053955, 'sac_diff3': 0.013562679290771484, 'sac_diff4': 0.013112783432006836, 'sac_diff5': 1.8184378147125244}
+diff5_list [0.6101365089416504, 0.43731164932250977, 0.3893404006958008, 0.23240137100219727, 0.1492478847503662]
+time3 0
+time5 2.034278392791748
+time7 1.6689300537109375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.4953854084014893
+eval time 0.04432272911071777
+snapshot at best
+2023-12-05 00:36:30,460 MainThread INFO: EPOCH:16
+2023-12-05 00:36:30,461 MainThread INFO: Time Consumed:3.575017213821411s
+2023-12-05 00:36:30,461 MainThread INFO: Total Frames:11100s
+  0%|          | 17/10000 [00:57<8:33:57,  3.09s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6054.05730
+Train_Epoch_Reward                14842.16735
+Running_Training_Average_Rewards  4365.74718
+Explore_Time                      0.03767
+Train___Time                      2.49539
+Eval____Time                      0.04432
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.31704
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12711.21720
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       32.94674     1.37776    34.99743    31.51609
+alpha_0                           0.99172      0.00014    0.99192     0.99152
+alpha_1                           0.99172      0.00014    0.99192     0.99152
+Alpha_loss                        -0.05529     0.00099    -0.05392    -0.05669
+Training/policy_loss              -2.80498     0.00909    -2.79420    -2.81627
+Training/qf1_loss                 3817.52046   157.64811  3995.63354  3571.77124
+Training/qf2_loss                 3818.10723   157.66157  3996.20703  3572.35352
+Training/pf_norm                  0.21147      0.02412    0.25447     0.18533
+Training/qf1_norm                 119.88049    5.67023    129.27669   112.50964
+Training/qf2_norm                 115.49808    5.52983    124.76012   108.32792
+log_std/mean                      -0.13297     0.00325    -0.12834    -0.13749
+log_std/std                       0.00945      0.00016    0.00960     0.00916
+log_std/max                       -0.11773     0.00315    -0.11327    -0.12214
+log_std/min                       -0.15226     0.00284    -0.14783    -0.15573
+log_probs/mean                    -2.73347     0.00553    -2.72564    -2.74062
+log_probs/std                     0.23730      0.00542    0.24654     0.23016
+log_probs/max                     -2.17042     0.02361    -2.14097    -2.20912
+log_probs/min                     -4.79943     0.12308    -4.64016    -5.01488
+mean/mean                         0.00094      0.00024    0.00134     0.00069
+mean/std                          0.00310      0.00008    0.00318     0.00298
+mean/max                          0.00584      0.00061    0.00640     0.00486
+mean/min                          -0.00478     0.00017    -0.00456    -0.00500
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [5857 5857]
+collect time 0.03871893882751465
+time1 0.11048245429992676
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002902984619140625, 'sac_diff1': 0.034017324447631836, 'sac_diff2': 0.039170026779174805, 'sac_diff3': 0.013170957565307617, 'sac_diff4': 0.012951135635375977, 'sac_diff5': 1.1371994018554688}
+diff5_list [0.535987138748169, 0.15682029724121094, 0.1496593952178955, 0.14740395545959473, 0.14732861518859863]
+time3 0
+time5 1.2787575721740723
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 1.76737380027771
+eval time 0.04536294937133789
+snapshot at best
+2023-12-05 00:36:33,454 MainThread INFO: EPOCH:17
+2023-12-05 00:36:33,455 MainThread INFO: Time Consumed:2.8744945526123047s
+2023-12-05 00:36:33,455 MainThread INFO: Total Frames:11400s
+  0%|          | 18/10000 [01:00<8:28:18,  3.06s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6176.77018
+Train_Epoch_Reward                9271.96466
+Running_Training_Average_Rewards  3931.15549
+Explore_Time                      0.03808
+Train___Time                      1.76737
+Eval____Time                      0.04536
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.78755
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12913.93324
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       31.76166     0.80671    32.87958    30.57083
+alpha_0                           0.99123      0.00014    0.99142     0.99103
+alpha_1                           0.99122      0.00014    0.99142     0.99103
+Alpha_loss                        -0.05866     0.00095    -0.05738    -0.06008
+Training/policy_loss              -2.80998     0.00950    -2.79429    -2.82419
+Training/qf1_loss                 3643.04346   162.21698  3843.22705  3373.70117
+Training/qf2_loss                 3643.86196   162.25308  3844.07104  3374.46924
+Training/pf_norm                  0.18025      0.03406    0.24173     0.14873
+Training/qf1_norm                 120.44309    5.41735    127.99575   113.60653
+Training/qf2_norm                 113.01152    5.28637    120.45000   106.42901
+log_std/mean                      -0.13500     0.00094    -0.13333    -0.13586
+log_std/std                       0.01078      0.00024    0.01109     0.01044
+log_std/max                       -0.12119     0.00089    -0.11967    -0.12213
+log_std/min                       -0.15199     0.00042    -0.15120    -0.15232
+log_probs/mean                    -2.73269     0.00879    -2.71723    -2.74033
+log_probs/std                     0.22448      0.01265    0.24014     0.21251
+log_probs/max                     -2.18993     0.01604    -2.16846    -2.21412
+log_probs/min                     -4.69419     0.30276    -4.19845    -5.03252
+mean/mean                         0.00012      0.00038    0.00066     -0.00036
+mean/std                          0.00442      0.00014    0.00457     0.00416
+mean/max                          0.01054      0.00080    0.01158     0.00927
+mean/min                          -0.00448     0.00024    -0.00426    -0.00495
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [6007 6007]
+collect time 0.03829479217529297
+time1 0.11604452133178711
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002911806106567383, 'sac_diff1': 0.010233163833618164, 'sac_diff2': 0.0257570743560791, 'sac_diff3': 0.013205528259277344, 'sac_diff4': 0.012932777404785156, 'sac_diff5': 1.1532645225524902}
+diff5_list [0.5205283164978027, 0.1913292407989502, 0.14720892906188965, 0.14744329452514648, 0.14675474166870117]
+time3 0
+time5 1.257761001586914
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 1.7272355556488037
+eval time 0.04551219940185547
+2023-12-05 00:36:35,370 MainThread INFO: EPOCH:18
+2023-12-05 00:36:35,370 MainThread INFO: Time Consumed:1.8137562274932861s
+2023-12-05 00:36:35,371 MainThread INFO: Total Frames:11700s
+  0%|          | 19/10000 [01:02<7:31:34,  2.71s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6261.19324
+Train_Epoch_Reward                5136.57731
+Running_Training_Average_Rewards  3782.56616
+Explore_Time                      0.03764
+Train___Time                      1.72724
+Eval____Time                      0.04551
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.85348
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12760.27921
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       31.64441     0.73384    32.69453    30.71360
+alpha_0                           0.99073      0.00014    0.99093     0.99053
+alpha_1                           0.99073      0.00014    0.99093     0.99053
+Alpha_loss                        -0.06202     0.00097    -0.06066    -0.06343
+Training/policy_loss              -2.82527     0.00762    -2.81745    -2.83986
+Training/qf1_loss                 3548.58105   141.52402  3746.01099  3335.41968
+Training/qf2_loss                 3548.06626   141.51930  3745.49854  3334.91016
+Training/pf_norm                  0.24615      0.05028    0.30478     0.18003
+Training/qf1_norm                 119.88294    4.28615    127.31152   113.94078
+Training/qf2_norm                 127.14375    4.52823    134.97681   120.82767
+log_std/mean                      -0.14230     0.00049    -0.14140    -0.14267
+log_std/std                       0.00866      0.00009    0.00875     0.00852
+log_std/max                       -0.12994     0.00045    -0.12912    -0.13035
+log_std/min                       -0.15991     0.00095    -0.15827    -0.16100
+log_probs/mean                    -2.73018     0.00443    -2.72355    -2.73716
+log_probs/std                     0.23159      0.01390    0.25258     0.21612
+log_probs/max                     -2.20707     0.01976    -2.18869    -2.24076
+log_probs/min                     -5.04412     1.01607    -4.20793    -7.01311
+mean/mean                         0.00224      0.00012    0.00242     0.00213
+mean/std                          0.00305      0.00016    0.00327     0.00286
+mean/max                          0.00564      0.00061    0.00647     0.00475
+mean/min                          -0.00472     0.00037    -0.00419    -0.00516
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [6157 6157]
+collect time 0.05555224418640137
+time1 0.08926868438720703
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0029523372650146484, 'sac_diff1': 0.010558128356933594, 'sac_diff2': 0.06488204002380371, 'sac_diff3': 0.013381719589233398, 'sac_diff4': 0.013017654418945312, 'sac_diff5': 1.8923869132995605}
+diff5_list [0.6602354049682617, 0.4417288303375244, 0.4130074977874756, 0.22452640533447266, 0.15288877487182617]
+time3 0
+time5 2.0368001461029053
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.489407777786255
+eval time 0.0443120002746582
+2023-12-05 00:36:38,069 MainThread INFO: EPOCH:19
+2023-12-05 00:36:38,069 MainThread INFO: Time Consumed:2.591949224472046s
+2023-12-05 00:36:38,069 MainThread INFO: Total Frames:12000s
+  0%|          | 20/10000 [01:04<7:30:24,  2.71s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6319.47347
+Train_Epoch_Reward                1780.48943
+Running_Training_Average_Rewards  3756.90260
+Explore_Time                      0.05495
+Train___Time                      2.48941
+Eval____Time                      0.04431
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.95990
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12659.21931
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       32.59211     0.87959    33.99336    31.70023
+alpha_0                           0.99023      0.00014    0.99043     0.99003
+alpha_1                           0.99023      0.00014    0.99043     0.99003
+Alpha_loss                        -0.06541     0.00095    -0.06403    -0.06675
+Training/policy_loss              -2.84279     0.00652    -2.83211    -2.85067
+Training/qf1_loss                 3837.91099   342.88145  4324.15186  3491.76758
+Training/qf2_loss                 3838.18516   342.89168  4324.44141  3492.03906
+Training/pf_norm                  0.22235      0.01155    0.23568     0.20558
+Training/qf1_norm                 135.14875    7.55668    147.07402   127.07935
+Training/qf2_norm                 137.28758    7.76844    149.55960   128.97665
+log_std/mean                      -0.13980     0.00084    -0.13844    -0.14082
+log_std/std                       0.01380      0.00040    0.01425     0.01312
+log_std/max                       -0.11789     0.00014    -0.11762    -0.11802
+log_std/min                       -0.16978     0.00154    -0.16721    -0.17154
+log_probs/mean                    -2.73217     0.00422    -2.72879    -2.74038
+log_probs/std                     0.22205      0.00979    0.23231     0.20385
+log_probs/max                     -2.20425     0.01173    -2.19332    -2.22580
+log_probs/min                     -4.69139     0.53849    -4.28983    -5.74149
+mean/mean                         0.00226      0.00065    0.00311     0.00137
+mean/std                          0.00306      0.00062    0.00394     0.00221
+mean/max                          0.00720      0.00196    0.00975     0.00428
+mean/min                          -0.00174     0.00070    -0.00089    -0.00281
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [6312 6307]
+collect time 0.044373273849487305
+time1 0.09807300567626953
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002950906753540039, 'sac_diff1': 0.06540226936340332, 'sac_diff2': 0.07861781120300293, 'sac_diff3': 0.013394832611083984, 'sac_diff4': 0.012997627258300781, 'sac_diff5': 1.9236235618591309}
+diff5_list [0.6425449848175049, 0.5321285724639893, 0.3797416687011719, 0.2220017910003662, 0.14720654487609863]
+time3 0
+time5 2.145660161972046
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.608179807662964
+eval time 0.03948545455932617
+2023-12-05 00:36:40,881 MainThread INFO: EPOCH:20
+2023-12-05 00:36:40,881 MainThread INFO: Time Consumed:2.6947827339172363s
+2023-12-05 00:36:40,881 MainThread INFO: Total Frames:12300s
+  0%|          | 21/10000 [01:07<7:35:48,  2.74s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6373.72818
+Train_Epoch_Reward                14718.53257
+Running_Training_Average_Rewards  4054.41522
+Explore_Time                      0.04372
+Train___Time                      2.60818
+Eval____Time                      0.03949
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.81393
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12802.36475
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       33.97851     0.65284    35.08156    33.10011
+alpha_0                           0.98974      0.00014    0.98993     0.98954
+alpha_1                           0.98973      0.00014    0.98993     0.98954
+Alpha_loss                        -0.06883     0.00097    -0.06750    -0.07023
+Training/policy_loss              -2.85785     0.00966    -2.84554    -2.87196
+Training/qf1_loss                 4306.21353   217.60111  4708.50342  4049.24390
+Training/qf2_loss                 4304.40664   217.53529  4706.56104  4047.49414
+Training/pf_norm                  0.21683      0.04972    0.26737     0.12858
+Training/qf1_norm                 138.13145    6.87106    149.09340   129.06834
+Training/qf2_norm                 154.22854    7.61084    166.45468   144.25056
+log_std/mean                      -0.14329     0.00199    -0.14019    -0.14589
+log_std/std                       0.00968      0.00015    0.00978     0.00939
+log_std/max                       -0.12840     0.00218    -0.12500    -0.13131
+log_std/min                       -0.16078     0.00231    -0.15710    -0.16379
+log_probs/mean                    -2.73694     0.00608    -2.72496    -2.74135
+log_probs/std                     0.22486      0.01156    0.24274     0.20749
+log_probs/max                     -2.24243     0.01338    -2.21967    -2.25466
+log_probs/min                     -4.99958     0.67349    -4.36141    -6.12352
+mean/mean                         0.00080      0.00017    0.00105     0.00058
+mean/std                          0.00262      0.00012    0.00279     0.00245
+mean/max                          0.00386      0.00051    0.00475     0.00334
+mean/min                          -0.00540     0.00028    -0.00501    -0.00580
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [6457 6457]
+collect time 0.04626297950744629
+time1 0.09922528266906738
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0029456615447998047, 'sac_diff1': 0.010362863540649414, 'sac_diff2': 0.12692546844482422, 'sac_diff3': 0.013460159301757812, 'sac_diff4': 0.030553579330444336, 'sac_diff5': 1.8220875263214111}
+diff5_list [0.6553471088409424, 0.40744996070861816, 0.3882308006286621, 0.22383475303649902, 0.14722490310668945]
+time3 0
+time5 2.060774326324463
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.4895179271698
+eval time 0.0511021614074707
+snapshot at best
+2023-12-05 00:36:44,555 MainThread INFO: EPOCH:21
+2023-12-05 00:36:44,555 MainThread INFO: Time Consumed:3.5604119300842285s
+2023-12-05 00:36:44,555 MainThread INFO: Total Frames:12600s
+  0%|          | 22/10000 [01:11<8:21:31,  3.02s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6399.48050
+Train_Epoch_Reward                24035.01475
+Running_Training_Average_Rewards  4725.07945
+Explore_Time                      0.04564
+Train___Time                      2.48952
+Eval____Time                      0.05110
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.85774
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12968.28107
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       33.41986     0.66850    34.47207    32.55806
+alpha_0                           0.98924      0.00014    0.98944     0.98904
+alpha_1                           0.98924      0.00014    0.98944     0.98904
+Alpha_loss                        -0.07220     0.00095    -0.07087    -0.07362
+Training/policy_loss              -2.88480     0.00971    -2.87736    -2.90260
+Training/qf1_loss                 4003.53062   236.86374  4278.66895  3649.31689
+Training/qf2_loss                 4003.91670   236.86916  4279.05420  3649.68799
+Training/pf_norm                  0.19589      0.01832    0.22307     0.16854
+Training/qf1_norm                 162.92035    7.03595    171.51907   153.92390
+Training/qf2_norm                 158.92160    7.07479    167.65469   149.80203
+log_std/mean                      -0.13503     0.00194    -0.13227    -0.13762
+log_std/std                       0.00927      0.00037    0.00973     0.00867
+log_std/max                       -0.12132     0.00105    -0.11983    -0.12270
+log_std/min                       -0.14493     0.00271    -0.14102    -0.14850
+log_probs/mean                    -2.73548     0.00673    -2.72289    -2.74239
+log_probs/std                     0.23057      0.01553    0.25773     0.21236
+log_probs/max                     -2.16912     0.02804    -2.12851    -2.20447
+log_probs/min                     -4.99715     0.63355    -4.30177    -6.06625
+mean/mean                         0.00220      0.00018    0.00242     0.00189
+mean/std                          0.00234      0.00022    0.00256     0.00199
+mean/max                          0.00696      0.00048    0.00753     0.00623
+mean/min                          -0.00127     0.00035    -0.00069    -0.00169
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [6607 6607]
+collect time 0.038504600524902344
+time1 0.11033272743225098
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0029325485229492188, 'sac_diff1': 0.010188579559326172, 'sac_diff2': 0.05017518997192383, 'sac_diff3': 0.013214826583862305, 'sac_diff4': 0.012924432754516602, 'sac_diff5': 1.1706194877624512}
+diff5_list [0.5670943260192871, 0.15892338752746582, 0.14971089363098145, 0.14705562591552734, 0.14783525466918945]
+time3 0
+time5 1.2995109558105469
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 1.782059907913208
+eval time 0.04366159439086914
+2023-12-05 00:36:46,535 MainThread INFO: EPOCH:22
+2023-12-05 00:36:46,535 MainThread INFO: Time Consumed:1.866936206817627s
+2023-12-05 00:36:46,535 MainThread INFO: Total Frames:12900s
+  0%|          | 23/10000 [01:13<7:30:00,  2.71s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6404.02655
+Train_Epoch_Reward                18257.18881
+Running_Training_Average_Rewards  5212.28283
+Explore_Time                      0.03784
+Train___Time                      1.78206
+Eval____Time                      0.04366
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.10026
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12959.70646
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       34.29403     1.00590    35.47067    32.73579
+alpha_0                           0.98874      0.00014    0.98894     0.98855
+alpha_1                           0.98874      0.00014    0.98894     0.98854
+Alpha_loss                        -0.07552     0.00098    -0.07415    -0.07691
+Training/policy_loss              -2.89573     0.01066    -2.88319    -2.91163
+Training/qf1_loss                 4216.17124   391.02824  4673.24805  3666.64453
+Training/qf2_loss                 4217.71851   391.11707  4674.88379  3668.06494
+Training/pf_norm                  0.20396      0.02569    0.24893     0.17673
+Training/qf1_norm                 179.81112    10.45553   193.22549   164.93282
+Training/qf2_norm                 170.73402    10.17037   183.88809   156.26941
+log_std/mean                      -0.12853     0.00109    -0.12719    -0.13021
+log_std/std                       0.00803      0.00025    0.00839     0.00770
+log_std/max                       -0.11849     0.00060    -0.11791    -0.11949
+log_std/min                       -0.14399     0.00153    -0.14210    -0.14626
+log_probs/mean                    -2.73078     0.00262    -2.72684    -2.73440
+log_probs/std                     0.23545      0.00437    0.24112     0.22760
+log_probs/max                     -2.13628     0.05635    -2.07955    -2.22769
+log_probs/min                     -5.00501     0.32731    -4.39011    -5.36923
+mean/mean                         0.00053      0.00065    0.00133     -0.00036
+mean/std                          0.00453      0.00062    0.00528     0.00353
+mean/max                          0.00728      0.00065    0.00801     0.00638
+mean/min                          -0.00599     0.00192    -0.00311    -0.00841
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [6757 6757]
+collect time 0.04615211486816406
+time1 0.10700201988220215
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002947568893432617, 'sac_diff1': 0.010504007339477539, 'sac_diff2': 0.12058258056640625, 'sac_diff3': 0.013465166091918945, 'sac_diff4': 0.013053178787231445, 'sac_diff5': 1.8283891677856445}
+diff5_list [0.6496982574462891, 0.4157867431640625, 0.3939988613128662, 0.22139525413513184, 0.14751005172729492]
+time3 0
+time5 2.0285727977752686
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.490325689315796
+eval time 0.04439973831176758
+2023-12-05 00:36:49,229 MainThread INFO: EPOCH:23
+2023-12-05 00:36:49,229 MainThread INFO: Time Consumed:2.583559036254883s
+2023-12-05 00:36:49,229 MainThread INFO: Total Frames:13200s
+  0%|          | 24/10000 [01:15<7:29:36,  2.70s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6420.76171
+Train_Epoch_Reward                9786.79834
+Running_Training_Average_Rewards  5379.74258
+Explore_Time                      0.04553
+Train___Time                      2.49033
+Eval____Time                      0.04440
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.12087
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12927.89821
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       34.19823     0.96168    35.69682    33.09605
+alpha_0                           0.98825      0.00014    0.98845     0.98805
+alpha_1                           0.98825      0.00014    0.98845     0.98805
+Alpha_loss                        -0.07893     0.00094    -0.07755    -0.08027
+Training/policy_loss              -2.92814     0.00906    -2.91343    -2.94124
+Training/qf1_loss                 4238.59805   338.45842  4645.33789  3885.90942
+Training/qf2_loss                 4238.56357   338.44892  4645.27930  3885.91089
+Training/pf_norm                  0.18624      0.03424    0.21819     0.13901
+Training/qf1_norm                 182.55212    9.52863    199.27638   169.56056
+Training/qf2_norm                 184.29454    9.76520    201.35464   170.86572
+log_std/mean                      -0.12760     0.00033    -0.12728    -0.12823
+log_std/std                       0.00757      0.00042    0.00816     0.00700
+log_std/max                       -0.11449     0.00060    -0.11394    -0.11559
+log_std/min                       -0.13825     0.00088    -0.13729    -0.13962
+log_probs/mean                    -2.73369     0.00349    -2.73145    -2.74061
+log_probs/std                     0.23537      0.01553    0.26104     0.21446
+log_probs/max                     -2.11845     0.02309    -2.08585    -2.15377
+log_probs/min                     -5.02055     0.98943    -3.97122    -6.87668
+mean/mean                         0.00348      0.00005    0.00358     0.00343
+mean/std                          0.00225      0.00013    0.00238     0.00205
+mean/max                          0.00712      0.00021    0.00746     0.00683
+mean/min                          -0.00043     0.00052    0.00018     -0.00113
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [6907 6907]
+collect time 0.03789639472961426
+time1 0.0867917537689209
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.003022432327270508, 'sac_diff1': 0.010556936264038086, 'sac_diff2': 0.050849199295043945, 'sac_diff3': 0.013417482376098633, 'sac_diff4': 0.013030052185058594, 'sac_diff5': 1.8768994808197021}
+diff5_list [0.6506061553955078, 0.4646270275115967, 0.3777503967285156, 0.23691391944885254, 0.1470019817352295]
+time3 0
+time5 2.0426137447357178
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.4889590740203857
+eval time 0.050719261169433594
+2023-12-05 00:36:51,943 MainThread INFO: EPOCH:24
+2023-12-05 00:36:51,943 MainThread INFO: Time Consumed:2.580270767211914s
+2023-12-05 00:36:51,944 MainThread INFO: Total Frames:13500s
+  0%|          | 25/10000 [01:18<7:30:21,  2.71s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6441.35826
+Train_Epoch_Reward                14477.65709
+Running_Training_Average_Rewards  5430.93719
+Explore_Time                      0.03727
+Train___Time                      2.48896
+Eval____Time                      0.05072
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.15719
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12865.38208
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       32.91812     0.81262    33.95532    31.87476
+alpha_0                           0.98775      0.00014    0.98795     0.98756
+alpha_1                           0.98775      0.00014    0.98795     0.98755
+Alpha_loss                        -0.08226     0.00096    -0.08090    -0.08354
+Training/policy_loss              -2.95781     0.01176    -2.94235    -2.97293
+Training/qf1_loss                 4073.11353   446.24912  4826.86475  3491.77222
+Training/qf2_loss                 4071.80928   446.22778  4825.55664  3490.51685
+Training/pf_norm                  0.16937      0.02100    0.18816     0.13336
+Training/qf1_norm                 189.11101    6.91510    197.96471   179.82330
+Training/qf2_norm                 197.30258    7.27954    206.52136   187.48608
+log_std/mean                      -0.12853     0.00148    -0.12666    -0.13072
+log_std/std                       0.00729      0.00011    0.00746     0.00715
+log_std/max                       -0.11489     0.00117    -0.11353    -0.11668
+log_std/min                       -0.13838     0.00151    -0.13667    -0.14082
+log_probs/mean                    -2.73053     0.00483    -2.72501    -2.73873
+log_probs/std                     0.24388      0.01865    0.27158     0.21639
+log_probs/max                     -2.14241     0.02056    -2.11653    -2.17429
+log_probs/min                     -5.51012     0.52825    -4.84232    -6.08871
+mean/mean                         0.00152      0.00010    0.00169     0.00138
+mean/std                          0.00512      0.00024    0.00543     0.00474
+mean/max                          0.01119      0.00074    0.01234     0.01022
+mean/min                          -0.00358     0.00011    -0.00349    -0.00376
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [7058 7057]
+collect time 0.04759502410888672
+time1 0.0970618724822998
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002969980239868164, 'sac_diff1': 0.01085519790649414, 'sac_diff2': 0.13276171684265137, 'sac_diff3': 0.01350712776184082, 'sac_diff4': 0.013222932815551758, 'sac_diff5': 2.0691869258880615}
+diff5_list [0.6502995491027832, 0.3771991729736328, 0.3821532726287842, 0.5110428333282471, 0.14849209785461426]
+time3 0
+time5 2.291135787963867
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.7238869667053223
+eval time 0.053826093673706055
+snapshot at best
+2023-12-05 00:36:55,820 MainThread INFO: EPOCH:25
+2023-12-05 00:36:55,821 MainThread INFO: Time Consumed:3.7523000240325928s
+2023-12-05 00:36:55,821 MainThread INFO: Total Frames:13800s
+  0%|          | 26/10000 [01:22<8:30:17,  3.07s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6459.68623
+Train_Epoch_Reward                3974.67313
+Running_Training_Average_Rewards  5201.42167
+Explore_Time                      0.04698
+Train___Time                      2.72389
+Eval____Time                      0.05383
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.15855
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12985.98906
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       34.38200     1.11343    35.65742    33.09252
+alpha_0                           0.98726      0.00014    0.98746     0.98706
+alpha_1                           0.98726      0.00014    0.98746     0.98706
+Alpha_loss                        -0.08570     0.00091    -0.08446    -0.08701
+Training/policy_loss              -2.98682     0.00918    -2.97633    -3.00110
+Training/qf1_loss                 4121.20913   293.71856  4592.72754  3799.63354
+Training/qf2_loss                 4121.88315   293.73287  4593.41748  3800.28369
+Training/pf_norm                  0.17710      0.01957    0.20811     0.14760
+Training/qf1_norm                 213.51448    11.37031   230.94281   197.17905
+Training/qf2_norm                 214.81074    11.64343   232.64268   198.02252
+log_std/mean                      -0.12685     0.00020    -0.12663    -0.12721
+log_std/std                       0.00913      0.00028    0.00950     0.00873
+log_std/max                       -0.10984     0.00086    -0.10896    -0.11124
+log_std/min                       -0.14071     0.00052    -0.14024    -0.14157
+log_probs/mean                    -2.73561     0.00430    -2.73254    -2.74412
+log_probs/std                     0.22865      0.01406    0.25203     0.21204
+log_probs/max                     -2.14291     0.01159    -2.13074    -2.15875
+log_probs/min                     -4.91012     0.89428    -3.99122    -6.17242
+mean/mean                         0.00271      0.00021    0.00290     0.00240
+mean/std                          0.00478      0.00041    0.00543     0.00429
+mean/max                          0.00776      0.00040    0.00819     0.00720
+mean/min                          -0.00812     0.00049    -0.00754    -0.00893
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [7207 7207]
+collect time 0.0625143051147461
+time1 0.11650443077087402
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0029082298278808594, 'sac_diff1': 0.0290682315826416, 'sac_diff2': 0.01505589485168457, 'sac_diff3': 0.013138055801391602, 'sac_diff4': 0.012918472290039062, 'sac_diff5': 1.3267037868499756}
+diff5_list [0.7098753452301025, 0.17195630073547363, 0.14679551124572754, 0.14709711074829102, 0.15097951889038086]
+time3 0
+time5 1.4392585754394531
+time7 1.1920928955078125e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 1.9979989528656006
+eval time 0.04554009437561035
+2023-12-05 00:36:58,070 MainThread INFO: EPOCH:26
+2023-12-05 00:36:58,070 MainThread INFO: Time Consumed:2.108750104904175s
+2023-12-05 00:36:58,071 MainThread INFO: Total Frames:14100s
+  0%|          | 27/10000 [01:24<7:47:35,  2.81s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6453.67736
+Train_Epoch_Reward                5685.66008
+Running_Training_Average_Rewards  5099.10625
+Explore_Time                      0.06176
+Train___Time                      1.99800
+Eval____Time                      0.04554
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.15014
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12908.48482
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       33.96363     1.09419    36.02246    32.78398
+alpha_0                           0.98676      0.00014    0.98696     0.98657
+alpha_1                           0.98676      0.00014    0.98696     0.98656
+Alpha_loss                        -0.08907     0.00099    -0.08765    -0.09047
+Training/policy_loss              -3.02317     0.01611    -2.99999    -3.04663
+Training/qf1_loss                 4228.88740   268.38505  4749.50098  4008.61182
+Training/qf2_loss                 4230.48804   268.43163  4751.19287  4010.13135
+Training/pf_norm                  0.17251      0.03142    0.21022     0.11763
+Training/qf1_norm                 227.45371    9.80771    239.96910   214.67511
+Training/qf2_norm                 224.90284    9.92432    237.26920   211.90251
+log_std/mean                      -0.12989     0.00022    -0.12960    -0.13019
+log_std/std                       0.00885      0.00035    0.00924     0.00826
+log_std/max                       -0.11912     0.00068    -0.11840    -0.12029
+log_std/min                       -0.14757     0.00041    -0.14684    -0.14803
+log_probs/mean                    -2.73528     0.00448    -2.72971    -2.74167
+log_probs/std                     0.24016      0.01163    0.25654     0.22716
+log_probs/max                     -2.12671     0.02678    -2.08757    -2.16135
+log_probs/min                     -5.37208     1.00752    -4.40809    -6.62008
+mean/mean                         0.00224      0.00020    0.00257     0.00198
+mean/std                          0.00658      0.00030    0.00698     0.00617
+mean/max                          0.01491      0.00069    0.01593     0.01416
+mean/min                          -0.00500     0.00038    -0.00435    -0.00539
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [7357 7357]
+collect time 0.04721808433532715
+time1 0.09191775321960449
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.0030477046966552734, 'sac_diff1': 0.010810136795043945, 'sac_diff2': 0.09267520904541016, 'sac_diff3': 0.013535499572753906, 'sac_diff4': 0.013120174407958984, 'sac_diff5': 1.8454806804656982}
+diff5_list [0.6523969173431396, 0.4277491569519043, 0.4035811424255371, 0.21216034889221191, 0.14959311485290527]
+time3 0
+time5 2.0278220176696777
+time7 1.9073486328125e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.5165698528289795
+eval time 0.046173810958862305
+2023-12-05 00:37:00,794 MainThread INFO: EPOCH:27
+2023-12-05 00:37:00,794 MainThread INFO: Time Consumed:2.6128389835357666s
+2023-12-05 00:37:00,795 MainThread INFO: Total Frames:14400s
+  0%|          | 28/10000 [01:27<7:43:09,  2.79s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6442.54790
+Train_Epoch_Reward                29614.73213
+Running_Training_Average_Rewards  5670.38482
+Explore_Time                      0.04660
+Train___Time                      2.51657
+Eval____Time                      0.04617
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.12767
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12848.43923
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       34.57987     0.91375    35.63594    33.39816
+alpha_0                           0.98627      0.00014    0.98647     0.98607
+alpha_1                           0.98627      0.00014    0.98647     0.98607
+Alpha_loss                        -0.09251     0.00101    -0.09104    -0.09394
+Training/policy_loss              -3.05311     0.01840    -3.02521    -3.07955
+Training/qf1_loss                 4553.29824   210.39346  4934.32666  4326.17334
+Training/qf2_loss                 4552.42061   210.34089  4933.38623  4325.34473
+Training/pf_norm                  0.18375      0.03962    0.22333     0.11905
+Training/qf1_norm                 247.75058    13.68554   266.96500   229.61621
+Training/qf2_norm                 251.44188    14.15219   271.24756   232.48476
+log_std/mean                      -0.12729     0.00032    -0.12679    -0.12769
+log_std/std                       0.01023      0.00023    0.01053     0.00989
+log_std/max                       -0.10167     0.00097    -0.10042    -0.10316
+log_std/min                       -0.13616     0.00035    -0.13564    -0.13666
+log_probs/mean                    -2.74024     0.00508    -2.73115    -2.74584
+log_probs/std                     0.25475      0.00835    0.26871     0.24272
+log_probs/max                     -2.13006     0.03917    -2.09592    -2.20432
+log_probs/min                     -5.81634     0.22918    -5.54629    -6.18005
+mean/mean                         0.00106      0.00030    0.00146     0.00063
+mean/std                          0.00658      0.00054    0.00714     0.00570
+mean/max                          0.01044      0.00081    0.01128     0.00902
+mean/min                          -0.01181     0.00099    -0.01029    -0.01300
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [7507 7507]
+collect time 0.04019045829772949
+time1 0.11815214157104492
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.002989530563354492, 'sac_diff1': 0.09584665298461914, 'sac_diff2': 0.0997624397277832, 'sac_diff3': 0.01388859748840332, 'sac_diff4': 0.013286113739013672, 'sac_diff5': 1.8727531433105469}
+diff5_list [0.666832447052002, 0.42697906494140625, 0.38530778884887695, 0.24573016166687012, 0.1479036808013916]
+time3 0
+time5 2.140292167663574
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.5835063457489014
+eval time 0.05811572074890137
+2023-12-05 00:37:03,601 MainThread INFO: EPOCH:28
+2023-12-05 00:37:03,601 MainThread INFO: Time Consumed:2.684661865234375s
+2023-12-05 00:37:03,602 MainThread INFO: Total Frames:14700s
+  0%|          | 29/10000 [01:30<7:43:43,  2.79s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6408.61928
+Train_Epoch_Reward                1696.70717
+Running_Training_Average_Rewards  5598.43513
+Explore_Time                      0.03944
+Train___Time                      2.58351
+Eval____Time                      0.05812
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -21.95933
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12588.45054
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       32.93666     1.19864    33.99205    30.62742
+alpha_0                           0.98578      0.00014    0.98597     0.98558
+alpha_1                           0.98577      0.00014    0.98597     0.98558
+Alpha_loss                        -0.09585     0.00096    -0.09447    -0.09726
+Training/policy_loss              -3.08001     0.01641    -3.05697    -3.10702
+Training/qf1_loss                 4150.40728   413.85420  4511.90918  3342.59644
+Training/qf2_loss                 4151.95146   413.90617  4513.50732  3344.04492
+Training/pf_norm                  0.19410      0.01128    0.21616     0.18591
+Training/qf1_norm                 248.89767    13.23411   261.74548   226.50694
+Training/qf2_norm                 247.43222    13.53681   260.53397   224.89027
+log_std/mean                      -0.13706     0.00029    -0.13661    -0.13737
+log_std/std                       0.00804      0.00018    0.00820     0.00771
+log_std/max                       -0.12309     0.00008    -0.12300    -0.12322
+log_std/min                       -0.14746     0.00099    -0.14585    -0.14850
+log_probs/mean                    -2.73737     0.00434    -2.72995    -2.74144
+log_probs/std                     0.23050      0.00398    0.23466     0.22304
+log_probs/max                     -2.19449     0.02576    -2.15624    -2.22521
+log_probs/min                     -4.85531     0.33559    -4.59218    -5.46459
+mean/mean                         0.00090      0.00011    0.00108     0.00073
+mean/std                          0.00449      0.00010    0.00463     0.00436
+mean/max                          0.01040      0.00043    0.01093     0.00983
+mean/min                          -0.00412     0.00023    -0.00376    -0.00447
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [7657 7657]
+collect time 0.039154767990112305
+time1 0.11133122444152832
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.003092050552368164, 'sac_diff1': 0.013223886489868164, 'sac_diff2': 0.1531667709350586, 'sac_diff3': 0.01429891586303711, 'sac_diff4': 0.013405323028564453, 'sac_diff5': 1.9917874336242676}
+diff5_list [0.6389503479003906, 0.42547035217285156, 0.41564440727233887, 0.3620791435241699, 0.1496431827545166]
+time3 0
+time5 2.229041576385498
+time7 1.430511474609375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.736848831176758
+eval time 0.05074357986450195
+2023-12-05 00:37:06,537 MainThread INFO: EPOCH:29
+2023-12-05 00:37:06,537 MainThread INFO: Time Consumed:2.829587936401367s
+2023-12-05 00:37:06,538 MainThread INFO: Total Frames:15000s
+  0%|          | 30/10000 [01:33<7:51:20,  2.84s/it]--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6392.48167
+Train_Epoch_Reward                8683.07639
+Running_Training_Average_Rewards  5589.60878
+Explore_Time                      0.03842
+Train___Time                      2.73685
+Eval____Time                      0.05074
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.01020
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12703.85895
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       34.73573     1.36813    36.63132    33.08787
+alpha_0                           0.98528      0.00014    0.98548     0.98509
+alpha_1                           0.98528      0.00014    0.98548     0.98508
+Alpha_loss                        -0.09913     0.00094    -0.09772    -0.10036
+Training/policy_loss              -3.12040     0.01624    -3.09320    -3.13726
+Training/qf1_loss                 4660.51514   454.60041  5118.61035  3786.61572
+Training/qf2_loss                 4664.35474   454.78868  5122.74414  3790.12964
+Training/pf_norm                  0.18434      0.01426    0.20640     0.16775
+Training/qf1_norm                 288.21323    18.04105   312.46979   263.54562
+Training/qf2_norm                 277.32787    17.72769   301.41583   253.09866
+log_std/mean                      -0.12997     0.00034    -0.12953    -0.13045
+log_std/std                       0.00629      0.00039    0.00683     0.00572
+log_std/max                       -0.12347     0.00048    -0.12278    -0.12415
+log_std/min                       -0.14234     0.00070    -0.14130    -0.14332
+log_probs/mean                    -2.73096     0.00546    -2.72269    -2.73645
+log_probs/std                     0.22952      0.01303    0.24621     0.21300
+log_probs/max                     -2.15165     0.02703    -2.12138    -2.19208
+log_probs/min                     -4.74094     0.39526    -4.26734    -5.24979
+mean/mean                         0.00106      0.00043    0.00151     0.00040
+mean/std                          0.00375      0.00048    0.00437     0.00307
+mean/max                          0.00469      0.00043    0.00522     0.00396
+mean/min                          -0.00706     0.00058    -0.00620    -0.00780
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [1, 0]
+replay_buffer._size: [7806 7806]
+collect time 0.03930330276489258
+time1 0.11725854873657227
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+inner_dict_sum {'sac_diff0': 0.003057241439819336, 'sac_diff1': 0.02175736427307129, 'sac_diff2': 0.12059545516967773, 'sac_diff3': 0.013965368270874023, 'sac_diff4': 0.033341169357299805, 'sac_diff5': 1.8742494583129883}
+diff5_list [0.6428642272949219, 0.41420602798461914, 0.3979523181915283, 0.2666008472442627, 0.15262603759765625]
+time3 0
+time5 2.115896224975586
+time7 1.6689300537109375e-06
+gen_weight_change tensor(-7.4031, device='cuda:0')
+train_time 2.6194088459014893
+eval time 0.03824162483215332
+2023-12-05 00:37:09,351 MainThread INFO: EPOCH:30
+2023-12-05 00:37:09,351 MainThread INFO: Time Consumed:2.6997921466827393s
+2023-12-05 00:37:09,352 MainThread INFO: Total Frames:15300s
+  0%|          | 31/10000 [01:36<7:51:06,  2.84s/it]  0%|          | 31/10000 [01:38<8:46:38,  3.17s/it]
+--------------------------------  -----------  ---------  ----------  ----------
+Name                              Value
+Running_Average_Rewards           6373.56747
+Train_Epoch_Reward                3029.08109
+Running_Training_Average_Rewards  5499.67734
+Explore_Time                      0.03857
+Train___Time                      2.61941
+Eval____Time                      0.03824
+push-v1_success_rate              0.00000
+push-v1_eval_rewards              -22.03742
+1                                 0.00000
+reach-v1_success_rate             0.00000
+reach-v1_eval_rewards             12796.72593
+0                                 0.00000
+mean_success_rate                 0.00000
+
+Name                              Mean         Std        Max         Min
+Reward_Mean                       37.79608     1.11325    39.04089    36.12250
+alpha_0                           0.98479      0.00014    0.98499     0.98459
+alpha_1                           0.98479      0.00014    0.98498     0.98459
+Alpha_loss                        -0.10258     0.00097    -0.10125    -0.10405
+Training/policy_loss              -3.19140     0.02021    -3.16762    -3.22661
+Training/qf1_loss                 5567.69863   338.43503  5965.34082  5024.67188
+Training/qf2_loss                 5572.83594   338.68129  5970.61182  5029.34668
+Training/pf_norm                  0.19347      0.02894    0.22086     0.14158
+Training/qf1_norm                 339.24026    15.34841   357.26422   311.61206
+Training/qf2_norm                 315.91099    14.50961   332.59360   289.77484
+log_std/mean                      -0.12826     0.00039    -0.12777    -0.12891
+log_std/std                       0.01286      0.00016    0.01306     0.01260
+log_std/max                       -0.09932     0.00030    -0.09905    -0.09989
+log_std/min                       -0.14799     0.00038    -0.14751    -0.14854
+log_probs/mean                    -2.73609     0.00487    -2.72830    -2.74352
+log_probs/std                     0.24079      0.01047    0.25365     0.22481
+log_probs/max                     -2.15492     0.02501    -2.11604    -2.18354
+log_probs/min                     -5.09894     0.30179    -4.52809    -5.37777
+mean/mean                         0.00043      0.00024    0.00070     0.00007
+mean/std                          0.00304      0.00004    0.00309     0.00298
+mean/max                          0.00447      0.00025    0.00489     0.00416
+mean/min                          -0.00409     0.00024    -0.00381    -0.00443
+--------------------------------  -----------  ---------  ----------  ----------
+sample: [0, 1]
+replay_buffer._size: [7955 7954]
+collect time 0.12982940673828125
+time1 0.12251782417297363
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+grad tensor(0., device='cuda:0')
+wandb: Waiting for W&B process to finish... (failed 255).
+Process Process-5:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/collector/para/async_mt.py", line 428, in eval_worker_process
+    act = pf.eval_act( torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0), mask_this_task)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/policies/continuous_policy.py", line 82, in eval_act
+    return torch.tanh(mean.squeeze(0)).detach().cpu().numpy()
+KeyboardInterrupt
+Process Process-3:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/collector/para/async_mt.py", line 334, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-2:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/collector/para/async_mt.py", line 334, in train_worker_process
+    shared_que.put({
+  File "<string>", line 2, in put
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/managers.py", line 835, in _callmethod
+    kind, result = conn.recv()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process Process-4:
+Traceback (most recent call last):
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/collector/para/async_mt.py", line 430, in eval_worker_process
+    eval_ob, r, done, info = env_info.env.step( act )
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/gym/core.py", line 304, in step
+    return self.env.step(action)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/gym/core.py", line 290, in step
+    observation, reward, done, info = self.env.step(action)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/gym/core.py", line 273, in step
+    observation, reward, done, info = self.env.step(action)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/metaworld/metaworld/envs/mujoco/sawyer_xyz/sawyer_reach_push_pick_place.py", line 153, in step
+    self.do_simulation([action[-1], -action[-1]])
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/metaworld/metaworld/envs/mujoco/mujoco_env.py", line 120, in do_simulation
+    self.sim.step()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/spawn.py", line 129, in _main
+    return self._bootstrap(parent_sentinel)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/multiprocessing/process.py", line 331, in _bootstrap
+    traceback.print_exc()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/traceback.py", line 163, in print_exc
+    print_exception(*sys.exc_info(), limit=limit, file=file, chain=chain)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/traceback.py", line 103, in print_exception
+    for line in TracebackException(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/traceback.py", line 508, in __init__
+    self.stack = StackSummary.extract(
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/traceback.py", line 366, in extract
+    f.line
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/traceback.py", line 288, in line
+    self._line = linecache.getline(self.filename, self.lineno).strip()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/linecache.py", line 16, in getline
+    lines = getlines(filename, module_globals)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/torch/_fx/graph_module.py", line 27, in patched_getline
+    return _orig_getlines(*args, **kwargs)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/linecache.py", line 47, in getlines
+    return updatecache(filename, module_globals)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/linecache.py", line 136, in updatecache
+    with tokenize.open(fullname) as fp:
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/tokenize.py", line 394, in open
+    encoding, lines = detect_encoding(buffer.readline)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/tokenize.py", line 363, in detect_encoding
+    first = read_or_stop()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/tokenize.py", line 321, in read_or_stop
+    return readline()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "starter/mt_must_sac.py", line 397, in <module>
+    experiment(args)
+  File "starter/mt_must_sac.py", line 358, in experiment
+    agent.train(env.num_tasks,params,group_name)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/algo/rl_algo.py", line 385, in train
+    self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch,self.use_trajectory_info)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/algo/off_policy/must_sac.py", line 451, in update_per_epoch
+    info,inner_dict = self.update(batch, task_sample_index, task_scheduler,
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/./torchrl/algo/off_policy/must_sac.py", line 318, in update
+    qf2_loss.backward(retain_graph=True)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/torch/tensor.py", line 221, in backward
+    torch.autograd.backward(self, gradient, retain_graph, create_graph)
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/torch/autograd/__init__.py", line 130, in backward
+    Variable._execution_engine.run_backward(
+KeyboardInterrupt
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/wandb/sdk/wandb_manager.py", line 186, in _teardown
+    result = self._service.join()
+  File "/lustre04/scratch/qianxi/sparse_training/dec_must/must_env/lib/python3.8/site-packages/wandb/sdk/service/service.py", line 235, in join
+    ret = self._internal_proc.wait()
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1083, in wait
+    return self._wait(timeout=timeout)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1806, in _wait
+    (pid, sts) = self._try_wait(0)
+  File "/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Core/python/3.8.10/lib/python3.8/subprocess.py", line 1764, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+KeyboardInterrupt
+wandb: - 0.000 MB of 0.000 MB uploaded (0.000 MB deduped)wandb: 
+wandb: Run history:
+wandb:                                0 ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                                1 ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                       Alpha_loss ███▇▇▇▇▆▆▆▆▅▅▅▅▅▄▄▄▄▃▃▃▃▂▂▂▂▁▁▁
+wandb:                     Eval____Time █▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                     Explore_Time █▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                      Reward_Mean █▅█▅▄▄▄▄▆▆▄▅▁▆▃▂▅▃▃▅▆▄▆▇▃▇▅▇▄▇█
+wandb:          Running_Average_Rewards ▅▅▅▆▆▆▆▆▅▄▃▂▁▁▁▂▄▅▆▆▇▇▇█████▇▇▇
+wandb: Running_Training_Average_Rewards ▅▆▇██▇▆▅▅▆▅▅▆▅▃▂▃▁▁▁▂▄▅▅▆▅▅▆▆▆▆
+wandb:               Train_Epoch_Reward ▄▄▆▃▁▂▂▁▂▄▃▃▄▂▃▂▄▃▂▁▄▇▅▃▄▂▂█▁▃▁
+wandb:                     Train___Time █▂▃▃▂▁▃▃▃▄▃▃▃▃▃▄▃▁▁▃▄▃▁▃▃▄▂▃▃▄▄
+wandb:                 Training/pf_norm ▇▆██▆▅▅▅▄▅▄▄▄▄▃▂▂▂▂▃▃▂▂▃▂▂▁▁▂▃▂
+wandb:             Training/policy_loss █████▇▇▇▇▇▇▇▇▇▇▆▆▆▆▆▆▅▅▅▄▄▃▃▃▂▁
+wandb:                Training/qf1_loss ▆▃▇▃▄▄▄▄▄▄▂▄▁▅▃▂▃▃▂▄▆▄▅▅▃▄▄▅▄▇█
+wandb:                Training/qf1_norm ▁▁▁▁▁▁▁▁▁▁▁▂▁▂▂▂▂▂▂▃▃▃▄▄▄▅▅▆▆▇█
+wandb:                Training/qf2_loss ▆▃▇▃▄▄▄▄▄▄▂▄▁▅▃▂▃▃▂▄▆▄▅▅▃▄▄▅▄▇█
+wandb:                Training/qf2_norm ▁▁▁▁▁▁▁▁▁▂▁▂▂▂▂▂▂▂▃▃▄▄▄▅▅▅▆▇▆▇█
+wandb:                          alpha_0 ███▇▇▇▇▆▆▆▆▅▅▅▅▄▄▄▄▄▃▃▃▃▂▂▂▂▁▁▁
+wandb:                          alpha_1 ███▇▇▇▇▆▆▆▆▅▅▅▅▄▄▄▄▄▃▃▃▃▂▂▂▂▁▁▁
+wandb:                gen_weight_change ▁▄▆▇▇██████████████████████████
+wandb:                    log_probs/max █▅█▆▆▆▅▅▅▅▄▃▃▂▂▂▁▁▁▁▁▂▂▂▂▂▂▁▂▂▂
+wandb:                   log_probs/mean ▇▅██▆▅▄▄▃▃▄▃▃▃▂▃▂▂▂▂▁▁▂▂▃▂▂▁▁▃▁
+wandb:                    log_probs/min ▅██▇▇▆▇▇▆▆▅▆▆▆▆▃▆▅▆▄▆▃▇▁▅▃▆▃▆▇▄
+wandb:                    log_probs/std █▇█▇▇▇▆▅▆▅▄▃▃▂▂▂▂▂▁▁▁▂▂▃▁▂▁▂▂▁▂
+wandb:                      log_std/max ███▇▇▇▆▆▆▅▅▄▃▃▂▂▁▁▁▂▁▂▂▂▂▂▂▂▁▁▃
+wandb:                     log_std/mean ██▇▇▇▇▆▆▆▅▅▄▄▃▂▂▁▁▁▁▁▂▂▂▂▂▂▂▁▂▂
+wandb:                      log_std/min ██▇▇▇▇▆▆▆▅▅▄▄▃▃▃▁▂▁▁▁▂▂▂▂▂▂▂▂▂▂
+wandb:                      log_std/std ▁▂▂▂▁▃▃▂▃▂▃▃▃▅▄▃▆▆▅█▆▅▅▄▅▅▅▆▅▄█
+wandb:                         mean/max ▂▁▂▁▂▂▃▁▃▂▃▃▅▃▄▄▂▆▃▂▂▃▄▄▆▄█▄▅▂▂
+wandb:                        mean/mean ▅▃▅▃▃▄▃▁▄▁▄▄▆▃▅▄▅▄▆▅▅▇▅█▆▇▆▅▄▄▄
+wandb:                         mean/min ▇▅▇▇▇▇▇▂▄▁▁▅▅▅▅▆▆▆▆▇▆█▇█▆▄▆▄▆▅▆
+wandb:                         mean/std ▂▂▂▁▃▂▃▇▆██▄▆▅▅▄▃▅▃▂▃▂▃▂▆▆▇▆▄▃▃
+wandb:                mean_success_rate ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:             push-v1_eval_rewards ███▇▇█▇▇▆▆▅▄▃▃▂▁▁▄▄▃▄▄▃▂▂▂▂▂▃▃▃
+wandb:             push-v1_success_rate ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:            reach-v1_eval_rewards ▅▅▅▆▇▆▅▄▃▂▁▁▂▃▄▅▇█▇▆▇███▇██▇▆▇▇
+wandb:            reach-v1_success_rate ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                save_traj_mod_sum ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:               task_policy_mask_0 █▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:               task_policy_mask_1 ▁███████████████████████████████
+wandb: 
+wandb: Run summary:
+wandb:                                0 0.0
+wandb:                                1 0.0
+wandb:                       Alpha_loss -0.10405
+wandb:                     Eval____Time 0.03824
+wandb:                     Explore_Time 0.03857
+wandb:                      Reward_Mean 36.85258
+wandb:          Running_Average_Rewards 6373.56747
+wandb: Running_Training_Average_Rewards 5499.67734
+wandb:               Train_Epoch_Reward 3029.08109
+wandb:                     Train___Time 2.61941
+wandb:                 Training/pf_norm 0.1999
+wandb:             Training/policy_loss -3.22661
+wandb:                Training/qf1_loss 5507.81738
+wandb:                Training/qf1_norm 346.15411
+wandb:                Training/qf2_loss 5513.01318
+wandb:                Training/qf2_norm 323.49799
+wandb:                          alpha_0 0.98459
+wandb:                          alpha_1 0.98459
+wandb:                gen_weight_change -7.40305
+wandb:                    log_probs/max -2.14177
+wandb:                   log_probs/mean -2.74352
+wandb:                    log_probs/min -5.37777
+wandb:                    log_probs/std 0.25365
+wandb:                      log_std/max -0.09989
+wandb:                     log_std/mean -0.12813
+wandb:                      log_std/min -0.14766
+wandb:                      log_std/std 0.0126
+wandb:                         mean/max 0.00431
+wandb:                        mean/mean 0.0007
+wandb:                         mean/min -0.00429
+wandb:                         mean/std 0.00309
+wandb:                mean_success_rate 0.0
+wandb:             push-v1_eval_rewards -22.03742
+wandb:             push-v1_success_rate 0.0
+wandb:            reach-v1_eval_rewards 12796.72593
+wandb:            reach-v1_success_rate 0.0
+wandb:                save_traj_mod_sum 0
+wandb:               task_policy_mask_0 450381
+wandb:               task_policy_mask_1 455967
+wandb: 
+wandb: You can sync this run to the cloud by running:
+wandb: wandb sync /lustre04/scratch/qianxi/sparse_training/dec_must/DST_RL/wandb/offline-run-20231205_003522-ucxkyovn
+wandb: Find logs at: ./wandb/offline-run-20231205_003522-ucxkyovn/logs
