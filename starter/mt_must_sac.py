@@ -358,40 +358,5 @@ def experiment(args):
     agent.train(env.num_tasks,params,group_name)
 
 
-
-# class TestDifferentiability(unittest.TestCase):
-#     def setUp(self):
-#         # Initialize your neural network
-#         encoder = networks.TrajectoryEncoder((19,),
-#                                          32,
-#                                           device='cpu').to("cpu")
-
-#         self.net = networks.MaskGeneratorNet(
-#         em_input_shape=np.prod(10),
-#         hidden_shapes=20,
-#         pruning_ratio=0.5,
-#         device="cpu",
-#         info_dim=32,
-#         trajectory_encoder=encoder,
-#         main_input_dim=(19,),
-#         main_out_dim=2 * 4,
-#         use_trajectory_info=True, 
-#         task_amount=2,
-#         one_hot_mlp_hidden=32,
-#         generator_mlp_hidden=32,
-#         one_hot_result_dim=32
-#         )
-
-#     def test_forward_differentiable(self):
-#         # Define input tensors for testing
-#         input_tensor_2d = torch.randn((3, 4), requires_grad=True)
-#         input_tensor_1d = torch.randn(4, requires_grad=True)
-
-#         # Check differentiability for the 2d tensor input
-#         self.assertTrue(torch.autograd.gradcheck(self.net.forward, input_tensor_2d))
-
-#         # Check differentiability for the 1d tensor input
-#         self.assertTrue(torch.autograd.gradcheck(self.net.forward, input_tensor_1d))
-
 if __name__ == "__main__":
     experiment(args)

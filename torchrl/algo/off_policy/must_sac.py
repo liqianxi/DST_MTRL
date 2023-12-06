@@ -397,7 +397,8 @@ class MUST_SAC(TwinSACQ):
         info = None
         time0 = time.time()
         each_task_batch_size, update_idxes = self.get_batch_size_and_idx(task_scheduler)
-        mask_buffer_copy = copy.deepcopy(mask_buffer)
+        #mask_buffer_copy = copy.deepcopy(mask_buffer)
+        mask_buffer_copy = mask_buffer
         time1 = time.time()
         print("time1",time1-time0)
         time2 = 0

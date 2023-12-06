@@ -345,43 +345,36 @@ class RLAlgo():
 
         # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
-            wandb.log({"save_traj_mod_sum":sum([i for i in self.traj_collect_mod.values()])},step=epoch)
-            
-            torch.cuda.empty_cache()
-            for each_task in self.mask_buffer["Policy"].keys():
-                value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
-
-                name = str(each_task)
-                wandb.log({f"task_policy_mask_{name}":value},step=epoch)
-            # #print("self.update_end_epoch",self.update_end_epoch)
+            start_epoch_time = time.time()
             if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval) and self.use_sl_loss:
                 # update mask
                 print("start to update mask")
                 self.update_mask_generator(TASK_SAMPLE_NUM, task_amount, epoch,self.use_trajectory_info)
 
+            print("epoch first part time",time.time()-start_epoch_time)
             log_dict = {}
 
             self.current_epoch = epoch
             start = time.time()
             # If only a subset of task is sampled:
-            for _ in range(task_scheduler.num_tasks // TASK_SAMPLE_NUM):
-                task_sample_index = task_scheduler.sample()
+            
+            task_sample_index = [i for i in range(task_scheduler.num_tasks)]#task_scheduler.sample()
 
-                self.start_epoch()
+            self.start_epoch()
 
-                explore_start_time = time.time()
+            explore_start_time = time.time()
 
-                training_epoch_info = self.collector.train_one_epoch(
-                    task_sample_index)
+            training_epoch_info = self.collector.train_one_epoch(
+                task_sample_index)
 
-                for reward in training_epoch_info["train_rewards"]:
-                    self.training_episode_rewards.append(reward)
-                explore_time = time.time() - explore_start_time
+            for reward in training_epoch_info["train_rewards"]:
+                self.training_episode_rewards.append(reward)
+            explore_time = time.time() - explore_start_time
 
             train_start_time = time.time()
 
             print("collect time",time.time()-start)
-            torch.cuda.empty_cache()
+            #torch.cuda.empty_cache()
             self.update_per_epoch(task_sample_index, task_scheduler, self.mask_buffer, epoch,self.use_trajectory_info)
 
             train_time = time.time() - train_start_time
@@ -401,6 +394,7 @@ class RLAlgo():
 
             eval_time = time.time() - eval_start_time
             print("eval time",eval_time)
+            last_epoch_time0 = time.time()
             total_frames += self.collector.active_worker_nums * self.epoch_frames
 
             infos = {}
@@ -408,12 +402,13 @@ class RLAlgo():
             for reward in eval_infos["eval_rewards"]:
                 self.episode_rewards.append(reward)
 
-            if self.best_eval is None or \
-                    np.mean(eval_infos["eval_rewards"]) > self.best_eval:
-                self.best_eval = np.mean(eval_infos["eval_rewards"])
-                self.snapshot(self.save_dir, 'best')
+            # if self.best_eval is None or \
+            #         np.mean(eval_infos["eval_rewards"]) > self.best_eval:
+            #     self.best_eval = np.mean(eval_infos["eval_rewards"])
+            #     self.snapshot(self.save_dir, 'best')
             del eval_infos["eval_rewards"]
-
+            print("epoch last part time",time.time()-last_epoch_time0)
+            last_epoch_time1 = time.time()
             infos["Running_Average_Rewards"] = np.mean(self.episode_rewards)
             infos["Train_Epoch_Reward"] = training_epoch_info["train_epoch_reward"]
             infos["Running_Training_Average_Rewards"] = np.mean(
@@ -429,12 +424,20 @@ class RLAlgo():
 
             self.logger.add_epoch_info(epoch, total_frames,
                                        time.time() - start, infos)
+            print("epoch last part time2",time.time()-last_epoch_time1)
+            last_epoch_time2 = time.time()
+            # if epoch % self.save_interval == 0:
+            #     self.snapshot(self.save_dir, epoch)
+            #     task_scheduler.save(self.save_dir)
+            if epoch % 10 == 0:
+                wandb.log({"save_traj_mod_sum":sum([i for i in self.traj_collect_mod.values()])},step=epoch)
+                wandb.log(log_dict)
+                for each_task in self.mask_buffer["Policy"].keys():
+                    value = torch.sum((self.mask_buffer["Policy"][each_task][0] == 0).nonzero().squeeze()).item()
 
-            if epoch % self.save_interval == 0:
-                self.snapshot(self.save_dir, epoch)
-                task_scheduler.save(self.save_dir)
-
-            wandb.log(log_dict)
+                    name = str(each_task)
+                    wandb.log({f"task_policy_mask_{name}":value},step=epoch)
+            print("epoch last part time3",time.time()-last_epoch_time2)
 
         self.snapshot(self.save_dir, "finish")
         self.collector.terminate()
