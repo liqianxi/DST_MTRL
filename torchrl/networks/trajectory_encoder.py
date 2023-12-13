@@ -29,8 +29,8 @@ class TrajectoryEncoder(th.nn.Module):
         self.state_dim = state_dim
         # Only using Normal distribution here so prior for latents is known
         self.latent_prior = th.distributions.normal.Normal(
-            th.zeros(latent_dim).to(device),
-            th.ones(latent_dim).to(device),
+            th.zeros(latent_dim,device=device),
+            th.ones(latent_dim,device=device),
         )
 
         self.device = device

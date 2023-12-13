@@ -7,7 +7,7 @@ import numpy as np
 import wandb,time
 import torchrl.policies as policies
 import torch.nn.functional as F
-
+from torch.profiler import profile, record_function, ProfilerActivity
 
 class MUST_SAC(TwinSACQ):
     """"
@@ -27,7 +27,7 @@ class MUST_SAC(TwinSACQ):
         self.batch_size=batch_size
 
         if self.automatic_entropy_tuning:
-            self.log_alpha = torch.zeros(self.task_nums).to(self.device)
+            self.log_alpha = torch.zeros(self.task_nums,device=self.device)
             self.log_alpha.requires_grad_()
             self.alpha_optimizer = self.optimizer_class(
                 [self.log_alpha],
@@ -60,7 +60,7 @@ class MUST_SAC(TwinSACQ):
         for each_net in ["Policy","Q1","Q2"]:      
             
 
-            task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(all_task_amount)]).to(self.device)
+            task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(all_task_amount)])#.to(self.device)
 
             generator = self.policy_mask_generator
             if each_net == "Q1":
@@ -75,16 +75,7 @@ class MUST_SAC(TwinSACQ):
                 _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
 
             tmp_dict = {}
-            """
-            single_msk.shape torch.Size([40, 19])
-            single_msk.shape torch.Size([40])
-            single_msk.shape torch.Size([40, 40])
-            single_msk.shape torch.Size([40])
-            single_msk.shape torch.Size([40, 40])
-            single_msk.shape torch.Size([40])
-            single_msk.shape torch.Size([8, 40])
-            single_msk.shape torch.Size([8])
-            """
+
             for task in range(sampled_task_amount):
                 task_mask_list = []
                 for each_layer in range(len(batch_task_binary_masks[0])):
@@ -133,13 +124,13 @@ class MUST_SAC(TwinSACQ):
         task_idx = batch['task_idxs']
 
 
-        rewards = torch.Tensor(rewards).to(self.device)
-        terminals = torch.Tensor(terminals).to(self.device)
-        obs = torch.Tensor(obs).to(self.device)
-        actions = torch.Tensor(actions).to(self.device)
-        next_obs = torch.Tensor(next_obs).to(self.device)
-        embedding_inputs = torch.Tensor(embedding_inputs).to(self.device)
-        task_idx = torch.Tensor(task_idx).to( self.device ).long()
+        rewards = torch.as_tensor(rewards,device=self.device)
+        terminals = torch.as_tensor(terminals,device=self.device)
+        obs = torch.as_tensor(obs,device=self.device)
+        actions = torch.as_tensor(actions,device=self.device)
+        next_obs = torch.as_tensor(next_obs,device=self.device)
+        embedding_inputs = torch.as_tensor(embedding_inputs,device=self.device)
+        task_idx = torch.as_tensor(task_idx).to( self.device ).long()
         time1 = time.time()
 
         obs = torch.cat([obs[:update_idxes[i], i, :] for i in range(task_scheduler.num_tasks)])
@@ -175,7 +166,7 @@ class MUST_SAC(TwinSACQ):
         q1_pred = self.qf1(cat_input, q1_device_masks)
         q2_pred = self.qf2(cat_input, q2_device_masks)
 
-        reweight_coeff = torch.ones((log_probs.shape[0], 1)).to(self.device)
+        reweight_coeff = torch.ones((log_probs.shape[0], 1),device=self.device)
 
         if self.automatic_entropy_tuning:
             """
@@ -233,9 +224,6 @@ class MUST_SAC(TwinSACQ):
         qf2_loss = (reweight_coeff[:, :] *
                     ((q2_pred - q_target.detach()) ** 2)).mean()
 
-        assert q1_pred.shape == q_target.shape
-        assert q2_pred.shape == q_target.shape
-
         cat_input = torch.cat([obs, new_actions], dim=1)
         q_new_actions = torch.min(
             self.qf1(cat_input,q1_device_masks),
@@ -259,24 +247,6 @@ class MUST_SAC(TwinSACQ):
         """
         Update Networks
         """
-
-        # if disable_gen_grad:
-        #     print("disable_gen_grad")
-        # self.policy_mask_generator.generator_body.requires_grad = False
-        # self.qf1_mask_generator.generator_body.requires_grad = False
-        # self.qf2_mask_generator.generator_body.requires_grad = False
-        # self.policy_mask_generator.encoder.requires_grad = False
-        # self.qf1_mask_generator.encoder.requires_grad = False
-        # self.qf2_mask_generator.encoder.requires_grad = False
-
-        # else: 
-        #     print("enable_gen_grad")
-        # self.policy_mask_generator.generator_body.requires_grad = True
-        # self.qf1_mask_generator.generator_body.requires_grad = True
-        # self.qf2_mask_generator.generator_body.requires_grad = True
-        # self.policy_mask_generator.encoder.requires_grad = True
-        # self.qf1_mask_generator.encoder.requires_grad = True
-        # self.qf2_mask_generator.encoder.requires_grad = True
 
         policy_optimizer = self.pf_optimizer
         q1_optimizer = self.qf1_optimizer
@@ -304,7 +274,7 @@ class MUST_SAC(TwinSACQ):
 
         policy_optimizer.step()
         # Dont know what is this.
-        # self.pf.apply(rezero_weights)
+        self.pf.apply(rezero_weights)
 
         q1_optimizer.zero_grad()
         qf1_loss.backward(retain_graph=True)
@@ -315,7 +285,7 @@ class MUST_SAC(TwinSACQ):
             #torch.nn.utils.clip_grad_norm_(self.qf1_mask_generator.mlp_layers.parameters(),1)
 
         q1_optimizer.step()
-        # self.qf1.apply(rezero_weights)
+        self.qf1.apply(rezero_weights)
 
         q2_optimizer.zero_grad()
         qf2_loss.backward(retain_graph=True)
@@ -327,7 +297,7 @@ class MUST_SAC(TwinSACQ):
             #torch.nn.utils.clip_grad_norm_(self.qf2_mask_generator.mlp_layers.parameters(),1)
 
         q2_optimizer.step()
-        # self.qf2.apply(rezero_weights)
+        self.qf2.apply(rezero_weights)
 
         self._update_target_networks()
         # Information For Logger
@@ -349,9 +319,9 @@ class MUST_SAC(TwinSACQ):
             info['Training/qf2_norm'] = qf2_norm.item()
 
         info['log_std/mean'] = log_std.mean().item()
-        info['log_std/std'] = log_std.std().item()
-        info['log_std/max'] = log_std.max().item()
-        info['log_std/min'] = log_std.min().item()
+        # info['log_std/std'] = log_std.std().item()
+        # info['log_std/max'] = log_std.max().item()
+        # info['log_std/min'] = log_std.min().item()
 
         # log_probs_display = log_probs.detach()
         # log_probs_display = (log_probs_display.mean(0)).squeeze(1)
@@ -359,20 +329,24 @@ class MUST_SAC(TwinSACQ):
         #     info["log_prob_{}".format(i)] = log_probs_display[i].item()
 
         info['log_probs/mean'] = log_probs.mean().item()
-        info['log_probs/std'] = log_probs.std().item()
-        info['log_probs/max'] = log_probs.max().item()
-        info['log_probs/min'] = log_probs.min().item()
+        # info['log_probs/std'] = log_probs.std().item()
+        # info['log_probs/max'] = log_probs.max().item()
+        # info['log_probs/min'] = log_probs.min().item()
 
         info['mean/mean'] = mean.mean().item()
-        info['mean/std'] = mean.std().item()
-        info['mean/max'] = mean.max().item()
-        info['mean/min'] = mean.min().item()
+        # info['mean/std'] = mean.std().item()
+        # info['mean/max'] = mean.max().item()
+        # info['mean/min'] = mean.min().item()
+
+        time7 = time.time()#'sac_diff6': 7.225648880004883
+        #inner_dict_sum {'sac_diff0': 0.2351064682006836, 'sac_diff1': 0.9545495510101318, 'sac_diff2': 1.7631540298461914, 'sac_diff3': 0.5227899551391602, 'sac_diff4': 0.38147926330566406, 'sac_diff5': 3.5326154232025146, 'sac_diff6': 7.225648880004883, 'all': 14.615343570709229}
+
         inner_dict = {"sac_diff0":time1-time0,
                       "sac_diff1":time2-time1,
                       "sac_diff2":time3-time2,
                       "sac_diff3":time4-time3,
                       "sac_diff4":time5-time4,
-                      "sac_diff5":time6-time5}
+                      "sac_diff5":time6-time5, "sac_diff6":time7-time6,"all":time7-time0 }
 
 
         return info,inner_dict
@@ -405,12 +379,13 @@ class MUST_SAC(TwinSACQ):
         time3 = 0
         time4 = 0
         time5 = 0
+        
         inner_dict_sum = {"sac_diff0":0,
                       "sac_diff1":0,
                       "sac_diff2":0,
                       "sac_diff3":0,
                       "sac_diff4":0,
-                      "sac_diff5":0}
+                      "sac_diff5":0, "sac_diff6":0,"all":0 }
 
         diff5_list = []
         if epoch % self.mask_update_itv != 0:
@@ -453,10 +428,12 @@ class MUST_SAC(TwinSACQ):
             inside_ckpt3 = time.time()                                      
             # Here, mask_buffer is all network types and all tasks.
             # December. This consumes 99% of the training time.
-            info,inner_dict = self.update(batch, task_sample_index, task_scheduler, 
-                                         mask_buffer_copy,each_task_batch_size, update_idxes,
-                                         policy_device_masks,q1_device_masks,q2_device_masks, epoch,disable_gen_grad)
 
+            info,inner_dict = self.update(batch, task_sample_index, task_scheduler, 
+                                        mask_buffer_copy,each_task_batch_size, update_idxes,
+                                        policy_device_masks,q1_device_masks,q2_device_masks, epoch,disable_gen_grad)
+            #print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=20))
+            inside_ckpt32 = time.time()      
             for key in inner_dict.keys():
                 inner_dict_sum[key] +=inner_dict[key]
 
@@ -464,6 +441,7 @@ class MUST_SAC(TwinSACQ):
 
             self.logger.add_update_info(info)
             inside_ckpt4 = time.time()    
+            time4 += inside_ckpt32 - inside_ckpt3
             time5 += inside_ckpt4 - inside_ckpt3 
 
         time6 = time.time()
@@ -481,15 +459,18 @@ class MUST_SAC(TwinSACQ):
         print("diff5_list",diff5_list)
 
         print("time3",time3)
+        print("time4",time4)
         print("time5",time5)
         print("time7",time7-time6)
+        time8 = time.time()
         gen_weight_change = torch.sum([param for param in self.policy_mask_generator.generator_body.parameters()][-1].data)
         print("gen_weight_change",gen_weight_change)
         info["gen_weight_change"] = gen_weight_change
         del mask_buffer_copy
         del each_task_batch_size, update_idxes
         del policy_device_masks, q1_device_masks,q2_device_masks
-
-        wandb.log(info,step=epoch)
+        if epoch %10 ==0:
+            wandb.log(info,step=epoch)
+        print("time8",time.time()-time8)
 
         

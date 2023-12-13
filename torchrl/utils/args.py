@@ -16,6 +16,9 @@ def get_args():
 
     parser.add_argument('--use_trajectory_info', type=int, default=1,
                         help='if true, also uses trajectory info for generator')
+
+    parser.add_argument('--specify_single_task', type=int, default=0,
+                        help='enabled only when you wish to try single task.')
     
     parser.add_argument('--wandb_group_name', type=str, default="default_group",
                         help='wandb group name')

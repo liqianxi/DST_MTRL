@@ -40,14 +40,13 @@ class Net(nn.Module):
 
     def apply_mask(self, task_masks):
         weight_mask = task_masks[0]
-        bias_mask = task_masks[1]
-        assert len(weight_mask) == len(self.base) + len(self.last),"incorrect weight mask number"
-        assert len(bias_mask) == len(self.base),"incorrect bias mask number"
 
-        # Apply element-wise product to each weight and bias of the base neural net.
+        assert len(weight_mask) == len(self.base) + len(self.last),"incorrect weight mask number"
+
+
+        # Apply element-wise product to each weight of the base neural net.
         for layer_idx in len(self.base):
             self.base[layer_idx].weight = torch.mul(self.base[layer_idx].weight, weight_mask[layer_idx])
-            self.base[layer_idx].bias = torch.mul(self.base[layer_idx].bias, bias_mask[layer_idx])
             
         self.last.weight = torch.mul(self.last.weight,weight_mask[-1])
         
@@ -93,72 +92,32 @@ class MaskedNet(nn.Module):
         mask_out = x
         if enable_mask:
             
-            if len(neuron_masks[0].shape) > 2:
-                """
-                neuron_masks[2*idx] torch.Size([10, 40, 19])
-                multi shape torch.Size([10, 40, 19])
-                mask_out shape torch.Size([1280, 19])   
-                """
-                
+            if len(neuron_masks[0].shape) > 2:                
                 for idx, layer in enumerate(self.base.fcs):
                     mask_out = mask_out.view(self.task_amount, self.each_task_batch_size, -1)
 
                     layer_weight = self.base.fcs[idx].weight.unsqueeze(0) 
                     layer_bias = self.base.fcs[idx].bias.unsqueeze(0)
-                    # print("layer_weight.shape",layer_weight.shape)
-                    # print("neuron_masks[2*idx].shape",neuron_masks[2*idx].shape)
-                    weight_apply_mask = (layer_weight*neuron_masks[2*idx]).permute(0,2,1)
-                    bias_apply_mask = (layer_bias*neuron_masks[2*idx+1])
-                    bias_apply_mask_batched = bias_apply_mask.unsqueeze(1).repeat(1, self.each_task_batch_size, 1)
-                   
-                    # """
-                    # layer_weight.shape torch.Size([1, 400, 23])
-                    # neuron_masks[2*idx].shape torch.Size([10, 400, 23])
-                    # mask_out torch.Size([10, 128, 23])
-                    # weight_apply_mask torch.Size([10, 23, 400])
-                    # """
-                    # print("mask_out",mask_out.shape)
-                    # print("weight_apply_mask",weight_apply_mask.shape)
-                    tmp = torch.bmm(mask_out, weight_apply_mask)
 
-                    output = self.activation_func(tmp + bias_apply_mask_batched)##:
+                    weight_apply_mask = (layer_weight*neuron_masks[idx]).permute(0,2,1)
+                    bias_batched = layer_bias.unsqueeze(1).repeat(1, self.each_task_batch_size, 1)
+
+                    output = self.activation_func(torch.bmm(mask_out, weight_apply_mask) + bias_batched)
 
                     mask_out = output.view(self.task_amount, self.each_task_batch_size, -1)
 
-                last_weight_apply_mask = (self.last.weight * neuron_masks[-2]).permute(0,2,1)
-                last_bias_apply_mask = self.last.bias * neuron_masks[-1]
-                last_bias_apply_mask_batched = last_bias_apply_mask.unsqueeze(1).repeat(1, self.each_task_batch_size, 1)
+                last_weight_apply_mask = (self.last.weight * neuron_masks[-1]).permute(0,2,1)
 
-                out = torch.bmm(mask_out,last_weight_apply_mask) + last_bias_apply_mask_batched
-                out = out.view(self.all_batch_size, -1)
+                out = torch.bmm(mask_out,last_weight_apply_mask)
+                out = out.view(self.all_batch_size, -1) + self.last.bias.repeat(self.all_batch_size, 1)
 
             else: 
-                """
-                # Manually perform linear operations using weights and biases
-                    fc1_weight = self.fc1.weight
-                    fc1_bias = self.fc1.bias
-                    fc2_weight = self.fc2.weight
-                    fc2_bias = self.fc2.bias
-
-                    # Perform linear operations manually
-                    hidden = torch.relu(torch.matmul(input, fc1_weight.t()) + fc1_bias)
-                    output = torch.matmul(hidden, fc2_weight.t()) + fc2_bias
-                """
-
                 for idx, layer in enumerate(self.base.fcs):
-                    layer_weight = self.base.fcs[idx].weight # 400,19
-                    layer_bias = self.base.fcs[idx].bias
+                    new_weight = self.base.fcs[idx].weight * neuron_masks[idx]
+                    mask_out = self.activation_func( torch.mm(mask_out, new_weight.t())+ self.base.fcs[idx].bias)
 
-                    new_weight = layer_weight*neuron_masks[2*idx]
-
-                    new_bias = layer_bias * neuron_masks[2*idx+1]
-
-                    mask_out = self.activation_func( torch.mm(mask_out, new_weight.t())+ new_bias)
-
-                tmp = self.last.weight* neuron_masks[-2]
-
-                out = torch.mm(mask_out, tmp.t()) + self.last.bias * neuron_masks[-1]
-                #out = torch.matmul(mask_out,tmp.t())+self.last.bias * neuron_masks[-1]
+                tmp = self.last.weight* neuron_masks[-1]
+                out = torch.mm(mask_out, tmp.t()) + self.last.bias
 
         else: 
             for idx, layer in enumerate(self.base.fcs):
@@ -237,13 +196,6 @@ class MaskGeneratorNet(nn.Module):
         self.encode_dimension = info_dim
         self.one_hot_result_dim = one_hot_result_dim
         self.task_amount = task_amount
-        
-        # Define the MLP layers
-        # self.mlp_layers = nn.Sequential(
-        #     nn.Linear(em_input_shape, one_hot_mlp_hidden),
-        #     nn.ReLU(), 
-        #     nn.Linear(one_hot_mlp_hidden, self.one_hot_result_dim )
-        # ).to(device)
 
         self.layer_neurons = hidden_shapes
         self.use_trajectory_info = use_trajectory_info
@@ -257,19 +209,15 @@ class MaskGeneratorNet(nn.Module):
 
         input -> first layer:
             weight:(first_dim, input_dim)
-            biases: first_dim
 
         first layer -> second layer:
             weight:(second_dim, first_dim)
-            biases: second_dim
         
         second layer -> third layer:
             weight:(third_dim, second_dim)
-            biases: third_dim    
 
         third layer -> output:
-            weight:(third_dim, output_dim)
-            biases: output_dim
+            weight:(output_dim,third_dim)
 
 
         """
@@ -279,47 +227,28 @@ class MaskGeneratorNet(nn.Module):
                                                    self.main_input_dim,
                                                    self.main_out_dim)
 
-        # if use_trajectory_info:
-        #     # Traj onehot dim + trajectory encode dim.
-        #     self.generator_body = nn.Sequential(
-        #         nn.Linear(self.encode_dimension+self.one_hot_result_dim, generator_mlp_hidden),  
-        #         nn.ReLU(),  
-        #         nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
-        #         nn.ReLU()  
-        #     ).to(device)
-        # else:
-        #     self.generator_body = nn.Sequential(
-        #         nn.Linear(self.one_hot_result_dim, generator_mlp_hidden),  
-        #         nn.ReLU(),  
-        #         nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
-        #         nn.ReLU()    
-        #     ).to(device)
-
         if use_trajectory_info:
             # Traj onehot dim + trajectory encode dim.
             self.generator_body = nn.Sequential(
                 nn.Linear(self.encode_dimension+em_input_shape, generator_mlp_hidden),  
                 nn.ReLU(),  
-                nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
-                nn.ReLU()  
+                nn.Linear(generator_mlp_hidden, result_all_neuron_amount), 
             ).to(device)
         else:
             self.generator_body = nn.Sequential(
                 nn.Linear(em_input_shape, generator_mlp_hidden),  
                 nn.ReLU(),  
                 nn.Linear(generator_mlp_hidden, result_all_neuron_amount),
-                nn.ReLU()    
             ).to(device)
     
     def sum_up_dim(self, layer_neurons, main_input, main_output):
-        sum1 = sum(layer_neurons) + main_output
         sum2 = 0
         tmp = [main_input] + layer_neurons + [main_output]
     
         for idx in range(len(tmp)-1):
             sum2 += tmp[idx] * tmp[idx+1]
 
-        return sum1 + sum2
+        return sum2
 
     def keep_topk(self, tensor, pruning_ratio,neurons):
         # Keep how many neurons at each layer.
@@ -327,8 +256,8 @@ class MaskGeneratorNet(nn.Module):
 
         # Pick the highest k values. Set the rest to zero.
         values, indices = torch.topk(tensor, k)
-        output = torch.zeros_like(tensor).to(self.device)
-        ones = torch.ones_like(values).to(self.device)
+        output = torch.zeros_like(tensor,device=self.device)
+        ones = torch.ones_like(values,device=self.device)
         output.scatter_(dim=1, index=indices, src=ones)
 
         return output
@@ -357,24 +286,33 @@ class MaskGeneratorNet(nn.Module):
         return int(element_amount - element_amount * self.pruning_ratio)
 
     def forward(self, x, embedding_input):
-        # Here x is a trajectory of shape [traj_length, dim_of_each_state]
-        # Return weights for visualization
+
+
+        """
+        embedding_input torch.Size([1, 1])
+        task_info_embedding torch.Size([1])
         
-        # Trajectory encoder embedding       
+        """
+
+
         if self.use_trajectory_info:
             traj_encodings = self.encoder.encode_lstm(x)
 
             # Task one hot embedding
-            embedding = embedding_input.squeeze(1)#self.mlp_layers(embedding_input).squeeze(1)
+            embedding = embedding_input.squeeze(1)
 
             # Concat
             task_info_embedding = torch.cat([embedding, traj_encodings],dim=1)
 
         else: 
-            task_info_embedding = embedding_input.squeeze(1)#self.mlp_layers(embedding_input).squeeze(1)
-
+            task_info_embedding = embedding_input.squeeze(1)
+        
 
         mask_vector = self.generator_body(task_info_embedding)
+
+        if embedding_input.shape[1] == 1:
+            mask_vector = mask_vector.unsqueeze(0)
+
 
         task_binary_masks = []
 
@@ -382,14 +320,13 @@ class MaskGeneratorNet(nn.Module):
         slice_index = 0
         weight_out_dim = self.layer_neurons[0]
         weight_in_dim = self.main_input_dim
-        bias_out_dim = self.layer_neurons[0]
+
         weight_element_amount = weight_in_dim * weight_out_dim
-        bias_element_amount = bias_out_dim
 
         for layer_idx in range(len(self.layer_neurons)+1):
             # 0,1,2,3
             # Why +1 layers here?
-            # Because you have 3 MLP layers, plus the weight and biases of the output layer.
+            # Because you have 3 MLP layers, plus the weight of the output layer.
             # Generate weights masks:
             
             weight = mask_vector[:,slice_index:slice_index+weight_element_amount]
@@ -400,36 +337,21 @@ class MaskGeneratorNet(nn.Module):
             
             slice_index += weight_element_amount
 
-            # Generate biases masks:
-            biases = mask_vector[:,slice_index:slice_index+bias_element_amount]
-
-            # Use a differentiable way to keep top k elements as the mask.
-            bias_pruned_mask = self.gumbel_softmax(biases,
-                                              self.preserve_amount(bias_element_amount),
-                                              hard=True)
-
-            slice_index += bias_element_amount
-
-            # Append masked binary weight & bias masks to the result list.
+            # Append masked binary weight masks to the result list.
             task_binary_masks.append(weight_pruned_mask.reshape((self.task_amount, 
-                                                                 weight_out_dim,
-                                                                 weight_in_dim)))
-            task_binary_masks.append(bias_pruned_mask.reshape((self.task_amount,
-                                                               bias_out_dim)))
+                                                                weight_out_dim,
+                                                                weight_in_dim)))
 
-            # Set dimension values for the next layer's weight and bias.
+            # Set dimension values for the next layer's weight.
             if layer_idx != len(self.layer_neurons):
                 weight_in_dim = self.layer_neurons[layer_idx]
 
                 if layer_idx != len(self.layer_neurons)-1:
                     weight_out_dim = self.layer_neurons[layer_idx+1]
-                    bias_out_dim = self.layer_neurons[layer_idx+1]
+
                 else:
                     weight_out_dim = self.main_out_dim
-                    bias_out_dim = self.main_out_dim 
             
-            
-                bias_element_amount = bias_out_dim
                 weight_element_amount = weight_in_dim * weight_out_dim
 
         
@@ -444,5 +366,6 @@ class MaskGeneratorNet(nn.Module):
             converted_list.append(inner_list)
         
         return task_binary_masks, converted_list
-
+        
+        
 

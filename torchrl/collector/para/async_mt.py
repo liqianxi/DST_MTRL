@@ -244,6 +244,10 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             #del mask_this_task
             mask_this_task = mask_buffer[env_info.env_rank]
             mask_this_task = [i.to(env_info.device) for i in copy.deepcopy(mask_this_task)]
+            # sum_all = 0
+            # for each in mask_this_task:
+            #     sum_all += torch.sum((each == 1).nonzero().squeeze()).item()
+            # print(f"task {env_info.env_rank} mask sum at epoch {current_epoch}",sum_all)
             #mask_this_task = copy.deepcopy(mask_this_task).to(env_info.device)
 
             current_epoch += 1
@@ -313,8 +317,8 @@ class AsyncMultiTaskParallelCollectorUniform(AsyncSingleTaskParallelCollector):
             
                 if traj_collect_mod[env_info.env_rank] and success==0:
                     # Append the task state trajectory for this episode to the shared buffer.
-                    print("first case")
-                    print(next_ob)
+                    # print("first case")
+                    # print(next_ob)
                     pass
 
                 else:

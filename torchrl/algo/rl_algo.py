@@ -137,9 +137,9 @@ class RLAlgo():
         one_hot_map = {}
 
         for i in range(total_tasks):
-            embedding_input = torch.zeros(total_tasks)
+            embedding_input = torch.zeros(total_tasks).to(self.device)
             embedding_input[i] = 1
-            one_hot_map[i] = embedding_input.unsqueeze(0).to(self.device)
+            one_hot_map[i] = embedding_input.unsqueeze(0)
 
         return one_hot_map
     
@@ -272,7 +272,7 @@ class RLAlgo():
             for optim_time in range(self.sl_optim_times):
                 task_traj_batch = self.sample_update_data(self.device)
 
-                task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(all_task_amount)]).to(self.device)
+                task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(all_task_amount)])
 
                 generator = self.policy_mask_generator
                 if each_net == "Q1":
@@ -307,6 +307,12 @@ class RLAlgo():
                 return epoch % freq == 0
             else: 
                 return False
+
+    def check_mask(self, epoch, mask_this_task, id):
+        sum_all = 0
+        for each in mask_this_task:
+            sum_all += torch.sum((each == 1).nonzero().squeeze()).item()
+        print(f"in rlalgo: task {id} mask sum at epoch {epoch}",sum_all)
 
     def train(self, task_amount,params, group_name):
         global EPOCH
@@ -345,6 +351,10 @@ class RLAlgo():
 
         # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
+
+            # for k in range(10):
+            #     self.check_mask(epoch, self.mask_buffer["Policy"][k], k)
+
             start_epoch_time = time.time()
             if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval) and self.use_sl_loss:
                 # update mask
@@ -441,6 +451,7 @@ class RLAlgo():
 
         self.snapshot(self.save_dir, "finish")
         self.collector.terminate()
+        wandb.finish()
 
     def update(self, batch):
         raise NotImplementedError

@@ -43,8 +43,6 @@ from metaworld_utils.meta_env import get_meta_env
 import random
 import pickle
 
-torch.set_printoptions(profile="full")
-
 RESTORE = int(os.getenv('RESTORE', '0'))
 
 CPU_NUM = 1
@@ -67,15 +65,6 @@ def random_initialize_masks(network, pruning_ratio):
         idx = torch.randperm(neurons)[:int(neurons - neurons * pruning_ratio)]
         neuron_mask[idx] = 1
         neuron_mask_list.append(neuron_mask.reshape(weight_shape))
-
-        bias_shape = each_layer.bias.shape
-
-        neurons = bias_shape[0]
-        neuron_mask = torch.zeros(neurons)
-
-        idx = torch.randperm(neurons)[:int(neurons - neurons * pruning_ratio)]
-        neuron_mask[idx] = 1
-        neuron_mask_list.append(neuron_mask)
 
     return neuron_mask_list
 
@@ -115,10 +104,17 @@ def experiment(args):
     params["general_setting"]["use_trajectory_info"] = args.use_trajectory_info
     params["general_setting"]["use_sl_loss"] = args.use_sl_loss
     params["selected_task_amount"] = args.selected_task_amount
+    params["specify_single_task"] = args.specify_single_task
+
+    
     
     group_name = args.wandb_group_name
+    if args.selected_task_amount > 1:
+        id_list = all_tasks[:params["selected_task_amount"]]
+    else: 
+        id_list = [all_tasks[int(args.specify_single_task)]]
 
-    id_list = all_tasks[:params["selected_task_amount"]]
+    print("id_list",id_list)
     args.worker_nums = len(id_list)
     args.eval_worker_nums = len(id_list)
 
@@ -285,7 +281,7 @@ def experiment(args):
 
     # Mask buffer, stores the current masks for each layer, 
     # for each task and for each network type(Q1, Q2, policy).
-    # Initialize the binary mask for all the weights and bias, make sure
+    # Initialize the binary mask for all the weights, make sure
     # follow the pruning ratio requirement.
 
     all_mask_buffer = {}
