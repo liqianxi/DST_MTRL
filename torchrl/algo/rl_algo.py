@@ -308,11 +308,13 @@ class RLAlgo():
             else: 
                 return False
 
-    def check_mask(self, epoch, mask_this_task, id):
+    def check_mask(self, mask_this_task):
         sum_all = 0
         for each in mask_this_task:
             sum_all += torch.sum((each == 1).nonzero().squeeze()).item()
-        print(f"in rlalgo: task {id} mask sum at epoch {epoch}",sum_all)
+
+        return sum_all
+
 
     def train(self, task_amount,params, group_name):
         global EPOCH
@@ -347,19 +349,21 @@ class RLAlgo():
 
         #*
         self.start_epoch()
-        task_scheduler = TaskScheduler(num_tasks=task_amount, task_sample_num=TASK_SAMPLE_NUM, task_name_list=self.task_id_list)
+        task_scheduler = TaskScheduler(num_tasks=task_amount, task_sample_num=task_amount, task_name_list=self.task_id_list)
 
         # For each episode:
         for epoch in tqdm(range(EPOCH, self.num_epochs)):
 
-            # for k in range(10):
-            #     self.check_mask(epoch, self.mask_buffer["Policy"][k], k)
+            for k in range(task_amount):
+                sumup = self.check_mask(self.mask_buffer["Policy"][k])
+                wandb.log({f"task_{k}_mask_sum":sumup},step=epoch)
+                print(f"inside rlalgo, task {k}, sumup {sumup}")
 
             start_epoch_time = time.time()
             if self.mask_update_scheduler("fix_interval", epoch, self.update_end_epoch,freq=self.mask_update_interval) and self.use_sl_loss:
                 # update mask
                 print("start to update mask")
-                self.update_mask_generator(TASK_SAMPLE_NUM, task_amount, epoch,self.use_trajectory_info)
+                self.update_mask_generator(task_amount, task_amount, epoch,self.use_trajectory_info)
 
             print("epoch first part time",time.time()-start_epoch_time)
             log_dict = {}

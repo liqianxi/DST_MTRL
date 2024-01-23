@@ -45,16 +45,36 @@ class MUST_SAC(TwinSACQ):
 
         self.sample_key.append("embedding_inputs")
         self.grad_clip = grad_clip
+        
 
     def clip_by_window(self,list_of_trajs,window_length):
         if len(list_of_trajs) > window_length:
             return list_of_trajs[-window_length:]
         return list_of_trajs
 
+    def check_get_mask_grad(self):
+        return
+
+        generator = self.policy_mask_generator
+        task_onehot_batch = torch.stack([self.one_hot_map[i].squeeze(0) for i in range(1)])
+        task_traj_batch = None
+        #opt = 
+
+        _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
+        #print("batch_task_binary_masks",batch_task_binary_masks[0].shape)
+        policy_device_masks = self.concat_task_masks(batch_task_binary_masks,1,detach_mask = False)
+        loss = torch.log(torch.sum(torch.cat(policy_device_masks)))
+        
+        #assert 1==2
+
+
+
+
     def get_masks(self, sampled_task_amount,all_task_amount):
-        recent_window = self.recent_traj_window   
-        for t_id in range(all_task_amount):
-            self.state_trajectory[t_id] = self.clip_by_window(self.state_trajectory[t_id],recent_window)    
+        recent_window = self.recent_traj_window
+        if self.use_trajectory_info:   
+            for t_id in range(all_task_amount):
+                self.state_trajectory[t_id] = self.clip_by_window(self.state_trajectory[t_id],recent_window)    
 
         all_dict = {}
         for each_net in ["Policy","Q1","Q2"]:      
@@ -67,12 +87,13 @@ class MUST_SAC(TwinSACQ):
                 generator = self.qf1_mask_generator
             elif each_net == "Q2":
                 generator = self.qf2_mask_generator
-            if self.use_sl_loss:
+                
+            task_traj_batch = None
+            if self.use_sl_loss and self.use_trajectory_info:
                 task_traj_batch = self.sample_update_data(self.device)
-                _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
-            else: 
-                task_traj_batch = None
-                _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
+            #print("task_onehot_batch shape",task_onehot_batch.shape)
+            #assert 1==2
+            _,batch_task_binary_masks = generator(task_traj_batch, task_onehot_batch)
 
             tmp_dict = {}
 
@@ -110,7 +131,7 @@ class MUST_SAC(TwinSACQ):
                each_task_batch_size, update_idxes,
                policy_device_masks,q1_device_masks,q2_device_masks, epoch, disable_gen_grad
                ):
-
+        #print("disable_gen_grad",disable_gen_grad)
         self.training_update_num += 1
 
         time0 = time.time()
@@ -247,11 +268,13 @@ class MUST_SAC(TwinSACQ):
         """
         Update Networks
         """
-
+        # If disable generator update:
         policy_optimizer = self.pf_optimizer
         q1_optimizer = self.qf1_optimizer
         q2_optimizer = self.qf1_optimizer
-        if disable_gen_grad:
+
+        # else, if enable genrator update:
+        if not disable_gen_grad:
             policy_optimizer = self.pf_optimizer_with_gen
             q1_optimizer = self.qf1_optimizer_with_gen
             q2_optimizer = self.qf2_optimizer_with_gen
@@ -368,13 +391,15 @@ class MUST_SAC(TwinSACQ):
         return batch_list
 
     def update_per_epoch(self, task_sample_index, task_scheduler, mask_buffer, epoch, use_trajectory_info):
+        
+        #self.check_get_mask_grad()
         info = None
         time0 = time.time()
         each_task_batch_size, update_idxes = self.get_batch_size_and_idx(task_scheduler)
         #mask_buffer_copy = copy.deepcopy(mask_buffer)
         mask_buffer_copy = mask_buffer
         time1 = time.time()
-        print("time1",time1-time0)
+
         time2 = 0
         time3 = 0
         time4 = 0
@@ -447,12 +472,24 @@ class MUST_SAC(TwinSACQ):
         time6 = time.time()
         # Avoid frequent access and write shared memory.
         if epoch % self.mask_update_itv == 0:
+
+            for k in range(self.task_nums):
+                sumup = self.check_mask(self.mask_buffer["Policy"][k])
+                wandb.log({f"inside mustsac before update, task {k}":sumup},step=epoch)
+                print(f"inside mustsac before update, task {k}, sumup {sumup}")
+
             for each_net in ["Policy","Q1","Q2"]:  
                 local_mask_update_dict = {}
                 for i in range(self.task_nums):
                     new_mask_list = [msk_tensor.detach().to("cpu") for msk_tensor in mask_buffer_copy[each_net][i]]
                     local_mask_update_dict[i] = new_mask_list
+
                 mask_buffer[each_net].update(local_mask_update_dict)
+                
+            for k in range(self.task_nums):
+                sumup = self.check_mask(self.mask_buffer["Policy"][k])
+                wandb.log({f"inside mustsac after update, task {k}":sumup},step=epoch)
+                print(f"inside mustsac after update, task {k}, sumup {sumup}")
 
         time7 = time.time()
         print("inner_dict_sum",inner_dict_sum)
@@ -463,8 +500,9 @@ class MUST_SAC(TwinSACQ):
         print("time5",time5)
         print("time7",time7-time6)
         time8 = time.time()
-        gen_weight_change = torch.sum([param for param in self.policy_mask_generator.generator_body.parameters()][-1].data)
+        gen_weight_change = sum([torch.sum(param.data) for param in self.policy_mask_generator.generator_body.parameters()])
         print("gen_weight_change",gen_weight_change)
+        print("policy weight change",torch.sum(self.pf.base.fcs[-1].weight))
         info["gen_weight_change"] = gen_weight_change
         del mask_buffer_copy
         del each_task_batch_size, update_idxes
