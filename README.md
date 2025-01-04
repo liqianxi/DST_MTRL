@@ -13,7 +13,7 @@ This project explores a novel approach to Multi-Task Reinforcement Learning (MT-
 The framework consists of two main components:
 1. **Mask Generator**: A neural network that generates binary masks for each weight matrix in the base network, taking state, task, and pruning ratio as inputs.
 2. **MT-RL Training Loop**: A modified SAC implementation that incorporates dynamic sparse training.  
-![How we apply the mask](sparse training2.png)
+![How we apply the mask](sparse_training2.png)
 
 ### Training Objectives
 - Standard MT-RL loss for the base network
