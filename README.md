@@ -1,54 +1,148 @@
-# MUST
+# Dynamic Sparse Training for Multi-Task Reinforcement Learning
 
+## Overview
+This project explores a novel approach to Multi-Task Reinforcement Learning (MT-RL) by incorporating Dynamic Sparse Training techniques. We propose a framework that generates dynamic masks conditioned on both state and task information to enable more effective parameter sharing across tasks.
 
-The way to install metaworld and other dependencies can be found at here:https://github.com/yuyuanq/T3S-MTRL-Pytorch  
+## Key Features
+- Dynamic mask generation based on both state and task information
+- Structured pruning approach targeting neurons instead of individual weights
+- Adaptive parameter sharing mechanism across similar tasks and states
+- Integration with SAC (Soft Actor-Critic) for continuous control tasks
 
-## Repo Structure
+## Architecture
+The framework consists of two main components:
+1. **Mask Generator**: A neural network that generates binary masks for each weight matrix in the base network, taking state, task, and pruning ratio as inputs.
+2. **MT-RL Training Loop**: A modified SAC implementation that incorporates dynamic sparse training.  
+![How we apply the mask](sparse training2.png)
 
-/log : contains all the logged data and training model weights.
-/starter : this folder contains the entry function of several different multi-task RL methods, since I write my code based on other people's code, some of these methods may no longer be usable, our framework's file is mt_must_sac.py.
+### Training Objectives
+- Standard MT-RL loss for the base network
+- Mask similarity optimization based on policy similarities
+- Pairwise similarity computation across tasks for mask generation
+![Our losses](dst_mtrl.png)
 
-/meta_config/must_configs : the configs I'm using for my framework.
+## Methodology
 
-/torchrl : the folder that contains all the components of our framework.
-/torchrl/rl_algo.py and /torchrl/off_policy/must_sac.py : the first one contains the full training loop, mask update. the second one contains how our modified version of SAC do the update. Some other files in the same folder may contains parent classes of our algorithm.
+### Framework Components
 
-/torchrl/collector/async_mt.py : important, this file contains the logic how we spawn a couple of processes to actually interact with each multitask environment in parallel, they collect trajectory and save tuples to the shared buffer. Some other files in the same folder may contains parent classes of our collector.
+#### Mask Generator Network
+- **Input**: 
+  - State information
+  - Task encoding (one-hot)
+  - Pruning ratio parameter
+- **Output**: Binary mask matrices for each layer of the base network
+- **Architecture**: 
+  - Compact neural network designed for structured pruning
+  - Generates masks at neuron-level instead of weight-level
+  - Uses state-task concatenated input to inform mask generation
 
-/torchrl/env : some wrappers and utils, I never touch these.
+#### Base MT-RL Network
+- **Architecture**: Modified SAC implementation
+- **Components**:
+  - Multi-layer perceptron (MLP) with dynamic masking
+  - Layer configurations: [400, 400] for policy networks
+  - State-action value network with similar architecture
+  - Trajectory encoder: 256-dimensional embedding
 
-/torchrl/networks/nets.py : important, defines my mask generator and base network.
+### Training Process
 
-/torchrl/networks/trajectory_encoder.py : important, defines the trajectory encoder (lstm), we are not using VAE loss at this moment so some methods are not in used.
+#### Main Training Loop
+1. Sample tasks and collect trajectories
+2. Apply dynamic masks generated based on current state-task pairs
+3. Update base network using masked parameters
+4. Store subset of trajectories for mask similarity training
 
-/torchrl/policies : policy network related.
+#### Mask Optimization
+- **Schedule**: Updates every k episodes
+- **Process**:
+  1. Generate masks for all tasks given common states
+  2. Compute pairwise mask similarities
+  3. Normalize similarities to [0,1] range
+  4. Generate 50x50 similarity matrix for 50 tasks
 
-/torchrl/replay_buffers : replay buffer, as indicated by the name.
+#### Policy Similarity Computation
+1. Sample trajectories for each task
+2. Encode trajectories using VAE into latent space
+3. Estimate policy distributions in latent space
+4. Compute pairwise KL divergence between policy distributions
+5. Generate target similarity matrix
 
-/torchrl/otherfiles : usually I don't modify other files.
+#### Loss Functions
+1. **RL Loss**: Standard SAC loss function
+   ```
+   L_RL = E[r_t + γ(min Q - α log π)]
+   ```
 
-/t3s_scripts/must : the bash scripts I use to submit jobs on compute canada.
+2. **Mask Similarity Loss**: MSE between mask and policy similarities
+   ```
+   L_mask = MSE(S_mask, S_policy)
+   ```
+   where S_mask and S_policy are the similarity matrices
 
-## Install
+### Implementation Details
 
-1. Use python3.8;  
-2. run `git clone --single-branch --branch accurate_mask_revise https://github.com/liqianxi/DST_RL.git` to clone my work branch.  
-3. Find req.txt in the root. In your virtual env, use `pip install -r req.txt`.
-4. Find a location outside DST_RL, install metaworld:
-`git clone https://github.com/RchalYang/metaworld.git ;
-cd metaworld ;pip install -e .;
+#### Structured Pruning Approach
+- Operates at neuron level rather than weight level
+- Pruning ratios tested: up to 90-95% parameter reduction
+- Dynamic updates based on network performance
 
-5. Install mujoco: go to https://www.roboti.us/download.html and download mujoco200, add this to your .bashrc: `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/qianxi/.mujoco/mujoco200/bin`, replace my own path with your mujoco200/bin file path. DOn't forget to run `source .bashrc` after you modify your bashrc.
+#### Training Schedule
+- Mask updates: Every k=1000 episodes
+- Total interactions:
+  - MT10: 2M interactions per task
+  - MT50: 1M interactions per task for fixed, 2M for random versions
 
-## Run
+#### Trajectory Processing
+- VAE encoder dimension: 256
+- Trajectory buffer size: 15k steps
+- Similarity computation batch size: 50 tasks
 
-1.Go to `/DST_RL/t3s_scripts/must/mt10/`. 
-2. Open run_review.sh, change `cd /home/qianxi/scratch/sparse_training/dec_must/DST_RL` to your DST_RL root address.  
-3. Run format:  
-`bash run_review.sh $seed $update_interval $pruning_ratio $mask_generator_learning_rate $Use_supervised_loss $use_trajectory_info $selected_task`
+## Results
+**Important!**: Current implementation achieves performance approximately 12% lower than Soft Modularization on average, though it outperforms the baseline SAC method. Further optimizations are being explored to improve performance.
 
-4. For example:  
-`bash run_review.sh 3 50 0.5 1e-4 1 1 10`
-will run with random seed 3, the mask update interval is 50 iterations, pruning ratio=0.5, mask_generator_learning_rate is 1e-4 for the supervised loss, $Use_supervised_loss=1 means we use supervised loss and RL loss, $use_trajectory_info=1 means the mask generator also requires task trajectory as the input to generate the mask, $selected_task=10 means all 10 tasks in Metaworld MT10 benchmark will be used.
+### Benchmarks
+Tested on Meta-World environments:
+- MT10 random
+- MT50 fix
+- MT50 random
+- MT10 fix
 
+### Baselines Compared
+- Multi-head SAC
+- Soft Modularization
+- CAGrad
+- Pure SAC
 
+## Implementation Details
+
+### Hardware Requirements
+- CPU: 4-5 cores
+- Memory: 32-50GB
+- GPU: NVIDIA V100
+
+### Time Requirements
+- MT10 experiments: ~3 days
+- MT50 experiments: ~5.5-7 days
+
+## Advantages
+1. Maintains high sample efficiency
+2. Reduced parameter count per task's masked sub-network
+3. Dynamic mask generation enables state-dependent parameter sharing
+4. Effective feature sharing through sparse network structures
+
+## Current Limitations
+1. Performance gap compared to Soft Modularization
+2. Hardware support required for optimal pruning ratio implementation
+3. Computational overhead from mask generation
+
+## Future Work
+1. Optimization of mask generation architecture
+2. Exploration of different pruning ratios
+3. Investigation of alternative similarity metrics
+4. Hardware-specific optimizations
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
+
+## Acknowledgments
+This research was conducted using the compute resources of Compute Canada, at the University of Alberta - Intelligent Robot Learning Lab (IRLL), in collaboration with Alberta Machine Intelligence Institute (Amii).
